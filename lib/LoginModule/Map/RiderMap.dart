@@ -8,16 +8,39 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
+import 'package:ride_safe_travel/LoginModule/Map/Drawer.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
+import 'package:ride_safe_travel/Utils/make_a_call.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:url_launcher/url_launcher.dart';
 
 class RiderMap extends StatefulWidget {
-   RiderMap({Key? key,required this.riderId}) : super(key: key);
+  RiderMap({
+    Key? key,
+    required this.riderId,
+    required this.dName,
+    required this.dLicenseNo,
+    required this.vModel,
+    required this.vOwnerName,
+    required this.vRegistration,
+    required this.dMobile,
+    required this.dImage,
+  }) : super(key: key);
 
   @override
   State<RiderMap> createState() => _RiderMapState();
   String riderId;
+  String dName;
+  String dLicenseNo;
+  String vModel;
+  String vOwnerName;
+  String vRegistration;
+  String dMobile;
+  String dImage;
+
+
+
 }
 
 class _RiderMapState extends State<RiderMap> {
@@ -28,6 +51,7 @@ class _RiderMapState extends State<RiderMap> {
   late IO.Socket socket;
   var vehicleId = '', driverId = '', userId = '', riderId = '';
   String date = '';
+  bool visibility = false;
 
   late Map<MarkerId, Marker> _markers;
   Completer<GoogleMapController> _completer = Completer();
@@ -47,6 +71,12 @@ class _RiderMapState extends State<RiderMap> {
     //_initUser();
     final now = DateTime.now();
     date = DateFormat('yMd').format(now);
+
+    if (widget.dLicenseNo.isEmpty) {
+      visibility = false;
+    } else {
+      visibility = true;
+    }
   }
 
   void sharePre() async {
@@ -60,19 +90,6 @@ class _RiderMapState extends State<RiderMap> {
     //Get.snackbar("Hit with time", riderId);
   }
 
-  // void getDataEverySec() async {
-  //   setState(() {
-  //     timer = Timer.periodic(
-  //         const Duration(seconds: 2), (Timer t) => getRideData());
-  //   });
-  // }
-
-  // void cameraUpdate(kInitialPosition) async {
-  //   CameraPosition kInitialPosition = CameraPosition(
-  //     target: LatLng(lat, lng),
-  //     zoom: 10.0,
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +97,7 @@ class _RiderMapState extends State<RiderMap> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text(
+          title: const Text(
             "Family",
             style: TextStyle(color: CustomColor.black, fontFamily: 'transport'),
           ),
@@ -93,78 +110,112 @@ class _RiderMapState extends State<RiderMap> {
             icon: Image.asset('assets/map_back.png'),
           ),
         ),
-
         body: Stack(children: [
-          SizedBox(
-            child: GoogleMap(
-              initialCameraPosition: _cameraPosition,
-              mapType: MapType.normal,
-              myLocationEnabled: true,
-              compassEnabled: true,
-              zoomControlsEnabled: false,
-              onMapCreated: (GoogleMapController controller) {
-                _completer.complete(controller);
-              },
-              markers: Set<Marker>.of(_markers.values),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Align(
-              alignment: AlignmentDirectional.topEnd, // <-- SEE HERE
-              child:
-                  Image.asset("images/information.png", width: 30, height: 30),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Align(
-              alignment: AlignmentDirectional.bottomEnd, // <-- SEE HERE
-              child: Image.asset("images/SOS.png", width: 50, height: 50),
-            ),
-          ),
+          LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+            return SizedBox(
+              height: constraints.maxHeight / 1.1,
+              child: GoogleMap(
+                initialCameraPosition: _cameraPosition,
+                mapType: MapType.normal,
+                //myLocationEnabled: true,
+                //compassEnabled: true,
+                zoomControlsEnabled: false,
+                onMapCreated: (GoogleMapController controller) {
+                  _completer.complete(controller);
+                },
+                markers: Set<Marker>.of(_markers.values),
+              ),
+            );
+          }),
+          DraggableScrollableSheet(
+              initialChildSize: 0.15,
+              minChildSize: 0.10,
+              maxChildSize: 1,
+              snapSizes: [0.5, 1],
+              snap: true,
+              builder: (BuildContext context, scrollSheetController) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: CustomColor.white,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                                Image.asset("images/End_Ride.png",
+                                    width: 50, height: 50),
+                                const SizedBox(height: 10),
+                                const Text("End Ride",
+                                    style: TextStyle(
+                                        fontFamily: 'transport', fontSize: 16)),
+                              ],
+                            ),
+                            InkWell(
+                              onTap: () {
+                                showMenu();
+                              },
+                              child: Column(
+                                children: [
+                                  Image.asset("images/Ride_Details.png",
+                                      width: 50, height: 50),
+                                  const SizedBox(height: 10),
+                                  const Text("Ride Details",
+                                      style: TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 16)),
+                                ],
+                              ),
+                            ),
+                            InkWell(
+                              onTap: (){
+                                Make_a_call.makePhoneCall("112");
+                              },
+                              child: Column(
+                                children: [
+                                  Image.asset("images/SOS.png", width: 50, height: 50),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
         ]),
-
-        // body: GoogleMap(
-        //   initialCameraPosition: _cameraPosition,
-        //   mapType: MapType.normal,
-        //   myLocationEnabled: true,
-        //   compassEnabled: true,
-        //   onMapCreated: (GoogleMapController controller) {
-        //     _completer.complete(controller);
-        //   },
-        //   markers: Set<Marker>.of(_markers.values),
-        // ),
-
-        /*      bottomSheet: Container(
-          child: Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Image.asset("images/End_Ride.png",width: 50,height: 50),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Image.asset("images/Ride_Details.png",width: 50,height: 50),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Image.asset("images/SOS.png",width: 50,height: 50),
-                    ],
-                  ),
-                ],
-            ),
-          ),
-        ),*/
       ),
     );
   }
+
+  showMenu() {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return DrawerInfo(
+            dInfoImage: widget.dImage,
+            dInfoName: widget.dName,
+            dInfoMobile: widget.dMobile,
+            vInfoImage: 'images/bottom_drawer_comp.png',
+            vInfoModel: widget.vModel,
+            vInfoOwnerName: widget.vOwnerName,
+            vInfoRegNo: widget.vRegistration,
+            dInfoLicense: widget.dLicenseNo,
+            press: () {
+              Navigator.of(context).pop();
+            },
+            visibility: visibility,
+          );
+        });
+  }
+
 
   /*Future<FamilyMemberReadRideDataModels> getRideData() async {
     final response = await http.post(
@@ -251,4 +302,5 @@ class _RiderMapState extends State<RiderMap> {
       print(e.toString());
     }
   }
+
 }

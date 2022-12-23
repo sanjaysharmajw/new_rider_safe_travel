@@ -48,6 +48,7 @@ dependencies:
   shared_preferences:
   socket_io_client: ^2.0.0
   google_maps_flutter: ^2.2.2
+  url_launcher: ^6.1.7
 
 
 

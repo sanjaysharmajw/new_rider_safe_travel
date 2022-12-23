@@ -43,6 +43,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
   Timer? timer;
   var userId;
 
+
   @override
   void initState() {
     super.initState();
@@ -77,7 +78,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       if (status == true) {
         OverlayLoadingProgress.stop(context);
-        List<Data> driverDetails = jsonDecode(response.body)['data']
+        List<Data>  driverDetails = jsonDecode(response.body)['data']
             .map<Data>((data) => Data.fromJson(data))
             .toList();
         driverName = driverDetails[0].driverName.toString();
@@ -164,26 +165,13 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       //var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
+        Get.to(StartRide(riderId: widget.result.toString()));
         OverlayLoadingProgress.stop(context);
-        Get.snackbar("Message", "Successful",
-            snackPosition: SnackPosition.BOTTOM);
-        Get.to(StartRide());
         print("Userinformation"+driverId+vehicleId);
 
-        // List<familyListData> familyData = jsonDecode(response.body)['data']
-        //     .map<familyListData>((data) => familyListData.fromJson(data))
-        //     .toList();
-        // var id = familyData[0].id;
-        // var userId = familyData[0].userId;
-        // var relation = familyData[0].relation;
-        // var memberId = familyData[0].memberId;
-        // print(id! + userId! + relation! + memberId!);
-
       } else {
+        Get.to(FamilyMemberAddScreen(driverId: driverId, vehicleId: vehicleId, riderId: widget.result.toString()));
         OverlayLoadingProgress.stop(context);
-        Get.snackbar("Message", "wertyuio",
-            snackPosition: SnackPosition.BOTTOM);
-        Get.to(FamilyMemberAddScreen(driverId: driverId, vehicleId: vehicleId));
       }
       return null;
     } else {

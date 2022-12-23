@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:get/get.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
-
 
 class DrawerInfo extends StatelessWidget {
   final String dInfoName;
@@ -16,38 +13,38 @@ class DrawerInfo extends StatelessWidget {
   final String vInfoRegNo;
 
   final VoidCallback press;
+  final bool visibility;
 
   DrawerInfo(
       {Key? key,
-        required this.dInfoName,
-        required this.dInfoMobile,
-        required this.dInfoImage,
-        required this.vInfoImage,
-        required this.vInfoModel,
-        required this.vInfoOwnerName,
-        required this.vInfoRegNo,
-
-        required this.dInfoLicense,
-        required this.press})
+      required this.dInfoName,
+      required this.dInfoMobile,
+      required this.dInfoImage,
+      required this.vInfoImage,
+      required this.vInfoModel,
+      required this.vInfoOwnerName,
+      required this.vInfoRegNo,
+      required this.dInfoLicense,
+      required this.press, required this.visibility})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(15.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GestureDetector(
               onTap: press,
-              child:   Icon(Icons.keyboard_backspace_sharp,
+              child: const Icon(Icons.keyboard_backspace_sharp,
                   color: CustomColor.black)),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Text("Driver Information",
+          const Text("Driver Information",
               style: TextStyle(fontFamily: 'transport', fontSize: 18)),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Container(
             decoration: BoxDecoration(
                 color: CustomColor.listColor,
@@ -55,13 +52,14 @@ class DrawerInfo extends StatelessWidget {
             child: Row(
               children: [
                 Padding(
-                  padding:   EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: Stack(
                     alignment: Alignment.bottomRight,
                     children: [
                       Image.network(
                         dInfoImage,
-                        width: 60,height: 60,
+                        width: 60,
+                        height: 60,
                       ),
                       // CircleAvatar(
                       //   backgroundColor: CustomColor.yellow,
@@ -84,7 +82,7 @@ class DrawerInfo extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Column(
@@ -94,17 +92,17 @@ class DrawerInfo extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Padding(
-                          padding:   EdgeInsets.only(right: 35),
+                          padding: const EdgeInsets.only(right: 35),
                           child: Text(dInfoName,
-                              style:   TextStyle(
+                              style: const TextStyle(
                                   fontFamily: 'transport', fontSize: 16)),
                         ),
                         Text(dInfoMobile,
-                            style:   TextStyle(
+                            style: const TextStyle(
                                 fontFamily: 'transport', fontSize: 16)),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     // Row(
@@ -118,35 +116,39 @@ class DrawerInfo extends StatelessWidget {
                     //     //         fontFamily: 'transport', fontSize: 16)),
                     //   ],
                     // ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding:   EdgeInsets.only(right: 16),
-                          child:   Text("Driving License No: ",
-                              style: TextStyle(
+
+                    Visibility(
+                      visible: visibility,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(right: 16),
+                            child: Text("Driving License No: ",
+                                style: TextStyle(
+                                    fontFamily: 'transport', fontSize: 16)),
+                          ),
+                          Text(dInfoLicense,
+                              style: const TextStyle(
                                   fontFamily: 'transport', fontSize: 16)),
-                        ),
-                        Text(dInfoLicense,
-                            style:   TextStyle(
-                                fontFamily: 'transport', fontSize: 16)),
-                      ],
-                    ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ],
             ),
           ),
-          SizedBox(height: 40),
-          Text("Vehicles Information",
+          const SizedBox(height: 40),
+          const Text("Vehicles Information",
               style: TextStyle(fontFamily: 'transport', fontSize: 18)),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Container(
             decoration: BoxDecoration(
                 color: CustomColor.listColor,
                 borderRadius: BorderRadius.circular(5.0)),
             child: Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
                   Row(
@@ -156,12 +158,12 @@ class DrawerInfo extends StatelessWidget {
                         children: [
                           Image(
                             image: AssetImage(vInfoImage),
-                            width: 60,height: 60,
+                            width: 60,
+                            height: 60,
                           ),
-
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       Column(
@@ -169,53 +171,50 @@ class DrawerInfo extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(vInfoModel,
-                              style:   TextStyle(
+                              style: const TextStyle(
                                   fontFamily: 'transport', fontSize: 16)),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
-                          Row(
+                          Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding:   EdgeInsets.only(right: 26),
+                              const Padding(
+                                padding: EdgeInsets.only(right: 26),
                                 child: Text("Vehicle Owner Name: ",
                                     style: TextStyle(
                                         fontFamily: 'transport', fontSize: 16)),
                               ),
                               Text(vInfoOwnerName,
-                                  style:   TextStyle(
-                                      fontFamily: 'transport', fontSize: 16)),
+                                  style: const TextStyle(
+                                      fontFamily: 'transport', fontSize: 14)),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text("Registration Number:",
+                                      style: TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 16)),
+                                  Text(vInfoRegNo,
+                                      style: const TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 14)),
+                                ],
+                              ),
                             ],
                           ),
                         ],
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text("  Registration Number : ",
-                          style:
-                          TextStyle(fontFamily: 'transport', fontSize: 16)),
-                      Text(vInfoRegNo,
-                          style:
-                          TextStyle(fontFamily: 'transport', fontSize: 16)),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-
                 ],
               ),
             ),
           ),
-
         ],
       ),
     );

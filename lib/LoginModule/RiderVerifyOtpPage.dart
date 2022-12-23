@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -14,11 +13,8 @@ import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/LoginModule/riderNewRegisterLoginModel.dart';
 
-
 class RiderVerifyOtpPage extends StatefulWidget {
-
-  RiderVerifyOtpPage({Key? key,
-    required this.mobileNumber}) : super(key: key);
+  RiderVerifyOtpPage({Key? key, required this.mobileNumber}) : super(key: key);
 
   String mobileNumber;
 
@@ -27,10 +23,17 @@ class RiderVerifyOtpPage extends StatefulWidget {
 }
 
 class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
-
   OtpTimerButtonController timercontroller = OtpTimerButtonController();
   final otpController = TextEditingController();
 
+  _requestOtp() {
+    timercontroller.loading();
+    Future.delayed(const Duration(seconds: 2), () {
+      timercontroller.startTimer();
+    });
+
+    sendOtpApi(widget.mobileNumber.toString());
+  }
 
   void initState() {
     super.initState();
@@ -41,7 +44,8 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
     final defaultPinTheme = PinTheme(
       width: 100,
       height: 50,
-      textStyle: const TextStyle(fontSize: 25,
+      textStyle: const TextStyle(
+          fontSize: 25,
           color: Color.fromRGBO(30, 60, 87, 1),
           fontWeight: FontWeight.w600),
       decoration: BoxDecoration(
@@ -51,11 +55,10 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
     );
 
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-
-      border: Border.all(color: const Color.fromRGBO(114, 178, 238, 1),
+      border: Border.all(
+        color: const Color.fromRGBO(114, 178, 238, 1),
       ),
       borderRadius: BorderRadius.circular(8),
-
     );
     return SafeArea(
       child: Scaffold(
@@ -136,11 +139,13 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                       style: TextStyle(
                         fontFamily: "transport",
                         fontWeight: FontWeight.w400,
-                        fontSize: 15,),
+                        fontSize: 15,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 10,),
-
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Center(
                     child: Pinput(
                       controller: otpController,
@@ -149,10 +154,11 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                       // submittedPinTheme: submittedPinTheme,
                       pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                       showCursor: true,
-
                     ),
                   ),
-                  const SizedBox(height: 20,),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   const SizedBox(
                     width: 300,
                     child: Text(
@@ -161,24 +167,27 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                       style: TextStyle(
                         fontFamily: "transport",
                         fontWeight: FontWeight.w400,
-                        fontSize: 15,),
+                        fontSize: 15,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 10,),
-
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       OtpTimerButton(
                         controller: timercontroller,
-                        onPressed: () =>
-                            sendOtpApi(widget.mobileNumber.toString()),
-                        //_requestOtp()
-                        text: const Text('RESEND OTP',
+                        onPressed: () => _requestOtp(),
+                        text: const Text(
+                          'RESEND OTP',
                           style: TextStyle(
                               fontFamily: "transport",
-                              fontSize: 15, color: Colors.red),),
+                              fontSize: 15,
+                              color: Colors.red),
+                        ),
                         duration: 15,
                         backgroundColor: CustomColor.white,
                         //textColor: Colors.indigo,
@@ -191,7 +200,9 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 70,),
+                  const SizedBox(
+                    height: 70,
+                  ),
                   Button(
                       textColor: CustomColor.black,
                       size: 75,
@@ -202,7 +213,6 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                         });
                         await new_VerifyOtpApi(widget.mobileNumber.toString(),
                             otpController.text.toString());
-
                       }),
                 ],
               ),
@@ -213,30 +223,26 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
     );
   }
 
-  Future<http.Response?> new_VerifyOtpApi(String mobileNumber,
-      String otp) async {
+  Future<http.Response?> new_VerifyOtpApi(
+      String mobileNumber, String otp) async {
     final response = await http.post(
       Uri.parse(
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/verifyOtp'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'mobile_number':mobileNumber,
-        "otp": otp
-      }),
+      body: jsonEncode(
+          <String, String>{'mobile_number': mobileNumber, "otp": otp}),
     );
-    print(jsonEncode(<String, String>{
-      'mobile_number': mobileNumber,
-      "otp": otp
-    }));
+    print(jsonEncode(
+        <String, String>{'mobile_number': mobileNumber, "otp": otp}));
     if (response.statusCode == 200) {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
         OverlayLoadingProgress.stop(context);
         Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
-       await regUserNew(mobileNumber.toString());
+        await regUserNew(mobileNumber.toString());
       } else {
         OverlayLoadingProgress.stop(context);
         Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
@@ -308,7 +314,12 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         var profileImage = loginData[0].profileImage;
         var userType = loginData[0].userType;
 
-        print(id!+firstname!+lastname!+emailId!+mobileNumber!+profileImage!);
+        print(id! +
+            firstname! +
+            lastname! +
+            emailId! +
+            mobileNumber! +
+            profileImage!);
         await Preferences.setPreferences();
         Preferences.setId(Preferences.id, id);
         Preferences.setFirstName(Preferences.firstname, firstname);
@@ -317,11 +328,12 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         Preferences.setMobileNumber(Preferences.mobileNumber, mobileNumber);
         Preferences.setUserType(Preferences.userType, userType!);
         Get.to(const MainPage());
-        Get.snackbar(
-            "Message", "Successful", snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar("Message", "Successful",
+            snackPosition: SnackPosition.BOTTOM);
       } else {
         OverlayLoadingProgress.stop(context);
-        Get.snackbar("Message", "wertyuio", snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar("Message", "wertyuio",
+            snackPosition: SnackPosition.BOTTOM);
       }
       return Data.fromJson(jsonDecode(response.body)['data']);
     } else {

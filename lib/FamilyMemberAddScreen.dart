@@ -14,13 +14,14 @@ import 'LoginModule/Error.dart';
 import 'LoginModule/preferences.dart';
 
 class FamilyMemberAddScreen extends StatefulWidget {
-   FamilyMemberAddScreen({Key? key,required this.driverId,required this.vehicleId}) : super(key: key);
+   FamilyMemberAddScreen({Key? key,required this.driverId,required this.vehicleId,required this.riderId}) : super(key: key);
 
   @override
   State<FamilyMemberAddScreen> createState() => _FamilyMemberAddScreenState();
 
   String driverId;
   String vehicleId;
+  String riderId;
 }
 
 class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
@@ -95,13 +96,13 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
         OverlayLoadingProgress.stop(context);
-        Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
-        Get.to(StartRide());
+        Get.to(StartRide(riderId: widget.riderId));
         print(msg);
+        print(userId + msg);
       } else {
         OverlayLoadingProgress.stop(context);
-        Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
         print(msg);
+        print(userId + msg);
       }
       return AffFamilyMemberNewModel.fromJson(response.body);
     } else {

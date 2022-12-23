@@ -6,17 +6,24 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
+import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
+import 'package:ride_safe_travel/LoginModule/Map/Drawer.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
+import 'package:ride_safe_travel/Utils/make_a_call.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:url_launcher/url_launcher.dart';
+import 'DriverVehicleList.dart';
 import 'LoginModule/Error.dart';
 
 class StartRide extends StatefulWidget {
-   StartRide({Key? key}) : super(key: key);
+   StartRide({Key? key,required this.riderId}) : super(key: key);
 
   @override
   State<StartRide> createState() => _SignUpState();
+  final String riderId;
+
 }
 
 class _SignUpState extends State<StartRide> {
@@ -34,6 +41,21 @@ class _SignUpState extends State<StartRide> {
   String date = '';
   String socketToken = '';
 
+
+  var driverName = "";
+  var driverMob = "";
+  var driverLicense = "";
+  var vOwnerName = "";
+  var vRegNumber = "";
+  var vPucvalidity = "";
+  var vFitnessValidity = "";
+  var vInsurance = "";
+  var vModel = "";
+  var dPhoto = "";
+  var vPhoto = "";
+  bool visibility = false;
+
+
   late Map<MarkerId, Marker> _markers;
   Completer<GoogleMapController> _completer = Completer();
   static const CameraPosition _cameraPosition = CameraPosition(
@@ -45,7 +67,6 @@ class _SignUpState extends State<StartRide> {
   void initState() {
     super.initState();
     _initUser();
-
     //timer = Timer.periodic(const Duration(seconds: 2), (Timer t) => rideDataSave());
 
     setState(() {
@@ -54,6 +75,11 @@ class _SignUpState extends State<StartRide> {
     final now = DateTime.now();
     date = DateFormat('yMd').format(now);
     Get.snackbar("date", date);
+    if(driverLicense.isEmpty){
+      visibility=false;
+    }else{
+      visibility=true;
+    }
   }
 
   void sharePre() async {
@@ -67,6 +93,8 @@ class _SignUpState extends State<StartRide> {
   }
 
   void _initUser() async {
+    OverlayLoadingProgress.start(context);
+    driverVehicleListApi(context);
     location = Location();
     location.onLocationChanged.listen((LocationData cLoc) async {
       lat = cLoc.latitude!;
@@ -92,7 +120,54 @@ class _SignUpState extends State<StartRide> {
     _markers.clear();
     await getSocketToken();
 
+  }
 
+  Future<DriverVehicleList> driverVehicleListApi(BuildContext context) async {
+    final response = await http.post(
+      Uri.parse(ApiUrl.driverVehicleList),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'driver_id': widget.riderId.toString(),
+        'status': "Active",
+      }),
+    );
+    print(jsonEncode(<String, String>{
+      'driver_id': widget.riderId.toString(),
+      'status': "Active",
+    }));
+
+    if (response.statusCode == 200) {
+      bool status = jsonDecode(response.body)[ErrorMessage.status];
+      if (status == true) {
+        OverlayLoadingProgress.stop(context);
+        List<Data>  driverDetails = jsonDecode(response.body)['data']
+            .map<Data>((data) => Data.fromJson(data))
+            .toList();
+        driverName = driverDetails[0].driverName.toString();
+        driverMob = driverDetails[0].driverMobileNumber.toString();
+        driverLicense = driverDetails[0].drivingLicenceNumber.toString();
+        vOwnerName = driverDetails[0].ownerName.toString();
+        vRegNumber = driverDetails[0].vehicledetails![0].registrationNumber.toString();
+        vModel = driverDetails[0].vehicledetails![0].model.toString();
+        dPhoto = driverDetails[0].driverPhoto.toString();
+        vPhoto = driverDetails[0].ownerPhoto.toString();
+
+        var vehicleIds = driverDetails[0].vehicledetails![0].id.toString();
+        var driverIds = driverDetails[0].driverId.toString();
+        setState(() {});
+        Preferences.setVehicleId(vehicleIds);
+        Preferences.setDriverId(driverIds);
+        setState(() {});
+      } else if (status == false) {
+        OverlayLoadingProgress.stop(context);
+      }
+      return DriverVehicleList.fromJson(response.body);
+    } else {
+      Get.snackbar(response.body, 'Failed');
+      throw Exception('Failed to create album.');
+    }
   }
 
   @override
@@ -120,18 +195,130 @@ class _SignUpState extends State<StartRide> {
             icon: Image.asset('assets/map_back.png'),
           ),
         ),
-        body:  GoogleMap(
-        initialCameraPosition: _cameraPosition,
-        mapType: MapType.normal,
-        myLocationEnabled: true,
-        compassEnabled: true,
-        onMapCreated: (GoogleMapController controller) {
-          _completer.complete(controller);
-        },
-        markers: Set<Marker>.of(_markers.values),
-      ),
+        body: Stack(children: [
+          LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return SizedBox(
+                  height: constraints.maxHeight / 1.1,
+                  child: GoogleMap(
+                    initialCameraPosition: _cameraPosition,
+                    mapType: MapType.normal,
+                    myLocationEnabled: true,
+                    compassEnabled: true,
+                    onMapCreated: (GoogleMapController controller) {
+                  _completer.complete(controller);
+                },
+                markers: Set<Marker>.of(_markers.values),
+                ));
+              }),
+          DraggableScrollableSheet(
+              initialChildSize: 0.15,
+              minChildSize: 0.10,
+              maxChildSize: 1,
+              snapSizes: [0.5, 1],
+              snap: true,
+              builder: (BuildContext context, scrollSheetController) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: CustomColor.white,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                                InkWell(
+                                  onTap: (){
+                                    Make_a_call.makePhoneCall(driverMob.toString());
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Image.asset("images/contact_driver.png",
+                                          width: 50, height: 50),
+                                      const SizedBox(height: 10),
+
+                                      const Text("Contact Ride",
+                                          style: TextStyle(
+                                              fontFamily: 'transport', fontSize: 16)),
+                                    ],
+                                  ),
+                                ),
+
+
+                              ],
+                            ),
+                            InkWell(
+                              onTap: () {
+                                showMenu();
+                              },
+                              child: Column(
+                                children: [
+                                  Image.asset("images/Ride_Details.png",
+                                      width: 50, height: 50),
+                                  const SizedBox(height: 10),
+                                  const Text("Ride Details",
+                                      style: TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 16)),
+                                ],
+                              ),
+                            ),
+                            Column(
+                              children: [
+                                InkWell(
+                                  onTap: (){
+                                    Make_a_call.makePhoneCall("100");
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Image.asset("images/hundred_number.png",
+                                          width: 50, height: 50),
+                                      const SizedBox(height: 10),
+                                      const Text("100",
+                                          style: TextStyle(
+                                              fontFamily: 'transport',
+                                              fontSize: 16)),
+                                    ],
+                                  ),
+                                ),
+
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+        ]),
       ),
     );
+  }
+  showMenu() {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return DrawerInfo(
+            dInfoImage: dPhoto.toString(),
+            dInfoName: driverName.toString(),
+            dInfoMobile: driverMob.toString(),
+            vInfoImage: 'images/bottom_drawer_comp.png',
+            vInfoModel:  vModel.toString(),
+            vInfoOwnerName: vOwnerName.toString(),
+            vInfoRegNo: vRegNumber.toString(),
+            dInfoLicense: driverLicense.toString(),
+            press: () {
+              Navigator.of(context).pop();
+            },
+            visibility: visibility,
+          );
+        });
   }
   Future<http.Response> userRideAdd(
       String userId, String vehicleId, String driverId) async {
@@ -165,7 +352,7 @@ class _SignUpState extends State<StartRide> {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
 
       if (status == true) {
-        Get.snackbar(response.body, 'successful');
+       // Get.snackbar(response.body, 'successful');
         // Preferences.setUserRiderId(rideId);
         // rideDataSave();
         if (jsonDecode(response.body)['data'] != null) {
@@ -254,6 +441,7 @@ class _SignUpState extends State<StartRide> {
       print(e.toString());
     }
   }
+
 }
 
 

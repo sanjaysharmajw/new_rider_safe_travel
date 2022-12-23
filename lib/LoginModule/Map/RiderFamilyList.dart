@@ -48,7 +48,12 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                       return InkWell(
                         onTap: () {
                           setState(() {
-                            Get.to(RiderMap(riderId:snapshot.data![index].id.toString()));
+                            Get.to(RiderMap(riderId:snapshot.data![index].id.toString(),
+                              dName: snapshot.data![index].driverName.toString(), dLicenseNo: snapshot.data![index].drivingLicenceNumber.toString(), vModel: snapshot.data![index].vehicleModel.toString(),
+                              vOwnerName: snapshot.data![index].ownerName.toString(), vRegistration: snapshot.data![index].vehicleRegistrationNumber.toString(),
+                              dMobile: snapshot.data![index].driverMobileNumber.toString(), dImage: snapshot.data![index].driverPhoto.toString(),
+
+                            ));
                           });
                         },
                         child: Padding(
@@ -135,8 +140,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                                           Text(
                                                               snapshot
                                                                   .data![index]
-                                                                  .memberName
-                                                                  .toString(),
+                                                                  .memberName ?? "N/A",
                                                               style: const TextStyle(
                                                                   fontFamily:
                                                                   'transport',
