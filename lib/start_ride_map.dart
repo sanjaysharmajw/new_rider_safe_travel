@@ -32,14 +32,16 @@ class _SignUpState extends State<StartRide> {
   late IO.Socket socket;
   late Location location;
   late LocationData currentLocation;
-  late double lat = 0.0;
-  late double lng = 0.0;
+   late double lat;
+  late  double lng;
   String id = '';
   String rideId = '';
   var vehicleId = '', driverId = '';
   var userId = '';
   String date = '';
   String socketToken = '';
+  String startLat = '';
+  String startLng = '';
 
 
   var driverName = "";
@@ -68,10 +70,9 @@ class _SignUpState extends State<StartRide> {
     super.initState();
     _initUser();
     //timer = Timer.periodic(const Duration(seconds: 2), (Timer t) => rideDataSave());
-
+    sharePre();
     setState(() {
     });
-    sharePre();
     final now = DateTime.now();
     date = DateFormat('yMd').format(now);
     Get.snackbar("date", date);
@@ -88,6 +89,8 @@ class _SignUpState extends State<StartRide> {
     userId = Preferences.getId(Preferences.id).toString();
     vehicleId = Preferences.getVehicleId(Preferences.vehicleId).toString();
     driverId = Preferences.getDriverId().toString();
+    startLat = Preferences.getStartLat().toString();
+    startLng = Preferences.getStartLng().toString();
     await userRideAdd(userId, vehicleId, driverId);
     print(userId+ vehicleId+driverId);
   }
@@ -100,6 +103,9 @@ class _SignUpState extends State<StartRide> {
       lat = cLoc.latitude!;
       lng = cLoc.longitude!;
       print('LatLng${lat}');
+      await Preferences.setPreferences();
+      Preferences.setStartLat(cLoc.latitude!.toString());
+      Preferences.setStartLng(cLoc.longitude!.toString());
       socket.emit("message", {
         "message": {'lat': lat, 'lng': lng},
         "roomName": rideId,
@@ -330,8 +336,8 @@ class _SignUpState extends State<StartRide> {
           'date': date.toString(),
           'start_point': {
             'time': DateTime.now().millisecondsSinceEpoch.toString(),
-            'latitude': lat.toString(),
-            'longitude': lng.toString(),
+            'latitude': startLat,
+            'longitude': startLng,
             'location': ""
           }
         }));

@@ -286,7 +286,7 @@ class _RiderMapState extends State<RiderMap> {
 
         final GoogleMapController controller = await _completer.future;
         controller.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(target: LatLng(lat, lng), zoom: 19)));
+            CameraPosition(target: LatLng(lat, lng), zoom: 15)));
         var image = await BitmapDescriptor.fromAssetImage(
             const ImageConfiguration(), "images/map_marker.png");
         Marker marker = Marker(

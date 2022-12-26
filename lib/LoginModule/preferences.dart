@@ -18,12 +18,29 @@ class Preferences {
   static const String selectRole = 'selectRole';
   static const String riderIdFromFamilyMem = 'riderIdFromFamilyMem';
 
+  static const String startLat = 'startLat';
+  static const String startLng = 'startLng';
+
   static Future<void> setPreferences() async {
     instance = await SharedPreferences.getInstance();
   }
 
   static Future<bool> clear() {
     return Preferences.instance!.clear();
+  }
+
+  static Future<bool> setStartLat( String value) {
+    return Preferences.instance!.setString(startLat, value);
+  }
+  static dynamic getStartLat() {
+    return Preferences.instance!.get(startLat);
+  }
+
+  static Future<bool> setStartLng( String value) {
+    return Preferences.instance!.setString(startLng, value);
+  }
+  static dynamic getStartLng() {
+    return Preferences.instance!.get(startLng);
   }
 
   static Future<bool> setId(String key, String value) {

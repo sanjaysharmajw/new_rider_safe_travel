@@ -49,6 +49,7 @@ dependencies:
   socket_io_client: ^2.0.0
   google_maps_flutter: ^2.2.2
   url_launcher: ^6.1.7
+  flutter_background_service: ^2.4.6
 
 
 
