@@ -52,7 +52,6 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                               dName: snapshot.data![index].driverName.toString(), dLicenseNo: snapshot.data![index].drivingLicenceNumber.toString(), vModel: snapshot.data![index].vehicleModel.toString(),
                               vOwnerName: snapshot.data![index].ownerName.toString(), vRegistration: snapshot.data![index].vehicleRegistrationNumber.toString(),
                               dMobile: snapshot.data![index].driverMobileNumber.toString(), dImage: snapshot.data![index].driverPhoto.toString(),
-
                             ));
                           });
                         },

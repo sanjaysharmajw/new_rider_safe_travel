@@ -9,6 +9,7 @@ class CustomColor {
   static const  riderprofileColor = Color(0xFF3F3E3E);
   static const  items = Color(0x91AFAFAF);
   static const  buttonColor = Color(0xFFEFEFEF);
+  static const  lightYellow = Color(0x80FFD91D);
 
 
   static const listColor= Color(0xFFEFEFEF);

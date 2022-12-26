@@ -14,7 +14,8 @@ import 'LoginModule/Error.dart';
 import 'LoginModule/preferences.dart';
 
 class FamilyMemberAddScreen extends StatefulWidget {
-   FamilyMemberAddScreen({Key? key,required this.driverId,required this.vehicleId,required this.riderId}) : super(key: key);
+   FamilyMemberAddScreen({Key? key,required this.driverId,required this.vehicleId,required this.riderId,required this.dName,required this.dMobile,required this.dPhoto,
+     required this.model,required this.vOwnerName,required this.vRegNo}) : super(key: key);
 
   @override
   State<FamilyMemberAddScreen> createState() => _FamilyMemberAddScreenState();
@@ -22,6 +23,14 @@ class FamilyMemberAddScreen extends StatefulWidget {
   String driverId;
   String vehicleId;
   String riderId;
+
+   final String dName;
+   final String dMobile;
+   final String dPhoto;
+   final String model;
+   final String vOwnerName;
+   final String vRegNo;
+
 }
 
 class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
@@ -59,7 +68,7 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(15),
+            padding: const EdgeInsets.all(15),
             child: TextField(
               controller: controllerMobile,
               style: const TextStyle(fontFamily: 'transport',fontSize: 14),
@@ -96,7 +105,8 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
         OverlayLoadingProgress.stop(context);
-        Get.to(StartRide(riderId: widget.riderId));
+        Get.to(StartRide(riderId: widget.riderId.toString(), dName: widget.dName.toString(), dMobile: widget.dMobile.toString(), dPhoto: widget.dPhoto.toString(),
+            model: widget.model.toString(), vOwnerName: widget.vOwnerName.toString(), vRegNo: widget.vRegNo.toString()));
         print(msg);
         print(userId + msg);
       } else {

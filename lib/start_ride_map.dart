@@ -18,11 +18,19 @@ import 'DriverVehicleList.dart';
 import 'LoginModule/Error.dart';
 
 class StartRide extends StatefulWidget {
-   StartRide({Key? key,required this.riderId}) : super(key: key);
+   StartRide({Key? key,required this.riderId,required this.dName,required this.dMobile,required this.dPhoto,
+     required this.model,required this.vOwnerName,required this.vRegNo}) : super(key: key);
 
   @override
   State<StartRide> createState() => _SignUpState();
   final String riderId;
+
+  final String dName;
+  final String dMobile;
+  final String dPhoto;
+  final String model;
+  final String vOwnerName;
+  final String vRegNo;
 
 }
 
@@ -35,28 +43,9 @@ class _SignUpState extends State<StartRide> {
    late double lat;
   late  double lng;
   String id = '';
-  String rideId = '';
-  var vehicleId = '', driverId = '';
   var userId = '';
-  String date = '';
   String socketToken = '';
-  String startLat = '';
-  String startLng = '';
-
-
-  var driverName = "";
-  var driverMob = "";
-  var driverLicense = "";
-  var vOwnerName = "";
-  var vRegNumber = "";
-  var vPucvalidity = "";
-  var vFitnessValidity = "";
-  var vInsurance = "";
-  var vModel = "";
-  var dPhoto = "";
-  var vPhoto = "";
   bool visibility = false;
-
 
   late Map<MarkerId, Marker> _markers;
   Completer<GoogleMapController> _completer = Completer();
@@ -69,35 +58,18 @@ class _SignUpState extends State<StartRide> {
   void initState() {
     super.initState();
     _initUser();
-    //timer = Timer.periodic(const Duration(seconds: 2), (Timer t) => rideDataSave());
     sharePre();
     setState(() {
     });
-    final now = DateTime.now();
-    date = DateFormat('yMd').format(now);
-    Get.snackbar("date", date);
-    if(driverLicense.isEmpty){
-      visibility=false;
-    }else{
-      visibility=true;
-    }
   }
 
   void sharePre() async {
     await Preferences.setPreferences();
-    //  id = Preferences.getUserRiderId().toString();
     userId = Preferences.getId(Preferences.id).toString();
-    vehicleId = Preferences.getVehicleId(Preferences.vehicleId).toString();
-    driverId = Preferences.getDriverId().toString();
-    startLat = Preferences.getStartLat().toString();
-    startLng = Preferences.getStartLng().toString();
-    await userRideAdd(userId, vehicleId, driverId);
-    print(userId+ vehicleId+driverId);
+    await getSocketToken(widget.riderId);
   }
 
   void _initUser() async {
-    OverlayLoadingProgress.start(context);
-    driverVehicleListApi(context);
     location = Location();
     location.onLocationChanged.listen((LocationData cLoc) async {
       lat = cLoc.latitude!;
@@ -108,7 +80,7 @@ class _SignUpState extends State<StartRide> {
       Preferences.setStartLng(cLoc.longitude!.toString());
       socket.emit("message", {
         "message": {'lat': lat, 'lng': lng},
-        "roomName": rideId,
+        "roomName": widget.riderId,
       });
       final GoogleMapController controller = await _completer.future;
       controller.animateCamera(CameraUpdate.newCameraPosition(
@@ -120,60 +92,9 @@ class _SignUpState extends State<StartRide> {
       setState(() {
         _markers[MarkerId('ID')] = marker;
       });
-
     });
     _markers = <MarkerId, Marker>{};
     _markers.clear();
-    await getSocketToken();
-
-  }
-
-  Future<DriverVehicleList> driverVehicleListApi(BuildContext context) async {
-    final response = await http.post(
-      Uri.parse(ApiUrl.driverVehicleList),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'driver_id': widget.riderId.toString(),
-        'status': "Active",
-      }),
-    );
-    print(jsonEncode(<String, String>{
-      'driver_id': widget.riderId.toString(),
-      'status': "Active",
-    }));
-
-    if (response.statusCode == 200) {
-      bool status = jsonDecode(response.body)[ErrorMessage.status];
-      if (status == true) {
-        OverlayLoadingProgress.stop(context);
-        List<Data>  driverDetails = jsonDecode(response.body)['data']
-            .map<Data>((data) => Data.fromJson(data))
-            .toList();
-        driverName = driverDetails[0].driverName.toString();
-        driverMob = driverDetails[0].driverMobileNumber.toString();
-        driverLicense = driverDetails[0].drivingLicenceNumber.toString();
-        vOwnerName = driverDetails[0].ownerName.toString();
-        vRegNumber = driverDetails[0].vehicledetails![0].registrationNumber.toString();
-        vModel = driverDetails[0].vehicledetails![0].model.toString();
-        dPhoto = driverDetails[0].driverPhoto.toString();
-        vPhoto = driverDetails[0].ownerPhoto.toString();
-
-        var vehicleIds = driverDetails[0].vehicledetails![0].id.toString();
-        var driverIds = driverDetails[0].driverId.toString();
-        setState(() {});
-        Preferences.setVehicleId(vehicleIds);
-        Preferences.setDriverId(driverIds);
-        setState(() {});
-      } else if (status == false) {
-        OverlayLoadingProgress.stop(context);
-      }
-      return DriverVehicleList.fromJson(response.body);
-    } else {
-      Get.snackbar(response.body, 'Failed');
-      throw Exception('Failed to create album.');
-    }
   }
 
   @override
@@ -240,7 +161,7 @@ class _SignUpState extends State<StartRide> {
                               children: [
                                 InkWell(
                                   onTap: (){
-                                    Make_a_call.makePhoneCall(driverMob.toString());
+                                    Make_a_call.makePhoneCall("21616");
                                   },
                                   child: Column(
                                     children: [
@@ -311,14 +232,14 @@ class _SignUpState extends State<StartRide> {
         context: context,
         builder: (BuildContext context) {
           return DrawerInfo(
-            dInfoImage: dPhoto.toString(),
-            dInfoName: driverName.toString(),
-            dInfoMobile: driverMob.toString(),
-            vInfoImage: 'images/bottom_drawer_comp.png',
-            vInfoModel:  vModel.toString(),
-            vInfoOwnerName: vOwnerName.toString(),
-            vInfoRegNo: vRegNumber.toString(),
-            dInfoLicense: driverLicense.toString(),
+            dInfoImage: widget.dPhoto.toString(),
+            dInfoName: widget.dName.toString(),
+            dInfoMobile: widget.dMobile.toString(),
+            vInfoImage: 'assets/car.png',
+            vInfoModel:  widget.model.toString(),
+            vInfoOwnerName: widget.vOwnerName.toString(),
+            vInfoRegNo: widget.vRegNo.toString(),
+            dInfoLicense: widget.vRegNo.toString(),
             press: () {
               Navigator.of(context).pop();
             },
@@ -326,81 +247,7 @@ class _SignUpState extends State<StartRide> {
           );
         });
   }
-  Future<http.Response> userRideAdd(
-      String userId, String vehicleId, String driverId) async {
-    final response = await http.post(Uri.parse(ApiUrl.userRideAdd),
-        body: json.encode({
-          'user_id': userId,
-          'vehicle_id': vehicleId,
-          'driver_id': driverId,
-          'date': date.toString(),
-          'start_point': {
-            'time': DateTime.now().millisecondsSinceEpoch.toString(),
-            'latitude': startLat,
-            'longitude': startLng,
-            'location': ""
-          }
-        }));
-    print(json.encode({
-      'user_id': userId,
-      'vehicle_id': vehicleId,
-      'driver_id': driverId,
-      'date': date,
-      'start_point': {
-        'time': DateTime.now().millisecondsSinceEpoch.toString(),
-        'latitude': lat,
-        'longitude': lng,
-        'location': ""
-      }
-    }));
-
-    if (response.statusCode == 200) {
-      bool status = jsonDecode(response.body)[ErrorMessage.status];
-
-      if (status == true) {
-       // Get.snackbar(response.body, 'successful');
-        // Preferences.setUserRiderId(rideId);
-        // rideDataSave();
-        if (jsonDecode(response.body)['data'] != null) {
-          rideId = jsonDecode(response.body)['data'];
-        }
-        getSocketToken();
-        print("rideId"+rideId);
-      } else if (status == false) {
-        Get.snackbar(response.body, 'Failed');
-      }
-      return response;
-    } else {
-      throw Exception('Failed to create album.');
-    }
-  }
-
-/*  Future<http.Response> rideDataSave() async {
-    final response = await http.post(Uri.parse(ApiUrl.rideDataSave),
-        body: json.encode({
-          'ride_id': rideId,
-          'timestamp': DateTime.now().millisecondsSinceEpoch,
-          'latitude': lat,
-          'longitude': lng,
-          'speed': "40",
-          'lateralmovement': '',
-          'action': ''
-        }));
-    if (response.statusCode == 200) {
-      bool status = jsonDecode(response.body)[ErrorMessage.status];
-      if (status == true) {
-        Get.snackbar(response.body, 'successful');
-        print(id);
-      } else if (status == false) {
-        Get.snackbar(response.body, 'Failed');
-      }
-      return response;
-    } else {
-      throw Exception('Failed');
-    }
-  }*/
-
-  Future<http.Response> getSocketToken() async {
+  Future<http.Response> getSocketToken(rideId) async {
     final response = await http.post(
       Uri.parse(ApiUrl.socketUrl),
       headers: <String, String>{
@@ -411,6 +258,10 @@ class _SignUpState extends State<StartRide> {
         'roomName': rideId.toString(),
       }),
     );
+    print(jsonEncode(<String, String>{
+      'userName': userId.toString(),
+      'roomName': rideId.toString(),
+    }));
     if (response.statusCode == 200) {
       print("Ride Id: " + rideId.toString());
       String socketToken = jsonDecode(response.body)['token'];
