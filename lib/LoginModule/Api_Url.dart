@@ -11,5 +11,6 @@ class ApiUrl {
   static var rideDataSave = '${baseUrl}userRide/rideDataSave';
   static var familyMember = '${baseUrl}userRide/familymemberRideList';
   static var getRideCurrentApi = '${baseUrl}userRide/rideDataCurrent';
+  static var getMyTripApi = '${baseUrl}userRide/userRideList';
   static var socketUrl = 'http://65.1.73.254:8090';
 }

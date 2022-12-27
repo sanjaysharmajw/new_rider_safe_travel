@@ -17,6 +17,8 @@ class Preferences {
   static const String driverId = 'driverId';
   static const String selectRole = 'selectRole';
   static const String riderIdFromFamilyMem = 'riderIdFromFamilyMem';
+  static const String dob = "dob";
+  static const String address = "address";
 
   static const String startLat = 'startLat';
   static const String startLng = 'startLng';
@@ -90,6 +92,12 @@ class Preferences {
   static Future<bool> setEmailID(String key, String value) {
     return Preferences.instance!.setString(key, value);
   }
+  static Future<bool> setDob(String key, String value) {
+    return Preferences.instance!.setString(key, value);
+  }
+  static Future<bool> setAddress(String key, String value) {
+    return Preferences.instance!.setString(key, value);
+  }
 
   static Future<bool> setMobileNumber(String key, String value) {
     return Preferences.instance!.setString(key, value);
@@ -128,6 +136,12 @@ class Preferences {
   }
 
   static dynamic getEmailId(String key) {
+    return Preferences.instance!.get(key);
+  }
+  static dynamic getDob(String key) {
+    return Preferences.instance!.get(key);
+  }
+  static dynamic getAddress(String key) {
     return Preferences.instance!.get(key);
   }
 
