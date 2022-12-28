@@ -13,4 +13,5 @@ class ApiUrl {
   static var getRideCurrentApi = '${baseUrl}userRide/rideDataCurrent';
   static var getMyTripApi = '${baseUrl}userRide/userRideList';
   static var socketUrl = 'http://65.1.73.254:8090';
+  static var endRide = 'userRide/endRide';
 }

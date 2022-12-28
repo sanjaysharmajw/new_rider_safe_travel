@@ -1,24 +1,17 @@
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:ride_safe_travel/FamilyMemberAddScreen.dart';
 import 'package:ride_safe_travel/LoginModule/MainPage.dart';
 import 'package:ride_safe_travel/LoginModule/RiderLoginPage.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
-
-
 
 void main() {
   runApp(const MyApp());
 }
 
-
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  
 
   @override
   Widget build(BuildContext context) {
@@ -39,31 +32,33 @@ class MyHomePage extends StatefulWidget {
   @override
   MyHomePageState createState() => MyHomePageState();
 }
-
 class MyHomePageState extends State<MyHomePage> {
   String id = '';
+
 
   @override
   void initState() {
     super.initState();
-    preferences();
-    setState(() {});
-      Timer(
-          const Duration(seconds: 3),
-              () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const RiderLoginPage()),
-          )
-      );
+
+    setState(() async{
+
+    });
+    Timer(
+        const Duration(seconds: 3),
+        () =>preferences(),
+    );
   }
-
   void preferences() async {
-    await Preferences.setPreferences();
-    id = Preferences.getId(Preferences.id);
-    print(id);
-    setState(() {});
+   // await Preferences.setPreferences();
+    id = Preferences.getId(Preferences.id).toString();
+    print("Login ID: $id");
 
+    if(id.isEmpty){
+      Get.to(const RiderLoginPage());
+    }else{
+      Get.to(const MainPage());
+    }
+    setState(() {});
   }
 
   @override
@@ -72,7 +67,7 @@ class MyHomePageState extends State<MyHomePage> {
       children: const <Widget>[
         Positioned.fill(
           child: Image(
-            image: AssetImage('assets/splash_image.png'),
+            image: AssetImage('assets/address.png'),
             fit: BoxFit.fill,
           ),
         ),

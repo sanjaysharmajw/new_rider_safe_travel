@@ -1,39 +1,27 @@
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
-import 'package:ride_safe_travel/LoginModule/Map/RiderMap.dart';
+import 'package:ride_safe_travel/LoginModule/Map/RiderFamilyList.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/Models/affFamilyMemberNewModel.dart';
 import 'package:ride_safe_travel/Utils/RiderButton.dart';
-import 'package:ride_safe_travel/start_ride_map.dart';
-
 import 'LoginModule/Error.dart';
 import 'LoginModule/preferences.dart';
 
-class FamilyMemberAddScreen extends StatefulWidget {
-   FamilyMemberAddScreen({Key? key,required this.driverId,required this.vehicleId,required this.riderId,required this.dName,required this.dMobile,required this.dPhoto,
-     required this.model,required this.vOwnerName,required this.vRegNo}) : super(key: key);
+class FamilyMemberAddOtherTrack extends StatefulWidget {
+  const FamilyMemberAddOtherTrack({Key? key}) : super(key: key);
 
   @override
-  State<FamilyMemberAddScreen> createState() => _FamilyMemberAddScreenState();
+  State<FamilyMemberAddOtherTrack> createState() => _FamilyMemberAddOtherTrack();
 
-  String driverId;
-  String vehicleId;
-  String riderId;
-
-   final String dName;
-   final String dMobile;
-   final String dPhoto;
-   final String model;
-   final String vOwnerName;
-   final String vRegNo;
 
 }
 
-class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
+class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
   var userId='';
   final TextEditingController controllerName = TextEditingController();
   final TextEditingController controllerRelation = TextEditingController();
@@ -68,7 +56,7 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
               ),
             ),
           ),
-           Padding(
+          Padding(
             padding: const EdgeInsets.all(15),
             child: TextField(
               controller: controllerRelation,
@@ -119,12 +107,13 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
         OverlayLoadingProgress.stop(context);
-        Get.to(StartRide(riderId: widget.riderId.toString(), dName: widget.dName.toString(), dMobile: widget.dMobile.toString(), dPhoto: widget.dPhoto.toString(),
-            model: widget.model.toString(), vOwnerName: widget.vOwnerName.toString(), vRegNo: widget.vRegNo.toString()));
         Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
+        Navigator.pop(context);
+        print(userId + msg);
       } else {
         OverlayLoadingProgress.stop(context);
         Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
+        print(userId + msg);
       }
       return AffFamilyMemberNewModel.fromJson(response.body);
     } else {
@@ -140,12 +129,7 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
   }
   void preferences() async {
     await Preferences.setPreferences();
-    userId = Preferences.getId(Preferences.id);
-
     userId = Preferences.getId(Preferences.id).toString();
-    Preferences.setVehicleId(widget.vehicleId);
-    Preferences.setDriverId(widget.driverId);
-
     print(userId);
     setState(() {});
   }
