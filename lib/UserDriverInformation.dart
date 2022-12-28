@@ -210,7 +210,9 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
             'longitude': lng,
             'location': ""
           }
-        }));
+        })
+
+    );
     print(json.encode({
       'user_id': userId,
       'vehicle_id': vehicleId,

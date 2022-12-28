@@ -314,7 +314,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         var profileImage = loginData[0].profileImage;
         var userType = loginData[0].userType;
 
-        print(id! +
+        print("UserId"+id! +
             firstname! +
             lastname! +
             emailId! +
@@ -328,8 +328,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         Preferences.setMobileNumber(Preferences.mobileNumber, mobileNumber);
         Preferences.setUserType(Preferences.userType, userType!);
         Get.to(const MainPage());
-        Get.snackbar("Message", "Successful",
-            snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar("Message", "Successful", snackPosition: SnackPosition.BOTTOM);
       } else {
         OverlayLoadingProgress.stop(context);
         Get.snackbar("Message", "wertyuio",

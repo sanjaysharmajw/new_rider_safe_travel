@@ -13,7 +13,6 @@ import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/Utils/make_a_call.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:url_launcher/url_launcher.dart';
 
 class RiderMap extends StatefulWidget {
   RiderMap({
@@ -38,9 +37,6 @@ class RiderMap extends StatefulWidget {
   String vRegistration;
   String dMobile;
   String dImage;
-
-
-
 }
 
 class _RiderMapState extends State<RiderMap> {
@@ -89,7 +85,6 @@ class _RiderMapState extends State<RiderMap> {
     getSocketToken();
     //Get.snackbar("Hit with time", riderId);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -149,10 +144,10 @@ class _RiderMapState extends State<RiderMap> {
                           children: [
                             Column(
                               children: [
-                                Image.asset("images/End_Ride.png",
+                                Image.asset("images/contact_driver.png",
                                     width: 50, height: 50),
                                 const SizedBox(height: 10),
-                                const Text("End Ride",
+                                const Text("Contact Driver",
                                     style: TextStyle(
                                         fontFamily: 'transport', fontSize: 16)),
                               ],
@@ -174,12 +169,18 @@ class _RiderMapState extends State<RiderMap> {
                               ),
                             ),
                             InkWell(
-                              onTap: (){
-                                Make_a_call.makePhoneCall("112");
+                              onTap: () {
+                                Make_a_call.makePhoneCall("100");
                               },
                               child: Column(
                                 children: [
-                                  Image.asset("images/SOS.png", width: 50, height: 50),
+                                  Image.asset("images/hundred_number.png",
+                                      width: 50, height: 50),
+                                  const SizedBox(height: 10),
+                                  const Text("100",
+                                      style: TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 16)),
                                 ],
                               ),
                             ),
@@ -215,7 +216,6 @@ class _RiderMapState extends State<RiderMap> {
           );
         });
   }
-
 
   /*Future<FamilyMemberReadRideDataModels> getRideData() async {
     final response = await http.post(
@@ -302,5 +302,4 @@ class _RiderMapState extends State<RiderMap> {
       print(e.toString());
     }
   }
-
 }

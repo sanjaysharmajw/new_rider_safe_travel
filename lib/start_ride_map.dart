@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
+import 'package:ride_safe_travel/LoginModule/MainPage.dart';
 import 'package:ride_safe_travel/LoginModule/Map/Drawer.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
@@ -16,6 +17,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:url_launcher/url_launcher.dart';
 import 'DriverVehicleList.dart';
 import 'LoginModule/Error.dart';
+import 'Utils/exit_alert_dialog.dart';
 
 class StartRide extends StatefulWidget {
    StartRide({Key? key,required this.riderId,required this.dName,required this.dMobile,required this.dPhoto,
@@ -161,15 +163,14 @@ class _SignUpState extends State<StartRide> {
                               children: [
                                 InkWell(
                                   onTap: (){
-                                    Make_a_call.makePhoneCall("21616");
+                                    showAlertDialog(context);
                                   },
                                   child: Column(
                                     children: [
-                                      Image.asset("images/contact_driver.png",
+                                      Image.asset("images/End_Ride.png",
                                           width: 50, height: 50),
                                       const SizedBox(height: 10),
-
-                                      const Text("Contact Ride",
+                                      const Text("End Ride",
                                           style: TextStyle(
                                               fontFamily: 'transport', fontSize: 16)),
                                     ],
@@ -199,17 +200,11 @@ class _SignUpState extends State<StartRide> {
                               children: [
                                 InkWell(
                                   onTap: (){
-                                    Make_a_call.makePhoneCall("100");
+                                    Make_a_call.makePhoneCall(widget.dMobile);
                                   },
                                   child: Column(
                                     children: [
-                                      Image.asset("images/hundred_number.png",
-                                          width: 50, height: 50),
-                                      const SizedBox(height: 10),
-                                      const Text("100",
-                                          style: TextStyle(
-                                              fontFamily: 'transport',
-                                              fontSize: 16)),
+                                      Image.asset("images/SOS.png", width: 50, height: 50),
                                     ],
                                   ),
                                 ),
@@ -297,6 +292,81 @@ class _SignUpState extends State<StartRide> {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  Future<http.Response> endRide() async {
+    final response = await http.post(
+      Uri.parse('https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/endRide'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+        body: json.encode({
+          'ride_id': widget.riderId,
+          'end_point': {
+            'time': DateTime.now().millisecondsSinceEpoch.toString(),
+            'latitude': lat,
+            'longitude': lng,
+            'location': ""
+          }
+        })
+    );
+    print(json.encode({
+      'ride_id': widget.riderId,
+      'end_point': {
+        'time': DateTime.now().millisecondsSinceEpoch.toString(),
+        'latitude': lat,
+        'longitude': lng,
+        'location': ""
+      }
+    }));
+
+    if (response.statusCode == 200) {
+      bool status = jsonDecode(response.body)[ErrorMessage.status];
+      var msg = jsonDecode(response.body)[ErrorMessage.message];
+      if(status==true){
+        socket.disconnect();
+        Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
+        Get.to(const MainPage());
+      }else{
+        Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
+      }
+      return response;
+    } else {
+      throw Exception('Failed');
+    }
+  }
+
+  showAlertDialog(BuildContext context) {
+    Widget cancelButton = TextButton(
+      child:  Text("No"),
+      onPressed: (){
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = TextButton(
+      child: const Text("Yes"),
+      onPressed: (){
+        endRide();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("End Ride"),
+      content:
+      const Text("Are you sure want to end ride?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+
   }
 
 }

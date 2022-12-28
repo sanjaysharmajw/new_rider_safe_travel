@@ -7,6 +7,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 
 import 'DriverVehicleList.dart';
+import 'FamilyMemberAddOtherTrack.dart';
 import 'LoginModule/custom_color.dart';
 import 'LoginModule/preferences.dart';
 import 'UserFamilyListModel.dart';
@@ -72,6 +73,13 @@ class _UserFamilyListState extends State<UserFamilyList> {
                   )),
             ),
           ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Get.to(const FamilyMemberAddOtherTrack());
+          },
+          backgroundColor: CustomColor.white,
+          child: const Icon(Icons.add,color: CustomColor.black,),
+        ),
           body:  FutureBuilder<List<FamilyMembersData>>(
             future: _future,
             builder: (context, snapshot) {
