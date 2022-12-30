@@ -165,12 +165,12 @@ class Preferences {
     return Preferences.instance?.get(key);
   }
 
+
+
   ///Singleton factory
   static final Preferences _instance = Preferences._internal();
-
   factory Preferences() {
     return _instance;
   }
-
   Preferences._internal();
 }

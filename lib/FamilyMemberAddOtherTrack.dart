@@ -11,6 +11,7 @@ import 'package:ride_safe_travel/Models/affFamilyMemberNewModel.dart';
 import 'package:ride_safe_travel/Utils/RiderButton.dart';
 import 'LoginModule/Error.dart';
 import 'LoginModule/preferences.dart';
+import 'Utils/Validators.dart';
 
 class FamilyMemberAddOtherTrack extends StatefulWidget {
   const FamilyMemberAddOtherTrack({Key? key}) : super(key: key);
@@ -70,10 +71,10 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
           ),
           Padding(
             padding: const EdgeInsets.all(15),
-            child: TextField(
+            child: TextFormField(
               controller: controllerMobile,
               style: const TextStyle(fontFamily: 'transport',fontSize: 14),
-              decoration: const InputDecoration(
+              decoration:  const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Enter Mobile',
                 hintText: 'Enter Your Mobile Number',

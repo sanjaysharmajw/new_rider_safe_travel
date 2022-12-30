@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -17,15 +18,17 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:url_launcher/url_launcher.dart';
 import 'DriverVehicleList.dart';
 import 'LoginModule/Error.dart';
+import 'Utils/back_button_popup.dart';
 import 'Utils/exit_alert_dialog.dart';
 
 class StartRide extends StatefulWidget {
-   StartRide({Key? key,required this.riderId,required this.dName,required this.dMobile,required this.dPhoto,
+   StartRide({Key? key,required this.riderId,required this.socketToken,required this.dName,required this.dMobile,required this.dPhoto,
      required this.model,required this.vOwnerName,required this.vRegNo}) : super(key: key);
 
   @override
   State<StartRide> createState() => _SignUpState();
   final String riderId;
+  final String socketToken;
 
   final String dName;
   final String dMobile;
@@ -68,11 +71,14 @@ class _SignUpState extends State<StartRide> {
   void sharePre() async {
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
-    await getSocketToken(widget.riderId);
+    await socketConnect(widget.socketToken);
+    Get.snackbar("title", widget.socketToken);
   }
 
   void _initUser() async {
     location = Location();
+    location.enableBackgroundMode(enable: true);
+    location.changeNotificationOptions(iconName: 'images/rider_launcher.png',channelName: 'Nirbhaya',title: 'Nirbhaya app is running');
     location.onLocationChanged.listen((LocationData cLoc) async {
       lat = cLoc.latitude!;
       lng = cLoc.longitude!;
@@ -107,118 +113,126 @@ class _SignUpState extends State<StartRide> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text(
-            "Start Ride",
-            style: TextStyle(color: CustomColor.black, fontFamily: 'transport'),
+    return WillPopScope(
+      onWillPop: () => showExitPopup(context,"Do you want to stop ride?",(){
+        socket.disconnect();
+        Navigator.pop(context, true);
+      }),
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text(
+              "Start Ride",
+              style: TextStyle(color: CustomColor.black, fontFamily: 'transport'),
+            ),
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            leading: IconButton(
+              onPressed: () {
+                BackButtonPopup(context,(){
+                  Navigator.pop(context, true);
+                });
+              },
+              icon: Image.asset('assets/map_back.png'),
+            ),
           ),
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context, true);
-            },
-            icon: Image.asset('assets/map_back.png'),
-          ),
-        ),
-        body: Stack(children: [
-          LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                return SizedBox(
-                  height: constraints.maxHeight / 1.1,
-                  child: GoogleMap(
-                    initialCameraPosition: _cameraPosition,
-                    mapType: MapType.normal,
-                    myLocationEnabled: true,
-                    compassEnabled: true,
-                    onMapCreated: (GoogleMapController controller) {
-                  _completer.complete(controller);
-                },
-                markers: Set<Marker>.of(_markers.values),
-                ));
-              }),
-          DraggableScrollableSheet(
-              initialChildSize: 0.15,
-              minChildSize: 0.10,
-              maxChildSize: 1,
-              snapSizes: [0.5, 1],
-              snap: true,
-              builder: (BuildContext context, scrollSheetController) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: CustomColor.white,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              children: [
-                                InkWell(
-                                  onTap: (){
-                                    showAlertDialog(context);
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Image.asset("images/End_Ride.png",
-                                          width: 50, height: 50),
-                                      const SizedBox(height: 10),
-                                      const Text("End Ride",
-                                          style: TextStyle(
-                                              fontFamily: 'transport', fontSize: 16)),
-                                    ],
-                                  ),
-                                ),
-
-
-                              ],
-                            ),
-                            InkWell(
-                              onTap: () {
-                                showMenu();
-                              },
-                              child: Column(
+          body: Stack(children: [
+            LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return SizedBox(
+                    height: constraints.maxHeight / 1.1,
+                    child: GoogleMap(
+                      initialCameraPosition: _cameraPosition,
+                      mapType: MapType.normal,
+                      myLocationEnabled: true,
+                      compassEnabled: true,
+                      onMapCreated: (GoogleMapController controller) {
+                    _completer.complete(controller);
+                  },
+                  markers: Set<Marker>.of(_markers.values),
+                  ));
+                }),
+            DraggableScrollableSheet(
+                initialChildSize: 0.15,
+                minChildSize: 0.10,
+                maxChildSize: 1,
+                snapSizes: [0.5, 1],
+                snap: true,
+                builder: (BuildContext context, scrollSheetController) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: CustomColor.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
                                 children: [
-                                  Image.asset("images/Ride_Details.png",
-                                      width: 50, height: 50),
-                                  const SizedBox(height: 10),
-                                  const Text("Ride Details",
-                                      style: TextStyle(
-                                          fontFamily: 'transport',
-                                          fontSize: 16)),
+                                  InkWell(
+                                    onTap: (){
+                                      showAlertDialog(context);
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Image.asset("images/End_Ride.png",
+                                            width: 50, height: 50),
+                                        const SizedBox(height: 10),
+                                        const Text("End Ride",
+                                            style: TextStyle(
+                                                fontFamily: 'transport', fontSize: 16)),
+                                      ],
+                                    ),
+                                  ),
+
+
                                 ],
                               ),
-                            ),
-                            Column(
-                              children: [
-                                InkWell(
-                                  onTap: (){
-                                    Make_a_call.makePhoneCall(widget.dMobile);
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Image.asset("images/SOS.png", width: 50, height: 50),
-                                    ],
-                                  ),
+                              InkWell(
+                                onTap: () {
+                                  showMenu();
+                                },
+                                child: Column(
+                                  children: [
+                                    Image.asset("images/Ride_Details.png",
+                                        width: 50, height: 50),
+                                    const SizedBox(height: 10),
+                                    const Text("Ride Details",
+                                        style: TextStyle(
+                                            fontFamily: 'transport',
+                                            fontSize: 16)),
+                                  ],
                                 ),
+                              ),
+                              Column(
+                                children: [
+                                  InkWell(
+                                    onTap: (){
+                                      Make_a_call.makePhoneCall(widget.dMobile);
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Image.asset("images/SOS.png", width: 50, height: 50),
+                                      ],
+                                    ),
+                                  ),
 
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              }),
-        ]),
+                  );
+                }),
+          ]),
+        ),
       ),
     );
   }
@@ -242,7 +256,7 @@ class _SignUpState extends State<StartRide> {
           );
         });
   }
-  Future<http.Response> getSocketToken(rideId) async {
+/*  Future<http.Response> getSocketToken(rideId) async {
     final response = await http.post(
       Uri.parse(ApiUrl.socketUrl),
       headers: <String, String>{
@@ -266,14 +280,14 @@ class _SignUpState extends State<StartRide> {
     } else {
       throw Exception('Failed');
     }
-  }
+  }*/
 
   Future<void> socketConnect(String token) async {
     try {
       socket = IO.io(ApiUrl.socketUrl, <String, dynamic>{
         'transports': ['websocket'],
         'autoConnect': true,
-        'extraHeaders': {'authorization': token.toString()}
+        'extraHeaders': {'authorization': widget.socketToken}
       });
       socket.connect();
       // Subscribe to events
@@ -368,7 +382,6 @@ class _SignUpState extends State<StartRide> {
     );
 
   }
-
 }
 
 

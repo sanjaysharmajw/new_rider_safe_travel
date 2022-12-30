@@ -164,7 +164,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
     return formatted;
   }
 
-  Future<http.Response?> userFamilyList(String userId, rideId) async {
+  Future<http.Response?> userFamilyList(String userId, rideId, socketToken) async {
     final response = await http.post(
       Uri.parse(
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userFamilyList'),
@@ -181,13 +181,13 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
 
       if (status == true) {
         Get.to(StartRide(riderId: rideId.toString(), dName: driverName.toString(), dMobile: driverMob.toString(), dPhoto: dPhoto.toString(),
-          model: vModel.toString(), vOwnerName: vOwnerName.toString(), vRegNo: vRegNumber.toString()));
+          model: vModel.toString(), vOwnerName: vOwnerName.toString(), vRegNo: vRegNumber.toString(), socketToken: socketToken));
         OverlayLoadingProgress.stop(context);
         print("Userinformation" + driverId + vehicleId);
       } else {
         Get.to(FamilyMemberAddScreen(driverId: driverId,
             vehicleId: vehicleId, riderId:rideId.toString(),dName: driverName.toString(), dMobile: driverMob.toString(), dPhoto: dPhoto.toString(),
-            model: vModel.toString(), vOwnerName: vOwnerName.toString(), vRegNo: vRegNumber.toString()));
+            model: vModel.toString(), vOwnerName: vOwnerName.toString(), vRegNo: vRegNumber.toString(), socketToken: socketToken));
         OverlayLoadingProgress.stop(context);
       }
       return null;
@@ -233,7 +233,8 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
       if (status == true) {
         if (jsonDecode(response.body)['data'] != null) {
           var rideId = jsonDecode(response.body)['data'];
-          await userFamilyList(userId, rideId);
+          var socketToken = jsonDecode(response.body)['sockettoken'];
+          await userFamilyList(userId, rideId,socketToken);
         }
       } else if (status == false) {
         Get.snackbar(response.body, 'Failed');
