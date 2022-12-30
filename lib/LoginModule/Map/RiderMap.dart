@@ -25,11 +25,13 @@ class RiderMap extends StatefulWidget {
     required this.vRegistration,
     required this.dMobile,
     required this.dImage,
+    required this.memberName,
   }) : super(key: key);
 
   @override
   State<RiderMap> createState() => _RiderMapState();
   String riderId;
+  String memberName;
   String dName;
   String dLicenseNo;
   String vModel;
@@ -83,7 +85,6 @@ class _RiderMapState extends State<RiderMap> {
     driverId = Preferences.getDriverId().toString();
     riderId = Preferences.getRiderIdFromFamilyMem().toString();
     getSocketToken();
-    //Get.snackbar("Hit with time", riderId);
   }
 
   @override
@@ -92,9 +93,9 @@ class _RiderMapState extends State<RiderMap> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text(
-            "Family",
-            style: TextStyle(color: CustomColor.black, fontFamily: 'transport'),
+          title:  Text(
+            widget.memberName.toString(),
+            style: const TextStyle(color: CustomColor.black, fontFamily: 'transport'),
           ),
           elevation: 0,
           backgroundColor: Colors.transparent,
@@ -286,7 +287,7 @@ class _RiderMapState extends State<RiderMap> {
 
         final GoogleMapController controller = await _completer.future;
         controller.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(target: LatLng(lat, lng), zoom: 15)));
+            CameraPosition(target: LatLng(lat, lng), zoom: 19)));
         var image = await BitmapDescriptor.fromAssetImage(
             const ImageConfiguration(), "images/map_marker.png");
         Marker marker = Marker(

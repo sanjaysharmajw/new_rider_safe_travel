@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -11,6 +13,7 @@ import 'package:ride_safe_travel/Utils/exit_alert_dialog.dart';
 import '../MainPageWidgets/main_page_btn.dart';
 import '../MyRidesPage.dart';
 import '../UserFamilyList.dart';
+import '../Utils/logout_dialog_box.dart';
 import '../rider_profile_view.dart';
 
 class MainPage extends StatefulWidget {
@@ -22,6 +25,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   String result = "";
+  var size, height, width;
 
   Future _scanQR() async {
     try {
@@ -64,75 +68,92 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
+    height = size.height;
+    width = size.width;
     return WillPopScope(
-      onWillPop: () => showExitPopup(context),
+      onWillPop: () => showExitPopup(context, "Do you want to exit?", () {
+        exit(0);
+      }),
       child: SafeArea(
           child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          actions: <Widget>[
+            IconButton(
+                icon: const Icon(Icons.logout),
+                onPressed: () {
+                  logoutPopup(context);
+                }),
+          ],
           elevation: 0,
           centerTitle: true,
           backgroundColor: CustomColor.yellow,
           title: const Text("Dashboard",
               style: TextStyle(fontSize: 18, fontFamily: 'transport')),
         ),
-        body: Center(
+        body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
           child: Column(
             children: [
-              const SizedBox(height: 50),
-              const SizedBox(height: 10),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  MainPageCard(
-                    icons: 'images/my_profile.png',
-                    text: 'My Profile',
-                    press: () {
-                      Get.to(RiderProfileView());
-                    },
-                    width: 170,
-                    height: 170,
-                    widthImage: 50,
-                    heightImage: 50,
-                  ),
-                  MainPageCard(
-                    icons: 'images/my_rides.png',
-                    text: 'My Rides',
-                    press: () {
-                      Get.to(const MyRidesPage());
-                    },
-                    width: 170,
-                    height: 170,
-                    widthImage: 50,
-                    heightImage: 50,
-                  ),
-                ],
+              SizedBox(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    MainPageCard(
+                      icons: 'images/my_profile.png',
+                      text: 'My Profile',
+                      press: () {
+                        Get.to(const RiderProfileView());
+                      },
+                      width: 170,
+                      height: 170,
+                      widthImage: 50,
+                      heightImage: 50,
+                    ),
+                    MainPageCard(
+                      icons: 'images/my_rides.png',
+                      text: 'My Rides',
+                      press: () {
+                        Get.to(const MyRidesPage());
+                      },
+                      width: 170,
+                      height: 170,
+                      widthImage: 50,
+                      heightImage: 50,
+                    ),
+                  ],
+                ),
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  MainPageCard(
-                    icons: 'images/track_me.png',
-                    text: 'Track Me',
-                    press: _scanQR,
-                    width: 170,
-                    height: 170,
-                    widthImage: 50,
-                    heightImage: 50,
-                  ),
-                  MainPageCard(
-                    icons: 'images/track_me.png',
-                    text: 'Track Others',
-                    press: () {
-                      Get.to(const FamilyMemberListScreen());
-                    },
-                    width: 170,
-                    height: 170,
-                    widthImage: 50,
-                    heightImage: 50,
-                  ),
-                ],
+              SizedBox(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    MainPageCard(
+                      icons: 'images/track_me.png',
+                      text: 'Track Me',
+                      press: _scanQR,
+                      width: 170,
+                      height: 170,
+                      widthImage: 50,
+                      heightImage: 50,
+                    ),
+                    MainPageCard(
+                      icons: 'images/track_me.png',
+                      text: 'Track Others',
+                      press: () {
+                        Get.to(const FamilyMemberListScreen());
+                      },
+                      width: 170,
+                      height: 170,
+                      widthImage: 50,
+                      heightImage: 50,
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 10),
               MainPageBtn(

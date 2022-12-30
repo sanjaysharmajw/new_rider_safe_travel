@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:ride_safe_travel/LoginModule/MainPage.dart';
 import 'package:ride_safe_travel/LoginModule/RiderLoginPage.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
@@ -20,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const RiderLoginPage(),
+      home: const MyHomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -28,37 +27,30 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
-
   @override
   MyHomePageState createState() => MyHomePageState();
 }
 class MyHomePageState extends State<MyHomePage> {
-  String id = '';
-
 
   @override
   void initState() {
     super.initState();
-
-    setState(() async{
-
-    });
-    Timer(
-        const Duration(seconds: 3),
-        () =>preferences(),
-    );
+    startTimer();
   }
-  void preferences() async {
-   // await Preferences.setPreferences();
-    id = Preferences.getId(Preferences.id).toString();
-    print("Login ID: $id");
 
-    if(id.isEmpty){
+  void startTimer() {
+    Timer(const Duration(seconds: 2), () {
+      checkLoginStatus();
+    });
+  }
+  Future checkLoginStatus() async {
+    await Preferences.setPreferences();
+    String? userId = Preferences.getId(Preferences.id);
+    if (userId==null) {
       Get.to(const RiderLoginPage());
-    }else{
+    } else {
       Get.to(const MainPage());
     }
-    setState(() {});
   }
 
   @override
@@ -67,7 +59,7 @@ class MyHomePageState extends State<MyHomePage> {
       children: const <Widget>[
         Positioned.fill(
           child: Image(
-            image: AssetImage('assets/address.png'),
+            image: AssetImage('assets/splash_image.png'),
             fit: BoxFit.fill,
           ),
         ),

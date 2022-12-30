@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -12,6 +11,7 @@ import 'package:ride_safe_travel/LoginModule/custom_button.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/LoginModule/riderNewRegisterLoginModel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RiderVerifyOtpPage extends StatefulWidget {
   RiderVerifyOtpPage({Key? key, required this.mobileNumber}) : super(key: key);

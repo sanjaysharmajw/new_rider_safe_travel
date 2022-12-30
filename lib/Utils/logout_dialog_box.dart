@@ -2,7 +2,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 
-Future<bool> showExitPopup(context,String title,VoidCallback press) async{
+import '../LoginModule/preferences.dart';
+
+Future<bool> logoutPopup(context) async{
   return await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -12,16 +14,20 @@ Future<bool> showExitPopup(context,String title,VoidCallback press) async{
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title),
+                Text("Do you want to logout?"),
                 SizedBox(height: 20),
                 Row(
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: press,
+                        onPressed: () {
+                          print('yes selected');
+                          logout();
+                          exit(0);
+                        },
                         child: Text("Yes"),
                         style: ElevatedButton.styleFrom(
-                            primary: CustomColor.yellow),
+                            primary: Colors.red),
                       ),
                     ),
                     SizedBox(width: 15),
@@ -43,4 +49,8 @@ Future<bool> showExitPopup(context,String title,VoidCallback press) async{
           ),
         );
       });
+}
+Future logout() async {
+  //await Preferences.setPreferences();
+  Preferences.clear();
 }
