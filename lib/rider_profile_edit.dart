@@ -21,18 +21,36 @@ import 'Aws/AwsSignedApi.dart';
 import 'Aws/AwsUrlPath.dart';
 import 'Error.dart';
 import 'LoginModule/Api_Url.dart';
+import 'LoginModule/MainPage.dart';
 import 'LoginModule/custom_button.dart';
 import 'LoginModule/custom_color.dart';
 import 'LoginModule/preferences.dart';
 import 'Models/UpdateRiderProfileModel.dart';
 import 'MyTextField.dart';
-import 'RiderUserList.dart';
+
+import 'RiderUserListData.dart';
 
 
 class RiderProfileEdit extends StatefulWidget {
+  String date;
+  String state;
+  String city;
+  String pincode;
+  String address;
+  String firstname;
+  String lastname;
+  String emailId;
+String imageProfile;
+  String mobileNumber;
 
 
-   RiderProfileEdit({Key? key}) : super(key: key) ;
+
+
+   RiderProfileEdit({Key? key, required this.date, required this.address, required this.pincode, required this.city,
+   required this.state, required this.emailId, required this.lastname, required this.firstname,
+   required this.mobileNumber,
+     required this.imageProfile
+  }) : super(key: key) ;
 
 
   @override
@@ -41,20 +59,34 @@ class RiderProfileEdit extends StatefulWidget {
 
 class _RiderProfileEditState extends State<RiderProfileEdit> {
 
-  final TextEditingController _dateController = TextEditingController();
+ // final TextEditingController _dateController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController pinController = TextEditingController();
-  final TextEditingController expiryDateController = TextEditingController();
+  //final TextEditingController expiryDateController = TextEditingController();
   final TextEditingController firstNameController =  TextEditingController();
   final TextEditingController  lastNameController = TextEditingController() ;
   final TextEditingController emailController = TextEditingController()  ;
   final TextEditingController  dobController = TextEditingController();
   final TextEditingController  genderController = TextEditingController();
+  final TextEditingController stateController = TextEditingController();
+  final TextEditingController mobileNumberController = TextEditingController();
+
+
+
+  var firstname;
+  var lastname;
+  var dob;
+  var email;
+  var myaddress;
+  var pinNumber;
+  var mobilenumber;
+  var mystates;
+  var mycities;
 
 
   final _formKey = GlobalKey<FormState>();
 
-  String radioButtonItem = '';
+  String radioButtonItem = 'Female';
   int id = 1;
   String type = "";
 
@@ -64,13 +96,13 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
 
 
   var selectedState = [];
-  var state;
+
   var states;
   var statName;
   bool isStateSelected = false;
 
   var selectedCity = [];
-  var cities;
+  var citiesname;
   var stateid;
   bool isCitySelected = false;
 
@@ -79,13 +111,15 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   DateTime toDate = DateTime.now();
 
   //var mobile=Preferences.getMobileNumber(Preferences.mobileNumber);
-  File? imageTemp;
-  var myState;
+ // File? imageTemp;
+ // var myState;
   late Future<List<RiderUserListData>> futurePost;
 
   var _future;
 
   var profile;
+  var statename;
+  var cityname;
 
   var stringRandomNumber;
   File? image;
@@ -93,18 +127,43 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   late File file;
   var fileName="";
 
+  String imageFilePath="";
 
   AwsSignedApi awsSignedApi = AwsSignedApi();
-
+  var uploadedImage;
   @override
   initState() {
-    _dateController.text = "";
+    print(widget.date);
+    print(widget.pincode);
+   print(widget.city);
+   print(widget.state);
+   print(widget.imageProfile);
+    print("********************************888");
+    dobController.text = widget.date.toString();
+    firstNameController.text = widget.firstname.toString();
+    lastNameController.text = widget.lastname.toString();
+    profile=widget.imageProfile.toString();
+
+   statename = widget.state.toString();
+  cityname = widget.city.toString();
+    addressController.text =widget.address.toString();
+    pinController.text = widget.pincode.toString();
+    emailController.text = widget.emailId.toString();
+    mobileNumberController.text=widget.mobileNumber.toString();
+    print("************"+addressController.text.toString()+"************");
+
+
+
+
+
+
+
      Random random = Random();
      statesList();
-     expiryDateController.text = "";
-     super.initState();
+    // expiryDateController.text = "";
+
      int randomNumber = random.nextInt(1000000);
-    _future = getRiderData();
+   // _future = getRiderData();
      stringRandomNumber = randomNumber.toString();
      super.initState();
   }
@@ -117,6 +176,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
       file = File(await image.path);
       filePath = imageTemp.path.split(Platform.pathSeparator).last;
       awsUpload(stringRandomNumber + filePath);
+      imageFilePath= AwsUrl.awsImagePathUrl + stringRandomNumber + filePath;
       print("Image Picker: " + stringRandomNumber + filePath);
       OverlayLoadingProgress.start(context);
       setState(() => this.image = imageTemp);
@@ -145,49 +205,22 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   }
 
 
-  Future<UpdateRiderProfileModel> getUserData(BuildContext context,String firstName, String lastName,
-      String email, String dob, String gender , String address , String cities , String states, String profileImage , String pincode) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('firstName', firstName.toString());
-    prefs.setString("lastName", lastName.toString());
-    prefs.setString("email",email.toString());
-    prefs.setString("dob",dob.toString());
-    prefs.setString("gender",gender.toString());
-    prefs.setString("address",address.toString());
-    prefs.setString("states",states.toString());
-    prefs.setString("cities",cities.toString());
-    prefs.setString("profileImage",profileImage.toString());
-    prefs.setString("pincode",pincode.toString());
-    await Preferences.setPreferences();
-    String userId = Preferences.getId(Preferences.id).toString();
-    String mobileNumber = Preferences.getMobileNumber(Preferences.mobileNumber);
+/*  Future<UpdateRiderProfileModel> getUserData(BuildContext context,String mobileNumber, String firstName, String lastName,
+      String email, String dob, String gender , String address , String cities , String states, String profileImage ,
+      String pincode) async {
 
-    var image=profileImage.toString();
-    if(fileName!= "")
-      {
-        image=fileName  ;
-      }
-    // String? firstName = prefs.getString(firstName
-    // );
-    print( jsonEncode(<String, String>{
-      'profileImage': fileName,
-      'firstName': firstName,
-      'lastName': lastName,
-      'email': email,
-      'dob': dob,
-      'gender': gender,
-      'address': address,
-      'states': states ,
-      'cities': cities ,
-    }),);
+    await Preferences.setPreferences();
+    String userId = Preferences.getId(Preferences.id);
+
+
 
    var data = {
     "user_id": userId,
      "first_name" : firstName ,
      "last_name" :lastName,
-     "email_id": emailController.text.toString(),
+     "email_id": email,
      "gender": radioButtonItem.toString(),
-     "dob": _dateController.text.toString(),
+     "dob": dob,
      "mobile_number": mobileNumber,
     "alternate_contact_no": "",
     "profile_image": fileName,
@@ -195,20 +228,20 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
      "city": cities.toString(),
      "state": states.toString(),
     "permanent_address": {
-    "address": addressController.text.toString(),
+    "address": address,
     "city":cities.toString(),
     "state": states.toString(),
-    "pincode": pinController.text.toString(),
+    "pincode": pincode,
     },
 
     "present_address": {
-    "address":addressController.text.toString(),
+    "address":address,
     "city": cities.toString(),
     "state": states.toString(),
-    "pincode": pinController.text.toString(),
+    "pincode": pincode,
     },
-    "same_address": addressController.text.toString(),
-     "pincode": pinController.text.toString(),
+    "same_address": address,
+     "pincode":pincode,
     "dldetails": {
     "dl_number": "",
     "dl_image": "",
@@ -220,8 +253,11 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     "shift_time_from": "",
     "shift_time_to": ""
     },
-     "address" : addressController.text.toString(),
+     "address" : address,
     } ;
+
+    print(jsonEncode(data));
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2");
 
     final response = await http.post(
       Uri.parse(
@@ -250,7 +286,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     } else {
       throw Exception('Failed to create album.');
     }
-  }
+  } */
 
 
 
@@ -273,14 +309,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
               )),
         ),
       ),
-      body:  FutureBuilder<List<RiderUserListData>>(
-        future: _future,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                return SafeArea(
+      body: SafeArea(
                   child: SingleChildScrollView(
                     child: Form(
                       key: _formKey,
@@ -336,8 +365,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                                           height: 100,
                                                           fit: BoxFit.cover,
                                                         )
-                                                            : Image.asset(
-                                                            'assets/user_avatar.png'),
+                                                            : Image.network(
+                                                            widget.imageProfile),
                                                       ),
                                                     ),
                                                   ),
@@ -360,7 +389,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "${snapshot.data![index].firstName.toString()} ${snapshot.data![index].lastName.toString()}",
+                                    firstNameController.text.toString()+" "+lastNameController.text.toString(),
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15,
@@ -370,7 +399,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                     height: 5,
                                   ),
                                   Text(
-                                    "${snapshot.data![index].mobileNumber.toString()}",
+                                    mobileNumberController.text.toString(),
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15,
@@ -402,12 +431,35 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               VerticalDivider(width: 40.0),
                               Expanded(
                                   child: Center(
-                                    child: MyTextField(
-                                      textEditingController: firstNameController,
-                                      fontName: 'transport',
-                                      fontSize: 16,
-                                      enabledBorderColor: CustomColor.yellow, focusedBorderColor: CustomColor.yellow,
-                                      width: 1, broad: 3, textInputType: TextInputType.text, enable: true, hintText: '${snapshot.data![index].firstName.toString()}',),
+                                    child:  TextFormField(
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp("[a-zA-Z\ ]")),
+                                      ],
+                                      style: TextStyle( fontFamily: 'transport',
+                                        fontSize: 16,),
+                                      controller: firstNameController,
+
+                                      keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                            border: const UnderlineInputBorder(),
+                                            enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(width: 1, color: CustomColor.yellow)),
+                                            focusedBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(width: 2, color: CustomColor.yellow)),
+
+                                        ),
+                                      onChanged: (value){
+                                        firstname=value;
+                                        },
+                                      validator: (value) {
+                                        if (value == null ||
+                                            value.isEmpty) {
+                                          return 'Please enter your first name';
+                                        }
+                                        return null;
+                                      },
+                                    ),
                                   )),
                             ],
                           ),
@@ -426,12 +478,36 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               VerticalDivider(width: 40.0),
                               Expanded(
                                   child: Center(
-                                    child: MyTextField(
-                                      textEditingController: lastNameController,
-                                      fontName: 'transport',
-                                      fontSize: 16,
-                                      enabledBorderColor: CustomColor.yellow, focusedBorderColor: CustomColor.yellow,
-                                      width: 1, broad: 3 ,textInputType: TextInputType.text, enable: true, hintText: '${snapshot.data![index].lastName.toString()}',),
+                                    child: TextFormField(
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp("[a-zA-Z\ ]")),
+                                      ],
+                                      style: TextStyle( fontFamily: 'transport',
+                                        fontSize: 16,),
+                                      controller: lastNameController,
+
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                        border: const UnderlineInputBorder(),
+                                        enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(width: 1, color: CustomColor.yellow)),
+                                        focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(width: 2, color: CustomColor.yellow)),
+
+                                      ),
+                                      onChanged: (value){
+                                        lastname=value;
+
+                                      },
+                                      validator: (value) {
+                                        if (value == null ||
+                                            value.isEmpty) {
+                                          return 'Please enter your last name';
+                                        }
+                                        return null;
+                                      },
+                                    ),
                                   )),
                             ],
                           ),
@@ -450,12 +526,34 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               VerticalDivider(width: 60.0),
                               Expanded(
                                   child: Center(
-                                    child: MyTextField(
-                                      textEditingController: emailController,
-                                      fontName: 'transport',
-                                      fontSize: 16,
-                                      enabledBorderColor: CustomColor.yellow, focusedBorderColor: CustomColor.yellow,
-                                      width: 1, broad: 3, textInputType: TextInputType.emailAddress, enable: true, hintText: '${snapshot.data![index].emailId.toString()}',),
+                                    child: TextFormField(
+                                      style: TextStyle( fontFamily: 'transport',
+                                        fontSize: 16,),
+                                      controller: emailController,
+
+                                      keyboardType: TextInputType.emailAddress,
+                                      decoration: InputDecoration(
+                                        border: const UnderlineInputBorder(),
+                                        enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(width: 1, color: CustomColor.yellow)),
+                                        focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(width: 2, color: CustomColor.yellow)),
+
+                                      ),
+                                      onChanged: (value){
+                                        email=value;
+
+                                      },
+                                      validator: (value) {
+                                        if (value == null ||
+                                            value.isEmpty ||
+                                            !value.contains('@') ||
+                                            !value.contains('.')) {
+                                          return 'Invalid Email';
+                                        }
+                                        return null;
+                                      },
+                                    ),
                                   )),
                             ],
                           ),
@@ -469,9 +567,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                     child: InkWell(
                                       child: Image.asset('images/calendar.png',
                                           height: 22, width: 25,),
-                                      onTap: () async {
-                                        _selectDate(context);
-                                      },
+
                                     ),
 
                                   ),
@@ -494,43 +590,63 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                             flex: 2,
                                             child: SizedBox(
                                               height: 45,
-                                              child: TextFormField(
-                                                // keyboardType: TextInputType.number,
-                                                style: const TextStyle(
-                                                    fontFamily: 'transport',
-                                                    fontSize: 18),
-                                                maxLines: 1,
-                                                controller: _dateController,
-                                                decoration: const InputDecoration(
+                                              child:  Expanded(
+                                                  child: Center(
+                                                    child:Padding(
+                                                      padding:
+                                                      const EdgeInsets.only(right: 15, left: 15),
+                                                      child: Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            flex: 2,
+                                                            child: SizedBox(
+                                                              height: 45,
+                                                              child: TextFormField(
+                                                                // keyboardType: TextInputType.number,
+                                                                style: const TextStyle(
+                                                                    fontFamily: 'transport',
+                                                                    fontSize: 18),
+                                                                maxLines: 1,
+                                                                controller: dobController,
+                                                                decoration: const InputDecoration(
 
-                                                  border: UnderlineInputBorder(),
-                                                  enabledBorder: UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          width: 3,
-                                                          color: CustomColor.yellow)),
-                                                  focusedBorder: UnderlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        width: 3,
-                                                        color: Colors.amberAccent),
-                                                  ),
-                                                  // hintText: 'YYYY/MM/DD',
-                                                  hintStyle: TextStyle(
-                                                      fontFamily: 'transport',
-                                                      fontSize: 15),
-                                                ),
-                                                readOnly: true,
+                                                                  border: UnderlineInputBorder(),
+                                                                  enabledBorder: UnderlineInputBorder(
+                                                                      borderSide: BorderSide(
+                                                                          width: 1,
+                                                                          color: CustomColor.yellow)),
+                                                                  focusedBorder: UnderlineInputBorder(
+                                                                    borderSide: BorderSide(
+                                                                        width: 2,
+                                                                        color: Colors.amberAccent),
+                                                                  ),
+                                                                  // hintText: 'YYYY/MM/DD',
+                                                                  hintStyle: TextStyle(
+                                                                      fontFamily: 'transport',
+                                                                      fontSize: 15),
+                                                                ),
+                                                                readOnly: true,
 
-                                                // onTap: () async {
-                                                //   _selectDate(context);
-                                                // },
-                                                validator: (value) {
-                                                  if (value == null ||
-                                                      value.isEmpty ){
-                                                    return 'Please enter your Date of Birth';
-                                                  }
-                                                  return null;
-                                                },
-                                              ),
+                                                                 onTap: () async {
+                                                                   _selectDate(context);
+                                                                 },
+                                                                validator: (value) {
+                                                                  if (value == null ||
+                                                                      value.isEmpty ){
+                                                                    return 'Please enter your Date of Birth';
+                                                                  }
+                                                                  return null;
+                                                                },
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )),
+
+
+
                                             ),
                                           ),
                                         ],
@@ -629,112 +745,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           const SizedBox(
                             height: 20,
                           ),
-                          // Row(
-                          //   children: [
-                          //     Padding(
-                          //       padding: EdgeInsets.only(left: 20),
-                          //       child: Text(
-                          //         "DOB  -",
-                          //         style: TextStyle(
-                          //             fontSize: 14,
-                          //             fontWeight: FontWeight.bold,
-                          //             color: CustomColor.riderprofileColor),
-                          //       ),
-                          //     ),
-                          //     VerticalDivider(width: 80.0),
-                          //     Expanded(
-                          //         child: Center(
-                          //           child: MyTextField(
-                          //               textEditingController: dobController,
-                          //               fontName: 'transport',
-                          //               fontSize: 16,
-                          //               enabledBorderColor: CustomColor.yellow, focusedBorderColor: CustomColor.yellow,
-                          //               width: 1, broad: 3, textInputType: TextInputType.text, enable: true, hintText: '',),
-                          //         )),
-                          //   ],
-                          // ),
-                          // Row(
-                          //   children: [
-                          //     Padding(
-                          //       padding: EdgeInsets.only(left: 20),
-                          //       child: Text(
-                          //         "Gender  -",
-                          //         style: TextStyle(
-                          //             fontSize: 14,
-                          //             fontWeight: FontWeight.bold,
-                          //             color: CustomColor.riderprofileColor),
-                          //       ),
-                          //     ),
-                          //     VerticalDivider(width: 60.0),
-                          //     Expanded(
-                          //         child: Center(
-                          //           child: MyTextField(
-                          //               textEditingController: genderController,
-                          //               fontName: 'transport',
-                          //               fontSize: 16,
-                          //               enabledBorderColor: CustomColor.yellow, focusedBorderColor: CustomColor.yellow,
-                          //               width: 1, broad: 3, textInputType: TextInputType.text, enable: true, hintText: '',),
-                          //         )),
-                          //   ],
-                          // ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(top: 15,left: 20,right: 20),
-                          //   child: Container(
-                          //     height: 100,
-                          //     decoration:  BoxDecoration (
-                          //       borderRadius:  BorderRadius.circular(8),
-                          //       border:  Border.all(color: const Color(0xffffd91d)),
-                          //     ),
-                          //     child: Padding(
-                          //       padding: const EdgeInsets.only(left: 15),
-                          //       child: TextFormField(
-                          //         // autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
-                          //         decoration: InputDecoration(
-                          //           border: InputBorder.none,
-                          //           hintText: 'Enter Address ',
-                          //         ),
-                          //         keyboardType: TextInputType.multiline,
-                          //         minLines: 1,//Normal textInputField will be displayed
-                          //         maxLines: 8,// when user presses en
-                          //         autovalidateMode: AutovalidateMode.onUserInteraction,
-                          //         validator: (text) {
-                          //           if (text == null || text.isEmpty) {
-                          //             return 'Can\'t be empty';
-                          //           }
-                          //           if (text.length < 4) {
-                          //             return 'Too short';
-                          //           }
-                          //           return null;
-                          //         },
-                          //         // update the state variable when the text changes
-                          //         // onChanged: (text) => setState(() => _name = text),
-                          //       ),
-                          //     ),
-                          //
-                          //   ),
-                          // ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(top: 10,left: 20,right: 20),
-                          //   child: Container(
-                          //     height: 120,
-                          //     decoration:  BoxDecoration (
-                          //       borderRadius:  BorderRadius.circular(8),
-                          //       border:  Border.all(color: const Color(0xffffd91d)),
-                          //     ),
-                          //     child: Padding(
-                          //       padding: const EdgeInsets.only(left: 15),
-                          //       child: TextFormField(
-                          //         decoration: const InputDecoration(
-                          //           border: InputBorder.none,
-                          //           hintText: 'Enter Documents Details',
-                          //         ),
-                          //         keyboardType: TextInputType.multiline,
-                          //         minLines: 1,//Normal textInputField will be displayed
-                          //         maxLines: 8,// when user presses en
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
+
                           const SizedBox(
                             height: 25,
                           ),
@@ -748,10 +759,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                   flex: 2,
                                   child: Row(
                                     children: [
-                                      Image.asset(
-                                        "icons/enter_mobile_number.png",
-                                        height: 20,
-                                      ),
+
                                       Container(width: 15),
                                       const Text("Select State",
                                           style: TextStyle(
@@ -766,10 +774,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                   flex: 2,
                                   child: Row(
                                     children: [
-                                      Image.asset(
-                                        "icons/enter_mobile_number.png",
-                                        height: 20,
-                                      ),
+
                                       Container(width: 15),
                                       const Text("Select City",
                                           style: TextStyle(
@@ -799,8 +804,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       child: Padding(
                                         padding: EdgeInsets.all(15),
                                         child: DropdownButton(
+
                                           underline: Container(),
-                                          // hint: Text("Select State"),
+                                           hint: Text(widget.state),
                                           icon: Icon(Icons.keyboard_arrow_down),
                                           isDense: true,
                                           isExpanded: true,
@@ -832,6 +838,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                               }
                                             });
                                           },
+
                                         ),
                                       ),
                                     ),
@@ -852,7 +859,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                         padding: EdgeInsets.all(15),
                                         child: DropdownButton<String>(
                                           underline: Container(),
-                                          // hint: Text("Select City",),
+                                          hint: Text(widget.city),
                                           icon: Icon(Icons.keyboard_arrow_down),
                                           isDense: true,
                                           isExpanded: true,
@@ -862,11 +869,11 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                               value: e["name"],
                                             );
                                           }).toList(),
-                                          value: cities,
+                                          value: citiesname,
                                           onChanged: (value) {
                                             setState(() {
-                                              cities = value;
-                                              print(cities);
+                                              citiesname = value;
+                                              print(citiesname);
                                             });
                                           },
                                         ),
@@ -903,34 +910,36 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                   flex: 2,
                                   child: SizedBox(
                                     height: 45,
-                                    child: TextFormField(
-                                      validator: (value) {
-                                        if (value == null || value.length != 6) {
-                                          return 'Please enter 6 digit number.';
-                                        }
-                                        return null;
-                                      },
-                                      inputFormatters: [
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp("[0-9]")),
-                                        LengthLimitingTextInputFormatter(6),
-                                      ],
-                                      style: const TextStyle(
-                                          fontSize: 18.0, fontFamily: "transport"),
-                                      keyboardType: TextInputType.number,
-                                      maxLines: 1,
-                                      controller: pinController,
-                                      decoration: const InputDecoration(
-                                        border: UnderlineInputBorder(),
-                                        enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                width: 1, color: CustomColor.yellow)),
-                                        focusedBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 1, color: Colors.amberAccent),
-                                        ),
-                                      ),
-                                    ),
+                                    child: Expanded(
+                                        child: Center(
+                                          child: TextFormField(
+                                            validator: (value) {
+                                              if (value == null || value.length != 6) {
+                                                return 'Please enter 6 digit number.';
+                                              }
+                                              return null;
+                                            },
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter.allow(
+                                                  RegExp("[0-9]")),
+                                              LengthLimitingTextInputFormatter(6),
+                                            ],
+                                            style: TextStyle( fontFamily: 'transport',
+                                              fontSize: 16,),
+                                            controller: pinController,
+
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                              border: const UnderlineInputBorder(),
+                                              enabledBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(width: 1, color: CustomColor.yellow)),
+                                              focusedBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(width: 2, color: CustomColor.yellow)),
+
+                                            ),
+
+                                          ),
+                                        )),
                                   ),
                                 ),
                               ],
@@ -959,33 +968,37 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             child: Row(
                               children: <Widget>[
                                 Expanded(
-                                  flex: 2,
+
+                                                                    flex: 2,
                                   child: SizedBox(
                                     height: 45,
                                     child: TextFormField(
+                                      validator: (value) {
+                                        if (value == null) {
+                                          return 'Please enter your address.';
+                                        }
+                                        return null;
+                                      },
                                       inputFormatters: [
                                         FilteringTextInputFormatter.allow(
                                             RegExp("[A-Za-z0-9'\.\-\s\,\ ]")),
                                       ],
-                                      style: const TextStyle(
-                                          fontFamily: 'transport', fontSize: 16),
-                                      maxLines: 1,
+                                      style: TextStyle( fontFamily: 'transport',
+                                        fontSize: 16,),
                                       controller: addressController,
-                                      decoration: const InputDecoration(
-                                        border: UnderlineInputBorder(),
+
+                                      keyboardType: TextInputType.multiline,
+                                      decoration: InputDecoration(
+                                        border: const UnderlineInputBorder(),
                                         enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                width: 1, color: CustomColor.yellow)),
+                                            borderSide: BorderSide(width: 1, color: CustomColor.yellow)),
                                         focusedBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 1, color: Colors.amberAccent),
-                                        ),
+                                            borderSide: BorderSide(width: 2, color: CustomColor.yellow)),
+
                                       ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter your address.';
-                                        }
-                                        return null;
+                                      onChanged: (value){
+                                        myaddress=value;
+
                                       },
                                     ),
                                   ),
@@ -993,47 +1006,39 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 110,),
+                          SizedBox
+                            (height: 110,),
                           Padding(
                             padding: const EdgeInsets.only(top: 10,left: 20,right: 20,bottom: 20),
                             child: Button(textColor: CustomColor.black, size: 80, buttonTitle: "Update Profile",
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
-                                    setState(() {
-                                      OverlayLoadingProgress.start(context);
-                                    });
-                                    getUserData(
-                                      context,
-                                      firstNameController.text,
-                                      lastNameController.text,
-                                      emailController.text,
-                                      _dateController.text,
-                                      radioButtonItem,
-                                      addressController.text ,
-                                      cities,
-                                      states,
-                                      fileName,
-                                      pinController.text,
-                                    ).then((value) {
-                                      if (value != null) {
-                                        OverlayLoadingProgress.stop(context);
-                                      } else {
-                                        OverlayLoadingProgress.stop(context);
-                                      }
-                                    });
-                                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                                    prefs.getString("firstName");
-                                    prefs.getString("lastName");
-                                    prefs.getString("email");
-                                    prefs.getString("dob");
-                                    prefs.getString("gender");
-                                    Preferences.setFirstName(Preferences.firstname, firstNameController.text.toString());
-                                    Preferences.setLastName(Preferences.lastname, lastNameController.text.toString());
-                                    Preferences.setEmailID(Preferences.emailId, emailController.text.toString());
-                                    Preferences.setDob(Preferences.dob, _dateController.text.toString());
-                                    Preferences.setAddress(Preferences.address, addressController.text.toString());
-                                    // Get.to(NumberVerifyScreenPage(firstName: firstNameController.text,
-                                    //   lastName: lastNameController.text,mobileNumber:mobileNumberController.text));
+
+                                    await Preferences.setPreferences();
+                                    String userId = Preferences.getId(Preferences.id);
+                                    firstname=firstNameController.text.toString();
+                                     lastname=lastNameController.text.toString();
+                                     dob=dobController.text.toString();
+                                     email=emailController.text.toString();
+                                     myaddress=addressController.text.toString();
+                                    pinNumber=pinController.text.toString();
+                                     mobilenumber=mobileNumberController.text.toString();
+
+
+                                    uploadedImage=imageFilePath.toString();
+                                    mystates=statName.toString();
+                                    mycities=citiesname.toString();
+                                    print(userId);
+                                    print(pinNumber);
+                                    print(uploadedImage);
+                                    print(mycities);
+                                    print(mystates);
+                                    print(myaddress);
+                                    print("**************************");
+
+
+                                    updateProfile(userId);
+
                                   }
 
                                 }
@@ -1043,17 +1048,11 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                       ),
                     ),
                   ),
-                );
-              },
-            );
+                )
 
-          } else if (snapshot.hasError) {
-            return Text('${snapshot.error}');
-          }
-          // By default, show a loading spinner.
-          return const CircularProgressIndicator();
-        },
-      ) ,
+
+
+
     );
   }
 
@@ -1068,7 +1067,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
         selectedDate = picked;
         var date =
             "${picked.toLocal().day}-${picked.toLocal().month}-${picked.toLocal().year}";
-        _dateController.text = date;
+        dobController.text = date;
       });
     }
   }
@@ -1171,13 +1170,18 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   }
 
   Future<List<RiderUserListData>> getRiderData() async {
+
+    await Preferences.setPreferences();
+    String mobileNumber = Preferences.getMobileNumber(Preferences.mobileNumber);
+    print(mobileNumber);
+    print("______________________________________");
     final response = await http.post(
       (Uri.parse('https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userList')),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'mobile_number': '8286566801',
+        'mobile_number': mobileNumber,
       }),
     );
 
@@ -1296,6 +1300,104 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
       print("----------------------------");
 
       throw Exception('Unexpected error occured!');
+    }
+  }
+
+
+  Future<http.Response?> updateProfile(String userId) async {
+
+      uploadedImage=profile.toString();
+    if(imageFilePath.toString()!=""){
+      uploadedImage =imageFilePath.toString();
+    }
+
+      mystates=statename.toString();
+    if(statName.toString() == null){
+      mystates=statName.toString();
+    }
+
+    mycities=cityname.toString();
+    if(citiesname.toString() == null){
+      mycities=citiesname.toString();
+    }
+
+    myaddress=addressController.text.toString();
+    if(addressController.text.toString() == ""){
+      myaddress=addressController.text.toString();
+    }
+
+
+    var data = {
+      "user_id": userId.toString(),
+      "first_name" : firstname ,
+      "last_name" :lastname,
+      "email_id": email,
+      "gender": radioButtonItem.toString(),
+      "dob": dob,
+      "mobile_number": mobilenumber,
+      "alternate_contact_no": "",
+      "profile_image": uploadedImage,
+      "marital_status": "",
+      "city": mycities.toString(),
+      "state": mystates.toString(),
+      "permanent_address": {
+        "address": myaddress,
+        "city":mycities.toString(),
+        "state": mystates.toString(),
+        "pincode": pinNumber,
+      },
+
+      "present_address": {
+        "address":myaddress,
+        "city": mycities.toString(),
+        "state": mystates.toString(),
+        "pincode": pinNumber,
+      },
+      "same_address": myaddress,
+      "dldetails": {
+        "dl_number": "",
+        "dl_image": "",
+        "dl_expiry_date": "",
+        "dl_mobile_number": "",
+        "accidental_history": "",
+        "accidental_discription": "",
+        "available24by7": "",
+        "shift_time_from": "",
+        "shift_time_to": ""
+      },
+      "address" : myaddress,
+    } ;
+    final response = await http.post(
+      Uri.parse(
+          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/updateUserProfile'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(data),
+    );
+    print(jsonEncode(data));
+
+    if (response.statusCode == 200) {
+      bool status = jsonDecode(response.body)[ErrorMessage.status];
+      var msg = jsonDecode(response.body)[ErrorMessage.message];
+      setState(() {
+        getRiderData();
+      });
+
+      print(response.body);
+      if (status == true) {
+        Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
+        OverlayLoadingProgress.stop(context);
+      Get.to(MainPage());
+
+      } else {
+        OverlayLoadingProgress.stop(context);
+
+        //Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
+      }
+      return null;
+    } else {
+      throw Exception('Failed.');
     }
   }
 

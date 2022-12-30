@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:majascan/majascan.dart';
 import 'package:ride_safe_travel/LoginModule/Map/RiderFamilyList.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
+import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/MainPageWidgets/MainPageCard.dart';
 import 'package:ride_safe_travel/UserDriverInformation.dart';
 
@@ -55,6 +56,7 @@ class _MainPageState extends State<MainPage> {
 
 
   String result = "";
+ // String image="";
 
   Future _scanQR() async {
     try {
@@ -92,7 +94,12 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
+   // Preferences.setImage(Preferences.image, image);
+
     super.initState();
+    setState(() {
+
+    });
   }
 
   @override
@@ -167,7 +174,6 @@ class _MainPageState extends State<MainPage> {
                 press: () {
                   Get.to(const UserFamilyList());
                 }),
-
           ],
         ),
       ),

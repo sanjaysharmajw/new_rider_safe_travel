@@ -19,7 +19,7 @@ class Preferences {
   static const String riderIdFromFamilyMem = 'riderIdFromFamilyMem';
   static const String dob = "dob";
   static const String address = "address";
-
+  static const String image = 'image';
   static const String startLat = 'startLat';
   static const String startLng = 'startLng';
 
@@ -89,6 +89,10 @@ class Preferences {
     return Preferences.instance!.setString(key, value);
   }
 
+  static Future<bool> setImage(String key, String value) {
+    return Preferences.instance!.setString(key, value);
+  }
+
   static Future<bool> setEmailID(String key, String value) {
     return Preferences.instance!.setString(key, value);
   }
@@ -146,6 +150,10 @@ class Preferences {
   }
 
   static dynamic getMobileNumber(String key) {
+    return Preferences.instance?.get(key);
+  }
+
+  static dynamic getImage(String key) {
     return Preferences.instance?.get(key);
   }
 

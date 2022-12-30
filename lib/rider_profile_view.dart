@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'dart:io';
@@ -7,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
+import 'package:ride_safe_travel/riderData.dart';
 import 'package:ride_safe_travel/rider_profile_edit.dart';
 
 import 'Error.dart';
@@ -18,7 +20,8 @@ import 'Models/StateModel.dart';
 import 'MyText.dart';
 import 'MyTextField.dart';
 import 'ProfileWidget.dart';
-import 'RiderUserList.dart';
+import 'RiderUserListData.dart';
+
 
 class RiderProfileView extends StatefulWidget {
   const RiderProfileView({Key? key}) : super(key: key);
@@ -56,19 +59,34 @@ class _RiderProfileViewState extends State<RiderProfileView> {
 
   //var mobile=Preferences.getMobileNumber(Preferences.mobileNumber);
   File? imageTemp;
-  var myState;
+ // var myState;
+  String profileImage="";
+  String mystate="";
+  String mycity="";
 
   @override
   void initState() {
-    statesList();
+//profileImage=Preferences.getImage(Preferences.image).toString();
+//print(profileImage);
+//print("@@@@@@@@@@@@@@@@@@@@@@@22");
+
+   // statesList();
     expiryDateController.text = "";
     super.initState();
     Random random = Random();
     int randomNumber = random.nextInt(1000000);
     stringRandomNumber = randomNumber.toString();
-    _future = getRiderData();
+    setState((){
+      _future = getRiderData();
+    });
+
+    Timer(
+        const Duration(seconds: 1),
+            () => getRiderData(),
+    );
   }
 
+  String result = "wait Navigator.pop";
   var stringRandomNumber;
   final _formKey = GlobalKey<FormState>();
   var emailController = new TextEditingController();
@@ -106,13 +124,19 @@ class _RiderProfileViewState extends State<RiderProfileView> {
               )),
         ),
       ),
-        body: FutureBuilder<List<RiderUserListData>>(
+        body: FutureBuilder<List<RiderData>>(
           future: _future,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
+                 profileImage= "${snapshot.data![index].profileImage}";
+                  mystate="${snapshot.data![index].presentAddress?.state.toString()}";
+                  mycity="${snapshot.data![index].presentAddress?.city.toString()}";
+                 print(mycity+" "+mystate);
+                 print(profileImage);
+                 print("******************************");
                   return SafeArea(
                     child: SingleChildScrollView(
                       child: Column(
@@ -131,7 +155,30 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                             height: 20,
                           ),
                           ProfileWidget(profileName:"${snapshot.data![index].firstName.toString()} ${snapshot.data![index].lastName.toString()}",
-                              profileMobile:  '${snapshot.data![index].mobileNumber.toString()}', onPress: () { Get.to(RiderProfileEdit()) ; }, assetsPath: '${snapshot.data![index].profileImage.toString()}'),
+                              profileMobile:  '${snapshot.data![index].mobileNumber.toString()}',
+                              onPress: () async {
+
+                                 Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                    RiderProfileEdit(date: '${snapshot.data![index].dob.toString()}',
+                                      address: '${snapshot.data![index].presentAddress?.address.toString()}',
+                                      pincode: '${snapshot.data![index].presentAddress?.pincode.toString()}',
+                                      city: mycity,
+                                      state: mystate,
+                                      emailId: '${snapshot.data![index].emailId.toString()}',
+                                      lastname: '${snapshot.data![index].lastName.toString()}',
+                                      firstname: '${snapshot.data![index].firstName.toString()}',
+                                      mobileNumber: '${snapshot.data![index].mobileNumber.toString()}',
+                                      imageProfile: profileImage,)
+                                )).then((value) {
+                                  setState(() {
+                                  });
+                                  return value;
+                                });
+
+                                },
+                              assetsPath: profileImage,
+
+                          ),
                           // const Padding(
                           //   padding: EdgeInsets.only(left: 20,top: 10),
                           //   child: Text(
@@ -238,7 +285,10 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                       fontName: 'transport',
                                       fontSize: 16,
                                       enabledBorderColor: CustomColor.buttonColor, focusedBorderColor: CustomColor.buttonColor,
-                                      width: 1, broad: 4, textInputType: TextInputType.emailAddress, enable: false, hintText: '${snapshot.data![index].emailId.toString()}',),
+                                      width: 1, broad: 4,
+                                      textInputType: TextInputType.emailAddress,
+                                      enable: false,
+                                      hintText: '${snapshot.data![index].emailId.toString()}',),
                                   )),
                             ],
                           ),
@@ -329,14 +379,14 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                   child: TextFormField(
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(
-                                          RegExp("[A-Za-z0-9'\.\-\s\,\ ]")),
+                                          RegExp("[A-Za-z'\.\-\s\,\ ]")),
                                     ],
                                     style: const TextStyle(
                                         fontFamily: 'transport', fontSize: 16),
                                     maxLines: 1,
                                     controller: stateController,
                                     decoration:  InputDecoration(
-                                      hintText: "${snapshot.data![index].permanentAddress.toString()}",
+                                      hintText: "${snapshot.data![index].presentAddress?.state.toString()}",
                                       enabled: false,
                                       border: UnderlineInputBorder(),
                                       enabledBorder: UnderlineInputBorder(
@@ -358,6 +408,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                               ),
                             ],
                           ),
+                          VerticalDivider(width: 30.0),
                           Row(
                             children: [
                               Row(
@@ -382,14 +433,14 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                   child: TextFormField(
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(
-                                          RegExp("[A-Za-z0-9'\.\-\s\,\ ]")),
+                                          RegExp("[A-Za-z'\.\-\s\,\ ]")),
                                     ],
                                     style: const TextStyle(
                                         fontFamily: 'transport', fontSize: 16),
                                     maxLines: 1,
                                     controller: cityController,
                                     decoration:  InputDecoration(
-                                      hintText: "${snapshot.data![index].permanentAddress.toString()}",
+                                      hintText: "${snapshot.data![index].presentAddress?.city.toString()}",
                                       enabled: false,
                                       border: UnderlineInputBorder(),
                                       enabledBorder: UnderlineInputBorder(
@@ -411,6 +462,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                               ),
                             ],
                           ),
+                          VerticalDivider(width: 30.0),
                           Row(
                             children: [
                               Row(
@@ -451,7 +503,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     controller: pinController,
                                     decoration:  InputDecoration(
                                       enabled: false,
-                                      hintText:  "${snapshot.data![index].permanentAddress.toString()}",
+                                      hintText:  "${snapshot.data![index].presentAddress?.pincode.toString()}",
                                       border: UnderlineInputBorder(),
                                       enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
@@ -466,409 +518,60 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                               ),
                             ],
                           ),
-                          // Row(
-                          //   children: [
-                          //     Padding(
-                          //       padding: EdgeInsets.only(left: 20),
-                          //       child: Text(
-                          //         "DOB  -",
-                          //         style: TextStyle(
-                          //             fontSize: 14,
-                          //             fontWeight: FontWeight.bold,
-                          //             color: CustomColor.riderprofileColor),
-                          //       ),
-                          //     ),
-                          //     VerticalDivider(width: 80.0),
-                          //     Expanded(
-                          //         child: Center(
-                          //           child: MyTextField(
-                          //             textEditingController: dobController,
-                          //             fontName: 'transport',
-                          //             fontSize: 16,
-                          //             enabledBorderColor: CustomColor.buttonColor, focusedBorderColor: CustomColor.buttonColor,
-                          //             width: 1, broad: 4, textInputType: TextInputType.text, enable: false, hintText: '${snapshot.data![index].dob.toString()}',),
-                          //         )),
-                          //   ],
-                          // ),
-                          // Row(
-                          //   children: [
-                          //     Padding(
-                          //       padding: EdgeInsets.only(left: 20),
-                          //       child: Text(
-                          //         "Gender  -",
-                          //         style: TextStyle(
-                          //             fontSize: 14,
-                          //             fontWeight: FontWeight.bold,
-                          //             color: CustomColor.riderprofileColor),
-                          //       ),
-                          //     ),
-                          //     VerticalDivider(width: 60.0),
-                          //     Expanded(
-                          //         child: Center(
-                          //           child: MyTextField(
-                          //               textEditingController: genderController,
-                          //               fontName: 'transport',
-                          //               fontSize: 16,
-                          //               enabledBorderColor: CustomColor.buttonColor, focusedBorderColor: CustomColor.buttonColor,
-                          //               width: 1, broad: 4, textInputType: TextInputType.text, enable: false, hintText: '${snapshot.data![index].gender.toString()}',),
-                          //         )),
-                          //   ],
-                          // ),
+
                           const SizedBox(
                             height: 20,
                           ),
-                          Column(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 12, right: 12),
-                                child: Row(
-                                  children: const [
-                                    Expanded(
-                                      child: Text(
-                                        "Gender",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontFamily: "transport"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                          Row(
+                            children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Radio(
-                                    fillColor: MaterialStateColor.resolveWith(
-                                            (states) => CustomColor.yellow),
-                                    focusColor:
-                                    MaterialStateColor.resolveWith(
-                                            (states) => CustomColor.yellow),
-                                    value: 1,
-                                    groupValue: id,
-                                    onChanged: (val) {
-                                      radioButtonItem = "${snapshot.data![index].gender.toString()}" ;
-                                      id = 1;
-                                      if(radioButtonItem != "${snapshot.data![index].gender.toString()}"){
-                                        buttonSelection("${snapshot.data![index].gender.toString()}", id);
-                                      }
-                                    },
+                                children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 15, right: 15, top: 0, bottom: 0),
+                                      child: Icon(Icons.location_pin)
                                   ),
                                   const Text(
-                                    'Female',
-                                    style: TextStyle(fontSize: 17.0),
-                                  ),
-                                  Radio(
-                                    fillColor: MaterialStateColor.resolveWith(
-                                            (states) => CustomColor.yellow),
-                                    focusColor:
-                                    MaterialStateColor.resolveWith(
-                                            (states) => CustomColor.yellow),
-                                    value: 2,
-                                    groupValue: id,
-                                    onChanged: (val) {
-                                      radioButtonItem != "${snapshot.data![index].gender.toString()}" ;
-                                      id = 2;
-                                      if(radioButtonItem == "${snapshot.data![index].gender.toString()}"){
-                                        buttonSelection("${snapshot.data![index].gender.toString()}", id);
-                                      }
-                                    },
-                                  ),
-                                  const Text(
-                                    'Male',
-                                    style: TextStyle(
-                                      fontSize: 17.0,
-                                    ),
-                                  ),
-                                  Radio(
-                                    fillColor: MaterialStateColor.resolveWith(
-                                            (states) => CustomColor.yellow),
-                                    focusColor:
-                                    MaterialStateColor.resolveWith(
-                                            (states) => CustomColor.yellow),
-                                    value: 3,
-                                    groupValue: id,
-                                    onChanged: (val) {
-                                      radioButtonItem = "${snapshot.data![index].gender.toString()}" ;
-                                      id = 3;
-                                      if(radioButtonItem != "${snapshot.data![index].gender.toString()}"){
-                                        buttonSelection("${snapshot.data![index].gender.toString()}", id);
-                                      }
-                                    },
-                                  ),
-                                  const Text(
-                                    'Other',
-                                    style: TextStyle(fontSize: 17.0),
+                                    "Gender",
+                                    style:
+                                    TextStyle(fontFamily: 'transport', fontSize: 16,),
                                   ),
                                 ],
                               ),
+                              VerticalDivider(width: 30.0),
+                              Expanded(
+                                flex: 2,
+                                child: SizedBox(
+                                  height: 45,
+                                  child: TextFormField(
+
+                                    style: const TextStyle(
+                                        fontSize: 16.0, fontFamily: "transport"),
+                                    keyboardType: TextInputType.number,
+                                    maxLines: 1,
+                                    controller: genderController,
+                                    decoration:  InputDecoration(
+                                      enabled: false,
+                                      hintText:  "${snapshot.data![index].gender.toString()}",
+                                      border: UnderlineInputBorder(),
+                                      enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 1, color: CustomColor.yellow)),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1, color: Colors.amberAccent),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
+
                           const SizedBox(
                             height: 20,
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(right: 15, left: 15),
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     children: <Widget>[
-                          //       Container(width: 2),
-                          //       Expanded(
-                          //         flex: 2,
-                          //         child: Row(
-                          //           children: [
-                          //             Icon(Icons.location_city_outlined,color: Colors.yellow,),
-                          //             // Image.asset(
-                          //             //   "icons/enter_mobile_number.png",
-                          //             //   height: 20,
-                          //             // ),
-                          //             Container(width: 15),
-                          //             const Text("Select State",
-                          //                 style: TextStyle(
-                          //                     color: CustomColor.black,
-                          //                     fontFamily: 'transport',
-                          //                     fontSize: 16)),
-                          //           ],
-                          //         ),
-                          //       ),
-                          //       Container(width: 35),
-                          //       Expanded(
-                          //         flex: 2,
-                          //         child: Row(
-                          //           children: [
-                          //             Icon(Icons.location_city_outlined,color: Colors.yellow,),
-                          //             // Image.asset(
-                          //             //   "icons/enter_mobile_number.png",
-                          //             //   height: 20,
-                          //             // ),
-                          //             Container(width: 15),
-                          //             const Text("Select City",
-                          //                 style: TextStyle(
-                          //                     color: CustomColor.black,
-                          //                     fontFamily: 'transport',
-                          //                     fontSize: 16)),
-                          //           ],
-                          //         ),
-                          //       )
-                          //     ],
-                          //   ),
-                          // ),
-                          // Padding(
-                          //   padding:  EdgeInsets.only(right: 15, left: 15),
-                          //   child: Row(
-                          //     children: [
-                          //       Expanded(
-                          //         flex: 2,
-                          //         child: SizedBox(
-                          //           height: 60,
-                          //           child: Card(
-                          //             color: Colors.white,
-                          //             shape: UnderlineInputBorder(
-                          //                 borderRadius: BorderRadius.circular(10),
-                          //                 borderSide:
-                          //                 BorderSide(color: CustomColor.yellow)),
-                          //             child: Padding(
-                          //               padding: EdgeInsets.all(15),
-                          //               child: DropdownButton(
-                          //                 underline: Container(),
-                          //                 // hint: Text("Select State"),
-                          //                hint:  Text("${snapshot.data![index].state.toString()}",),
-                          //                 icon: Icon(Icons.keyboard_arrow_down),
-                          //                 isDense: true,
-                          //                 isExpanded: true,
-                          //
-                          //                 items: selectedState.map((e) {
-                          //                   return DropdownMenuItem(
-                          //                     value: e["state_id"].toString(),
-                          //                     child: Text(e['name'].toString()),
-                          //                   );
-                          //                 }).toList(),
-                          //                 value: states,
-                          //                 onChanged: (value) {
-                          //                   setState(() {
-                          //                     selectedCity = [];
-                          //                     states = value;
-                          //                     isStateSelected = true;
-                          //                     for (int i = 0;
-                          //                     i < selectedState.length;
-                          //                     i++) {
-                          //                       if (states.toString() ==
-                          //                           selectedState[i]['state_id']
-                          //                               .toString()) {
-                          //                         statName = selectedState[i]['name'];
-                          //                         print(statName);
-                          //                       }
-                          //                     }
-                          //                     if (states != null) {
-                          //                       citiesList(states);
-                          //                     }
-                          //                   });
-                          //                 },
-                          //               ),
-                          //             ),
-                          //           ),
-                          //         ),
-                          //       ),
-                          //       Container(width: 15),
-                          //       Expanded(
-                          //         flex: 2,
-                          //         child: SizedBox(
-                          //           height: 60,
-                          //           child: Card(
-                          //             color: Colors.white,
-                          //             shape: UnderlineInputBorder(
-                          //                 borderRadius: BorderRadius.circular(10),
-                          //                 borderSide:
-                          //                 BorderSide(color: CustomColor.yellow)),
-                          //             child: Padding(
-                          //               padding: EdgeInsets.all(15),
-                          //               child: DropdownButton<String>(
-                          //                 underline: Container(),
-                          //                 // hint: Text("Select City",),
-                          //                 icon: Icon(Icons.keyboard_arrow_down),
-                          //                 isDense: true,
-                          //                 isExpanded: true,
-                          //                 enableFeedback: false,
-                          //                 hint:  Text("${snapshot.data![index].city.toString()}",),
-                          //                 items: selectedCity.map((e) {
-                          //                   return DropdownMenuItem<String>(
-                          //                     child: Text(e["name"]),
-                          //                     value: e["name"],
-                          //                   );
-                          //                 }).toList(),
-                          //                 value: cities,
-                          //                 onChanged: (value) {
-                          //                   setState(() {
-                          //                     cities = value;
-                          //                     print(cities);
-                          //                   });
-                          //                 },
-                          //               ),
-                          //             ),
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                          // Row(
-                          //   children: [
-                          //     Padding(
-                          //       padding: const EdgeInsets.only(
-                          //           left: 15, right: 15, top: 0, bottom: 0),
-                          //       child: Image.asset('assets/registration_no.png',
-                          //           height: 25, width: 25),
-                          //     ),
-                          //     const Text(
-                          //       "State",
-                          //       style:
-                          //       TextStyle(fontFamily: 'transport', fontSize: 16),
-                          //     ),
-                          //   ],
-                          // ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(right: 15, left: 15),
-                          //   child: Row(
-                          //     children: <Widget>[
-                          //       Expanded(
-                          //         flex: 2,
-                          //         child: SizedBox(
-                          //           height: 45,
-                          //           child: TextFormField(
-                          //             inputFormatters: [
-                          //               FilteringTextInputFormatter.allow(
-                          //                   RegExp("[A-Za-z0-9'\.\-\s\,\ ]")),
-                          //             ],
-                          //             style: const TextStyle(
-                          //                 fontFamily: 'transport', fontSize: 16),
-                          //             maxLines: 1,
-                          //             controller: addressController,
-                          //             decoration:  InputDecoration(
-                          //               hintText: "${snapshot.data![index].state.toString()}",
-                          //               enabled: false,
-                          //               border: UnderlineInputBorder(),
-                          //               enabledBorder: UnderlineInputBorder(
-                          //                   borderSide: BorderSide(
-                          //                       width: 1, color: CustomColor.yellow)),
-                          //               focusedBorder: UnderlineInputBorder(
-                          //                 borderSide: BorderSide(
-                          //                     width: 1, color: Colors.amberAccent),
-                          //               ),
-                          //             ),
-                          //             validator: (value) {
-                          //               if (value == null || value.isEmpty) {
-                          //                 return 'Please enter your address.';
-                          //               }
-                          //               return null;
-                          //             },
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                          // Row(
-                          //   children: [
-                          //     Padding(
-                          //       padding: const EdgeInsets.only(
-                          //           left: 15, right: 15, top: 0, bottom: 0),
-                          //       child: Image.asset('assets/registration_no.png',
-                          //           height: 25, width: 25),
-                          //     ),
-                          //     const Text(
-                          //       "city",
-                          //       style:
-                          //       TextStyle(fontFamily: 'transport', fontSize: 16),
-                          //     ),
-                          //   ],
-                          // ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(right: 15, left: 15),
-                          //   child: Row(
-                          //     children: <Widget>[
-                          //       Expanded(
-                          //         flex: 2,
-                          //         child: SizedBox(
-                          //           height: 45,
-                          //           child: TextFormField(
-                          //             inputFormatters: [
-                          //               FilteringTextInputFormatter.allow(
-                          //                   RegExp("[A-Za-z0-9'\.\-\s\,\ ]")),
-                          //             ],
-                          //             style: const TextStyle(
-                          //                 fontFamily: 'transport', fontSize: 16),
-                          //             maxLines: 1,
-                          //             controller: addressController,
-                          //             decoration:  InputDecoration(
-                          //               hintText: "${snapshot.data![index].city.toString()}",
-                          //               enabled: false,
-                          //               border: UnderlineInputBorder(),
-                          //               enabledBorder: UnderlineInputBorder(
-                          //                   borderSide: BorderSide(
-                          //                       width: 1, color: CustomColor.yellow)),
-                          //               focusedBorder: UnderlineInputBorder(
-                          //                 borderSide: BorderSide(
-                          //                     width: 1, color: Colors.amberAccent),
-                          //               ),
-                          //             ),
-                          //             validator: (value) {
-                          //               if (value == null || value.isEmpty) {
-                          //                 return 'Please enter your address.';
-                          //               }
-                          //               return null;
-                          //             },
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                          // const SizedBox(
-                          //   height: 25,
-                          // ),
-                          // const SizedBox(
-                          //   height: 25,
-                          // ),
+
                           Row(
                             children: [
                               Padding(
@@ -901,7 +604,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                       maxLines: 1,
                                       controller: addressController,
                                       decoration:  InputDecoration(
-                                        hintText: "${snapshot.data![index].permanentAddress.toString()}",
+                                        hintText: "${snapshot.data![index].presentAddress?.address.toString()}",
                                         enabled: false,
                                         border: UnderlineInputBorder(),
                                         enabledBorder: UnderlineInputBorder(
@@ -924,131 +627,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                               ],
                             ),
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(top: 15,left: 20,right: 20),
-                          //   child: Container(
-                          //     height: 100,
-                          //     decoration:  BoxDecoration (
-                          //         borderRadius:  BorderRadius.circular(8),
-                          //         border:  Border.all(color: const Color(0xffEFEFEF)),
-                          //         color: CustomColor.buttonColor
-                          //     ),
-                          //     child: Padding(
-                          //       padding: const EdgeInsets.only(left: 15),
-                          //       child: TextFormField(
-                          //         enabled: false,
-                          //         // autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
-                          //         decoration: InputDecoration(
-                          //           border: InputBorder.none,
-                          //           hintText: "Address"
-                          //           // hintText: '${snapshot.data![index].permanentAddress!.address.toString()} ',
-                          //         ),
-                          //         keyboardType: TextInputType.multiline,
-                          //         minLines: 1,//Normal textInputField will be displayed
-                          //         maxLines: 8,// when user presses en
-                          //         autovalidateMode: AutovalidateMode.onUserInteraction,
-                          //         validator: (text) {
-                          //           if (text == null || text.isEmpty) {
-                          //             return 'Can\'t be empty';
-                          //           }
-                          //           if (text.length < 4) {
-                          //             return 'Too short';
-                          //           }
-                          //           return null;
-                          //         },
-                          //         // update the state variable when the text changes
-                          //         // onChanged: (text) => setState(() => _name = text),
-                          //       ),
-                          //     ),
-                          //
-                          //   ),
-                          // ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(top: 30,left: 20,right: 20),
-                          //   child: Container(
-                          //       height: 160,
-                          //       width: 400,
-                          //       decoration:  BoxDecoration (
-                          //           borderRadius:  BorderRadius.circular(8),
-                          //           border:  Border.all(color: const Color(0xffEFEFEF)),
-                          //           color: CustomColor.buttonColor
-                          //       ),
-                          //       child: Column(
-                          //         mainAxisAlignment: MainAxisAlignment.start,
-                          //         crossAxisAlignment: CrossAxisAlignment.start,
-                          //         children: [
-                          //           Padding(
-                          //             padding: const EdgeInsets.only(left: 10,top: 10),
-                          //             child: Text("Documents Details" ,style: TextStyle(
-                          //               fontSize: 15,fontWeight: FontWeight.bold,
-                          //             ),),
-                          //           ),
-                          //           Row(
-                          //             children: [
-                          //               Padding(
-                          //                 padding: EdgeInsets.only(left: 20,right: 76),
-                          //                 child: Text(
-                          //                   "Aadhar Card Number",
-                          //                   style: TextStyle(
-                          //                       fontSize: 14,
-                          //                       fontWeight: FontWeight.bold,
-                          //                       color: CustomColor.riderprofileColor),
-                          //                 ),
-                          //               ),
-                          //               Container(
-                          //                   width: 20,
-                          //                   height: 40,
-                          //                   child: VerticalDivider()),
-                          //               Expanded(
-                          //                   child: Center(
-                          //                       child:TextField(
-                          //
-                          //                         enabled: false,
-                          //                         decoration: InputDecoration(
-                          //                           border: InputBorder.none,
-                          //                           // hintText: "${snapshot.data![index].aadharNumber.toString()}",
-                          //                         ),
-                          //                         keyboardType : TextInputType.number,
-                          //                         inputFormatters: <TextInputFormatter>[
-                          //                           FilteringTextInputFormatter.digitsOnly
-                          //                         ],
-                          //                       )
-                          //                   )),
-                          //             ],
-                          //           ),
-                          //           Divider(color: CustomColor.text),
-                          //           Row(
-                          //             children: [
-                          //               const Padding(
-                          //                 padding: EdgeInsets.only(left: 20,right: 100),
-                          //                 child: Text(
-                          //                   "Pan Card Number",
-                          //                   style: TextStyle(
-                          //                       fontSize: 14,
-                          //                       fontWeight: FontWeight.bold,
-                          //                       color: CustomColor.riderprofileColor),
-                          //                 ),
-                          //               ),
-                          //               Container(
-                          //                   width: 20,
-                          //                   height: 40,
-                          //                   child: VerticalDivider()),
-                          //               Expanded(
-                          //                   child:TextField(
-                          //                       enabled: false,
-                          //                       decoration: InputDecoration(
-                          //                         border: InputBorder.none,
-                          //                         // hintText: "${snapshot.data![index].panNumber.toString()} ",
-                          //                       ),
-                          //                       inputFormatters: [ FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9]")), ]                                )
-                          //               ),
-                          //             ],
-                          //           ),
-                          //           Divider(color: CustomColor.text,),
-                          //         ],
-                          //       )
-                          //   ),
-                          // ),
+
                         ],
                       ),
                     ),
@@ -1082,7 +661,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
     }
   }
 
-  Future<List<RiderUserListData>> getRiderData() async {
+  Future<List<RiderData>> getRiderData() async {
     await Preferences.setPreferences();
     String mobileNumber = Preferences.getMobileNumber(Preferences.mobileNumber).toString();
     final response = await http.post(
@@ -1097,9 +676,12 @@ class _RiderProfileViewState extends State<RiderProfileView> {
 
     if (response.statusCode == 200) {
       print('RES:${response.body}');
-      List<RiderUserListData> loginData = jsonDecode(response.body)['data']
-          .map<RiderUserListData>((data) => RiderUserListData.fromJson(data))
+      List<RiderData> loginData = jsonDecode(response.body)['data']
+          .map<RiderData>((data) => RiderData.fromJson(data))
           .toList();
+      setState(() {
+
+      });
       return loginData;
     } else {
 
@@ -1107,7 +689,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
     }
   }
 
-  Future<StateModel> statesList() async {
+ /* Future<StateModel> statesList() async {
     final response = await http.post(
       Uri.parse(ApiUrl.stateApi),
       headers: <String, String>{
@@ -1133,9 +715,9 @@ class _RiderProfileViewState extends State<RiderProfileView> {
 
       throw Exception('Unexpected error occured!');
     }
-  }
+  }   */
 
-  Future<CityModel> citiesList(String states) async {
+ /* Future<CityModel> citiesList(String states) async {
     final response = await http.post(
       Uri.parse(ApiUrl.cityApi),
       headers: <String, String>{
@@ -1162,7 +744,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
 
       throw Exception('Unexpected error occured!');
     }
-  }
+  }  */
 
   buttonSelection(String gender, int idd){
 
