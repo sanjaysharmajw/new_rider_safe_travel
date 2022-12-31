@@ -327,6 +327,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         Preferences.setEmailID(Preferences.emailId, emailId);
         Preferences.setMobileNumber(Preferences.mobileNumber, mobileNumber);
         Preferences.setUserType(Preferences.userType, userType!);
+        Preferences.setProfileImage(profileImage);
         Get.to(const MainPage());
         Get.snackbar("Message", "Successful", snackPosition: SnackPosition.BOTTOM);
       } else {

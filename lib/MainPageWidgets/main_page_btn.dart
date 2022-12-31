@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 
 class MainPageBtn extends StatelessWidget {
@@ -12,25 +13,21 @@ class MainPageBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: press,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 15,right: 15),
-        child: Container(
-          width: double.infinity,
-          height: 65,
-          decoration: BoxDecoration(
-            color: CustomColor.lightYellow,
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(icons, height: 25, width: 25),
-              const SizedBox(width: 10),
-              Text(text,
-                  style: const TextStyle(
-                      fontFamily: 'transport', fontWeight: FontWeight.w500))
-            ],
-          ),
+      child: Container(
+        height: 60.h,
+        decoration: BoxDecoration(
+          color: CustomColor.lightYellow,
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(icons, height: 20.h, width: 20.w),
+             SizedBox(width: 10.w),
+            Text(text,
+                style: const TextStyle(
+                    fontFamily: 'transport', fontWeight: FontWeight.w500))
+          ],
         ),
       ),
     );

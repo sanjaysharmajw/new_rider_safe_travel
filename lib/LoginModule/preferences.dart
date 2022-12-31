@@ -20,6 +20,7 @@ class Preferences {
   static const String dob = "dob";
   static const String address = "address";
   static const String image = 'image';
+  static const String profileImage = 'profileImage';
   static const String startLat = 'startLat';
   static const String startLng = 'startLng';
 
@@ -75,6 +76,13 @@ class Preferences {
 
   static dynamic getVehicleId(String key) {
     return Preferences.instance!.get(key);
+  }
+
+  static dynamic getProfileImage() {
+    return Preferences.instance!.get(profileImage);
+  }
+  static Future<bool> setProfileImage(String value) {
+    return Preferences.instance!.setString(profileImage, value);
   }
 
   static Future<bool> setUserRiderId(String value) {
