@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:majascan/majascan.dart';
 import 'package:ride_safe_travel/LoginModule/Map/RiderFamilyList.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
+import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/MainPageWidgets/MainPageCard.dart';
 import 'package:ride_safe_travel/UserDriverInformation.dart';
 import 'package:ride_safe_travel/Utils/exit_alert_dialog.dart';
@@ -14,6 +16,7 @@ import '../MainPageWidgets/main_page_btn.dart';
 import '../MyRidesPage.dart';
 import '../UserFamilyList.dart';
 import '../Utils/logout_dialog_box.dart';
+import '../Widgets/dashboard_profile_widgets.dart';
 import '../rider_profile_view.dart';
 
 class MainPage extends StatefulWidget {
@@ -25,8 +28,11 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   String result = "";
-  var size, height, width;
-
+  String image = "";
+  String profileName = "";
+  String profileMobile = "";
+  String profileLastName = "";
+  String profileEmailId = "";
   Future _scanQR() async {
     try {
       String? qrResult = await MajaScan.startScan(
@@ -64,13 +70,22 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+    sharePreferences();
+  }
+  void sharePreferences()async{
+    await Preferences.setPreferences();
+    image=Preferences.getProfileImage().toString();
+    profileName=Preferences.getFirstName(Preferences.firstname).toString();
+    profileLastName=Preferences.getLastName(Preferences.lastname).toString();
+    profileMobile=Preferences.getMobileNumber(Preferences.mobileNumber).toString();
+    profileEmailId=Preferences.getEmailId(Preferences.emailId).toString();
+    setState(() {
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    size = MediaQuery.of(context).size;
-    height = size.height;
-    width = size.width;
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return WillPopScope(
       onWillPop: () => showExitPopup(context, "Do you want to exit?", () {
         exit(0);
@@ -89,14 +104,15 @@ class _MainPageState extends State<MainPage> {
           elevation: 0,
           centerTitle: true,
           backgroundColor: CustomColor.yellow,
-          title: const Text("Dashboard",
-              style: TextStyle(fontSize: 18, fontFamily: 'transport')),
+          title:  Text("Dashboard",
+              style: TextStyle(fontSize: 16.sp, fontFamily: 'transport')),
         ),
         body: Container(
-          width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
+              DashboardProfileWidgets(image: image, profileName: profileName+" "+profileLastName, profileMobile: profileMobile, emailId: profileEmailId),
               SizedBox(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,10 +124,10 @@ class _MainPageState extends State<MainPage> {
                       press: () {
                         Get.to(const RiderProfileView());
                       },
-                      width: 170,
-                      height: 170,
-                      widthImage: 50,
-                      heightImage: 50,
+                      width: 165.w,
+                      height: 165.h,
+                      widthImage: 45.w,
+                      heightImage: 45.h,
                     ),
                     MainPageCard(
                       icons: 'images/my_rides.png',
@@ -119,10 +135,10 @@ class _MainPageState extends State<MainPage> {
                       press: () {
                         Get.to(const MyRidesPage());
                       },
-                      width: 170,
-                      height: 170,
-                      widthImage: 50,
-                      heightImage: 50,
+                      width: 165.w,
+                      height: 165.h,
+                      widthImage: 45.w,
+                      heightImage: 45.h,
                     ),
                   ],
                 ),
@@ -136,10 +152,10 @@ class _MainPageState extends State<MainPage> {
                       icons: 'images/track_me.png',
                       text: 'Track Me',
                       press: _scanQR,
-                      width: 170,
-                      height: 170,
-                      widthImage: 50,
-                      heightImage: 50,
+                      width: 165.w,
+                      height: 165.h,
+                      widthImage: 45.w,
+                      heightImage: 45.h,
                     ),
                     MainPageCard(
                       icons: 'images/track_me.png',
@@ -147,21 +163,24 @@ class _MainPageState extends State<MainPage> {
                       press: () {
                         Get.to(const FamilyMemberListScreen());
                       },
-                      width: 170,
-                      height: 170,
-                      widthImage: 50,
-                      heightImage: 50,
+                      width: 165.w,
+                      height: 165.h,
+                      widthImage: 45.w,
+                      heightImage: 45.h,
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
-              MainPageBtn(
-                  icons: 'images/my_family_icons.png',
-                  text: 'My Family List',
-                  press: () {
-                    Get.to(const UserFamilyList());
-                  }),
+              SizedBox(height: 8.h),
+              Padding(
+                padding:  EdgeInsets.symmetric(horizontal: 12.0.w),
+                child: MainPageBtn(
+                    icons: 'images/my_family_icons.png',
+                    text: 'My Family List',
+                    press: () {
+                      Get.to(const UserFamilyList());
+                    }),
+              ),
             ],
           ),
         ),
