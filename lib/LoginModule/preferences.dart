@@ -22,6 +22,7 @@ class Preferences {
   static const String image = 'image';
   static const String startLat = 'startLat';
   static const String startLng = 'startLng';
+  static const String ageCalculate = "ageCalculate";
 
   static Future<void> setPreferences() async {
     instance = await SharedPreferences.getInstance();
@@ -92,6 +93,10 @@ class Preferences {
   static Future<bool> setImage(String key, String value) {
     return Preferences.instance!.setString(key, value);
   }
+  static Future<bool> setAge(String value) {
+    return Preferences.instance!.setString(ageCalculate, value);
+  }
+
 
   static Future<bool> setEmailID(String key, String value) {
     return Preferences.instance!.setString(key, value);
@@ -155,6 +160,9 @@ class Preferences {
 
   static dynamic getImage(String key) {
     return Preferences.instance?.get(key);
+  }
+  static dynamic getAge() {
+    return Preferences.instance?.get(ageCalculate);
   }
 
   static dynamic getAdharCard(String key) {
