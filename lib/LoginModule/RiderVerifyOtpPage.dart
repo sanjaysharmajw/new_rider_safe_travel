@@ -240,11 +240,11 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
-        OverlayLoadingProgress.stop(context);
+        OverlayLoadingProgress.stop();
         Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
         await regUserNew(mobileNumber.toString());
       } else {
-        OverlayLoadingProgress.stop(context);
+        OverlayLoadingProgress.stop();
         Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
       }
       return null;
@@ -268,11 +268,11 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
-        OverlayLoadingProgress.stop(context);
+        OverlayLoadingProgress.stop();
         Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
         Get.to(RiderVerifyOtpPage(mobileNumber: mobileNumber.toString()));
       } else {
-        OverlayLoadingProgress.stop(context);
+        OverlayLoadingProgress.stop();
         //Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
       }
       return null;
@@ -296,9 +296,9 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       //var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
-        OverlayLoadingProgress.stop(context);
+        OverlayLoadingProgress.stop();
 
-        OverlayLoadingProgress.stop(context);
+        OverlayLoadingProgress.stop();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("asdfghjk")),
         );
@@ -331,7 +331,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         Get.to(const MainPage());
         Get.snackbar("Message", "Successful", snackPosition: SnackPosition.BOTTOM);
       } else {
-        OverlayLoadingProgress.stop(context);
+        OverlayLoadingProgress.stop();
         Get.snackbar("Message", "wertyuio",
             snackPosition: SnackPosition.BOTTOM);
       }

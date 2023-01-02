@@ -144,7 +144,7 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
-        OverlayLoadingProgress.stop(context);
+        OverlayLoadingProgress.stop();
         Get.to(StartRide(
             riderId: widget.riderId.toString(),
             dName: widget.dName.toString(),
@@ -156,7 +156,7 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
         Get.snackbar("Message", msg.toString(),
             snackPosition: SnackPosition.BOTTOM);
       } else {
-        OverlayLoadingProgress.stop(context);
+        OverlayLoadingProgress.stop();
         Get.snackbar("Message", msg.toString(),
             snackPosition: SnackPosition.BOTTOM);
       }

@@ -107,12 +107,12 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
-        OverlayLoadingProgress.stop(context);
+        OverlayLoadingProgress.stop();
         Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
         Navigator.pop(context);
         print(userId + msg);
       } else {
-        OverlayLoadingProgress.stop(context);
+        OverlayLoadingProgress.stop();
         Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
         print(userId + msg);
       }
