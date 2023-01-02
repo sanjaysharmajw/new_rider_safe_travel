@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -17,14 +18,15 @@ class ProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return  Row(
       children: [
         Padding(
-          padding: EdgeInsets.only(left: 20),
+          padding: EdgeInsets.only(left: 20.h),
           child:  CachedNetworkImage(
             imageUrl: assetsPath,
-            width: 50,
-            height: 30,
+            width: 50.w,
+            height: 30.h,
             progressIndicatorBuilder: (context, url, downloadProgress) =>
                 CircularProgressIndicator(value: downloadProgress.progress),
             errorWidget: (context, url, error) => Icon(Icons.error),
@@ -32,7 +34,7 @@ class ProfileWidget extends StatelessWidget {
 
         ),
         SizedBox(
-          width: 14,
+          width: 14.w,
         ),
         Row(
           children: [
@@ -43,20 +45,20 @@ class ProfileWidget extends StatelessWidget {
                     text: profileName,
                     fontFamily: 'transport',
                     color: CustomColor.black,
-                    fontSize: 16),
+                    fontSize: 16.sp),
                 MyText(
                     text: profileMobile,
                     fontFamily: 'transport',
                     color: CustomColor.black,
-                    fontSize: 16),
+                    fontSize: 16.sp),
               ],
             ),
           ],
         ),
         SizedBox(width: 30,),
         Container(
-          width: 110.0,
-          height: 40.0,
+          width: 110.0.w,
+          height: 40.0.h,
           child: ElevatedButton(
             onPressed: onPress,
             style: ElevatedButton.styleFrom(
@@ -65,16 +67,16 @@ class ProfileWidget extends StatelessWidget {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const <Widget>[
+              children:  <Widget>[
                 Text(
                   'Edit Profile',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize:12,
+                      fontSize:12.sp,
                       color: CustomColor.riderprofileColor),
                 ),
-                Image(image: AssetImage('assets/Union (1).png'),width: 10,height: 12,)
+                Image(image: AssetImage('assets/Union (1).png'),width: 10.w,height: 12.h,)
               ],
             ),
           ),

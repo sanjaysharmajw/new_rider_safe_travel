@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
@@ -32,6 +33,7 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return SafeArea(child: Scaffold(
       appBar: AppBar(
         leading: const Icon(Icons.keyboard_backspace_sharp),
@@ -39,53 +41,55 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
         backgroundColor: CustomColor.yellow,
         title: const Text("Add Family Member",style: TextStyle(fontFamily: 'transport',fontSize: 18)),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SizedBox(height: 50),
-          const SizedBox(height: 20),
-          const Text("User Who can track",style: TextStyle(fontFamily: 'transport',fontSize: 20)),
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: TextField(
-              controller: controllerName,
-              style: const TextStyle(fontFamily: 'transport',fontSize: 14),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Enter Name',
-                hintText: 'Enter Name',
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 50),
+            const SizedBox(height: 20),
+            const Text("User Who can track",style: TextStyle(fontFamily: 'transport',fontSize: 20)),
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: TextField(
+                controller: controllerName,
+                style: const TextStyle(fontFamily: 'transport',fontSize: 14),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Enter Name',
+                  hintText: 'Enter Name',
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: TextField(
-              controller: controllerRelation,
-              style: const TextStyle(fontFamily: 'transport',fontSize: 14),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Enter Relation',
-                hintText: 'Enter Your Family Relation',
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: TextField(
+                controller: controllerRelation,
+                style: const TextStyle(fontFamily: 'transport',fontSize: 14),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Enter Relation',
+                  hintText: 'Enter Your Family Relation',
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: TextFormField(
-              controller: controllerMobile,
-              style: const TextStyle(fontFamily: 'transport',fontSize: 14),
-              decoration:  const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Enter Mobile',
-                hintText: 'Enter Your Mobile Number',
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: TextFormField(
+                controller: controllerMobile,
+                style: const TextStyle(fontFamily: 'transport',fontSize: 14),
+                decoration:  const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Enter Mobile',
+                  hintText: 'Enter Your Mobile Number',
+                ),
               ),
             ),
-          ),
-          RiderButton(click: (){
-            OverlayLoadingProgress.start(context);
-            addFamilyMember(controllerName.text.toString(),userId,controllerRelation.text.toString(),controllerMobile.text.toString());
-          }, textBtn: 'Add')
-        ],
+            RiderButton(click: (){
+              OverlayLoadingProgress.start(context);
+              addFamilyMember(controllerName.text.toString(),userId,controllerRelation.text.toString(),controllerMobile.text.toString());
+            }, textBtn: 'Add')
+          ],
+        ),
       ),
     ));
   }
@@ -107,12 +111,12 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
-        OverlayLoadingProgress.stop();
+        OverlayLoadingProgress;
         Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
         Navigator.pop(context);
         print(userId + msg);
       } else {
-        OverlayLoadingProgress.stop();
+        OverlayLoadingProgress;
         Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
         print(userId + msg);
       }

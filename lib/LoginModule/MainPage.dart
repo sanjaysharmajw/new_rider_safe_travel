@@ -107,81 +107,93 @@ class _MainPageState extends State<MainPage> {
           title:  Text("Dashboard",
               style: TextStyle(fontSize: 16.sp, fontFamily: 'transport')),
         ),
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              DashboardProfileWidgets(image: image, profileName: profileName+" "+profileLastName, profileMobile: profileMobile, emailId: profileEmailId),
-              SizedBox(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    MainPageCard(
-                      icons: 'images/my_profile.png',
-                      text: 'My Profile',
-                      press: () {
-                        Get.to(const RiderProfileView());
-                      },
-                      width: 165.w,
-                      height: 165.h,
-                      widthImage: 45.w,
-                      heightImage: 45.h,
-                    ),
-                    MainPageCard(
-                      icons: 'images/my_rides.png',
-                      text: 'My Rides',
-                      press: () {
-                        Get.to(const MyRidesPage());
-                      },
-                      width: 165.w,
-                      height: 165.h,
-                      widthImage: 45.w,
-                      heightImage: 45.h,
-                    ),
-                  ],
+        body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: [
+                DashboardProfileWidgets(image: image, profileName: profileName+" "+profileLastName, profileMobile: profileMobile, emailId: profileEmailId),
+                SizedBox(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: MainPageCard(
+                          icons: 'images/my_profile.png',
+                          text: 'My Profile',
+                          press: () {
+                            Get.to(const RiderProfileView());
+                          },
+                          width: 165.w,
+                          height: 165.h,
+                          widthImage: 45.w,
+                          heightImage: 45.h,
+                        ),
+                      ),
+                      Expanded(
+                        child: MainPageCard(
+                          icons: 'images/my_rides.png',
+                          text: 'My Rides',
+                          press: () {
+                            Get.to(const MyRidesPage());
+                          },
+                          width: 165.w,
+                          height: 165.h,
+                          widthImage: 45.w,
+                          heightImage: 45.h,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    MainPageCard(
-                      icons: 'images/track_me.png',
-                      text: 'Track Me',
-                      press: _scanQR,
-                      width: 165.w,
-                      height: 165.h,
-                      widthImage: 45.w,
-                      heightImage: 45.h,
-                    ),
-                    MainPageCard(
-                      icons: 'images/track_me.png',
-                      text: 'Track Others',
-                      press: () {
-                        Get.to(const FamilyMemberListScreen());
-                      },
-                      width: 165.w,
-                      height: 165.h,
-                      widthImage: 45.w,
-                      heightImage: 45.h,
-                    ),
-                  ],
+                SizedBox(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(child:MainPageCard(
+                        icons: 'images/track_me.png',
+                        text: 'Track Me',
+                        press: _scanQR,
+                        width: 165.w,
+                        height: 165.h,
+                        widthImage: 45.w,
+                        heightImage: 45.h,
+                      ), ),
+                      
+                      Expanded(child:  MainPageCard(
+                        icons: 'images/track_me.png',
+                        text: 'Track Others',
+                        press: () {
+                          Get.to(const FamilyMemberListScreen());
+                        },
+                        width: 165.w,
+                        height: 165.h,
+                        widthImage: 45.w,
+                        heightImage: 45.h,
+                      ),),
+                      
+                     
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 8.h),
-              Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 12.0.w),
-                child: MainPageBtn(
-                    icons: 'images/my_family_icons.png',
-                    text: 'My Family List',
-                    press: () {
-                      Get.to(const UserFamilyList());
-                    }),
-              ),
-            ],
+                SizedBox(height: 8.h),
+                  Padding(
+                  padding:  EdgeInsets.symmetric(horizontal: 12.0.w),
+                  child: Expanded(
+                    child: MainPageBtn(
+                        icons: 'images/my_family_icons.png',
+                        text: 'My Family List',
+                        press: () {
+                          Get.to(const UserFamilyList());
+                        }),
+                  ),
+                ),
+
+              ],
+            ),
           ),
         ),
       )),

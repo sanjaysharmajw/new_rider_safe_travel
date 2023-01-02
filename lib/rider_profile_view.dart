@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
@@ -107,6 +108,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return  Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -144,12 +146,12 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 20,top: 10),
-                            child: const MyText(
+                            padding: EdgeInsets.only(left: 20.h,top: 10.h),
+                            child:  MyText(
                                 text: "Rider Profile",
                                 fontFamily: 'transport',
                                 color: CustomColor.black,
-                                fontSize: 20),
+                                fontSize: 20.sp),
                           ),
                           const SizedBox(
                             height: 20,

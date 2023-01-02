@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -89,6 +90,7 @@ class _RiderMapState extends State<RiderMap> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -132,12 +134,14 @@ class _RiderMapState extends State<RiderMap> {
               snap: true,
               builder: (BuildContext context, scrollSheetController) {
                 return Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: CustomColor.white,
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(15.h),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(15.0),
+                    padding:  EdgeInsets.symmetric(vertical: 10.0.h,horizontal: 15.0.w),
                     child: Column(
                       children: [
                         Row(
@@ -146,26 +150,26 @@ class _RiderMapState extends State<RiderMap> {
                             Column(
                               children: [
                                 Image.asset("images/contact_driver.png",
-                                    width: 50, height: 50),
-                                const SizedBox(height: 10),
-                                const Text("Contact Driver",
+                                    width: 50.w, height: 50.h),
+                                 SizedBox(height: 10.h),
+                                 Text("Contact Driver",
                                     style: TextStyle(
-                                        fontFamily: 'transport', fontSize: 16)),
+                                        fontFamily: 'transport', fontSize: 16.sp)),
                               ],
                             ),
                             InkWell(
                               onTap: () {
                                 showMenu();
                               },
-                              child: Column(
+                           child: Column(
                                 children: [
                                   Image.asset("images/Ride_Details.png",
-                                      width: 50, height: 50),
-                                  const SizedBox(height: 10),
-                                  const Text("Ride Details",
+                                      width: 50.w, height: 50.h),
+                                   SizedBox(height: 10.h),
+                                   Text("Ride Details",
                                       style: TextStyle(
                                           fontFamily: 'transport',
-                                          fontSize: 16)),
+                                          fontSize: 16.sp)),
                                 ],
                               ),
                             ),
@@ -176,9 +180,9 @@ class _RiderMapState extends State<RiderMap> {
                               child: Column(
                                 children: [
                                   Image.asset("images/hundred_number.png",
-                                      width: 50, height: 50),
-                                  const SizedBox(height: 10),
-                                  const Text("100",
+                                      width: 50.w, height: 50.h),
+                                   SizedBox(height: 10.h),
+                                  Text("100",
                                       style: TextStyle(
                                           fontFamily: 'transport',
                                           fontSize: 16)),

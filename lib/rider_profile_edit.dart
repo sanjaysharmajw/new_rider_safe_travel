@@ -1287,7 +1287,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
       body: await file.readAsBytes(),
     );
     if (response.statusCode == 200) {
-      OverlayLoadingProgress.stop();
+      OverlayLoadingProgress;
       Get.snackbar("Message", "Successful Aws File",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: CustomColor.yellow,
@@ -1297,7 +1297,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
           duration: const Duration(seconds: 1));
       print(response.body);
     } else {
-      OverlayLoadingProgress.stop();
+      OverlayLoadingProgress;
       throw Exception('Failed to AWS.');
     }
     return null;
@@ -1442,10 +1442,10 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
       print(response.body);
       if (status == true) {
         Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
-        OverlayLoadingProgress.stop();
+        OverlayLoadingProgress;
         Get.to(MainPage());
       } else {
-        OverlayLoadingProgress.stop();
+        OverlayLoadingProgress;
 
         //Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
       }

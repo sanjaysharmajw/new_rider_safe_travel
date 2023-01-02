@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:otp_timer_button/otp_timer_button.dart';
@@ -41,6 +42,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     final defaultPinTheme = PinTheme(
       width: 100,
       height: 50,
@@ -69,6 +71,8 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         backgroundColor: const Color(0xFFffffff),
         body: SingleChildScrollView(
           child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
             padding: const EdgeInsets.only(left: 40, right: 40),
             child: Form(
               // key: _formKey,
@@ -79,72 +83,72 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text("Verify Mobile Number",
+                  Text("Verify Mobile Number",
                       style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 20.sp,
                           fontFamily: 'transport',
                           fontWeight: FontWeight.bold)),
-                  const SizedBox(
-                    height: 15,
+                   SizedBox(
+                    height: 15.h,
                   ),
-                  const Text(
+                   Text(
                     "Enter 4 digit verification code set to",
                     style: TextStyle(
                         fontFamily: "transport",
                         fontWeight: FontWeight.w400,
-                        fontSize: 15),
+                        fontSize: 15.sp),
                   ),
-                  const SizedBox(
-                    height: 5,
+                   SizedBox(
+                    height: 5.h,
                   ),
                   Row(
                     children: [
-                      const Text(
+                      Text(
                         "your mobile number ",
                         style: TextStyle(
                             fontFamily: "transport",
                             fontWeight: FontWeight.w400,
-                            fontSize: 15),
+                            fontSize: 15.sp),
                       ),
                       Text(
                         widget.mobileNumber.toString(),
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontFamily: "transport",
                             fontWeight: FontWeight.w400,
-                            fontSize: 15),
+                            fontSize: 15.sp),
                       ),
                       InkWell(
                         onTap: () {
                           //Get.to(const RiderLoginPage());
                         },
-                        child: const Text(
+                        child: Text(
                           '  Edit',
                           style: TextStyle(
                               color: CustomColor.yellow,
                               fontFamily: "transport",
                               fontWeight: FontWeight.w400,
-                              fontSize: 15),
+                              fontSize: 15.sp),
                         ),
                       )
                     ],
                   ),
-                  const SizedBox(
-                    height: 70,
+                   SizedBox(
+                    height: 50.h,
                   ),
-                  const SizedBox(
-                    width: 315,
+                   SizedBox(
+                    width: 315.w,
                     child: Text(
                       "Enter OTP here",
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         fontFamily: "transport",
                         fontWeight: FontWeight.w400,
-                        fontSize: 15,
+                        fontSize: 15.sp,
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
+                  SizedBox(
+                    height: 10.h,
                   ),
                   Center(
                     child: Pinput(
@@ -240,11 +244,11 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
-        OverlayLoadingProgress.stop();
+        OverlayLoadingProgress.stop(context);
         Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
         await regUserNew(mobileNumber.toString());
       } else {
-        OverlayLoadingProgress.stop();
+        OverlayLoadingProgress.stop(context);
         Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
       }
       return null;
@@ -268,11 +272,11 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
-        OverlayLoadingProgress.stop();
+        OverlayLoadingProgress.stop(context);
         Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
         Get.to(RiderVerifyOtpPage(mobileNumber: mobileNumber.toString()));
       } else {
-        OverlayLoadingProgress.stop();
+        OverlayLoadingProgress.stop(context);
         //Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
       }
       return null;
@@ -296,9 +300,9 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       //var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
-        OverlayLoadingProgress.stop();
+        OverlayLoadingProgress.stop(context);
 
-        OverlayLoadingProgress.stop();
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("asdfghjk")),
         );
@@ -331,7 +335,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         Get.to(const MainPage());
         Get.snackbar("Message", "Successful", snackPosition: SnackPosition.BOTTOM);
       } else {
-        OverlayLoadingProgress.stop();
+        OverlayLoadingProgress.stop(context);
         Get.snackbar("Message", "wertyuio",
             snackPosition: SnackPosition.BOTTOM);
       }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
@@ -56,6 +57,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return  Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.transparent,
@@ -90,6 +92,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                         print(snapshot.data!.length);
                         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         return  Container(
+
                           padding: const EdgeInsets.only(left: 15, right: 15,),
                           child:  Stack(
                             children: [
@@ -116,6 +119,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                         children: [
                                           CachedNetworkImage(
                                             imageUrl: "${snapshot.data![index].memberProfileImage.toString()}",
+                                            height: 60,width: 60,
                                             progressIndicatorBuilder: (context, url, downloadProgress) =>
                                                 CircularProgressIndicator(value: downloadProgress.progress),
                                             errorWidget: (context, url, error) => Icon(Icons.error),

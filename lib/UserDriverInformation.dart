@@ -94,7 +94,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
     if (response.statusCode == 200) {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       if (status == true) {
-        OverlayLoadingProgress.stop();
+        OverlayLoadingProgress.stop(context);
         List<Data> driverDetails = jsonDecode(response.body)['data']
             .map<Data>((data) => Data.fromJson(data))
             .toList();
@@ -117,7 +117,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
         // Preferences.setDriverId(driverIds);
         setState(() {});
       } else if (status == false) {
-        OverlayLoadingProgress.stop();
+        OverlayLoadingProgress.stop(context);
       }
       return DriverVehicleList.fromJson(response.body);
     } else {
@@ -182,13 +182,13 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
       if (status == true) {
         Get.to(StartRide(riderId: rideId.toString(), dName: driverName.toString(), dMobile: driverMob.toString(), dPhoto: dPhoto.toString(),
           model: vModel.toString(), vOwnerName: vOwnerName.toString(), vRegNo: vRegNumber.toString(), socketToken: socketToken));
-        OverlayLoadingProgress.stop();
+        OverlayLoadingProgress.stop(context);
         print("Userinformation" + driverId + vehicleId);
       } else {
         Get.to(FamilyMemberAddScreen(driverId: driverId,
             vehicleId: vehicleId, riderId:rideId.toString(),dName: driverName.toString(), dMobile: driverMob.toString(), dPhoto: dPhoto.toString(),
             model: vModel.toString(), vOwnerName: vOwnerName.toString(), vRegNo: vRegNumber.toString(), socketToken: socketToken));
-        OverlayLoadingProgress.stop();
+        OverlayLoadingProgress.stop(context);
       }
       return null;
     } else {

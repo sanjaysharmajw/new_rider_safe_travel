@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
@@ -28,7 +29,7 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -45,6 +46,8 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
         backgroundColor: const Color(0xFFffffff),
         body: SingleChildScrollView(
           child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: Form(
               key: _formKey,
@@ -146,7 +149,7 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
 
                       ]),
                   const SizedBox(
-                    height: 200,
+                    height: 100,
                   ),
 
                   Padding(
@@ -191,10 +194,10 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
-        OverlayLoadingProgress.stop();
+        OverlayLoadingProgress.stop(context);
         Get.to(RiderVerifyOtpPage(mobileNumber: mobileNumber.toString()));
       } else {
-        OverlayLoadingProgress.stop();
+        OverlayLoadingProgress.stop(context);
         //Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
       }
       return null;
