@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
+import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'Error.dart';
 import 'LoginModule/Api_Url.dart';
 import 'LoginModule/custom_color.dart';
@@ -201,13 +202,14 @@ class _MyRidesPageState extends State<MyRidesPage> {
                   return Text('${snapshot.error}');
                 }
                 // By default, show a loading spinner.
-                return const CircularProgressIndicator();
+                return Center(child: const CircularProgressIndicator());
               },
             )
         ));
   }
 
   Future<List<RideDataModel>> getData() async {
+
     await Preferences.setPreferences();
     String userId = Preferences.getId(Preferences.id).toString();
     final response = await http.post(
@@ -221,6 +223,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
     );
     print('User Id:${userId.toString()}');
     if (response.statusCode == 200) {
+      OverlayLoadingProgress.stop(context);
 
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];

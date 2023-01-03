@@ -72,7 +72,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
   void sharePre() async {
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
-    Get.snackbar("Hit with time", userId);
+   // Get.snackbar("Hit with time", userId);
   }
 
   Future<DriverVehicleList> driverVehicleListApi(BuildContext context) async {
@@ -121,7 +121,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
       }
       return DriverVehicleList.fromJson(response.body);
     } else {
-      Get.snackbar(response.body, 'Failed');
+     //Get.snackbar(response.body, 'Failed');
       throw Exception('Failed to create album.');
     }
   }
@@ -237,7 +237,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
           await userFamilyList(userId, rideId,socketToken);
         }
       } else if (status == false) {
-        Get.snackbar(response.body, 'Failed');
+       // Get.snackbar(response.body, 'Failed');
       }
       return response;
     } else {

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
 import 'package:ride_safe_travel/LoginModule/Map/RiderMap.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
@@ -52,12 +53,18 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                       return InkWell(
                         onTap: () {
                           setState(() {
-                            Get.to(RiderMap(riderId:snapshot.data![index].id.toString(),
-                              dName: snapshot.data![index].driverName.toString(), dLicenseNo: snapshot.data![index].drivingLicenceNumber.toString(), vModel: snapshot.data![index].vehicleModel.toString(),
-                              vOwnerName: snapshot.data![index].ownerName.toString(), vRegistration: snapshot.data![index].vehicleRegistrationNumber.toString(),
-                              dMobile: snapshot.data![index].driverMobileNumber.toString(), dImage: snapshot.data![index].driverPhoto.toString(),
-                              memberName: snapshot.data![index].memberName.toString(),
-                            ));
+                            if(snapshot.hasData){
+                              OverlayLoadingProgress.start(context);
+                              Get.to(RiderMap(riderId:snapshot.data![index].id.toString(),
+                                dName: snapshot.data![index].driverName.toString(), dLicenseNo: snapshot.data![index].drivingLicenceNumber.toString(), vModel: snapshot.data![index].vehicleModel.toString(),
+                                vOwnerName: snapshot.data![index].ownerName.toString(), vRegistration: snapshot.data![index].vehicleRegistrationNumber.toString(),
+                                dMobile: snapshot.data![index].driverMobileNumber.toString(), dImage: snapshot.data![index].driverPhoto.toString(),
+                                memberName: snapshot.data![index].memberName.toString(),
+                              ));
+                            }else{
+                              Center(child: CircularProgressIndicator());
+                            }
+
                           });
                         },
                         child: Padding(
@@ -225,7 +232,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                   return Text('${snapshot.error}');
                 }
                 // By default, show a loading spinner.
-                return const CircularProgressIndicator();
+                return Center(child: const CircularProgressIndicator());
               },
             )));
   }
@@ -241,6 +248,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
       }),
     );
     print('User Id:${userId.toString()}');
+
     if (response.statusCode == 200) {
       List<Familymodel> familyData = jsonDecode(response.body)['data'].map<Familymodel>((data) => Familymodel.fromJson(data)).toList();
       return familyData;
@@ -254,12 +262,13 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
     super.initState();
     sharePre();
 
+
   }
   void sharePre() async {
     await Preferences.setPreferences();
     String userId = Preferences.getId(Preferences.id).toString();
     _future = getData(userId);
-    Get.snackbar("Hit with time", userId);
+    //Get.snackbar("Hit with time", userId);
     setState(() {
 
     });

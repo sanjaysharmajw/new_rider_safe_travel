@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
+import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
 import 'package:ride_safe_travel/LoginModule/Map/Drawer.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
@@ -61,6 +62,7 @@ class _RiderMapState extends State<RiderMap> {
 
   @override
   void initState() {
+
     super.initState();
     // getDataEverySec();
     _markers = <MarkerId, Marker>{};
@@ -85,6 +87,7 @@ class _RiderMapState extends State<RiderMap> {
     vehicleId = Preferences.getVehicleId(Preferences.vehicleId).toString();
     driverId = Preferences.getDriverId().toString();
     riderId = Preferences.getRiderIdFromFamilyMem().toString();
+    OverlayLoadingProgress.stop(context);
     getSocketToken();
   }
 

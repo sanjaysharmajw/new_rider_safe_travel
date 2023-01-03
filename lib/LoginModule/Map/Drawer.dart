@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 
 class DrawerInfo extends StatelessWidget {
@@ -30,8 +31,9 @@ class DrawerInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: EdgeInsets.all(15.0.sp),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -39,27 +41,27 @@ class DrawerInfo extends StatelessWidget {
               onTap: press,
               child: const Icon(Icons.keyboard_backspace_sharp,
                   color: CustomColor.black)),
-          const SizedBox(
-            height: 20,
+           SizedBox(
+            height: 20.h,
           ),
-          const Text("Driver Information",
-              style: TextStyle(fontFamily: 'transport', fontSize: 18)),
-          const SizedBox(height: 10),
+          Text("Driver Information",
+              style: TextStyle(fontFamily: 'transport', fontSize: 18.sp)),
+          SizedBox(height: 10.h),
           Container(
             decoration: BoxDecoration(
                 color: CustomColor.listColor,
-                borderRadius: BorderRadius.circular(5.0)),
+                borderRadius: BorderRadius.circular(5.0.r)),
             child: Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(10.0.sp),
                   child: Stack(
                     alignment: Alignment.bottomRight,
                     children: [
                       Image.network(
                         dInfoImage,
-                        width: 60,
-                        height: 60,
+                        width: 60.w,
+                        height: 60.h,
                       ),
                       // CircleAvatar(
                       //   backgroundColor: CustomColor.yellow,
@@ -82,8 +84,8 @@ class DrawerInfo extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  width: 10,
+                 SizedBox(
+                  width: 10.w,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,18 +94,19 @@ class DrawerInfo extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(right: 35),
+                          padding: EdgeInsets.only(right: 35.h),
                           child: Text(dInfoName,
-                              style: const TextStyle(
-                                  fontFamily: 'transport', fontSize: 16)),
+                              style: TextStyle(
+                                  fontFamily: 'transport', fontSize: 16.sp)),
                         ),
                         Text(dInfoMobile,
-                            style: const TextStyle(
-                                fontFamily: 'transport', fontSize: 16)),
+                            style: TextStyle(
+                                fontFamily: 'transport', fontSize: 16.sp)),
                       ],
                     ),
-                    const SizedBox(
-                      height: 5,
+                    SizedBox(
+                      height: 5.h
+                      ,
                     ),
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -122,15 +125,15 @@ class DrawerInfo extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.only(right: 16),
+                           Padding(
+                            padding: EdgeInsets.only(right: 16.sp),
                             child: Text("Driving License No: ",
                                 style: TextStyle(
-                                    fontFamily: 'transport', fontSize: 16)),
+                                    fontFamily: 'transport', fontSize: 16.sp)),
                           ),
                           Text(dInfoLicense,
-                              style: const TextStyle(
-                                  fontFamily: 'transport', fontSize: 16)),
+                              style: TextStyle(
+                                  fontFamily: 'transport', fontSize: 16.sp)),
                         ],
                       ),
                     )
@@ -139,16 +142,16 @@ class DrawerInfo extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 40),
-          const Text("Vehicles Information",
-              style: TextStyle(fontFamily: 'transport', fontSize: 18)),
-          const SizedBox(height: 10),
+          SizedBox(height: 40.h),
+           Text("Vehicles Information",
+              style: TextStyle(fontFamily: 'transport', fontSize: 18.sp)),
+           SizedBox(height: 10.h),
           Container(
             decoration: BoxDecoration(
                 color: CustomColor.listColor,
-                borderRadius: BorderRadius.circular(5.0)),
+                borderRadius: BorderRadius.circular(5.0.r)),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding:  EdgeInsets.all(8.0.sp),
               child: Column(
                 children: [
                   Row(
@@ -158,51 +161,51 @@ class DrawerInfo extends StatelessWidget {
                         children: [
                           Image(
                             image: AssetImage(vInfoImage),
-                            width: 60,
-                            height: 60,
+                            width: 60.w,
+                            height: 60.h,
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        width: 20,
+                       SizedBox(
+                        width: 20.w,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(vInfoModel,
-                              style: const TextStyle(
-                                  fontFamily: 'transport', fontSize: 16)),
-                          const SizedBox(
-                            height: 5,
+                              style:  TextStyle(
+                                  fontFamily: 'transport', fontSize: 16.sp)),
+                           SizedBox(
+                            height: 5.h,
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Padding(
-                                padding: EdgeInsets.only(right: 26),
+                               Padding(
+                                padding: EdgeInsets.only(right: 26.h),
                                 child: Text("Vehicle Owner Name: ",
                                     style: TextStyle(
-                                        fontFamily: 'transport', fontSize: 16)),
+                                        fontFamily: 'transport', fontSize: 16.sp)),
                               ),
                               Text(vInfoOwnerName,
-                                  style: const TextStyle(
-                                      fontFamily: 'transport', fontSize: 14)),
-                              const SizedBox(
-                                height: 5,
+                                  style: TextStyle(
+                                      fontFamily: 'transport', fontSize: 14.sp)),
+                               SizedBox(
+                                height: 5.h,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text("Registration Number:",
+                                   Text("Registration Number:",
                                       style: TextStyle(
                                           fontFamily: 'transport',
-                                          fontSize: 16)),
+                                          fontSize: 16.sp)),
                                   Text(vInfoRegNo,
-                                      style: const TextStyle(
+                                      style:  TextStyle(
                                           fontFamily: 'transport',
-                                          fontSize: 14)),
+                                          fontSize: 14.sp)),
                                 ],
                               ),
                             ],

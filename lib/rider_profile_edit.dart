@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:age_calculator/age_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:http/http.dart' as http;
@@ -138,6 +139,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
 
   @override
   initState() {
+
     print(widget.date);
     print(widget.pincode);
     print(widget.city);
@@ -168,6 +170,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     // _future = getRiderData();
     stringRandomNumber = randomNumber.toString();
     preferences();
+    //OverlayLoadingProgress.stop(context);
     super.initState();
   }
 
@@ -354,25 +357,27 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       child: Stack(
                                         alignment: Alignment.bottomRight,
                                         children: [
+
                                           CircleAvatar(
                                             backgroundColor: CustomColor.yellow,
-                                            radius: 45.0,
+                                            radius: 45.0.r,
                                             child: CircleAvatar(
-                                              radius: 43.0,
+                                              radius: 44.0.r,
                                               backgroundColor: Colors.white,
                                               child: ClipOval(
                                                 child: (image != null)
                                                     ? Image.file(
                                                         image!,
-                                                        width: 100,
-                                                        height: 100,
-                                                        fit: BoxFit.cover,
+                                                        width: 80.w,
+                                                        height: 80.h,
+                                                        fit: BoxFit.fill,
                                                       )
                                                     : Image.network(
                                                         widget.imageProfile),
                                               ),
                                             ),
                                           ),
+
                                           Image.asset(
                                               'assets/select_image.png'),
                                         ],
@@ -1039,7 +1044,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             if (age < 6) {
                               openAndCloseLoadingDialog();
                             } else {
+
                               updateProfile(userId);
+                              OverlayLoadingProgress.start(context);
                             }
                           }
                         }),
@@ -1244,6 +1251,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     );
 
     if (response.statusCode == 200) {
+      OverlayLoadingProgress.stop(context);
       print('RES:${response.body}');
       List<RiderUserListData> loginData = jsonDecode(response.body)['data']
           .map<RiderUserListData>((data) => RiderUserListData.fromJson(data))
@@ -1288,13 +1296,13 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     );
     if (response.statusCode == 200) {
       OverlayLoadingProgress;
-      Get.snackbar("Message", "Successful Aws File",
+     /* Get.snackbar("Message", "Successful Aws File",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: CustomColor.yellow,
           borderRadius: 5,
           colorText: CustomColor.white,
           margin: const EdgeInsets.all(15),
-          duration: const Duration(seconds: 1));
+          duration: const Duration(seconds: 1));*/
       print(response.body);
     } else {
       OverlayLoadingProgress;
@@ -1304,13 +1312,14 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   }
 
   Future<StateModel> statesList() async {
+
     final response = await http.post(
       Uri.parse(ApiUrl.stateApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-
+    OverlayLoadingProgress.stop(context);
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body)['data'];
       bool status = jsonDecode(response.body)[ErrorMessage.status];

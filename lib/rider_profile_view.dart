@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
+import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/riderData.dart';
 import 'package:ride_safe_travel/rider_profile_edit.dart';
 
@@ -67,6 +68,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
 
   @override
   void initState() {
+    //OverlayLoadingProgress.stop(context);
 //profileImage=Preferences.getImage(Preferences.image).toString();
 //print(profileImage);
 //print("@@@@@@@@@@@@@@@@@@@@@@@22");
@@ -85,6 +87,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
         const Duration(seconds: 1),
             () => getRiderData(),
     );
+
   }
 
   String result = "wait Navigator.pop";
@@ -159,7 +162,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                           ProfileWidget(profileName:"${snapshot.data![index].firstName.toString()} ${snapshot.data![index].lastName.toString()}",
                               profileMobile:  '${snapshot.data![index].mobileNumber.toString()}',
                               onPress: () async {
-
+                                OverlayLoadingProgress.start(context);
                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>
                                     RiderProfileEdit(date: '${snapshot.data![index].dob.toString()}',
                                       address: '${snapshot.data![index].presentAddress?.address.toString()}',
@@ -172,6 +175,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                       mobileNumber: '${snapshot.data![index].mobileNumber.toString()}',
                                       imageProfile: profileImage,)
                                 )).then((value) {
+
                                   setState(() {
                                   });
                                   return value;
@@ -641,7 +645,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
               return Text('${snapshot.error}');
             }
             // By default, show a loading spinner.
-            return const CircularProgressIndicator();
+            return Center(child: const CircularProgressIndicator());
           },
         ) ,
     );
@@ -664,6 +668,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
   }
 
   Future<List<RiderData>> getRiderData() async {
+   // OverlayLoadingProgress.start(context);
     await Preferences.setPreferences();
     String mobileNumber = Preferences.getMobileNumber(Preferences.mobileNumber).toString();
     final response = await http.post(
@@ -675,7 +680,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
         'mobile_number': mobileNumber,
       }),
     );
-
+   // OverlayLoadingProgress.stop(context);
     if (response.statusCode == 200) {
       print('RES:${response.body}');
       List<RiderData> loginData = jsonDecode(response.body)['data']

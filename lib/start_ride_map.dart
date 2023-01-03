@@ -73,7 +73,7 @@ class _SignUpState extends State<StartRide> {
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
     await socketConnect(widget.socketToken);
-    Get.snackbar("title", widget.socketToken);
+   // Get.snackbar("title", widget.socketToken);
   }
 
   void _initUser() async {
@@ -343,10 +343,10 @@ class _SignUpState extends State<StartRide> {
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if(status==true){
         socket.disconnect();
-        Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
+       // Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
         Get.to(const MainPage());
       }else{
-        Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
+       // Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
       }
       return response;
     } else {

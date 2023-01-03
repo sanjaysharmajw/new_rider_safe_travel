@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:majascan/majascan.dart';
+import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/LoginModule/Map/RiderFamilyList.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
@@ -42,27 +43,30 @@ class _MainPageState extends State<MainPage> {
           qRScannerColor: Colors.orange);
       setState(() {
         result = qrResult ?? 'null string';
-        if (result != null) {
+        if (result != "") {
           Get.to(UserDriverInformation(result: result));
+        }else{
+          Get.to(MainPage());
         }
       });
     } on PlatformException catch (ex) {
       if (ex.code == MajaScan.CameraAccessDenied) {
         setState(() {
-          result = "Camera permission was denied";
+          Get.to(MainPage());
+          //result = "Camera permission was denied";
         });
       } else {
         setState(() {
-          result = "Unknown Error $ex";
+         // result = "Unknown Error $ex";
         });
       }
     } on FormatException {
       setState(() {
-        result = "You pressed the back button before scanning anything";
+       // result = "You pressed the back button before scanning anything";
       });
     } catch (ex) {
       setState(() {
-        result = "Unknown Error $ex";
+        //result = "Unknown Error $ex";
       });
     }
   }
@@ -124,6 +128,7 @@ class _MainPageState extends State<MainPage> {
                           icons: 'images/my_profile.png',
                           text: 'My Profile',
                           press: () {
+
                             Get.to(const RiderProfileView());
                           },
                           width: 165.w,
@@ -137,6 +142,7 @@ class _MainPageState extends State<MainPage> {
                           icons: 'images/my_rides.png',
                           text: 'My Rides',
                           press: () {
+
                             Get.to(const MyRidesPage());
                           },
                           width: 165.w,
@@ -167,6 +173,7 @@ class _MainPageState extends State<MainPage> {
                         icons: 'images/track_me.png',
                         text: 'Track Others',
                         press: () {
+
                           Get.to(const FamilyMemberListScreen());
                         },
                         width: 165.w,

@@ -1,7 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 
+import '../LoginModule/RiderLoginPage.dart';
 import '../LoginModule/preferences.dart';
 
 Future<bool> logoutPopup(context) async{
@@ -23,11 +26,12 @@ Future<bool> logoutPopup(context) async{
                         onPressed: () {
                           print('yes selected');
                           logout();
-                          exit(0);
+                          Get.to(RiderLoginPage());
+                         // exit(0);
                         },
                         child: Text("Yes"),
                         style: ElevatedButton.styleFrom(
-                            primary: Colors.red),
+                            primary: CustomColor.yellow),
                       ),
                     ),
                     SizedBox(width: 15),
