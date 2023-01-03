@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
@@ -24,6 +25,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return SafeArea(
         child: Scaffold(
 
@@ -62,20 +64,20 @@ class _MyRidesPageState extends State<MyRidesPage> {
                         },
                         child: Center(
                           child: Padding(
-                            padding: EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0.h),
                             child: Stack(
                               children: [
                                 Container(
-                                  height: 150,
+                                  height: 190.h,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20.0),
+                                      borderRadius: BorderRadius.circular(20.0.h),
                                       color: CustomColor.yellow
                                   ),
                                 ),
                                 Positioned(
-                                  top: 10,
+                                  top: 10.h,
                                  // left: 90,
-                                  right: 30,
+                                  right: 30.w,
                                   child: Column(
                                    mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -83,20 +85,20 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                       Text("DATE:  "+
                                           snapshot
                                               .data![index].date.toString(),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontFamily:
                                               'transport',
                                               fontSize:
-                                              15)),
+                                              15.sp)),
                                     ],
                                   ),
                                 ),
 
                                 Positioned.fill(
-                                  top: 20,
+                                  top: 20.h,
                                   child: Row(
                                     children: [
-                                      SizedBox(width: 10,),
+                                      SizedBox(width: 10.w,),
                                       Expanded(
                                         child: ClipOval(
                                           child:
@@ -111,8 +113,8 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                             index]
                                                 .driverPhoto
                                                 .toString(),
-                                            width: 80,
-                                            height: 80,
+                                            width: 80.w,
+                                            height: 80.h,
                                             fit: BoxFit
                                                 .cover,
                                           )
@@ -121,7 +123,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                         ),
                                         flex: 2,
                                       ),
-                                      SizedBox(width: 20,),
+                                      SizedBox(width: 20.w,),
                                       Expanded(
                                         flex: 4,
                                         child: Column(
@@ -133,28 +135,28 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                                 .data![index]
                                                 .driverName
                                                 .toString(),
-                                                style: const TextStyle(
+                                                style:  TextStyle(
                                                     fontFamily:
                                                     'transport',
                                                     fontSize:
-                                                    15)),
-                                            SizedBox(height: 10,),
+                                                    15.sp)),
+                                            SizedBox(height: 10.h,),
                                             Text("Driver Mobile Number: "),
                                             Text(snapshot
                                                 .data![index]
                                                 .driverMobileNumber
                                                 .toString(),
-                                                style: const TextStyle(
+                                                style:  TextStyle(
                                                     fontFamily:
                                                     'transport',
                                                     fontSize:
-                                                    15))
+                                                    15.sp,))
                                           ],
 
 
                                         ),
                                       ),
-                                      SizedBox(width: 10,),
+                                      SizedBox(width: 10.w,),
                                       Expanded(
                                         flex: 4,
                                         child: Column(
@@ -164,20 +166,20 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                             Text("Vehicle Re.No. : "),
                                             Text(snapshot
                                                 .data![index].vehicleRegistrationNumber.toString(),
-                                                style: const TextStyle(
+                                                style:  TextStyle(
                                                     fontFamily:
                                                     'transport',
                                                     fontSize:
-                                                    15)),
-                                            SizedBox(height: 10,),
+                                                    15.sp)),
+                                            SizedBox(height: 10.h,),
                                             Text("Veicle Model Name: "),
                                             Text(snapshot
                                                 .data![index].vehicleModel.toString(),
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontFamily:
                                                     'transport',
                                                     fontSize:
-                                                    15))
+                                                    15.sp))
                                           ],
                                         ),
                                       )

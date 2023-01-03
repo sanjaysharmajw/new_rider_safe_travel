@@ -141,57 +141,59 @@ class _RiderMapState extends State<RiderMap> {
                     borderRadius: BorderRadius.circular(15.h),
                   ),
                   child: Padding(
-                    padding:  EdgeInsets.symmetric(vertical: 10.0.h,horizontal: 15.0.w),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              children: [
-                                Image.asset("images/contact_driver.png",
-                                    width: 50.w, height: 50.h),
-                                 SizedBox(height: 10.h),
-                                 Text("Contact Driver",
-                                    style: TextStyle(
-                                        fontFamily: 'transport', fontSize: 16.sp)),
-                              ],
-                            ),
-                            InkWell(
-                              onTap: () {
-                                showMenu();
-                              },
-                           child: Column(
+                    padding:  EdgeInsets.symmetric(vertical: 10.0.h,horizontal: 20.0.w),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
                                 children: [
-                                  Image.asset("images/Ride_Details.png",
+                                  Image.asset("images/contact_driver.png",
                                       width: 50.w, height: 50.h),
                                    SizedBox(height: 10.h),
-                                   Text("Ride Details",
+                                   Text("Contact Driver",
                                       style: TextStyle(
-                                          fontFamily: 'transport',
-                                          fontSize: 16.sp)),
+                                          fontFamily: 'transport', fontSize: 16.sp)),
                                 ],
                               ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Make_a_call.makePhoneCall("100");
-                              },
-                              child: Column(
-                                children: [
-                                  Image.asset("images/hundred_number.png",
-                                      width: 50.w, height: 50.h),
-                                   SizedBox(height: 10.h),
-                                  Text("100",
-                                      style: TextStyle(
-                                          fontFamily: 'transport',
-                                          fontSize: 16)),
-                                ],
+                              InkWell(
+                                onTap: () {
+                                  showMenu();
+                                },
+                             child: Column(
+                                  children: [
+                                    Image.asset("images/Ride_Details.png",
+                                        width: 50.w, height: 50.h),
+                                     SizedBox(height: 10.h),
+                                     Text("Ride Details",
+                                        style: TextStyle(
+                                            fontFamily: 'transport',
+                                            fontSize: 16.sp)),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                              InkWell(
+                                onTap: () {
+                                  Make_a_call.makePhoneCall("100");
+                                },
+                                child: Column(
+                                  children: [
+                                    Image.asset("images/hundred_number.png",
+                                        width: 50.w, height: 50.h),
+                                     SizedBox(height: 10.h),
+                                    Text("100",
+                                        style: TextStyle(
+                                            fontFamily: 'transport',
+                                            fontSize: 16)),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -113,6 +114,7 @@ class _SignUpState extends State<StartRide> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return WillPopScope(
       onWillPop: () => showExitPopup(context,"Do you want to stop ride?",(){
         socket.disconnect();
@@ -163,70 +165,72 @@ class _SignUpState extends State<StartRide> {
                   return Container(
                     decoration: BoxDecoration(
                       color: CustomColor.white,
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(15.r),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                children: [
-                                  InkWell(
-                                    onTap: (){
-                                      showAlertDialog(context);
-                                    },
-                                    child: Column(
-                                      children: [
-                                        Image.asset("images/End_Ride.png",
-                                            width: 50, height: 50),
-                                        const SizedBox(height: 10),
-                                        const Text("End Ride",
-                                            style: TextStyle(
-                                                fontFamily: 'transport', fontSize: 16)),
-                                      ],
-                                    ),
-                                  ),
-
-
-                                ],
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  showMenu();
-                                },
-                                child: Column(
+                      padding:  EdgeInsets.symmetric(vertical: 10.0.h,horizontal: 20.0.w),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
                                   children: [
-                                    Image.asset("images/Ride_Details.png",
-                                        width: 50, height: 50),
-                                    const SizedBox(height: 10),
-                                    const Text("Ride Details",
-                                        style: TextStyle(
-                                            fontFamily: 'transport',
-                                            fontSize: 16)),
+                                    InkWell(
+                                      onTap: (){
+                                        showAlertDialog(context);
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Image.asset("images/End_Ride.png",
+                                              width: 50.w, height: 50.h),
+                                           SizedBox(height: 10.h),
+                                           Text("End Ride",
+                                              style: TextStyle(
+                                                  fontFamily: 'transport', fontSize: 16.sp)),
+                                        ],
+                                      ),
+                                    ),
+
+
                                   ],
                                 ),
-                              ),
-                              Column(
-                                children: [
-                                  InkWell(
-                                    onTap: (){
-                                      Make_a_call.makePhoneCall(widget.dMobile);
-                                    },
-                                    child: Column(
-                                      children: [
-                                        Image.asset("images/SOS.png", width: 50, height: 50),
-                                      ],
-                                    ),
+                                InkWell(
+                                  onTap: () {
+                                    showMenu();
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Image.asset("images/Ride_Details.png",
+                                          width: 50.w, height: 50.h),
+                                       SizedBox(height: 10.h),
+                                       Text("Ride Details",
+                                          style: TextStyle(
+                                              fontFamily: 'transport',
+                                              fontSize: 16.sp)),
+                                    ],
                                   ),
+                                ),
+                                Column(
+                                  children: [
+                                    InkWell(
+                                      onTap: (){
+                                        Make_a_call.makePhoneCall(widget.dMobile);
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Image.asset("images/SOS.png", width: 50.w, height: 50.h),
+                                        ],
+                                      ),
+                                    ),
 
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

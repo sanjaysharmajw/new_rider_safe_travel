@@ -44,8 +44,8 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
   Timer? timer;
   var userId;
   late Location location;
-  late double lat;
-  late double lng;
+  double? lat;
+   double? lng;
 
   var vehicleIds;
   var driverIds;
