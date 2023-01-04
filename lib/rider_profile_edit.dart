@@ -1251,7 +1251,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     );
 
     if (response.statusCode == 200) {
-      OverlayLoadingProgress.stop(context);
+      OverlayLoadingProgress.stop();
       print('RES:${response.body}');
       List<RiderUserListData> loginData = jsonDecode(response.body)['data']
           .map<RiderUserListData>((data) => RiderUserListData.fromJson(data))
@@ -1319,7 +1319,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    OverlayLoadingProgress.stop(context);
+    OverlayLoadingProgress.stop();
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body)['data'];
       bool status = jsonDecode(response.body)[ErrorMessage.status];
@@ -1452,6 +1452,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
       if (status == true) {
         Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
         OverlayLoadingProgress;
+        await Preferences.setPreferences();
+        Preferences.setProfileImage(jsonDecode(response.body)['profile_image']);
         Get.to(MainPage());
       } else {
         OverlayLoadingProgress;
