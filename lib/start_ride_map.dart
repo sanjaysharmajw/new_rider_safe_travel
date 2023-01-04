@@ -23,8 +23,17 @@ import 'Utils/back_button_popup.dart';
 import 'Utils/exit_alert_dialog.dart';
 
 class StartRide extends StatefulWidget {
-   StartRide({Key? key,required this.riderId,required this.socketToken,required this.dName,required this.dMobile,required this.dPhoto,
-     required this.model,required this.vOwnerName,required this.vRegNo}) : super(key: key);
+  StartRide(
+      {Key? key,
+      required this.riderId,
+      required this.socketToken,
+      required this.dName,
+      required this.dMobile,
+      required this.dPhoto,
+      required this.model,
+      required this.vOwnerName,
+      required this.vRegNo})
+      : super(key: key);
 
   @override
   State<StartRide> createState() => _SignUpState();
@@ -37,17 +46,15 @@ class StartRide extends StatefulWidget {
   final String model;
   final String vOwnerName;
   final String vRegNo;
-
 }
 
 class _SignUpState extends State<StartRide> {
-
   Timer? timer;
   late IO.Socket socket;
   late Location location;
   late LocationData currentLocation;
-   late double lat;
-  late  double lng;
+  late double lat;
+  late double lng;
   String id = '';
   var userId = '';
   String socketToken = '';
@@ -65,21 +72,23 @@ class _SignUpState extends State<StartRide> {
     super.initState();
     _initUser();
     sharePre();
-    setState(() {
-    });
+    setState(() {});
   }
 
   void sharePre() async {
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
     await socketConnect(widget.socketToken);
-   // Get.snackbar("title", widget.socketToken);
+    // Get.snackbar("title", widget.socketToken);
   }
 
   void _initUser() async {
     location = Location();
     location.enableBackgroundMode(enable: true);
-    location.changeNotificationOptions(iconName: 'images/rider_launcher.png',channelName: 'Nirbhaya',title: 'Nirbhaya app is running');
+    location.changeNotificationOptions(
+        iconName: 'images/rider_launcher.png',
+        channelName: 'Nirbhaya',
+        title: 'Nirbhaya app is running');
     location.onLocationChanged.listen((LocationData cLoc) async {
       lat = cLoc.latitude!;
       lng = cLoc.longitude!;
@@ -92,12 +101,14 @@ class _SignUpState extends State<StartRide> {
         "roomName": widget.riderId,
       });
       final GoogleMapController controller = await _completer.future;
-      controller.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(cLoc.latitude!, cLoc.longitude!), zoom: 19)));
+      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+          target: LatLng(cLoc.latitude!, cLoc.longitude!), zoom: 19)));
       var image = await BitmapDescriptor.fromAssetImage(
           const ImageConfiguration(), "images/map_marker.png");
       Marker marker = Marker(
-          markerId: MarkerId('ID'), icon: image, position: LatLng(cLoc.latitude!, cLoc.longitude!));
+          markerId: MarkerId('ID'),
+          icon: image,
+          position: LatLng(cLoc.latitude!, cLoc.longitude!));
       setState(() {
         _markers[MarkerId('ID')] = marker;
       });
@@ -116,7 +127,7 @@ class _SignUpState extends State<StartRide> {
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return WillPopScope(
-      onWillPop: () => showExitPopup(context,"Do you want to stop ride?",(){
+      onWillPop: () => showExitPopup(context, "Do you want to stop ride?", () {
         socket.disconnect();
         Navigator.pop(context, true);
       }),
@@ -126,13 +137,14 @@ class _SignUpState extends State<StartRide> {
             centerTitle: true,
             title: const Text(
               "Start Ride",
-              style: TextStyle(color: CustomColor.black, fontFamily: 'transport'),
+              style:
+                  TextStyle(color: CustomColor.black, fontFamily: 'transport'),
             ),
             elevation: 0,
             backgroundColor: Colors.transparent,
             leading: IconButton(
               onPressed: () {
-                BackButtonPopup(context,(){
+                BackButtonPopup(context, () {
                   Navigator.pop(context, true);
                 });
               },
@@ -142,19 +154,19 @@ class _SignUpState extends State<StartRide> {
           body: Stack(children: [
             LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
-                  return SizedBox(
-                    height: constraints.maxHeight / 1.1,
-                    child: GoogleMap(
-                      initialCameraPosition: _cameraPosition,
-                      mapType: MapType.normal,
-                      myLocationEnabled: true,
-                      compassEnabled: true,
-                      onMapCreated: (GoogleMapController controller) {
-                    _completer.complete(controller);
-                  },
-                  markers: Set<Marker>.of(_markers.values),
+              return SizedBox(
+                  height: constraints.maxHeight / 1.1,
+                  child: GoogleMap(
+                    initialCameraPosition: _cameraPosition,
+                    mapType: MapType.normal,
+                    myLocationEnabled: true,
+                    compassEnabled: true,
+                    onMapCreated: (GoogleMapController controller) {
+                      _completer.complete(controller);
+                    },
+                    markers: Set<Marker>.of(_markers.values),
                   ));
-                }),
+            }),
             DraggableScrollableSheet(
                 initialChildSize: 0.15,
                 minChildSize: 0.10,
@@ -168,7 +180,8 @@ class _SignUpState extends State<StartRide> {
                       borderRadius: BorderRadius.circular(15.r),
                     ),
                     child: Padding(
-                      padding:  EdgeInsets.symmetric(vertical: 10.0.h,horizontal: 20.0.w),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 10.0.h, horizontal: 20.0.w),
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
@@ -178,22 +191,21 @@ class _SignUpState extends State<StartRide> {
                                 Column(
                                   children: [
                                     InkWell(
-                                      onTap: (){
+                                      onTap: () {
                                         showAlertDialog(context);
                                       },
                                       child: Column(
                                         children: [
                                           Image.asset("images/End_Ride.png",
                                               width: 50.w, height: 50.h),
-                                           SizedBox(height: 10.h),
-                                           Text("End Ride",
+                                          SizedBox(height: 10.h),
+                                          Text("End Ride",
                                               style: TextStyle(
-                                                  fontFamily: 'transport', fontSize: 16.sp)),
+                                                  fontFamily: 'transport',
+                                                  fontSize: 16.sp)),
                                         ],
                                       ),
                                     ),
-
-
                                   ],
                                 ),
                                 InkWell(
@@ -204,8 +216,8 @@ class _SignUpState extends State<StartRide> {
                                     children: [
                                       Image.asset("images/Ride_Details.png",
                                           width: 50.w, height: 50.h),
-                                       SizedBox(height: 10.h),
-                                       Text("Ride Details",
+                                      SizedBox(height: 10.h),
+                                      Text("Ride Details",
                                           style: TextStyle(
                                               fontFamily: 'transport',
                                               fontSize: 16.sp)),
@@ -215,16 +227,17 @@ class _SignUpState extends State<StartRide> {
                                 Column(
                                   children: [
                                     InkWell(
-                                      onTap: (){
-                                        Make_a_call.makePhoneCall(widget.dMobile);
+                                      onTap: () {
+                                        Make_a_call.makePhoneCall(
+                                            widget.dMobile);
                                       },
                                       child: Column(
                                         children: [
-                                          Image.asset("images/SOS.png", width: 50.w, height: 50.h),
+                                          Image.asset("images/SOS.png",
+                                              width: 50.w, height: 50.h),
                                         ],
                                       ),
                                     ),
-
                                   ],
                                 ),
                               ],
@@ -240,6 +253,7 @@ class _SignUpState extends State<StartRide> {
       ),
     );
   }
+
   showMenu() {
     showModalBottomSheet(
         context: context,
@@ -249,7 +263,7 @@ class _SignUpState extends State<StartRide> {
             dInfoName: widget.dName.toString(),
             dInfoMobile: widget.dMobile.toString(),
             vInfoImage: 'assets/car.png',
-            vInfoModel:  widget.model.toString(),
+            vInfoModel: widget.model.toString(),
             vInfoOwnerName: widget.vOwnerName.toString(),
             vInfoRegNo: widget.vRegNo.toString(),
             dInfoLicense: widget.vRegNo.toString(),
@@ -314,10 +328,11 @@ class _SignUpState extends State<StartRide> {
 
   Future<http.Response> endRide() async {
     final response = await http.post(
-      Uri.parse('https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/endRide'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+        Uri.parse(
+            'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/endRide'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
         body: json.encode({
           'ride_id': widget.riderId,
           'end_point': {
@@ -326,8 +341,7 @@ class _SignUpState extends State<StartRide> {
             'longitude': lng,
             'location': ""
           }
-        })
-    );
+        }));
     print(json.encode({
       'ride_id': widget.riderId,
       'end_point': {
@@ -341,12 +355,12 @@ class _SignUpState extends State<StartRide> {
     if (response.statusCode == 200) {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
-      if(status==true){
+      if (status == true) {
         socket.disconnect();
-       // Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
+        // Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
         Get.to(const MainPage());
-      }else{
-       // Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
+      } else {
+        // Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
       }
       return response;
     } else {
@@ -356,14 +370,14 @@ class _SignUpState extends State<StartRide> {
 
   showAlertDialog(BuildContext context) {
     Widget cancelButton = TextButton(
-      child:  Text("No"),
-      onPressed: (){
+      child: Text("No"),
+      onPressed: () {
         Navigator.pop(context);
       },
     );
     Widget continueButton = TextButton(
       child: const Text("Yes"),
-      onPressed: (){
+      onPressed: () {
         endRide();
       },
     );
@@ -371,8 +385,7 @@ class _SignUpState extends State<StartRide> {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: const Text("End Ride"),
-      content:
-      const Text("Are you sure want to end ride?"),
+      content: const Text("Are you sure want to end ride?"),
       actions: [
         cancelButton,
         continueButton,
@@ -384,9 +397,5 @@ class _SignUpState extends State<StartRide> {
         return alert;
       },
     );
-
   }
 }
-
-
-

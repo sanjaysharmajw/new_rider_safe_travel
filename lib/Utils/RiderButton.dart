@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 
-
 class RiderButton extends StatelessWidget {
   final VoidCallback click;
   final String textBtn;
-  const RiderButton({Key? key, required this.click, required this.textBtn}) : super(key: key);
+  const RiderButton({Key? key, required this.click, required this.textBtn})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,12 @@ class RiderButton extends StatelessWidget {
           decoration: const BoxDecoration(
               color: CustomColor.yellow,
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          child:  Center(child: Text(textBtn,style: const TextStyle(color: CustomColor.white,fontFamily: 'transport',fontSize: 14))),
+          child: Center(
+              child: Text(textBtn,
+                  style: const TextStyle(
+                      color: CustomColor.white,
+                      fontFamily: 'transport',
+                      fontSize: 14))),
         ),
       ),
     );

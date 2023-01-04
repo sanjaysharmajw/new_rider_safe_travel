@@ -7,7 +7,7 @@ import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import '../LoginModule/RiderLoginPage.dart';
 import '../LoginModule/preferences.dart';
 
-Future<bool> logoutPopup(context) async{
+Future<bool> logoutPopup(context) async {
   return await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -27,7 +27,7 @@ Future<bool> logoutPopup(context) async{
                           print('yes selected');
                           logout();
                           Get.to(RiderLoginPage());
-                         // exit(0);
+                          // exit(0);
                         },
                         child: Text("Yes"),
                         style: ElevatedButton.styleFrom(
@@ -37,15 +37,15 @@ Future<bool> logoutPopup(context) async{
                     SizedBox(width: 15),
                     Expanded(
                         child: ElevatedButton(
-                          onPressed: () {
-                            print('no selected');
-                            Navigator.of(context).pop();
-                          },
-                          child: Text("No", style: TextStyle(color: Colors.black)),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                          ),
-                        ))
+                      onPressed: () {
+                        print('no selected');
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("No", style: TextStyle(color: Colors.black)),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white,
+                      ),
+                    ))
                   ],
                 )
               ],
@@ -54,6 +54,7 @@ Future<bool> logoutPopup(context) async{
         );
       });
 }
+
 Future logout() async {
   //await Preferences.setPreferences();
   Preferences.clear();

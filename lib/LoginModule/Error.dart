@@ -1,10 +1,9 @@
-
-class ErrorMessage{
+class ErrorMessage {
   static var status = 'status';
   static var message = 'message';
 }
 
-class SuccesMessage{
+class SuccesMessage {
   static var status = 'status';
   static var message = 'message';
   static var data = "data";

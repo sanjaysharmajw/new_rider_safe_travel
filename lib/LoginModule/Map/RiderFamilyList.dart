@@ -13,7 +13,6 @@ import 'package:ride_safe_travel/Models/Familymodel.dart';
 import '../../FamilyMemberAddOtherTrack.dart';
 import '../../FamilyMemberAddScreen.dart';
 
-
 class FamilyMemberListScreen extends StatefulWidget {
   const FamilyMemberListScreen({Key? key}) : super(key: key);
 
@@ -42,7 +41,6 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                 icon: const Icon(Icons.arrow_back_outlined),
               ),
             ),
-
             body: FutureBuilder<List<Familymodel>>(
               future: _future,
               builder: (context, snapshot) {
@@ -53,18 +51,33 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                       return InkWell(
                         onTap: () {
                           setState(() {
-                            if(snapshot.hasData){
+                            if (snapshot.hasData) {
                               OverlayLoadingProgress.start(context);
-                              Get.to(RiderMap(riderId:snapshot.data![index].id.toString(),
-                                dName: snapshot.data![index].driverName.toString(), dLicenseNo: snapshot.data![index].drivingLicenceNumber.toString(), vModel: snapshot.data![index].vehicleModel.toString(),
-                                vOwnerName: snapshot.data![index].ownerName.toString(), vRegistration: snapshot.data![index].vehicleRegistrationNumber.toString(),
-                                dMobile: snapshot.data![index].driverMobileNumber.toString(), dImage: snapshot.data![index].driverPhoto.toString(),
-                                memberName: snapshot.data![index].memberName.toString(),
+                              Get.to(RiderMap(
+                                riderId: snapshot.data![index].id.toString(),
+                                dName:
+                                    snapshot.data![index].driverName.toString(),
+                                dLicenseNo: snapshot
+                                    .data![index].drivingLicenceNumber
+                                    .toString(),
+                                vModel: snapshot.data![index].vehicleModel
+                                    .toString(),
+                                vOwnerName:
+                                    snapshot.data![index].ownerName.toString(),
+                                vRegistration: snapshot
+                                    .data![index].vehicleRegistrationNumber
+                                    .toString(),
+                                dMobile: snapshot
+                                    .data![index].driverMobileNumber
+                                    .toString(),
+                                dImage: snapshot.data![index].driverPhoto
+                                    .toString(),
+                                memberName:
+                                    snapshot.data![index].memberName.toString(),
                               ));
-                            }else{
+                            } else {
                               Center(child: CircularProgressIndicator());
                             }
-
                           });
                         },
                         child: Padding(
@@ -97,66 +110,68 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                         children: [
                                           Column(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                                MainAxisAlignment.start,
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(0.0),
+                                                    const EdgeInsets.all(0.0),
                                                 child: Row(
                                                   children: [
                                                     CircleAvatar(
                                                       backgroundColor:
-                                                      CustomColor.yellow,
+                                                          CustomColor.yellow,
                                                       radius: 27.0,
                                                       child: CircleAvatar(
                                                         radius: 25.0,
                                                         backgroundColor:
-                                                        Colors.white,
+                                                            Colors.white,
                                                         child: ClipOval(
                                                           //""
                                                           child: (snapshot
-                                                              .data![
-                                                          index]
-                                                              .member_photo !=
-                                                              null)
+                                                                      .data![
+                                                                          index]
+                                                                      .member_photo !=
+                                                                  null)
                                                               ? Image.network(
-                                                            snapshot
-                                                                .data![
-                                                            index]
-                                                                .member_photo
-                                                                .toString(),
-                                                            width: 50,
-                                                            height: 50,
-                                                            fit: BoxFit
-                                                                .cover,
-                                                          )
+                                                                  snapshot
+                                                                      .data![
+                                                                          index]
+                                                                      .member_photo
+                                                                      .toString(),
+                                                                  width: 50,
+                                                                  height: 50,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                )
                                                               : Image.asset(
-                                                              'assets/user_avatar.png'),
+                                                                  'assets/user_avatar.png'),
                                                         ),
                                                       ),
                                                     ),
                                                     Padding(
                                                       padding:
-                                                      const EdgeInsets.all(
-                                                          15.0),
+                                                          const EdgeInsets.all(
+                                                              15.0),
                                                       child: Column(
                                                         mainAxisSize:
-                                                        MainAxisSize.min,
+                                                            MainAxisSize.min,
                                                         crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                            CrossAxisAlignment
+                                                                .start,
                                                         children: [
                                                           Text(
                                                               snapshot
-                                                                  .data![index]
-                                                                  .memberName ?? "N/A",
+                                                                      .data![
+                                                                          index]
+                                                                      .memberName ??
+                                                                  "N/A",
                                                               style: const TextStyle(
                                                                   fontFamily:
-                                                                  'transport',
+                                                                      'transport',
                                                                   fontSize:
-                                                                  15)),
+                                                                      15)),
                                                         ],
                                                       ),
                                                     ),
@@ -168,7 +183,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                           const SizedBox(height: 12),
                                           Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               const Text("Driver Name",
                                                   style: TextStyle(
@@ -186,31 +201,33 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                           const SizedBox(height: 10),
                                           Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               const Text("Driver Mobile",
                                                   style: TextStyle(
                                                       fontFamily: 'transport',
                                                       fontSize: 15)),
                                               Text(
-                                                  snapshot.data![index].driverMobileNumber.toString(),
+                                                  snapshot.data![index]
+                                                      .driverMobileNumber
+                                                      .toString(),
                                                   style: const TextStyle(
                                                       fontFamily: 'transport',
                                                       fontSize: 15)),
                                             ],
                                           ),
-
                                           const SizedBox(height: 10),
                                           Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               const Text("Ride Id",
                                                   style: TextStyle(
                                                       fontFamily: 'transport',
                                                       fontSize: 15)),
                                               Text(
-                                                  snapshot.data![index].id.toString(),
+                                                  snapshot.data![index].id
+                                                      .toString(),
                                                   style: const TextStyle(
                                                       fontFamily: 'transport',
                                                       fontSize: 15)),
@@ -250,7 +267,9 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
     print('User Id:${userId.toString()}');
 
     if (response.statusCode == 200) {
-      List<Familymodel> familyData = jsonDecode(response.body)['data'].map<Familymodel>((data) => Familymodel.fromJson(data)).toList();
+      List<Familymodel> familyData = jsonDecode(response.body)['data']
+          .map<Familymodel>((data) => Familymodel.fromJson(data))
+          .toList();
       return familyData;
     } else {
       throw Exception('Failed to load');
@@ -261,16 +280,13 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
   void initState() {
     super.initState();
     sharePre();
-
-
   }
+
   void sharePre() async {
     await Preferences.setPreferences();
     String userId = Preferences.getId(Preferences.id).toString();
     _future = getData(userId);
     //Get.snackbar("Hit with time", userId);
-    setState(() {
-
-    });
+    setState(() {});
   }
 }

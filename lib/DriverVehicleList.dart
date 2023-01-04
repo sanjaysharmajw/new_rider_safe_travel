@@ -1,10 +1,15 @@
 import 'dart:convert';
-DriverVehicleList driverVehicleListFromJson(String str) => DriverVehicleList.fromJson(json.decode(str));
-String driverVehicleListToJson(DriverVehicleList data) => json.encode(data.toJson());
+
+DriverVehicleList driverVehicleListFromJson(String str) =>
+    DriverVehicleList.fromJson(json.decode(str));
+String driverVehicleListToJson(DriverVehicleList data) =>
+    json.encode(data.toJson());
+
 class DriverVehicleList {
   DriverVehicleList({
     this.status,
-    this.data,});
+    this.data,
+  });
 
   DriverVehicleList.fromJson(dynamic json) {
     status = json['status'];
@@ -17,11 +22,14 @@ class DriverVehicleList {
   }
   bool? status;
   List<Data>? data;
-  DriverVehicleList copyWith({  bool? status,
+  DriverVehicleList copyWith({
+    bool? status,
     List<Data>? data,
-  }) => DriverVehicleList(  status: status ?? this.status,
-    data: data ?? this.data,
-  );
+  }) =>
+      DriverVehicleList(
+        status: status ?? this.status,
+        data: data ?? this.data,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['status'] = status;
@@ -30,11 +38,11 @@ class DriverVehicleList {
     }
     return map;
   }
-
 }
 
 Data dataFromJson(String str) => Data.fromJson(json.decode(str));
 String dataToJson(Data data) => json.encode(data.toJson());
+
 class Data {
   Data({
     this.id,
@@ -50,7 +58,8 @@ class Data {
     this.driverPhoto,
     this.ownerMobileNumber,
     this.ownerEmailId,
-    this.ownerPhoto,});
+    this.ownerPhoto,
+  });
 
   Data.fromJson(dynamic json) {
     id = json['_id'];
@@ -87,7 +96,8 @@ class Data {
   String? ownerMobileNumber;
   String? ownerEmailId;
   String? ownerPhoto;
-  Data copyWith({  String? id,
+  Data copyWith({
+    String? id,
     String? status,
     String? shift,
     List<Vehicledetails>? vehicledetails,
@@ -101,21 +111,23 @@ class Data {
     String? ownerMobileNumber,
     String? ownerEmailId,
     String? ownerPhoto,
-  }) => Data(  id: id ?? this.id,
-    status: status ?? this.status,
-    shift: shift ?? this.shift,
-    vehicledetails: vehicledetails ?? this.vehicledetails,
-    driverName: driverName ?? this.driverName,
-    ownerName: ownerName ?? this.ownerName,
-    driverMobileNumber: driverMobileNumber ?? this.driverMobileNumber,
-    drivingLicenceNumber: drivingLicenceNumber ?? this.drivingLicenceNumber,
-    driverEmailId: driverEmailId ?? this.driverEmailId,
-    driverId: driverId ?? this.driverId,
-    driverPhoto: driverPhoto ?? this.driverPhoto,
-    ownerMobileNumber: ownerMobileNumber ?? this.ownerMobileNumber,
-    ownerEmailId: ownerEmailId ?? this.ownerEmailId,
-    ownerPhoto: ownerPhoto ?? this.ownerPhoto,
-  );
+  }) =>
+      Data(
+        id: id ?? this.id,
+        status: status ?? this.status,
+        shift: shift ?? this.shift,
+        vehicledetails: vehicledetails ?? this.vehicledetails,
+        driverName: driverName ?? this.driverName,
+        ownerName: ownerName ?? this.ownerName,
+        driverMobileNumber: driverMobileNumber ?? this.driverMobileNumber,
+        drivingLicenceNumber: drivingLicenceNumber ?? this.drivingLicenceNumber,
+        driverEmailId: driverEmailId ?? this.driverEmailId,
+        driverId: driverId ?? this.driverId,
+        driverPhoto: driverPhoto ?? this.driverPhoto,
+        ownerMobileNumber: ownerMobileNumber ?? this.ownerMobileNumber,
+        ownerEmailId: ownerEmailId ?? this.ownerEmailId,
+        ownerPhoto: ownerPhoto ?? this.ownerPhoto,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = id;
@@ -136,11 +148,12 @@ class Data {
     map['owner_photo'] = ownerPhoto;
     return map;
   }
-
 }
 
-Vehicledetails vehicledetailsFromJson(String str) => Vehicledetails.fromJson(json.decode(str));
+Vehicledetails vehicledetailsFromJson(String str) =>
+    Vehicledetails.fromJson(json.decode(str));
 String vehicledetailsToJson(Vehicledetails data) => json.encode(data.toJson());
+
 class Vehicledetails {
   Vehicledetails({
     this.id,
@@ -183,7 +196,6 @@ class Vehicledetails {
     createdBy = json['created_by'];
     updatedBy = json['updated_by'];
     ownerId = json['owner_id'];
-
   }
   String? id;
   String? registrationNumber;
@@ -205,7 +217,8 @@ class Vehicledetails {
   String? updatedBy;
   List<dynamic>? photos;
   String? ownerId;
-  Vehicledetails copyWith({  String? id,
+  Vehicledetails copyWith({
+    String? id,
     String? registrationNumber,
     String? mobileNumberRc,
     String? rcNumber,
@@ -225,26 +238,28 @@ class Vehicledetails {
     String? updatedBy,
     List<dynamic>? photos,
     String? ownerId,
-  }) => Vehicledetails(  id: id ?? this.id,
-    registrationNumber: registrationNumber ?? this.registrationNumber,
-    mobileNumberRc: mobileNumberRc ?? this.mobileNumberRc,
-    rcNumber: rcNumber ?? this.rcNumber,
-    make: make ?? this.make,
-    model: model ?? this.model,
-    fuelType: fuelType ?? this.fuelType,
-    makeYear: makeYear ?? this.makeYear,
-    fitnessValidity: fitnessValidity ?? this.fitnessValidity,
-    pucValidity: pucValidity ?? this.pucValidity,
-    insuranceValidity: insuranceValidity ?? this.insuranceValidity,
-    bcnt: bcnt ?? this.bcnt,
-    status: status ?? this.status,
-    createdAt: createdAt ?? this.createdAt,
-    updatedAt: updatedAt ?? this.updatedAt,
-    createdBy: createdBy ?? this.createdBy,
-    updatedBy: updatedBy ?? this.updatedBy,
-    photos: photos ?? this.photos,
-    ownerId: ownerId ?? this.ownerId,
-  );
+  }) =>
+      Vehicledetails(
+        id: id ?? this.id,
+        registrationNumber: registrationNumber ?? this.registrationNumber,
+        mobileNumberRc: mobileNumberRc ?? this.mobileNumberRc,
+        rcNumber: rcNumber ?? this.rcNumber,
+        make: make ?? this.make,
+        model: model ?? this.model,
+        fuelType: fuelType ?? this.fuelType,
+        makeYear: makeYear ?? this.makeYear,
+        fitnessValidity: fitnessValidity ?? this.fitnessValidity,
+        pucValidity: pucValidity ?? this.pucValidity,
+        insuranceValidity: insuranceValidity ?? this.insuranceValidity,
+        bcnt: bcnt ?? this.bcnt,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        createdBy: createdBy ?? this.createdBy,
+        updatedBy: updatedBy ?? this.updatedBy,
+        photos: photos ?? this.photos,
+        ownerId: ownerId ?? this.ownerId,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = id;
@@ -273,11 +288,11 @@ class Vehicledetails {
     map['owner_id'] = ownerId;
     return map;
   }
-
 }
 
 Documents documentsFromJson(String str) => Documents.fromJson(json.decode(str));
 String documentsToJson(Documents data) => json.encode(data.toJson());
+
 class Documents {
   Documents({
     this.pancard,
@@ -285,15 +300,20 @@ class Documents {
     this.rc,
     this.insurance,
     this.puc,
-    this.vehiclePhotos,});
+    this.vehiclePhotos,
+  });
 
   Documents.fromJson(dynamic json) {
     pancard = json['pancard'] != null ? json['pancard'].cast<String>() : [];
-    aadharcard = json['aadharcard'] != null ? json['aadharcard'].cast<String>() : [];
+    aadharcard =
+        json['aadharcard'] != null ? json['aadharcard'].cast<String>() : [];
     rc = json['rc'] != null ? json['rc'].cast<String>() : [];
-    insurance = json['insurance'] != null ? json['insurance'].cast<String>() : [];
+    insurance =
+        json['insurance'] != null ? json['insurance'].cast<String>() : [];
     puc = json['puc'] != null ? json['puc'].cast<String>() : [];
-    vehiclePhotos = json['vehicle_photos'] != null ? json['vehicle_photos'].cast<String>() : [];
+    vehiclePhotos = json['vehicle_photos'] != null
+        ? json['vehicle_photos'].cast<String>()
+        : [];
   }
   List<String>? pancard;
   List<String>? aadharcard;
@@ -301,19 +321,22 @@ class Documents {
   List<String>? insurance;
   List<String>? puc;
   List<String>? vehiclePhotos;
-  Documents copyWith({  List<String>? pancard,
+  Documents copyWith({
+    List<String>? pancard,
     List<String>? aadharcard,
     List<String>? rc,
     List<String>? insurance,
     List<String>? puc,
     List<String>? vehiclePhotos,
-  }) => Documents(  pancard: pancard ?? this.pancard,
-    aadharcard: aadharcard ?? this.aadharcard,
-    rc: rc ?? this.rc,
-    insurance: insurance ?? this.insurance,
-    puc: puc ?? this.puc,
-    vehiclePhotos: vehiclePhotos ?? this.vehiclePhotos,
-  );
+  }) =>
+      Documents(
+        pancard: pancard ?? this.pancard,
+        aadharcard: aadharcard ?? this.aadharcard,
+        rc: rc ?? this.rc,
+        insurance: insurance ?? this.insurance,
+        puc: puc ?? this.puc,
+        vehiclePhotos: vehiclePhotos ?? this.vehiclePhotos,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['pancard'] = pancard;
@@ -324,5 +347,4 @@ class Documents {
     map['vehicle_photos'] = vehiclePhotos;
     return map;
   }
-
 }

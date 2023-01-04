@@ -1,10 +1,9 @@
-
-
 import 'package:flutter/material.dart';
-Widget BackButtonPopup(BuildContext context,VoidCallback press) {
-  return  AlertDialog(
+
+Widget BackButtonPopup(BuildContext context, VoidCallback press) {
+  return AlertDialog(
     title: const Text('Popup example'),
-    content:  Column(
+    content: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: const <Widget>[
@@ -12,7 +11,7 @@ Widget BackButtonPopup(BuildContext context,VoidCallback press) {
       ],
     ),
     actions: <Widget>[
-       ElevatedButton(
+      ElevatedButton(
         onPressed: press,
         child: const Text('Close'),
       ),

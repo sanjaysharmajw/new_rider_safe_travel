@@ -26,7 +26,8 @@ class DrawerInfo extends StatelessWidget {
       required this.vInfoOwnerName,
       required this.vInfoRegNo,
       required this.dInfoLicense,
-      required this.press, required this.visibility})
+      required this.press,
+      required this.visibility})
       : super(key: key);
 
   @override
@@ -41,7 +42,7 @@ class DrawerInfo extends StatelessWidget {
               onTap: press,
               child: const Icon(Icons.keyboard_backspace_sharp,
                   color: CustomColor.black)),
-           SizedBox(
+          SizedBox(
             height: 20.h,
           ),
           Text("Driver Information",
@@ -84,7 +85,7 @@ class DrawerInfo extends StatelessWidget {
                     ],
                   ),
                 ),
-                 SizedBox(
+                SizedBox(
                   width: 10.w,
                 ),
                 Column(
@@ -105,8 +106,7 @@ class DrawerInfo extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      height: 5.h
-                      ,
+                      height: 5.h,
                     ),
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -125,7 +125,7 @@ class DrawerInfo extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                           Padding(
+                          Padding(
                             padding: EdgeInsets.only(right: 16.sp),
                             child: Text("Driving License No: ",
                                 style: TextStyle(
@@ -143,15 +143,15 @@ class DrawerInfo extends StatelessWidget {
             ),
           ),
           SizedBox(height: 40.h),
-           Text("Vehicles Information",
+          Text("Vehicles Information",
               style: TextStyle(fontFamily: 'transport', fontSize: 18.sp)),
-           SizedBox(height: 10.h),
+          SizedBox(height: 10.h),
           Container(
             decoration: BoxDecoration(
                 color: CustomColor.listColor,
                 borderRadius: BorderRadius.circular(5.0.r)),
             child: Padding(
-              padding:  EdgeInsets.all(8.0.sp),
+              padding: EdgeInsets.all(8.0.sp),
               child: Column(
                 children: [
                   Row(
@@ -166,7 +166,7 @@ class DrawerInfo extends StatelessWidget {
                           ),
                         ],
                       ),
-                       SizedBox(
+                      SizedBox(
                         width: 20.w,
                       ),
                       Column(
@@ -174,36 +174,38 @@ class DrawerInfo extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(vInfoModel,
-                              style:  TextStyle(
+                              style: TextStyle(
                                   fontFamily: 'transport', fontSize: 16.sp)),
-                           SizedBox(
+                          SizedBox(
                             height: 5.h,
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                               Padding(
+                              Padding(
                                 padding: EdgeInsets.only(right: 26.h),
                                 child: Text("Vehicle Owner Name: ",
                                     style: TextStyle(
-                                        fontFamily: 'transport', fontSize: 16.sp)),
+                                        fontFamily: 'transport',
+                                        fontSize: 16.sp)),
                               ),
                               Text(vInfoOwnerName,
                                   style: TextStyle(
-                                      fontFamily: 'transport', fontSize: 14.sp)),
-                               SizedBox(
+                                      fontFamily: 'transport',
+                                      fontSize: 14.sp)),
+                              SizedBox(
                                 height: 5.h,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                   Text("Registration Number:",
+                                  Text("Registration Number:",
                                       style: TextStyle(
                                           fontFamily: 'transport',
                                           fontSize: 16.sp)),
                                   Text(vInfoRegNo,
-                                      style:  TextStyle(
+                                      style: TextStyle(
                                           fontFamily: 'transport',
                                           fontSize: 14.sp)),
                                 ],

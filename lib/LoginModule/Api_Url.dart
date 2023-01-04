@@ -1,5 +1,6 @@
 class ApiUrl {
-  static var baseUrl = 'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/';
+  static var baseUrl =
+      'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/';
   static var login = '${baseUrl}user/userlogin';
   static var resetPassword = '${baseUrl}user/resetPassword';
   static var verifyOtp = '${baseUrl}user/verifyOtp';
@@ -12,7 +13,7 @@ class ApiUrl {
   static var familyMember = '${baseUrl}userRide/familymemberRideList';
   static var getRideCurrentApi = '${baseUrl}userRide/rideDataCurrent';
   static var getMyTripApi = '${baseUrl}userRide/userRideList';
-   static var socketUrl = 'http://65.1.73.254:8090';
-   //static var socketUrl = 'http://192.168.1.22:3000';
+  static var socketUrl = 'http://65.1.73.254:8090';
+  //static var socketUrl = 'http://192.168.1.22:3000';
   static var endRide = 'userRide/endRide';
 }

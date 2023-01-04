@@ -18,28 +18,27 @@ class FamilyMemberAddOtherTrack extends StatefulWidget {
   const FamilyMemberAddOtherTrack({Key? key}) : super(key: key);
 
   @override
-  State<FamilyMemberAddOtherTrack> createState() => _FamilyMemberAddOtherTrack();
-
-
+  State<FamilyMemberAddOtherTrack> createState() =>
+      _FamilyMemberAddOtherTrack();
 }
 
 class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
-  var userId='';
+  var userId = '';
   final TextEditingController controllerName = TextEditingController();
   final TextEditingController controllerRelation = TextEditingController();
   final TextEditingController controllerMobile = TextEditingController();
 
-
-
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
-    return SafeArea(child: Scaffold(
+    return SafeArea(
+        child: Scaffold(
       appBar: AppBar(
         leading: const Icon(Icons.keyboard_backspace_sharp),
         centerTitle: true,
         backgroundColor: CustomColor.yellow,
-        title: const Text("Add Family Member",style: TextStyle(fontFamily: 'transport',fontSize: 18)),
+        title: const Text("Add Family Member",
+            style: TextStyle(fontFamily: 'transport', fontSize: 18)),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -47,12 +46,13 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
           children: [
             const SizedBox(height: 50),
             const SizedBox(height: 20),
-            const Text("User Who can track",style: TextStyle(fontFamily: 'transport',fontSize: 20)),
+            const Text("User Who can track",
+                style: TextStyle(fontFamily: 'transport', fontSize: 20)),
             Padding(
               padding: const EdgeInsets.all(15),
               child: TextField(
                 controller: controllerName,
-                style: const TextStyle(fontFamily: 'transport',fontSize: 14),
+                style: const TextStyle(fontFamily: 'transport', fontSize: 14),
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Enter Name',
@@ -64,7 +64,7 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
               padding: const EdgeInsets.all(15),
               child: TextField(
                 controller: controllerRelation,
-                style: const TextStyle(fontFamily: 'transport',fontSize: 14),
+                style: const TextStyle(fontFamily: 'transport', fontSize: 14),
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Enter Relation',
@@ -76,24 +76,32 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
               padding: const EdgeInsets.all(15),
               child: TextFormField(
                 controller: controllerMobile,
-                style: const TextStyle(fontFamily: 'transport',fontSize: 14),
-                decoration:  const InputDecoration(
+                style: const TextStyle(fontFamily: 'transport', fontSize: 14),
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Enter Mobile',
                   hintText: 'Enter Your Mobile Number',
                 ),
               ),
             ),
-            RiderButton(click: (){
-              OverlayLoadingProgress.start(context);
-              addFamilyMember(controllerName.text.toString(),userId,controllerRelation.text.toString(),controllerMobile.text.toString());
-            }, textBtn: 'Add')
+            RiderButton(
+                click: () {
+                  OverlayLoadingProgress.start(context);
+                  addFamilyMember(
+                      controllerName.text.toString(),
+                      userId,
+                      controllerRelation.text.toString(),
+                      controllerMobile.text.toString());
+                },
+                textBtn: 'Add')
           ],
         ),
       ),
     ));
   }
-  Future<AffFamilyMemberNewModel> addFamilyMember(String name,String userId,String relation,String mobile) async {
+
+  Future<AffFamilyMemberNewModel> addFamilyMember(
+      String name, String userId, String relation, String mobile) async {
     final response = await http.post(
       Uri.parse(
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/addFamilyMemberNew'),
@@ -112,12 +120,14 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
         OverlayLoadingProgress;
-        Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar("Message", msg.toString(),
+            snackPosition: SnackPosition.BOTTOM);
         Navigator.pop(context);
         print(userId + msg);
       } else {
         OverlayLoadingProgress;
-        Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar("Message", msg.toString(),
+            snackPosition: SnackPosition.BOTTOM);
         print(userId + msg);
       }
       return AffFamilyMemberNewModel.fromJson(response.body);
@@ -130,8 +140,8 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
   void initState() {
     super.initState();
     preferences();
-
   }
+
   void preferences() async {
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();

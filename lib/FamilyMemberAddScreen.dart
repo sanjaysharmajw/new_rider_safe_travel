@@ -152,7 +152,8 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
             dPhoto: widget.dPhoto.toString(),
             model: widget.model.toString(),
             vOwnerName: widget.vOwnerName.toString(),
-            vRegNo: widget.vRegNo.toString(), socketToken: widget.socketToken));
+            vRegNo: widget.vRegNo.toString(),
+            socketToken: widget.socketToken));
         Get.snackbar("Message", msg.toString(),
             snackPosition: SnackPosition.BOTTOM);
       } else {

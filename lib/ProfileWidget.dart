@@ -11,19 +11,25 @@ import 'MyText.dart';
 class ProfileWidget extends StatelessWidget {
   final String profileName;
   final String profileMobile;
-  final String assetsPath ;
+  final String assetsPath;
   final VoidCallback onPress;
 
-  const ProfileWidget({Key? key, required this.profileName, required this.profileMobile, required this.onPress, required this.assetsPath}) : super(key: key);
+  const ProfileWidget(
+      {Key? key,
+      required this.profileName,
+      required this.profileMobile,
+      required this.onPress,
+      required this.assetsPath})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
-    return  Row(
+    return Row(
       children: [
         Padding(
           padding: EdgeInsets.only(left: 20.h),
-          child:  CachedNetworkImage(
+          child: CachedNetworkImage(
             imageUrl: assetsPath,
             width: 50.w,
             height: 30.h,
@@ -31,7 +37,6 @@ class ProfileWidget extends StatelessWidget {
                 CircularProgressIndicator(value: downloadProgress.progress),
             errorWidget: (context, url, error) => Icon(Icons.error),
           ),
-
         ),
         SizedBox(
           width: 14.w,
@@ -55,7 +60,9 @@ class ProfileWidget extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(width: 30,),
+        SizedBox(
+          width: 30,
+        ),
         Container(
           width: 110.0.w,
           height: 40.0.h,
@@ -67,16 +74,20 @@ class ProfileWidget extends StatelessWidget {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children:  <Widget>[
+              children: <Widget>[
                 Text(
                   'Edit Profile',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize:12.sp,
+                      fontSize: 12.sp,
                       color: CustomColor.riderprofileColor),
                 ),
-                Image(image: AssetImage('assets/Union (1).png'),width: 10.w,height: 12.h,)
+                Image(
+                  image: AssetImage('assets/Union (1).png'),
+                  width: 10.w,
+                  height: 12.h,
+                )
               ],
             ),
           ),

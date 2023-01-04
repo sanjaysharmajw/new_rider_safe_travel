@@ -45,7 +45,7 @@ class _MainPageState extends State<MainPage> {
         result = qrResult ?? 'null string';
         if (result != "") {
           Get.to(UserDriverInformation(result: result));
-        }else{
+        } else {
           Get.to(MainPage());
         }
       });
@@ -57,12 +57,12 @@ class _MainPageState extends State<MainPage> {
         });
       } else {
         setState(() {
-         // result = "Unknown Error $ex";
+          // result = "Unknown Error $ex";
         });
       }
     } on FormatException {
       setState(() {
-       // result = "You pressed the back button before scanning anything";
+        // result = "You pressed the back button before scanning anything";
       });
     } catch (ex) {
       setState(() {
@@ -77,15 +77,16 @@ class _MainPageState extends State<MainPage> {
     sharePreferences();
     print(image);
   }
-  void sharePreferences()async{
+
+  void sharePreferences() async {
     await Preferences.setPreferences();
-    image=Preferences.getProfileImage().toString();
-    profileName=Preferences.getFirstName(Preferences.firstname).toString();
-    profileLastName=Preferences.getLastName(Preferences.lastname).toString();
-    profileMobile=Preferences.getMobileNumber(Preferences.mobileNumber).toString();
-    profileEmailId=Preferences.getEmailId(Preferences.emailId).toString();
-    setState(() {
-    });
+    image = Preferences.getProfileImage().toString();
+    profileName = Preferences.getFirstName(Preferences.firstname).toString();
+    profileLastName = Preferences.getLastName(Preferences.lastname).toString();
+    profileMobile =
+        Preferences.getMobileNumber(Preferences.mobileNumber).toString();
+    profileEmailId = Preferences.getEmailId(Preferences.emailId).toString();
+    setState(() {});
     OverlayLoadingProgress.stop();
   }
 
@@ -110,7 +111,7 @@ class _MainPageState extends State<MainPage> {
           elevation: 0,
           centerTitle: true,
           backgroundColor: CustomColor.yellow,
-          title:  Text("Dashboard",
+          title: Text("Dashboard",
               style: TextStyle(fontSize: 16.sp, fontFamily: 'transport')),
         ),
         body: SingleChildScrollView(
@@ -119,7 +120,11 @@ class _MainPageState extends State<MainPage> {
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
-                DashboardProfileWidgets(image: image, profileName: profileName+" "+profileLastName, profileMobile: profileMobile, emailId: profileEmailId),
+                DashboardProfileWidgets(
+                    image: image,
+                    profileName: profileName + " " + profileLastName,
+                    profileMobile: profileMobile,
+                    emailId: profileEmailId),
                 SizedBox(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -130,7 +135,6 @@ class _MainPageState extends State<MainPage> {
                           icons: 'images/my_profile.png',
                           text: 'My Profile',
                           press: () {
-
                             Get.to(const RiderProfileView());
                           },
                           width: 165.w,
@@ -144,7 +148,6 @@ class _MainPageState extends State<MainPage> {
                           icons: 'images/my_rides.png',
                           text: 'My Rides',
                           press: () {
-
                             Get.to(const MyRidesPage());
                           },
                           width: 165.w,
@@ -161,36 +164,36 @@ class _MainPageState extends State<MainPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Expanded(child:MainPageCard(
-                        icons: 'images/track_me.png',
-                        text: 'Track Me',
-                        press: _scanQR,
-                        width: 165.w,
-                        height: 165.h,
-                        widthImage: 45.w,
-                        heightImage: 45.h,
-                      ), ),
-                      
-                      Expanded(child:  MainPageCard(
-                        icons: 'images/track_me.png',
-                        text: 'Track Others',
-                        press: () {
-
-                          Get.to(const FamilyMemberListScreen());
-                        },
-                        width: 165.w,
-                        height: 165.h,
-                        widthImage: 45.w,
-                        heightImage: 45.h,
-                      ),),
-                      
-                     
+                      Expanded(
+                        child: MainPageCard(
+                          icons: 'images/track_me.png',
+                          text: 'Track Me',
+                          press: _scanQR,
+                          width: 165.w,
+                          height: 165.h,
+                          widthImage: 45.w,
+                          heightImage: 45.h,
+                        ),
+                      ),
+                      Expanded(
+                        child: MainPageCard(
+                          icons: 'images/track_me.png',
+                          text: 'Track Others',
+                          press: () {
+                            Get.to(const FamilyMemberListScreen());
+                          },
+                          width: 165.w,
+                          height: 165.h,
+                          widthImage: 45.w,
+                          heightImage: 45.h,
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 SizedBox(height: 8.h),
-                  Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 12.0.w),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12.0.w),
                   child: Expanded(
                     child: MainPageBtn(
                         icons: 'images/my_family_icons.png',
@@ -200,7 +203,6 @@ class _MainPageState extends State<MainPage> {
                         }),
                   ),
                 ),
-
               ],
             ),
           ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:get/get.dart';
 
-
 class UserVehiclesInfo extends StatelessWidget {
   final String dInfoName;
   final String dInfoMobile;
@@ -22,18 +21,20 @@ class UserVehiclesInfo extends StatelessWidget {
 
   const UserVehiclesInfo(
       {Key? key,
-        required this.dInfoName,
-        required this.dInfoMobile,
-        required this.dInfoImage,
-        required this.vInfoImage,
-        required this.vInfoModel,
-        required this.vInfoOwnerName,
-        required this.vInfoRegNo,
-        required this.vInfoPuc,
-        required this.vInfoFitness,
-        required this.vInfoInsurance,
-        required this.dInfoLicense,
-        required this.press, required this.pressBtn, required this.pressBtnText})
+      required this.dInfoName,
+      required this.dInfoMobile,
+      required this.dInfoImage,
+      required this.vInfoImage,
+      required this.vInfoModel,
+      required this.vInfoOwnerName,
+      required this.vInfoRegNo,
+      required this.vInfoPuc,
+      required this.vInfoFitness,
+      required this.vInfoInsurance,
+      required this.dInfoLicense,
+      required this.press,
+      required this.pressBtn,
+      required this.pressBtnText})
       : super(key: key);
 
   @override
@@ -73,9 +74,9 @@ class UserVehiclesInfo extends StatelessWidget {
                           child: ClipOval(
                             child: (dInfoImage != null)
                                 ? Image.network(
-                              dInfoImage!,
-                              fit: BoxFit.cover,
-                            )
+                                    dInfoImage!,
+                                    fit: BoxFit.cover,
+                                  )
                                 : Image.asset('assets/car.png'),
                           ),
                         ),
@@ -156,9 +157,9 @@ class UserVehiclesInfo extends StatelessWidget {
                               child: ClipOval(
                                 child: (vInfoImage != null)
                                     ? Image.network(
-                                  vInfoImage!,
-                                  fit: BoxFit.cover,
-                                )
+                                        vInfoImage!,
+                                        fit: BoxFit.cover,
+                                      )
                                     : Image.asset('assets/car.png'),
                               ),
                             ),
@@ -201,10 +202,10 @@ class UserVehiclesInfo extends StatelessWidget {
                     children: [
                       Text("Registration Number: ",
                           style:
-                          TextStyle(fontFamily: 'transport', fontSize: 16)),
+                              TextStyle(fontFamily: 'transport', fontSize: 16)),
                       Text(vInfoRegNo,
                           style:
-                          TextStyle(fontFamily: 'transport', fontSize: 16)),
+                              TextStyle(fontFamily: 'transport', fontSize: 16)),
                     ],
                   ),
                   const SizedBox(
@@ -215,7 +216,7 @@ class UserVehiclesInfo extends StatelessWidget {
                     children: [
                       const Text("PUC Validity: ",
                           style:
-                          TextStyle(fontFamily: 'transport', fontSize: 16)),
+                              TextStyle(fontFamily: 'transport', fontSize: 16)),
                       Text(vInfoPuc,
                           style: const TextStyle(
                               fontFamily: 'transport', fontSize: 16)),
@@ -226,7 +227,7 @@ class UserVehiclesInfo extends StatelessWidget {
                     children: [
                       const Text("Fitness Validity: ",
                           style:
-                          TextStyle(fontFamily: 'transport', fontSize: 16)),
+                              TextStyle(fontFamily: 'transport', fontSize: 16)),
                       Text(vInfoFitness,
                           style: const TextStyle(
                               fontFamily: 'transport', fontSize: 16)),
@@ -237,7 +238,7 @@ class UserVehiclesInfo extends StatelessWidget {
                     children: [
                       const Text("Insurance Validity: ",
                           style:
-                          TextStyle(fontFamily: 'transport', fontSize: 16)),
+                              TextStyle(fontFamily: 'transport', fontSize: 16)),
                       Text(vInfoInsurance,
                           style: const TextStyle(
                               fontFamily: 'transport', fontSize: 16)),
@@ -259,7 +260,7 @@ class UserVehiclesInfo extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10)),
                     backgroundColor: CustomColor.yellow,
                     foregroundColor: CustomColor.black),
-                child:  Text(
+                child: Text(
                   pressBtnText,
                   style: const TextStyle(
                       fontFamily: "transport",

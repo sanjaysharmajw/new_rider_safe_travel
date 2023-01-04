@@ -7,7 +7,9 @@ class MainPageBtn extends StatelessWidget {
   final String text;
   final VoidCallback press;
 
-  const MainPageBtn({Key? key, required this.icons, required this.text, required this.press}) : super(key: key);
+  const MainPageBtn(
+      {Key? key, required this.icons, required this.text, required this.press})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class MainPageBtn extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(icons, height: 20.h, width: 20.w),
-             SizedBox(width: 10.w),
+            SizedBox(width: 10.w),
             Text(text,
                 style: const TextStyle(
                     fontFamily: 'transport', fontWeight: FontWeight.w500))

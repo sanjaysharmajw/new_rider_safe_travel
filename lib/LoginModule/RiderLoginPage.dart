@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +9,6 @@ import 'package:ride_safe_travel/LoginModule/Error.dart';
 import 'package:ride_safe_travel/LoginModule/RiderVerifyOtpPage.dart';
 import 'package:ride_safe_travel/LoginModule/custom_button.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
-
 
 class RiderLoginPage extends StatefulWidget {
   const RiderLoginPage({super.key});
@@ -25,7 +23,6 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
   final TextEditingController _controllerMobile = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
 
   @override
   Widget build(BuildContext context) {
@@ -78,10 +75,8 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
                             Padding(
                               padding: const EdgeInsets.only(
                                   left: 15, right: 15, top: 0, bottom: 0),
-                              child: Image.asset(
-                                  'assets/phone.png',
-                                  height: 25,
-                                  width: 25),
+                              child: Image.asset('assets/phone.png',
+                                  height: 25, width: 25),
                             ),
                             const Text(
                               "Enter Mobile Number",
@@ -99,25 +94,27 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
                                 child: SizedBox(
                                   height: 45,
                                   child: TextFormField(
-                                    controller:_controllerMobile,
+                                    controller: _controllerMobile,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(
                                           RegExp("[0-9]")),
-                                      LengthLimitingTextInputFormatter(10
-                                      ),
+                                      LengthLimitingTextInputFormatter(10),
                                     ],
                                     style: const TextStyle(
-                                        fontSize: 18.0, fontFamily: "transport"),
+                                        fontSize: 18.0,
+                                        fontFamily: "transport"),
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
                                       border: const UnderlineInputBorder(),
                                       enabledBorder: const UnderlineInputBorder(
                                         borderSide: BorderSide(
-                                            width: 1, color: CustomColor.yellow),
+                                            width: 1,
+                                            color: CustomColor.yellow),
                                       ),
                                       focusedBorder: const UnderlineInputBorder(
                                         borderSide: BorderSide(
-                                            width: 1, color: Colors.amberAccent),
+                                            width: 1,
+                                            color: Colors.amberAccent),
                                       ),
                                       prefixIcon: Image.asset(
                                         "icons/flag.png",
@@ -146,14 +143,12 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
                         const SizedBox(
                           height: 20,
                         ),
-
                       ]),
                   const SizedBox(
                     height: 100,
                   ),
-
                   Padding(
-                    padding: const EdgeInsets.only(left: 17,right: 17),
+                    padding: const EdgeInsets.only(left: 17, right: 17),
                     child: Button(
                         textColor: CustomColor.black,
                         size: 75,
@@ -164,9 +159,7 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
                               OverlayLoadingProgress.start(context);
                             });
                             sendOtpApi(_controllerMobile.text.toString());
-                            setState(() {
-
-                            });
+                            setState(() {});
                           }
                         }),
                   ),

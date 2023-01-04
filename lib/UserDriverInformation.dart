@@ -45,7 +45,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
   var userId;
   late Location location;
   double? lat;
-   double? lng;
+  double? lng;
 
   var vehicleIds;
   var driverIds;
@@ -72,7 +72,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
   void sharePre() async {
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
-   // Get.snackbar("Hit with time", userId);
+    // Get.snackbar("Hit with time", userId);
   }
 
   Future<DriverVehicleList> driverVehicleListApi(BuildContext context) async {
@@ -102,10 +102,14 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
         driverMob = driverDetails[0].driverMobileNumber.toString();
         driverLicense = driverDetails[0].drivingLicenceNumber.toString();
         vOwnerName = driverDetails[0].ownerName.toString();
-        vRegNumber = driverDetails[0].vehicledetails![0].registrationNumber.toString();
-        vPucvalidity = formatDate(driverDetails[0].vehicledetails![0].pucValidity.toString());
-        vFitnessValidity = formatDate(driverDetails[0].vehicledetails![0].fitnessValidity.toString());
-        vInsurance = formatDate(driverDetails[0].vehicledetails![0].insuranceValidity.toString());
+        vRegNumber =
+            driverDetails[0].vehicledetails![0].registrationNumber.toString();
+        vPucvalidity = formatDate(
+            driverDetails[0].vehicledetails![0].pucValidity.toString());
+        vFitnessValidity = formatDate(
+            driverDetails[0].vehicledetails![0].fitnessValidity.toString());
+        vInsurance = formatDate(
+            driverDetails[0].vehicledetails![0].insuranceValidity.toString());
         vModel = driverDetails[0].vehicledetails![0].model.toString();
         dPhoto = driverDetails[0].driverPhoto.toString();
         vPhoto = driverDetails[0].ownerPhoto.toString();
@@ -121,7 +125,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
       }
       return DriverVehicleList.fromJson(response.body);
     } else {
-     //Get.snackbar(response.body, 'Failed');
+      //Get.snackbar(response.body, 'Failed');
       throw Exception('Failed to create album.');
     }
   }
@@ -147,7 +151,8 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
             press: () {},
             pressBtn: () async {
               OverlayLoadingProgress.start(context);
-              await userRideAdd(userId, vehicleIds.toString(), driverIds.toString());
+              await userRideAdd(
+                  userId, vehicleIds.toString(), driverIds.toString());
               setState(() {});
             },
             pressBtnText: 'Start Ride',
@@ -164,7 +169,8 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
     return formatted;
   }
 
-  Future<http.Response?> userFamilyList(String userId, rideId, socketToken) async {
+  Future<http.Response?> userFamilyList(
+      String userId, rideId, socketToken) async {
     final response = await http.post(
       Uri.parse(
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userFamilyList'),
@@ -180,14 +186,29 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
       //var msg = jsonDecode(response.body)[ErrorMessage.message];
 
       if (status == true) {
-        Get.to(StartRide(riderId: rideId.toString(), dName: driverName.toString(), dMobile: driverMob.toString(), dPhoto: dPhoto.toString(),
-          model: vModel.toString(), vOwnerName: vOwnerName.toString(), vRegNo: vRegNumber.toString(), socketToken: socketToken));
+        Get.to(StartRide(
+            riderId: rideId.toString(),
+            dName: driverName.toString(),
+            dMobile: driverMob.toString(),
+            dPhoto: dPhoto.toString(),
+            model: vModel.toString(),
+            vOwnerName: vOwnerName.toString(),
+            vRegNo: vRegNumber.toString(),
+            socketToken: socketToken));
         OverlayLoadingProgress.stop();
         print("Userinformation" + driverId + vehicleId);
       } else {
-        Get.to(FamilyMemberAddScreen(driverId: driverId,
-            vehicleId: vehicleId, riderId:rideId.toString(),dName: driverName.toString(), dMobile: driverMob.toString(), dPhoto: dPhoto.toString(),
-            model: vModel.toString(), vOwnerName: vOwnerName.toString(), vRegNo: vRegNumber.toString(), socketToken: socketToken));
+        Get.to(FamilyMemberAddScreen(
+            driverId: driverId,
+            vehicleId: vehicleId,
+            riderId: rideId.toString(),
+            dName: driverName.toString(),
+            dMobile: driverMob.toString(),
+            dPhoto: dPhoto.toString(),
+            model: vModel.toString(),
+            vOwnerName: vOwnerName.toString(),
+            vRegNo: vRegNumber.toString(),
+            socketToken: socketToken));
         OverlayLoadingProgress.stop();
       }
       return null;
@@ -210,9 +231,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
             'longitude': lng,
             'location': ""
           }
-        })
-
-    );
+        }));
     print(json.encode({
       'user_id': userId,
       'vehicle_id': vehicleId,
@@ -234,10 +253,10 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
         if (jsonDecode(response.body)['data'] != null) {
           var rideId = jsonDecode(response.body)['data'];
           var socketToken = jsonDecode(response.body)['sockettoken'];
-          await userFamilyList(userId, rideId,socketToken);
+          await userFamilyList(userId, rideId, socketToken);
         }
       } else if (status == false) {
-       // Get.snackbar(response.body, 'Failed');
+        // Get.snackbar(response.body, 'Failed');
       }
       return response;
     } else {

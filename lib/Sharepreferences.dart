@@ -19,7 +19,7 @@ class SharePreferences {
     return _instance?.setString(id, value);
   }
 
-  static  getId() {
+  static getId() {
     return _instance!.getString(id);
   }
 
@@ -27,7 +27,7 @@ class SharePreferences {
     return _instance?.setString(address, value);
   }
 
-  static  getAddress() {
+  static getAddress() {
     return _instance!.getString(address);
   }
 
@@ -35,7 +35,7 @@ class SharePreferences {
     return _instance?.setString(image, value);
   }
 
-  static  getImage() {
+  static getImage() {
     return _instance!.getString(image);
   }
 
@@ -43,7 +43,7 @@ class SharePreferences {
     return _instance?.setString(dob, value);
   }
 
-  static  getDate() {
+  static getDate() {
     return _instance!.getString(dob);
   }
 
@@ -51,7 +51,7 @@ class SharePreferences {
     return _instance?.setString(gender, value);
   }
 
-  static  getGender() {
+  static getGender() {
     return _instance!.getString(gender);
   }
 
@@ -59,7 +59,7 @@ class SharePreferences {
     return _instance?.setString(age, value);
   }
 
-  static  getAge() {
+  static getAge() {
     return _instance!.getString(age);
   }
 }

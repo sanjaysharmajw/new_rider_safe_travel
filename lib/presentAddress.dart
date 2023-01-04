@@ -1,13 +1,16 @@
 import 'dart:convert';
 
-PresentAddress presentAddressFromJson(String str) => PresentAddress.fromJson(json.decode(str));
+PresentAddress presentAddressFromJson(String str) =>
+    PresentAddress.fromJson(json.decode(str));
 String presentAddressToJson(PresentAddress data) => json.encode(data.toJson());
+
 class PresentAddress {
   PresentAddress({
     this.address,
     this.city,
     this.state,
-    this.pincode,});
+    this.pincode,
+  });
 
   PresentAddress.fromJson(dynamic json) {
     address = json['address'];
@@ -19,15 +22,18 @@ class PresentAddress {
   String? city;
   String? state;
   String? pincode;
-  PresentAddress copyWith({  String? address,
+  PresentAddress copyWith({
+    String? address,
     String? city,
     String? state,
     String? pincode,
-  }) => PresentAddress(  address: address ?? this.address,
-    city: city ?? this.city,
-    state: state ?? this.state,
-    pincode: pincode ?? this.pincode,
-  );
+  }) =>
+      PresentAddress(
+        address: address ?? this.address,
+        city: city ?? this.city,
+        state: state ?? this.state,
+        pincode: pincode ?? this.pincode,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['address'] = address;
@@ -36,5 +42,4 @@ class PresentAddress {
     map['pincode'] = pincode;
     return map;
   }
-
 }
