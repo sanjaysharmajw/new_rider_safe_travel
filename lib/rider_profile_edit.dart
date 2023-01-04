@@ -357,22 +357,23 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       child: Stack(
                                         alignment: Alignment.bottomRight,
                                         children: [
+
                                           CircleAvatar(
                                             backgroundColor: CustomColor.yellow,
-                                            radius: 45.0,
+                                            radius: 45.0.r,
                                             child: CircleAvatar(
-                                              radius: 43.0,
+                                              radius: 44.0.r,
                                               backgroundColor: Colors.white,
                                               child: ClipOval(
                                                 child: (image != null)
                                                     ? Image.file(
-                                                  image!,
-                                                  width: 100,
-                                                  height: 100,
-                                                  fit: BoxFit.cover,
-                                                )
+                                                        image!,
+                                                        width: 80.w,
+                                                        height: 80.h,
+                                                        fit: BoxFit.fill,
+                                                      )
                                                     : Image.network(
-                                                    widget.imageProfile),
+                                                        widget.imageProfile),
                                               ),
                                             ),
                                           ),
@@ -1250,7 +1251,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     );
 
     if (response.statusCode == 200) {
-     // OverlayLoadingProgress.stop(context);
+      OverlayLoadingProgress.stop();
       print('RES:${response.body}');
       List<RiderUserListData> loginData = jsonDecode(response.body)['data']
           .map<RiderUserListData>((data) => RiderUserListData.fromJson(data))
@@ -1294,22 +1295,21 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
       body: await file.readAsBytes(),
     );
     if (response.statusCode == 200) {
-      OverlayLoadingProgress.stop(context);
-      Get.snackbar("Message", "Successful Aws File",
+      OverlayLoadingProgress;
+     /* Get.snackbar("Message", "Successful Aws File",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: CustomColor.yellow,
           borderRadius: 5,
           colorText: CustomColor.white,
           margin: const EdgeInsets.all(15),
-          duration: const Duration(seconds: 1));
+          duration: const Duration(seconds: 1));*/
       print(response.body);
     } else {
-      OverlayLoadingProgress.stop(context);
+      OverlayLoadingProgress;
       throw Exception('Failed to AWS.');
     }
     return null;
   }
-
 
   Future<StateModel> statesList() async {
 
@@ -1319,7 +1319,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    OverlayLoadingProgress.stop(context);
+    OverlayLoadingProgress.stop();
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body)['data'];
       bool status = jsonDecode(response.body)[ErrorMessage.status];
@@ -1448,11 +1448,12 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
         getRiderData();
       });
 
-
       print(response.body);
       if (status == true) {
         Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
         OverlayLoadingProgress;
+        await Preferences.setPreferences();
+        Preferences.setProfileImage(jsonDecode(response.body)['profile_image']);
         Get.to(MainPage());
       } else {
         OverlayLoadingProgress;
