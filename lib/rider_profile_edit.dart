@@ -1303,7 +1303,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
           colorText: CustomColor.white,
           margin: const EdgeInsets.all(15),
           duration: const Duration(seconds: 1));*/
-      print(response.body);
+      print("Final Aws Upload$response.body");
     } else {
       OverlayLoadingProgress;
       throw Exception('Failed to AWS.');
@@ -1453,7 +1453,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
         Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
         OverlayLoadingProgress;
         await Preferences.setPreferences();
-        Preferences.setProfileImage(jsonDecode(response.body)['profile_image']);
+        Preferences.setProfileImage(uploadedImage);
         Get.to(MainPage());
       } else {
         OverlayLoadingProgress;
