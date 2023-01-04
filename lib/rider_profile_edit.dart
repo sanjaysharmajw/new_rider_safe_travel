@@ -357,23 +357,22 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       child: Stack(
                                         alignment: Alignment.bottomRight,
                                         children: [
-
                                           CircleAvatar(
                                             backgroundColor: CustomColor.yellow,
-                                            radius: 45.0.r,
+                                            radius: 45.0,
                                             child: CircleAvatar(
-                                              radius: 44.0.r,
+                                              radius: 43.0,
                                               backgroundColor: Colors.white,
                                               child: ClipOval(
                                                 child: (image != null)
                                                     ? Image.file(
-                                                        image!,
-                                                        width: 80.w,
-                                                        height: 80.h,
-                                                        fit: BoxFit.fill,
-                                                      )
+                                                  image!,
+                                                  width: 100,
+                                                  height: 100,
+                                                  fit: BoxFit.cover,
+                                                )
                                                     : Image.network(
-                                                        widget.imageProfile),
+                                                    widget.imageProfile),
                                               ),
                                             ),
                                           ),
@@ -1251,7 +1250,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     );
 
     if (response.statusCode == 200) {
-      OverlayLoadingProgress.stop(context);
+     // OverlayLoadingProgress.stop(context);
       print('RES:${response.body}');
       List<RiderUserListData> loginData = jsonDecode(response.body)['data']
           .map<RiderUserListData>((data) => RiderUserListData.fromJson(data))
@@ -1295,21 +1294,22 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
       body: await file.readAsBytes(),
     );
     if (response.statusCode == 200) {
-      OverlayLoadingProgress;
-     /* Get.snackbar("Message", "Successful Aws File",
+      OverlayLoadingProgress.stop(context);
+      Get.snackbar("Message", "Successful Aws File",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: CustomColor.yellow,
           borderRadius: 5,
           colorText: CustomColor.white,
           margin: const EdgeInsets.all(15),
-          duration: const Duration(seconds: 1));*/
+          duration: const Duration(seconds: 1));
       print(response.body);
     } else {
-      OverlayLoadingProgress;
+      OverlayLoadingProgress.stop(context);
       throw Exception('Failed to AWS.');
     }
     return null;
   }
+
 
   Future<StateModel> statesList() async {
 
@@ -1447,6 +1447,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
       setState(() {
         getRiderData();
       });
+
 
       print(response.body);
       if (status == true) {
