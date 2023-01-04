@@ -1,0 +1,111 @@
+PODS:
+  - BSGridCollectionViewLayout (1.2.5)
+  - BSImagePicker (2.10.3):
+    - BSGridCollectionViewLayout (= 1.2.5)
+    - BSImageView (= 1.0.3)
+  - BSImageView (1.0.3)
+  - Flutter (1.0.0)
+  - flutter_background_service_ios (0.0.3):
+    - Flutter
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - google_maps_flutter_ios (0.0.1):
+    - Flutter
+    - GoogleMaps
+  - GoogleMaps (5.2.0):
+    - GoogleMaps/Maps (= 5.2.0)
+  - GoogleMaps/Base (5.2.0)
+  - GoogleMaps/Maps (5.2.0):
+    - GoogleMaps/Base
+  - image_picker_ios (0.0.1):
+    - Flutter
+  - location (0.0.1):
+    - Flutter
+  - majascan (0.0.5):
+    - Flutter
+  - multi_image_picker (4.8.00):
+    - BSImagePicker (~> 2.10.3)
+    - Flutter
+  - path_provider_ios (0.0.1):
+    - Flutter
+  - shared_preferences_ios (0.0.1):
+    - Flutter
+  - smart_auth (0.0.1):
+    - Flutter
+  - sqflite (0.0.2):
+    - Flutter
+    - FMDB (>= 2.7.5)
+  - url_launcher_ios (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_background_service_ios (from `.symlinks/plugins/flutter_background_service_ios/ios`)
+  - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
+  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - location (from `.symlinks/plugins/location/ios`)
+  - majascan (from `.symlinks/plugins/majascan/ios`)
+  - multi_image_picker (from `.symlinks/plugins/multi_image_picker/ios`)
+  - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
+  - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
+  - smart_auth (from `.symlinks/plugins/smart_auth/ios`)
+  - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
+
+SPEC REPOS:
+  trunk:
+    - BSGridCollectionViewLayout
+    - BSImagePicker
+    - BSImageView
+    - FMDB
+    - GoogleMaps
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_background_service_ios:
+    :path: ".symlinks/plugins/flutter_background_service_ios/ios"
+  google_maps_flutter_ios:
+    :path: ".symlinks/plugins/google_maps_flutter_ios/ios"
+  image_picker_ios:
+    :path: ".symlinks/plugins/image_picker_ios/ios"
+  location:
+    :path: ".symlinks/plugins/location/ios"
+  majascan:
+    :path: ".symlinks/plugins/majascan/ios"
+  multi_image_picker:
+    :path: ".symlinks/plugins/multi_image_picker/ios"
+  path_provider_ios:
+    :path: ".symlinks/plugins/path_provider_ios/ios"
+  shared_preferences_ios:
+    :path: ".symlinks/plugins/shared_preferences_ios/ios"
+  smart_auth:
+    :path: ".symlinks/plugins/smart_auth/ios"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
+
+SPEC CHECKSUMS:
+  BSGridCollectionViewLayout: 333dcb457a5a3bdd9212607ab5756553dcfe06cb
+  BSImagePicker: 07404254f2fcdaf5a2eb403c0f8c337267ce8738
+  BSImageView: a149459433a2687157d034c78e059d30ac7f2544
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_background_service_ios: e30e0d3ee69e4cee66272d0c78eacd48c2e94aac
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  google_maps_flutter_ios: 66201f392bf62d500f07670a30488a247b9bb5b9
+  GoogleMaps: 025272d5876d3b32604e5c080dc25eaf68764693
+  image_picker_ios: b786a5dcf033a8336a657191401bfdf12017dabb
+  location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
+  majascan: 473bd426fa19600b6ca287bc948d40b2194d5c0b
+  multi_image_picker: 443e776a762d7901641854043b60abf88a85d5ef
+  path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
+  shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
+  smart_auth: 4bedbc118723912d0e45a07e8ab34039c19e04f2
+  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
+
+PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
+
+COCOAPODS: 1.11.3
