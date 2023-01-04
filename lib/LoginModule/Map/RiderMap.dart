@@ -87,7 +87,7 @@ class _RiderMapState extends State<RiderMap> {
     vehicleId = Preferences.getVehicleId(Preferences.vehicleId).toString();
     driverId = Preferences.getDriverId().toString();
     riderId = Preferences.getRiderIdFromFamilyMem().toString();
-    OverlayLoadingProgress.stop(context);
+    OverlayLoadingProgress.stop();
     getSocketToken();
   }
 
