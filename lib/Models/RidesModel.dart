@@ -2,12 +2,15 @@ import 'dart:convert';
 
 import 'RideDataModel.dart';
 
-TripsModel tripsModelFromJson(String str) => TripsModel.fromJson(json.decode(str));
+TripsModel tripsModelFromJson(String str) =>
+    TripsModel.fromJson(json.decode(str));
 String tripsModelToJson(TripsModel data) => json.encode(data.toJson());
+
 class TripsModel {
   TripsModel({
-      this.status, 
-      required this.data,});
+    this.status,
+    required this.data,
+  });
 
   TripsModel.fromJson(dynamic json) {
     status = json['status'];
@@ -19,12 +22,15 @@ class TripsModel {
     }
   }
   bool? status;
-  List<RideDataModel> data=[];
-TripsModel copyWith({  bool? status,
-  List<RideDataModel>? data,
-}) => TripsModel(  status: status ?? this.status,
-  data: data ?? this.data,
-);
+  List<RideDataModel> data = [];
+  TripsModel copyWith({
+    bool? status,
+    List<RideDataModel>? data,
+  }) =>
+      TripsModel(
+        status: status ?? this.status,
+        data: data ?? this.data,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['status'] = status;
@@ -33,6 +39,4 @@ TripsModel copyWith({  bool? status,
     }
     return map;
   }
-
 }
-

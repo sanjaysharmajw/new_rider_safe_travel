@@ -62,7 +62,6 @@ class _RiderMapState extends State<RiderMap> {
 
   @override
   void initState() {
-
     super.initState();
     // getDataEverySec();
     _markers = <MarkerId, Marker>{};
@@ -98,9 +97,10 @@ class _RiderMapState extends State<RiderMap> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title:  Text(
+          title: Text(
             widget.memberName.toString(),
-            style: const TextStyle(color: CustomColor.black, fontFamily: 'transport'),
+            style: const TextStyle(
+                color: CustomColor.black, fontFamily: 'transport'),
           ),
           elevation: 0,
           backgroundColor: Colors.transparent,
@@ -144,7 +144,8 @@ class _RiderMapState extends State<RiderMap> {
                     borderRadius: BorderRadius.circular(15.h),
                   ),
                   child: Padding(
-                    padding:  EdgeInsets.symmetric(vertical: 10.0.h,horizontal: 20.0.w),
+                    padding: EdgeInsets.symmetric(
+                        vertical: 10.0.h, horizontal: 20.0.w),
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
@@ -155,22 +156,23 @@ class _RiderMapState extends State<RiderMap> {
                                 children: [
                                   Image.asset("images/contact_driver.png",
                                       width: 50.w, height: 50.h),
-                                   SizedBox(height: 10.h),
-                                   Text("Contact Driver",
+                                  SizedBox(height: 10.h),
+                                  Text("Contact Driver",
                                       style: TextStyle(
-                                          fontFamily: 'transport', fontSize: 16.sp)),
+                                          fontFamily: 'transport',
+                                          fontSize: 16.sp)),
                                 ],
                               ),
                               InkWell(
                                 onTap: () {
                                   showMenu();
                                 },
-                             child: Column(
+                                child: Column(
                                   children: [
                                     Image.asset("images/Ride_Details.png",
                                         width: 50.w, height: 50.h),
-                                     SizedBox(height: 10.h),
-                                     Text("Ride Details",
+                                    SizedBox(height: 10.h),
+                                    Text("Ride Details",
                                         style: TextStyle(
                                             fontFamily: 'transport',
                                             fontSize: 16.sp)),
@@ -185,7 +187,7 @@ class _RiderMapState extends State<RiderMap> {
                                   children: [
                                     Image.asset("images/hundred_number.png",
                                         width: 50.w, height: 50.h),
-                                     SizedBox(height: 10.h),
+                                    SizedBox(height: 10.h),
                                     Text("100",
                                         style: TextStyle(
                                             fontFamily: 'transport',
@@ -280,7 +282,6 @@ class _RiderMapState extends State<RiderMap> {
         }
       });
       socket.connect();
-
       // Subscribe to events
       socket.on('connect', (_) {
         print('Connected to the server');
@@ -293,7 +294,6 @@ class _RiderMapState extends State<RiderMap> {
         var lat = jsonDecode(data)['lat'];
         var lng = jsonDecode(data)['lng'];
         print('Received lat: $lat + $lng');
-
         final GoogleMapController controller = await _completer.future;
         controller.animateCamera(CameraUpdate.newCameraPosition(
             CameraPosition(target: LatLng(lat, lng), zoom: 19)));

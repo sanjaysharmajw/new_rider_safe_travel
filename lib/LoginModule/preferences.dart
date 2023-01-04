@@ -33,16 +33,18 @@ class Preferences {
     return Preferences.instance!.clear();
   }
 
-  static Future<bool> setStartLat( String value) {
+  static Future<bool> setStartLat(String value) {
     return Preferences.instance!.setString(startLat, value);
   }
+
   static dynamic getStartLat() {
     return Preferences.instance!.get(startLat);
   }
 
-  static Future<bool> setStartLng( String value) {
+  static Future<bool> setStartLng(String value) {
     return Preferences.instance!.setString(startLng, value);
   }
+
   static dynamic getStartLng() {
     return Preferences.instance!.get(startLng);
   }
@@ -50,9 +52,11 @@ class Preferences {
   static Future<bool> setId(String key, String value) {
     return Preferences.instance!.setString(key, value);
   }
+
   static Future<bool> setRiderIdFromFamilyMem(String value) {
     return Preferences.instance!.setString(riderIdFromFamilyMem, value);
   }
+
   static dynamic getRiderIdFromFamilyMem() {
     return Preferences.instance!.get(riderIdFromFamilyMem);
   }
@@ -60,9 +64,11 @@ class Preferences {
   static Future<bool> setVehicleId(String value) {
     return Preferences.instance!.setString(vehicleId, value);
   }
+
   static Future<bool> setSelectRole(String value) {
     return Preferences.instance!.setString(selectRole, value);
   }
+
   static dynamic getSelectRole() {
     return Preferences.instance!.get(selectRole);
   }
@@ -82,6 +88,7 @@ class Preferences {
   static dynamic getProfileImage() {
     return Preferences.instance!.get(profileImage);
   }
+
   static Future<bool> setProfileImage(String value) {
     return Preferences.instance!.setString(profileImage, value);
   }
@@ -101,17 +108,19 @@ class Preferences {
   static Future<bool> setImage(String key, String value) {
     return Preferences.instance!.setString(key, value);
   }
+
   static Future<bool> setAge(String value) {
     return Preferences.instance!.setString(ageCalculate, value);
   }
 
-
   static Future<bool> setEmailID(String key, String value) {
     return Preferences.instance!.setString(key, value);
   }
+
   static Future<bool> setDob(String key, String value) {
     return Preferences.instance!.setString(key, value);
   }
+
   static Future<bool> setAddress(String key, String value) {
     return Preferences.instance!.setString(key, value);
   }
@@ -155,9 +164,11 @@ class Preferences {
   static dynamic getEmailId(String key) {
     return Preferences.instance!.get(key);
   }
+
   static dynamic getDob(String key) {
     return Preferences.instance!.get(key);
   }
+
   static dynamic getAddress(String key) {
     return Preferences.instance!.get(key);
   }
@@ -169,6 +180,7 @@ class Preferences {
   static dynamic getImage(String key) {
     return Preferences.instance?.get(key);
   }
+
   static dynamic getAge() {
     return Preferences.instance?.get(ageCalculate);
   }
@@ -188,8 +200,6 @@ class Preferences {
   static dynamic getPinCode(String key) {
     return Preferences.instance?.get(key);
   }
-
-
 
   ///Singleton factory
   static final Preferences _instance = Preferences._internal();

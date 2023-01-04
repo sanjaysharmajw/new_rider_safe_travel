@@ -1,7 +1,7 @@
 class Validator {
   static String? validateEmail(String value) {
     Pattern pattern = r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
-    RegExp regex =  RegExp(pattern as String);
+    RegExp regex = RegExp(pattern as String);
     if (!regex.hasMatch(value)) {
       return 'Please enter a valid email address.';
     } else {
@@ -19,7 +19,7 @@ class Validator {
 
   static String? validatePassword(String value) {
     Pattern pattern = r'^.{5,}$';
-    RegExp regex =  RegExp(pattern as String);
+    RegExp regex = RegExp(pattern as String);
     if (!regex.hasMatch(value)) {
       return 'Password must be at least 6 characters.';
     } else {
@@ -43,8 +43,6 @@ class Validator {
     }
   }
 
-
-
   static String? validatePhoneNumber(String value) {
     if (value.length != 10) {
       return 'Phone number is not valid.';
@@ -53,12 +51,11 @@ class Validator {
     }
   }
 
-  static String? validatePinCode(String value){
-    if(value.length != 6){
+  static String? validatePinCode(String value) {
+    if (value.length != 6) {
       return 'Please enter 6 number digit!';
-    }else{
+    } else {
       return null;
     }
   }
-
 }

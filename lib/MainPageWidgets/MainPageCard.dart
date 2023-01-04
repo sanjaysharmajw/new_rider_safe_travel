@@ -11,7 +11,16 @@ class MainPageCard extends StatelessWidget {
   final double widthImage;
   final double heightImage;
 
-  const MainPageCard({Key? key, required this.icons, required this.text, required this.press, required this.width, required this.height, required this.widthImage, required this.heightImage}) : super(key: key);
+  const MainPageCard(
+      {Key? key,
+      required this.icons,
+      required this.text,
+      required this.press,
+      required this.width,
+      required this.height,
+      required this.widthImage,
+      required this.heightImage})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +40,7 @@ class MainPageCard extends StatelessWidget {
             children: [
               Image.asset(icons, height: heightImage, width: widthImage),
               const SizedBox(height: 10),
-               Text(text,
+              Text(text,
                   style: const TextStyle(
                       fontFamily: 'transport', fontWeight: FontWeight.w500))
             ],

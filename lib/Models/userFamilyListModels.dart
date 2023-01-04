@@ -1,10 +1,15 @@
 import 'dart:convert';
-UserFamilyListModels userFamilyListModelsFromJson(String str) => UserFamilyListModels.fromJson(json.decode(str));
-String userFamilyListModelsToJson(UserFamilyListModels data) => json.encode(data.toJson());
+
+UserFamilyListModels userFamilyListModelsFromJson(String str) =>
+    UserFamilyListModels.fromJson(json.decode(str));
+String userFamilyListModelsToJson(UserFamilyListModels data) =>
+    json.encode(data.toJson());
+
 class UserFamilyListModels {
   UserFamilyListModels({
-      this.status, 
-      this.data,});
+    this.status,
+    this.data,
+  });
 
   UserFamilyListModels.fromJson(dynamic json) {
     status = json['status'];
@@ -17,11 +22,14 @@ class UserFamilyListModels {
   }
   bool? status;
   List<familyListData>? data;
-UserFamilyListModels copyWith({  bool? status,
-  List<familyListData>? data,
-}) => UserFamilyListModels(  status: status ?? this.status,
-  data: data ?? this.data,
-);
+  UserFamilyListModels copyWith({
+    bool? status,
+    List<familyListData>? data,
+  }) =>
+      UserFamilyListModels(
+        status: status ?? this.status,
+        data: data ?? this.data,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['status'] = status;
@@ -30,17 +38,19 @@ UserFamilyListModels copyWith({  bool? status,
     }
     return map;
   }
-
 }
 
-familyListData dataFromJson(String str) => familyListData.fromJson(json.decode(str));
+familyListData dataFromJson(String str) =>
+    familyListData.fromJson(json.decode(str));
 String dataToJson(familyListData data) => json.encode(data.toJson());
+
 class familyListData {
   familyListData({
-      this.id, 
-      this.userId, 
-      this.memberId, 
-      this.relation,});
+    this.id,
+    this.userId,
+    this.memberId,
+    this.relation,
+  });
 
   familyListData.fromJson(dynamic json) {
     id = json['_id'];
@@ -52,15 +62,18 @@ class familyListData {
   String? userId;
   String? memberId;
   String? relation;
-  familyListData copyWith({  String? id,
-  String? userId,
-  String? memberId,
-  String? relation,
-}) => familyListData(  id: id ?? this.id,
-  userId: userId ?? this.userId,
-  memberId: memberId ?? this.memberId,
-  relation: relation ?? this.relation,
-);
+  familyListData copyWith({
+    String? id,
+    String? userId,
+    String? memberId,
+    String? relation,
+  }) =>
+      familyListData(
+        id: id ?? this.id,
+        userId: userId ?? this.userId,
+        memberId: memberId ?? this.memberId,
+        relation: relation ?? this.relation,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = id;
@@ -69,5 +82,4 @@ class familyListData {
     map['relation'] = relation;
     return map;
   }
-
 }

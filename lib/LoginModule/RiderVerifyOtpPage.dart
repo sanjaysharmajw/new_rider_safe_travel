@@ -88,17 +88,17 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                           fontSize: 20.sp,
                           fontFamily: 'transport',
                           fontWeight: FontWeight.bold)),
-                   SizedBox(
+                  SizedBox(
                     height: 15.h,
                   ),
-                   Text(
+                  Text(
                     "Enter 4 digit verification code set to",
                     style: TextStyle(
                         fontFamily: "transport",
                         fontWeight: FontWeight.w400,
                         fontSize: 15.sp),
                   ),
-                   SizedBox(
+                  SizedBox(
                     height: 5.h,
                   ),
                   Row(
@@ -132,10 +132,10 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                       )
                     ],
                   ),
-                   SizedBox(
+                  SizedBox(
                     height: 50.h,
                   ),
-                   SizedBox(
+                  SizedBox(
                     width: 315.w,
                     child: Text(
                       "Enter OTP here",
@@ -302,7 +302,6 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       if (status == true) {
         OverlayLoadingProgress.stop();
 
-
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("asdfghjk")),
         );
@@ -318,7 +317,8 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         var profileImage = loginData[0].profileImage;
         var userType = loginData[0].userType;
 
-        print("UserId"+id! +
+        print("UserId" +
+            id! +
             firstname! +
             lastname! +
             emailId! +
@@ -333,7 +333,8 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         Preferences.setUserType(Preferences.userType, userType!);
         Preferences.setProfileImage(profileImage);
         Get.to(const MainPage());
-        Get.snackbar("Message", "Successful", snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar("Message", "Successful",
+            snackPosition: SnackPosition.BOTTOM);
       } else {
         OverlayLoadingProgress.stop();
         Get.snackbar("Message", "wertyuio",

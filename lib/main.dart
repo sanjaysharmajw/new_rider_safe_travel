@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ride_safe_travel/LoginModule/MainPage.dart';
 import 'package:ride_safe_travel/LoginModule/RiderLoginPage.dart';
@@ -15,7 +14,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  //  ScreenUtil.init(context, designSize: const Size(375, 812));
+    //  ScreenUtil.init(context, designSize: const Size(375, 812));
     return GetMaterialApp(
       title: 'Rider Safe Travel',
       theme: ThemeData(
@@ -32,8 +31,8 @@ class MyHomePage extends StatefulWidget {
   @override
   MyHomePageState createState() => MyHomePageState();
 }
-class MyHomePageState extends State<MyHomePage> {
 
+class MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
@@ -45,10 +44,11 @@ class MyHomePageState extends State<MyHomePage> {
       checkLoginStatus();
     });
   }
+
   Future checkLoginStatus() async {
     await Preferences.setPreferences();
     String? userId = Preferences.getId(Preferences.id);
-    if (userId==null) {
+    if (userId == null) {
       Get.to(const RiderLoginPage());
     } else {
       Get.to(const MainPage());
@@ -57,7 +57,6 @@ class MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Stack(
       children: const <Widget>[
         Positioned.fill(

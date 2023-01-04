@@ -7,6 +7,7 @@ import 'DriverVehicleList.dart';
 
 RiderData dataFromJson(String str) => RiderData.fromJson(json.decode(str));
 String dataToJson(RiderData data) => json.encode(data.toJson());
+
 class RiderData {
   RiderData({
     this.id,
@@ -44,7 +45,8 @@ class RiderData {
     this.dob,
     this.profileImage,
     this.dldetails,
-    this.address,});
+    this.address,
+  });
 
   RiderData.fromJson(dynamic json) {
     id = json['_id'];
@@ -71,8 +73,12 @@ class RiderData {
     status = json['status'];
     city = json['city'];
     state = json['state'];
-    permanentAddress = json['permanent_address'] != null ? PermanentAddress.fromJson(json['permanent_address']) : null;
-    presentAddress = json['present_address'] != null ? PresentAddress.fromJson(json['present_address']) : null;
+    permanentAddress = json['permanent_address'] != null
+        ? PermanentAddress.fromJson(json['permanent_address'])
+        : null;
+    presentAddress = json['present_address'] != null
+        ? PresentAddress.fromJson(json['present_address'])
+        : null;
     sameAddress = json['same_address'];
     pincode = json['pincode'];
     createdAt = json['created_at'];
@@ -81,7 +87,9 @@ class RiderData {
     updatedBy = json['updated_by'];
     dob = json['dob'];
     profileImage = json['profile_image'];
-    dldetails = json['dldetails'] != null ? Dldetails.fromJson(json['dldetails']) : null;
+    dldetails = json['dldetails'] != null
+        ? Dldetails.fromJson(json['dldetails'])
+        : null;
     address = json['address'];
   }
   String? id;
@@ -120,7 +128,8 @@ class RiderData {
   String? profileImage;
   Dldetails? dldetails;
   String? address;
-  RiderData copyWith({  String? id,
+  RiderData copyWith({
+    String? id,
     String? firstName,
     String? lastName,
     String? emailId,
@@ -156,43 +165,46 @@ class RiderData {
     String? profileImage,
     Dldetails? dldetails,
     String? address,
-  }) => RiderData(  id: id ?? this.id,
-    firstName: firstName ?? this.firstName,
-    lastName: lastName ?? this.lastName,
-    emailId: emailId ?? this.emailId,
-    mobileNumber: mobileNumber ?? this.mobileNumber,
-    gender: gender ?? this.gender,
-    password: password ?? this.password,
-    alternateContactNo: alternateContactNo ?? this.alternateContactNo,
-    userType: userType ?? this.userType,
-    aadharNumber: aadharNumber ?? this.aadharNumber,
-    panNumber: panNumber ?? this.panNumber,
-    dlNumber: dlNumber ?? this.dlNumber,
-    shiftType: shiftType ?? this.shiftType,
-    documents: documents ?? this.documents,
-    accidentalHistory: accidentalHistory ?? this.accidentalHistory,
-    accidentalDiscription: accidentalDiscription ?? this.accidentalDiscription,
-    maritalStatus: maritalStatus ?? this.maritalStatus,
-    citizenship: citizenship ?? this.citizenship,
-    failAttempt: failAttempt ?? this.failAttempt,
-    isLock: isLock ?? this.isLock,
-    resetPassword: resetPassword ?? this.resetPassword,
-    status: status ?? this.status,
-    city: city ?? this.city,
-    state: state ?? this.state,
-    permanentAddress: permanentAddress ?? this.permanentAddress,
-    presentAddress: presentAddress ?? this.presentAddress,
-    sameAddress: sameAddress ?? this.sameAddress,
-    pincode: pincode ?? this.pincode,
-    createdAt: createdAt ?? this.createdAt,
-    updatedAt: updatedAt ?? this.updatedAt,
-    createdBy: createdBy ?? this.createdBy,
-    updatedBy: updatedBy ?? this.updatedBy,
-    dob: dob ?? this.dob,
-    profileImage: profileImage ?? this.profileImage,
-    dldetails: dldetails ?? this.dldetails,
-    address: address ?? this.address,
-  );
+  }) =>
+      RiderData(
+        id: id ?? this.id,
+        firstName: firstName ?? this.firstName,
+        lastName: lastName ?? this.lastName,
+        emailId: emailId ?? this.emailId,
+        mobileNumber: mobileNumber ?? this.mobileNumber,
+        gender: gender ?? this.gender,
+        password: password ?? this.password,
+        alternateContactNo: alternateContactNo ?? this.alternateContactNo,
+        userType: userType ?? this.userType,
+        aadharNumber: aadharNumber ?? this.aadharNumber,
+        panNumber: panNumber ?? this.panNumber,
+        dlNumber: dlNumber ?? this.dlNumber,
+        shiftType: shiftType ?? this.shiftType,
+        documents: documents ?? this.documents,
+        accidentalHistory: accidentalHistory ?? this.accidentalHistory,
+        accidentalDiscription:
+            accidentalDiscription ?? this.accidentalDiscription,
+        maritalStatus: maritalStatus ?? this.maritalStatus,
+        citizenship: citizenship ?? this.citizenship,
+        failAttempt: failAttempt ?? this.failAttempt,
+        isLock: isLock ?? this.isLock,
+        resetPassword: resetPassword ?? this.resetPassword,
+        status: status ?? this.status,
+        city: city ?? this.city,
+        state: state ?? this.state,
+        permanentAddress: permanentAddress ?? this.permanentAddress,
+        presentAddress: presentAddress ?? this.presentAddress,
+        sameAddress: sameAddress ?? this.sameAddress,
+        pincode: pincode ?? this.pincode,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        createdBy: createdBy ?? this.createdBy,
+        updatedBy: updatedBy ?? this.updatedBy,
+        dob: dob ?? this.dob,
+        profileImage: profileImage ?? this.profileImage,
+        dldetails: dldetails ?? this.dldetails,
+        address: address ?? this.address,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = id;
@@ -241,11 +253,11 @@ class RiderData {
     map['address'] = address;
     return map;
   }
-
 }
 
 Dldetails dldetailsFromJson(String str) => Dldetails.fromJson(json.decode(str));
 String dldetailsToJson(Dldetails data) => json.encode(data.toJson());
+
 class Dldetails {
   Dldetails({
     this.dlNumber,
@@ -256,7 +268,8 @@ class Dldetails {
     this.accidentalDiscription,
     this.available24by7,
     this.shiftTimeFrom,
-    this.shiftTimeTo,});
+    this.shiftTimeTo,
+  });
 
   Dldetails.fromJson(dynamic json) {
     dlNumber = json['dl_number'];
@@ -278,7 +291,8 @@ class Dldetails {
   String? available24by7;
   String? shiftTimeFrom;
   String? shiftTimeTo;
-  Dldetails copyWith({  String? dlNumber,
+  Dldetails copyWith({
+    String? dlNumber,
     String? dlImage,
     String? dlExpiryDate,
     String? dlMobileNumber,
@@ -287,16 +301,19 @@ class Dldetails {
     String? available24by7,
     String? shiftTimeFrom,
     String? shiftTimeTo,
-  }) => Dldetails(  dlNumber: dlNumber ?? this.dlNumber,
-    dlImage: dlImage ?? this.dlImage,
-    dlExpiryDate: dlExpiryDate ?? this.dlExpiryDate,
-    dlMobileNumber: dlMobileNumber ?? this.dlMobileNumber,
-    accidentalHistory: accidentalHistory ?? this.accidentalHistory,
-    accidentalDiscription: accidentalDiscription ?? this.accidentalDiscription,
-    available24by7: available24by7 ?? this.available24by7,
-    shiftTimeFrom: shiftTimeFrom ?? this.shiftTimeFrom,
-    shiftTimeTo: shiftTimeTo ?? this.shiftTimeTo,
-  );
+  }) =>
+      Dldetails(
+        dlNumber: dlNumber ?? this.dlNumber,
+        dlImage: dlImage ?? this.dlImage,
+        dlExpiryDate: dlExpiryDate ?? this.dlExpiryDate,
+        dlMobileNumber: dlMobileNumber ?? this.dlMobileNumber,
+        accidentalHistory: accidentalHistory ?? this.accidentalHistory,
+        accidentalDiscription:
+            accidentalDiscription ?? this.accidentalDiscription,
+        available24by7: available24by7 ?? this.available24by7,
+        shiftTimeFrom: shiftTimeFrom ?? this.shiftTimeFrom,
+        shiftTimeTo: shiftTimeTo ?? this.shiftTimeTo,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['dl_number'] = dlNumber;
@@ -310,6 +327,4 @@ class Dldetails {
     map['shift_time_to'] = shiftTimeTo;
     return map;
   }
-
 }
-

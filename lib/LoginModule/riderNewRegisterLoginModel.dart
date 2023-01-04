@@ -1,10 +1,15 @@
 import 'dart:convert';
-RiderNewRegisterLoginModel riderNewRegisterLoginModelFromJson(String str) => RiderNewRegisterLoginModel.fromJson(json.decode(str));
-String riderNewRegisterLoginModelToJson(RiderNewRegisterLoginModel data) => json.encode(data.toJson());
+
+RiderNewRegisterLoginModel riderNewRegisterLoginModelFromJson(String str) =>
+    RiderNewRegisterLoginModel.fromJson(json.decode(str));
+String riderNewRegisterLoginModelToJson(RiderNewRegisterLoginModel data) =>
+    json.encode(data.toJson());
+
 class RiderNewRegisterLoginModel {
   RiderNewRegisterLoginModel({
-      this.status, 
-      this.data,});
+    this.status,
+    this.data,
+  });
 
   RiderNewRegisterLoginModel.fromJson(dynamic json) {
     status = json['status'];
@@ -17,11 +22,14 @@ class RiderNewRegisterLoginModel {
   }
   bool? status;
   List<Data>? data;
-RiderNewRegisterLoginModel copyWith({  bool? status,
-  List<Data>? data,
-}) => RiderNewRegisterLoginModel(  status: status ?? this.status,
-  data: data ?? this.data,
-);
+  RiderNewRegisterLoginModel copyWith({
+    bool? status,
+    List<Data>? data,
+  }) =>
+      RiderNewRegisterLoginModel(
+        status: status ?? this.status,
+        data: data ?? this.data,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['status'] = status;
@@ -30,42 +38,43 @@ RiderNewRegisterLoginModel copyWith({  bool? status,
     }
     return map;
   }
-
 }
 
 Data dataFromJson(String str) => Data.fromJson(json.decode(str));
 String dataToJson(Data data) => json.encode(data.toJson());
+
 class Data {
   Data({
-      this.id, 
-      this.firstName, 
-      this.lastName, 
-      this.emailId, 
-      this.mobileNumber, 
-      this.gender, 
-      this.password, 
-      this.alternateContactNo, 
-      this.userType, 
-      this.aadharNumber, 
-      this.panNumber, 
-      this.profileImage,
-      this.maritalStatus, 
-      this.citizenship, 
-      this.failAttempt, 
-      this.isLock, 
-      this.address, 
-      this.dldetails, 
-      this.city, 
-      this.state, 
-      this.pincode, 
-      this.resetPassword, 
-      this.status,
-      this.sameAddress, 
-      this.createdAt, 
-      this.updatedAt, 
-      this.createdBy, 
-      this.updatedBy, 
-      this.dob,});
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.emailId,
+    this.mobileNumber,
+    this.gender,
+    this.password,
+    this.alternateContactNo,
+    this.userType,
+    this.aadharNumber,
+    this.panNumber,
+    this.profileImage,
+    this.maritalStatus,
+    this.citizenship,
+    this.failAttempt,
+    this.isLock,
+    this.address,
+    this.dldetails,
+    this.city,
+    this.state,
+    this.pincode,
+    this.resetPassword,
+    this.status,
+    this.sameAddress,
+    this.createdAt,
+    this.updatedAt,
+    this.createdBy,
+    this.updatedBy,
+    this.dob,
+  });
 
   Data.fromJson(dynamic json) {
     id = json['_id'];
@@ -85,7 +94,9 @@ class Data {
     failAttempt = json['fail_attempt'];
     isLock = json['is_lock'];
     address = json['address'];
-    dldetails = json['dldetails'] != null ? Dldetails.fromJson(json['dldetails']) : null;
+    dldetails = json['dldetails'] != null
+        ? Dldetails.fromJson(json['dldetails'])
+        : null;
     city = json['city'];
     state = json['state'];
     pincode = json['pincode'];
@@ -127,67 +138,68 @@ class Data {
   String? createdBy;
   String? updatedBy;
   String? dob;
-Data copyWith({  String? id,
-  String? firstName,
-  String? lastName,
-  String? emailId,
-  String? mobileNumber,
-  String? gender,
-  String? password,
-  String? alternateContactNo,
-  String? userType,
-  String? aadharNumber,
-  String? panNumber,
-  String? profileImage,
-
-  String? maritalStatus,
-  String? citizenship,
-  String? failAttempt,
-  String? isLock,
-  String? address,
-  Dldetails? dldetails,
-  String? city,
-  String? state,
-  String? pincode,
-  String? resetPassword,
-  String? status,
-
-  String? sameAddress,
-  String? createdAt,
-  String? updatedAt,
-  String? createdBy,
-  String? updatedBy,
-  String? dob,
-}) => Data(  id: id ?? this.id,
-  firstName: firstName ?? this.firstName,
-  lastName: lastName ?? this.lastName,
-  emailId: emailId ?? this.emailId,
-  mobileNumber: mobileNumber ?? this.mobileNumber,
-  gender: gender ?? this.gender,
-  password: password ?? this.password,
-  alternateContactNo: alternateContactNo ?? this.alternateContactNo,
-  userType: userType ?? this.userType,
-  aadharNumber: aadharNumber ?? this.aadharNumber,
-  panNumber: panNumber ?? this.panNumber,
-  profileImage: profileImage ?? this.profileImage,
-  maritalStatus: maritalStatus ?? this.maritalStatus,
-  citizenship: citizenship ?? this.citizenship,
-  failAttempt: failAttempt ?? this.failAttempt,
-  isLock: isLock ?? this.isLock,
-  address: address ?? this.address,
-  dldetails: dldetails ?? this.dldetails,
-  city: city ?? this.city,
-  state: state ?? this.state,
-  pincode: pincode ?? this.pincode,
-  resetPassword: resetPassword ?? this.resetPassword,
-  status: status ?? this.status,
-  sameAddress: sameAddress ?? this.sameAddress,
-  createdAt: createdAt ?? this.createdAt,
-  updatedAt: updatedAt ?? this.updatedAt,
-  createdBy: createdBy ?? this.createdBy,
-  updatedBy: updatedBy ?? this.updatedBy,
-  dob: dob ?? this.dob,
-);
+  Data copyWith({
+    String? id,
+    String? firstName,
+    String? lastName,
+    String? emailId,
+    String? mobileNumber,
+    String? gender,
+    String? password,
+    String? alternateContactNo,
+    String? userType,
+    String? aadharNumber,
+    String? panNumber,
+    String? profileImage,
+    String? maritalStatus,
+    String? citizenship,
+    String? failAttempt,
+    String? isLock,
+    String? address,
+    Dldetails? dldetails,
+    String? city,
+    String? state,
+    String? pincode,
+    String? resetPassword,
+    String? status,
+    String? sameAddress,
+    String? createdAt,
+    String? updatedAt,
+    String? createdBy,
+    String? updatedBy,
+    String? dob,
+  }) =>
+      Data(
+        id: id ?? this.id,
+        firstName: firstName ?? this.firstName,
+        lastName: lastName ?? this.lastName,
+        emailId: emailId ?? this.emailId,
+        mobileNumber: mobileNumber ?? this.mobileNumber,
+        gender: gender ?? this.gender,
+        password: password ?? this.password,
+        alternateContactNo: alternateContactNo ?? this.alternateContactNo,
+        userType: userType ?? this.userType,
+        aadharNumber: aadharNumber ?? this.aadharNumber,
+        panNumber: panNumber ?? this.panNumber,
+        profileImage: profileImage ?? this.profileImage,
+        maritalStatus: maritalStatus ?? this.maritalStatus,
+        citizenship: citizenship ?? this.citizenship,
+        failAttempt: failAttempt ?? this.failAttempt,
+        isLock: isLock ?? this.isLock,
+        address: address ?? this.address,
+        dldetails: dldetails ?? this.dldetails,
+        city: city ?? this.city,
+        state: state ?? this.state,
+        pincode: pincode ?? this.pincode,
+        resetPassword: resetPassword ?? this.resetPassword,
+        status: status ?? this.status,
+        sameAddress: sameAddress ?? this.sameAddress,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        createdBy: createdBy ?? this.createdBy,
+        updatedBy: updatedBy ?? this.updatedBy,
+        dob: dob ?? this.dob,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = id;
@@ -223,22 +235,23 @@ Data copyWith({  String? id,
     map['dob'] = dob;
     return map;
   }
-
 }
 
 Dldetails dldetailsFromJson(String str) => Dldetails.fromJson(json.decode(str));
 String dldetailsToJson(Dldetails data) => json.encode(data.toJson());
+
 class Dldetails {
   Dldetails({
-      this.dlNumber, 
-      this.photo, 
-      this.dlExpiryDate, 
-      this.dlMobileNumber, 
-      this.accidentalHistory, 
-      this.accidentalDiscription, 
-      this.available24by7, 
-      this.shiftTimeFrom, 
-      this.shiftTimeTo,});
+    this.dlNumber,
+    this.photo,
+    this.dlExpiryDate,
+    this.dlMobileNumber,
+    this.accidentalHistory,
+    this.accidentalDiscription,
+    this.available24by7,
+    this.shiftTimeFrom,
+    this.shiftTimeTo,
+  });
 
   Dldetails.fromJson(dynamic json) {
     dlNumber = json['dl_number'];
@@ -260,25 +273,29 @@ class Dldetails {
   String? available24by7;
   String? shiftTimeFrom;
   String? shiftTimeTo;
-Dldetails copyWith({  String? dlNumber,
-  String? photo,
-  String? dlExpiryDate,
-  String? dlMobileNumber,
-  String? accidentalHistory,
-  String? accidentalDiscription,
-  String? available24by7,
-  String? shiftTimeFrom,
-  String? shiftTimeTo,
-}) => Dldetails(  dlNumber: dlNumber ?? this.dlNumber,
-  photo: photo ?? this.photo,
-  dlExpiryDate: dlExpiryDate ?? this.dlExpiryDate,
-  dlMobileNumber: dlMobileNumber ?? this.dlMobileNumber,
-  accidentalHistory: accidentalHistory ?? this.accidentalHistory,
-  accidentalDiscription: accidentalDiscription ?? this.accidentalDiscription,
-  available24by7: available24by7 ?? this.available24by7,
-  shiftTimeFrom: shiftTimeFrom ?? this.shiftTimeFrom,
-  shiftTimeTo: shiftTimeTo ?? this.shiftTimeTo,
-);
+  Dldetails copyWith({
+    String? dlNumber,
+    String? photo,
+    String? dlExpiryDate,
+    String? dlMobileNumber,
+    String? accidentalHistory,
+    String? accidentalDiscription,
+    String? available24by7,
+    String? shiftTimeFrom,
+    String? shiftTimeTo,
+  }) =>
+      Dldetails(
+        dlNumber: dlNumber ?? this.dlNumber,
+        photo: photo ?? this.photo,
+        dlExpiryDate: dlExpiryDate ?? this.dlExpiryDate,
+        dlMobileNumber: dlMobileNumber ?? this.dlMobileNumber,
+        accidentalHistory: accidentalHistory ?? this.accidentalHistory,
+        accidentalDiscription:
+            accidentalDiscription ?? this.accidentalDiscription,
+        available24by7: available24by7 ?? this.available24by7,
+        shiftTimeFrom: shiftTimeFrom ?? this.shiftTimeFrom,
+        shiftTimeTo: shiftTimeTo ?? this.shiftTimeTo,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['dl_number'] = dlNumber;
@@ -292,5 +309,4 @@ Dldetails copyWith({  String? dlNumber,
     map['shift_time_to'] = shiftTimeTo;
     return map;
   }
-
 }

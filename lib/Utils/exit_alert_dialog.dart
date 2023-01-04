@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 
-Future<bool> showExitPopup(context,String title,VoidCallback press) async{
+Future<bool> showExitPopup(context, String title, VoidCallback press) async {
   return await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -27,15 +27,15 @@ Future<bool> showExitPopup(context,String title,VoidCallback press) async{
                     SizedBox(width: 15),
                     Expanded(
                         child: ElevatedButton(
-                          onPressed: () {
-                            print('no selected');
-                            Navigator.of(context).pop();
-                          },
-                          child: Text("No", style: TextStyle(color: Colors.black)),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                          ),
-                        ))
+                      onPressed: () {
+                        print('no selected');
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("No", style: TextStyle(color: Colors.black)),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white,
+                      ),
+                    ))
                   ],
                 )
               ],

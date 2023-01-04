@@ -1,13 +1,18 @@
 import 'dart:convert';
+
 /// status : true
 /// message : "User profile has been updated successfully"
 
-UpdateRiderProfileModel updateRiderProfileModelFromJson(String str) => UpdateRiderProfileModel.fromJson(json.decode(str));
-String updateRiderProfileModelToJson(UpdateRiderProfileModel data) => json.encode(data.toJson());
+UpdateRiderProfileModel updateRiderProfileModelFromJson(String str) =>
+    UpdateRiderProfileModel.fromJson(json.decode(str));
+String updateRiderProfileModelToJson(UpdateRiderProfileModel data) =>
+    json.encode(data.toJson());
+
 class UpdateRiderProfileModel {
   UpdateRiderProfileModel({
     bool? status,
-    String? message,}){
+    String? message,
+  }) {
     _status = status;
     _message = message;
   }
@@ -18,11 +23,14 @@ class UpdateRiderProfileModel {
   }
   bool? _status;
   String? _message;
-  UpdateRiderProfileModel copyWith({  bool? status,
+  UpdateRiderProfileModel copyWith({
+    bool? status,
     String? message,
-  }) => UpdateRiderProfileModel(  status: status ?? _status,
-    message: message ?? _message,
-  );
+  }) =>
+      UpdateRiderProfileModel(
+        status: status ?? _status,
+        message: message ?? _message,
+      );
   bool? get status => _status;
   String? get message => _message;
 
@@ -32,5 +40,4 @@ class UpdateRiderProfileModel {
     map['message'] = _message;
     return map;
   }
-
 }

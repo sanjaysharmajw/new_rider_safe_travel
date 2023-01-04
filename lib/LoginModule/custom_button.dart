@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 
-
 class Button extends StatelessWidget {
   final Color textColor;
   final double size;

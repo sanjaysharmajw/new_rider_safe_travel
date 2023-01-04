@@ -1,6 +1,9 @@
 import 'dart:convert';
-Familymodel familymodelFromJson(String str) => Familymodel.fromJson(json.decode(str));
+
+Familymodel familymodelFromJson(String str) =>
+    Familymodel.fromJson(json.decode(str));
 String familymodelToJson(Familymodel data) => json.encode(data.toJson());
+
 class Familymodel {
   Familymodel({
     this.id,
@@ -31,7 +34,8 @@ class Familymodel {
     this.vehicleFitnessValidity,
     this.vehiclePucValidity,
     this.vehicleInsuranceValidity,
-    this.vehiclePhoto,});
+    this.vehiclePhoto,
+  });
 
   Familymodel.fromJson(dynamic json) {
     id = json['_id'];
@@ -93,7 +97,8 @@ class Familymodel {
   String? vehiclePucValidity;
   String? vehicleInsuranceValidity;
   String? vehiclePhoto;
-  Familymodel copyWith({  String? id,
+  Familymodel copyWith({
+    String? id,
     String? userId,
     String? driverId,
     String? date,
@@ -120,36 +125,41 @@ class Familymodel {
     String? vehiclePucValidity,
     String? vehicleInsuranceValidity,
     String? vehiclePhoto,
-  }) => Familymodel(  id: id ?? this.id,
-    userId: userId ?? this.userId,
-    driverId: driverId ?? this.driverId,
-    date: date ?? this.date,
-    fromDestination: fromDestination ?? this.fromDestination,
-    toDestination: toDestination ?? this.toDestination,
-    distance: distance ?? this.distance,
-    totalTime: totalTime ?? this.totalTime,
-    vehicleId: vehicleId ?? this.vehicleId,
-    memberName: memberName ?? this.memberName,
-    drivingLicenceNumber: drivingLicenceNumber ?? this.drivingLicenceNumber,
-    vehicleRegistrationNumber: vehicleRegistrationNumber ?? this.vehicleRegistrationNumber,
-    member_photo: member_photo ?? this.member_photo,
-    driverName: driverName ?? this.driverName,
-    ownerName: ownerName ?? this.ownerName,
-    driverMobileNumber: driverMobileNumber ?? this.driverMobileNumber,
-    driverEmailId: driverEmailId ?? this.driverEmailId,
-    driverPhoto: driverPhoto ?? this.driverPhoto,
-    ownerMobileNumber: ownerMobileNumber ?? this.ownerMobileNumber,
-    ownerEmailId: ownerEmailId ?? this.ownerEmailId,
-    ownerPhoto: ownerPhoto ?? this.ownerPhoto,
-    vehicleMake: vehicleMake ?? this.vehicleMake,
-    vehicleModel: vehicleModel ?? this.vehicleModel,
-    vehicleFuelType: vehicleFuelType ?? this.vehicleFuelType,
-    vehicleMakeYear: vehicleMakeYear ?? this.vehicleMakeYear,
-    vehicleFitnessValidity: vehicleFitnessValidity ?? this.vehicleFitnessValidity,
-    vehiclePucValidity: vehiclePucValidity ?? this.vehiclePucValidity,
-    vehicleInsuranceValidity: vehicleInsuranceValidity ?? this.vehicleInsuranceValidity,
-    vehiclePhoto: vehiclePhoto ?? this.vehiclePhoto,
-  );
+  }) =>
+      Familymodel(
+        id: id ?? this.id,
+        userId: userId ?? this.userId,
+        driverId: driverId ?? this.driverId,
+        date: date ?? this.date,
+        fromDestination: fromDestination ?? this.fromDestination,
+        toDestination: toDestination ?? this.toDestination,
+        distance: distance ?? this.distance,
+        totalTime: totalTime ?? this.totalTime,
+        vehicleId: vehicleId ?? this.vehicleId,
+        memberName: memberName ?? this.memberName,
+        drivingLicenceNumber: drivingLicenceNumber ?? this.drivingLicenceNumber,
+        vehicleRegistrationNumber:
+            vehicleRegistrationNumber ?? this.vehicleRegistrationNumber,
+        member_photo: member_photo ?? this.member_photo,
+        driverName: driverName ?? this.driverName,
+        ownerName: ownerName ?? this.ownerName,
+        driverMobileNumber: driverMobileNumber ?? this.driverMobileNumber,
+        driverEmailId: driverEmailId ?? this.driverEmailId,
+        driverPhoto: driverPhoto ?? this.driverPhoto,
+        ownerMobileNumber: ownerMobileNumber ?? this.ownerMobileNumber,
+        ownerEmailId: ownerEmailId ?? this.ownerEmailId,
+        ownerPhoto: ownerPhoto ?? this.ownerPhoto,
+        vehicleMake: vehicleMake ?? this.vehicleMake,
+        vehicleModel: vehicleModel ?? this.vehicleModel,
+        vehicleFuelType: vehicleFuelType ?? this.vehicleFuelType,
+        vehicleMakeYear: vehicleMakeYear ?? this.vehicleMakeYear,
+        vehicleFitnessValidity:
+            vehicleFitnessValidity ?? this.vehicleFitnessValidity,
+        vehiclePucValidity: vehiclePucValidity ?? this.vehiclePucValidity,
+        vehicleInsuranceValidity:
+            vehicleInsuranceValidity ?? this.vehicleInsuranceValidity,
+        vehiclePhoto: vehiclePhoto ?? this.vehiclePhoto,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = id;
@@ -183,5 +193,4 @@ class Familymodel {
     map['vehicle_photo'] = vehiclePhoto;
     return map;
   }
-
 }

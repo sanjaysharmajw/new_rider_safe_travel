@@ -21,7 +21,6 @@ class MyRidesPage extends StatefulWidget {
 }
 
 class _MyRidesPageState extends State<MyRidesPage> {
-
   var _future;
 
   @override
@@ -29,7 +28,6 @@ class _MyRidesPageState extends State<MyRidesPage> {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return SafeArea(
         child: Scaffold(
-
             backgroundColor: Colors.white,
             appBar: AppBar(
               backgroundColor: CustomColor.white,
@@ -50,17 +48,18 @@ class _MyRidesPageState extends State<MyRidesPage> {
                 if (snapshot.hasData) {
                   return ListView.builder(
                     itemCount: snapshot.data?.length,
-
                     itemBuilder: (context, index) {
-                      print(snapshot.data?.length,);
+                      print(
+                        snapshot.data?.length,
+                      );
                       print("______________________________________");
                       return InkWell(
                         onTap: () {
                           setState(() {
-                           // Get.to(FamilyMemberViewRiderMap(
-                             //   rideId: snapshot.data![index].id.toString(), driverName: snapshot.data![index].driverName.toString(), driverImage: snapshot.data![index].driverPhoto.toString(),
-                               // driverLicenseNo: snapshot.data![index].drivingLicenceNumber.toString(), driverMobile: snapshot.data![index].driverMobileNumber.toString(),
-                                //vRegistration: snapshot.data![index].vehicleRegistrationNumber.toString(), vModel:  snapshot.data![index].vehicleModel.toString(), vOwner: snapshot.data![index].ownerName.toString()));
+                            // Get.to(FamilyMemberViewRiderMap(
+                            //   rideId: snapshot.data![index].id.toString(), driverName: snapshot.data![index].driverName.toString(), driverImage: snapshot.data![index].driverPhoto.toString(),
+                            // driverLicenseNo: snapshot.data![index].drivingLicenceNumber.toString(), driverMobile: snapshot.data![index].driverMobileNumber.toString(),
+                            //vRegistration: snapshot.data![index].vehicleRegistrationNumber.toString(), vModel:  snapshot.data![index].vehicleModel.toString(), vOwner: snapshot.data![index].ownerName.toString()));
                           });
                         },
                         child: Center(
@@ -71,123 +70,117 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                 Container(
                                   height: 190.h,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20.0.h),
-                                      color: CustomColor.yellow
-                                  ),
+                                      borderRadius:
+                                          BorderRadius.circular(20.0.h),
+                                      color: CustomColor.yellow),
                                 ),
                                 Positioned(
                                   top: 10.h,
-                                 // left: 90,
+                                  // left: 90,
                                   right: 30.w,
                                   child: Column(
-                                   mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      Text("DATE:  "+
-                                          snapshot
-                                              .data![index].date.toString(),
+                                      Text(
+                                          "DATE:  " +
+                                              snapshot.data![index].date
+                                                  .toString(),
                                           style: TextStyle(
-                                              fontFamily:
-                                              'transport',
-                                              fontSize:
-                                              15.sp)),
+                                              fontFamily: 'transport',
+                                              fontSize: 15.sp)),
                                     ],
                                   ),
                                 ),
-
                                 Positioned.fill(
                                   top: 20.h,
                                   child: Row(
                                     children: [
-                                      SizedBox(width: 10.w,),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
                                       Expanded(
                                         child: ClipOval(
-                                          child:
-                                          (snapshot
-                                              .data![
-                                          index]
-                                              .driverPhoto !=
-                                              null)
+                                          child: (snapshot.data![index]
+                                                      .driverPhoto !=
+                                                  null)
                                               ? Image.network(
-                                            snapshot
-                                                .data![
-                                            index]
-                                                .driverPhoto
-                                                .toString(),
-                                            width: 80.w,
-                                            height: 80.h,
-                                            fit: BoxFit
-                                                .cover,
-                                          )
+                                                  snapshot
+                                                      .data![index].driverPhoto
+                                                      .toString(),
+                                                  width: 80.w,
+                                                  height: 80.h,
+                                                  fit: BoxFit.cover,
+                                                )
                                               : Image.asset(
-                                              'assets/user_avatar.png'),
+                                                  'assets/user_avatar.png'),
                                         ),
                                         flex: 2,
                                       ),
-                                      SizedBox(width: 20.w,),
+                                      SizedBox(
+                                        width: 20.w,
+                                      ),
                                       Expanded(
                                         flex: 4,
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text("Driver Name: "),
-                                            Text(snapshot
-                                                .data![index]
-                                                .driverName
-                                                .toString(),
-                                                style:  TextStyle(
-                                                    fontFamily:
-                                                    'transport',
-                                                    fontSize:
-                                                    15.sp)),
-                                            SizedBox(height: 10.h,),
+                                            Text(
+                                                snapshot.data![index].driverName
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontFamily: 'transport',
+                                                    fontSize: 15.sp)),
+                                            SizedBox(
+                                              height: 10.h,
+                                            ),
                                             Text("Driver Mobile Number: "),
-                                            Text(snapshot
-                                                .data![index]
-                                                .driverMobileNumber
-                                                .toString(),
-                                                style:  TextStyle(
-                                                    fontFamily:
-                                                    'transport',
-                                                    fontSize:
-                                                    15.sp,))
+                                            Text(
+                                                snapshot.data![index]
+                                                    .driverMobileNumber
+                                                    .toString(),
+                                                style: TextStyle(
+                                                  fontFamily: 'transport',
+                                                  fontSize: 15.sp,
+                                                ))
                                           ],
-
-
                                         ),
                                       ),
-                                      SizedBox(width: 10.w,),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
                                       Expanded(
                                         flex: 4,
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text("Vehicle Re.No. : "),
-                                            Text(snapshot
-                                                .data![index].vehicleRegistrationNumber.toString(),
-                                                style:  TextStyle(
-                                                    fontFamily:
-                                                    'transport',
-                                                    fontSize:
-                                                    15.sp)),
-                                            SizedBox(height: 10.h,),
-                                            Text("Veicle Model Name: "),
-                                            Text(snapshot
-                                                .data![index].vehicleModel.toString(),
+                                            Text(
+                                                snapshot.data![index]
+                                                    .vehicleRegistrationNumber
+                                                    .toString(),
                                                 style: TextStyle(
-                                                    fontFamily:
-                                                    'transport',
-                                                    fontSize:
-                                                    15.sp))
+                                                    fontFamily: 'transport',
+                                                    fontSize: 15.sp)),
+                                            SizedBox(
+                                              height: 10.h,
+                                            ),
+                                            Text("Veicle Model Name: "),
+                                            Text(
+                                                snapshot
+                                                    .data![index].vehicleModel
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontFamily: 'transport',
+                                                    fontSize: 15.sp))
                                           ],
                                         ),
                                       )
-
-
-
-
                                     ],
                                   ),
                                 )
@@ -204,12 +197,10 @@ class _MyRidesPageState extends State<MyRidesPage> {
                 // By default, show a loading spinner.
                 return Center(child: const CircularProgressIndicator());
               },
-            )
-        ));
+            )));
   }
 
   Future<List<RideDataModel>> getData() async {
-
     await Preferences.setPreferences();
     String userId = Preferences.getId(Preferences.id).toString();
     final response = await http.post(
@@ -227,9 +218,10 @@ class _MyRidesPageState extends State<MyRidesPage> {
 
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
-      List<RideDataModel> rideData = jsonDecode(response.body)['data'].map<RideDataModel>((data) => RideDataModel.fromJson(data)).toList();
+      List<RideDataModel> rideData = jsonDecode(response.body)['data']
+          .map<RideDataModel>((data) => RideDataModel.fromJson(data))
+          .toList();
       return rideData;
-
     } else {
       print(response.statusCode);
       print(response.body);
@@ -241,8 +233,5 @@ class _MyRidesPageState extends State<MyRidesPage> {
   void initState() {
     super.initState();
     getData();
-
   }
-
-
 }

@@ -139,7 +139,6 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
 
   @override
   initState() {
-
     print(widget.date);
     print(widget.pincode);
     print(widget.city);
@@ -357,7 +356,6 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       child: Stack(
                                         alignment: Alignment.bottomRight,
                                         children: [
-
                                           CircleAvatar(
                                             backgroundColor: CustomColor.yellow,
                                             radius: 45.0.r,
@@ -377,7 +375,6 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                               ),
                                             ),
                                           ),
-
                                           Image.asset(
                                               'assets/select_image.png'),
                                         ],
@@ -1044,7 +1041,6 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             if (age < 6) {
                               openAndCloseLoadingDialog();
                             } else {
-
                               updateProfile(userId);
                               OverlayLoadingProgress.start(context);
                             }
@@ -1296,7 +1292,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     );
     if (response.statusCode == 200) {
       OverlayLoadingProgress;
-     /* Get.snackbar("Message", "Successful Aws File",
+      /* Get.snackbar("Message", "Successful Aws File",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: CustomColor.yellow,
           borderRadius: 5,
@@ -1312,7 +1308,6 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   }
 
   Future<StateModel> statesList() async {
-
     final response = await http.post(
       Uri.parse(ApiUrl.stateApi),
       headers: <String, String>{

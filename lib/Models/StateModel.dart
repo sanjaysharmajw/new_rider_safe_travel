@@ -1,10 +1,14 @@
 import 'dart:convert';
-StateModel stateModelFromJson(String str) => StateModel.fromJson(json.decode(str));
+
+StateModel stateModelFromJson(String str) =>
+    StateModel.fromJson(json.decode(str));
 String stateModelToJson(StateModel data) => json.encode(data.toJson());
+
 class StateModel {
   StateModel({
-      this.status, 
-      this.data,});
+    this.status,
+    this.data,
+  });
 
   StateModel.fromJson(dynamic json) {
     status = json['status'];
@@ -17,11 +21,14 @@ class StateModel {
   }
   bool? status;
   List<Data>? data;
-StateModel copyWith({  bool? status,
-  List<Data>? data,
-}) => StateModel(  status: status ?? this.status,
-  data: data ?? this.data,
-);
+  StateModel copyWith({
+    bool? status,
+    List<Data>? data,
+  }) =>
+      StateModel(
+        status: status ?? this.status,
+        data: data ?? this.data,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['status'] = status;
@@ -30,21 +37,22 @@ StateModel copyWith({  bool? status,
     }
     return map;
   }
-
 }
 
 Data dataFromJson(String str) => Data.fromJson(json.decode(str));
 String dataToJson(Data data) => json.encode(data.toJson());
+
 class Data {
   Data({
-      this.id, 
-      this.name, 
-      this.stateId, 
-      this.status, 
-      this.createdAt, 
-      this.updatedAt, 
-      this.createdBy, 
-      this.updatedBy,});
+    this.id,
+    this.name,
+    this.stateId,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.createdBy,
+    this.updatedBy,
+  });
 
   Data.fromJson(dynamic json) {
     id = json['_id'];
@@ -64,23 +72,26 @@ class Data {
   String? updatedAt;
   num? createdBy;
   num? updatedBy;
-Data copyWith({  String? id,
-  String? name,
-  num? stateId,
-  String? status,
-  String? createdAt,
-  String? updatedAt,
-  num? createdBy,
-  num? updatedBy,
-}) => Data(  id: id ?? this.id,
-  name: name ?? this.name,
-  stateId: stateId ?? this.stateId,
-  status: status ?? this.status,
-  createdAt: createdAt ?? this.createdAt,
-  updatedAt: updatedAt ?? this.updatedAt,
-  createdBy: createdBy ?? this.createdBy,
-  updatedBy: updatedBy ?? this.updatedBy,
-);
+  Data copyWith({
+    String? id,
+    String? name,
+    num? stateId,
+    String? status,
+    String? createdAt,
+    String? updatedAt,
+    num? createdBy,
+    num? updatedBy,
+  }) =>
+      Data(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        stateId: stateId ?? this.stateId,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        createdBy: createdBy ?? this.createdBy,
+        updatedBy: updatedBy ?? this.updatedBy,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = id;
@@ -93,5 +104,4 @@ Data copyWith({  String? id,
     map['updated_by'] = updatedBy;
     return map;
   }
-
 }

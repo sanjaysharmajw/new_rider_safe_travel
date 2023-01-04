@@ -1,7 +1,9 @@
 import 'dart:convert';
 
-RideDataModel dataFromJson(String str) => RideDataModel.fromJson(json.decode(str));
+RideDataModel dataFromJson(String str) =>
+    RideDataModel.fromJson(json.decode(str));
 String dataToJson(RideDataModel data) => json.encode(data.toJson());
+
 class RideDataModel {
   RideDataModel({
     this.id,
@@ -30,7 +32,8 @@ class RideDataModel {
     this.vehicleFitnessValidity,
     this.vehiclePucValidity,
     this.vehicleInsuranceValidity,
-    this.vehiclePhoto,});
+    this.vehiclePhoto,
+  });
 
   RideDataModel.fromJson(dynamic json) {
     id = json['_id'];
@@ -39,7 +42,9 @@ class RideDataModel {
     date = json['date'];
     fromDestination = json['from_destination'];
     toDestination = json['to_destination'];
-    startPoint = json['start_point'] != null ? StartPoint.fromJson(json['start_point']) : null;
+    startPoint = json['start_point'] != null
+        ? StartPoint.fromJson(json['start_point'])
+        : null;
     endPoint = json['end_point'];
 
     distance = json['distance'];
@@ -88,7 +93,8 @@ class RideDataModel {
   String? vehiclePucValidity;
   String? vehicleInsuranceValidity;
   String? vehiclePhoto;
-  RideDataModel copyWith({  String? id,
+  RideDataModel copyWith({
+    String? id,
     String? userId,
     String? driverId,
     String? date,
@@ -115,34 +121,39 @@ class RideDataModel {
     String? vehiclePucValidity,
     String? vehicleInsuranceValidity,
     String? vehiclePhoto,
-  }) => RideDataModel(  id: id ?? this.id,
-    userId: userId ?? this.userId,
-    driverId: driverId ?? this.driverId,
-    date: date ?? this.date,
-    fromDestination: fromDestination ?? this.fromDestination,
-    toDestination: toDestination ?? this.toDestination,
-    startPoint: startPoint ?? this.startPoint,
-    endPoint: endPoint ?? this.endPoint,
-    stops: stops ?? this.stops,
-    distance: distance ?? this.distance,
-    totalTime: totalTime ?? this.totalTime,
-    vehicleId: vehicleId ?? this.vehicleId,
-    driverName: driverName ?? this.driverName,
-    driverMobileNumber: driverMobileNumber ?? this.driverMobileNumber,
-    drivingLicenceNumber: drivingLicenceNumber ?? this.drivingLicenceNumber,
-    driverEmailId: driverEmailId ?? this.driverEmailId,
-    driverPhoto: driverPhoto ?? this.driverPhoto,
-    vehicleRegistrationNumber: vehicleRegistrationNumber ?? this.vehicleRegistrationNumber,
-    vehicleRcNumber: vehicleRcNumber ?? this.vehicleRcNumber,
-    vehicleMake: vehicleMake ?? this.vehicleMake,
-    vehicleModel: vehicleModel ?? this.vehicleModel,
-    vehicleFuelType: vehicleFuelType ?? this.vehicleFuelType,
-    vehicleMakeYear: vehicleMakeYear ?? this.vehicleMakeYear,
-    vehicleFitnessValidity: vehicleFitnessValidity ?? this.vehicleFitnessValidity,
-    vehiclePucValidity: vehiclePucValidity ?? this.vehiclePucValidity,
-    vehicleInsuranceValidity: vehicleInsuranceValidity ?? this.vehicleInsuranceValidity,
-    vehiclePhoto: vehiclePhoto ?? this.vehiclePhoto,
-  );
+  }) =>
+      RideDataModel(
+        id: id ?? this.id,
+        userId: userId ?? this.userId,
+        driverId: driverId ?? this.driverId,
+        date: date ?? this.date,
+        fromDestination: fromDestination ?? this.fromDestination,
+        toDestination: toDestination ?? this.toDestination,
+        startPoint: startPoint ?? this.startPoint,
+        endPoint: endPoint ?? this.endPoint,
+        stops: stops ?? this.stops,
+        distance: distance ?? this.distance,
+        totalTime: totalTime ?? this.totalTime,
+        vehicleId: vehicleId ?? this.vehicleId,
+        driverName: driverName ?? this.driverName,
+        driverMobileNumber: driverMobileNumber ?? this.driverMobileNumber,
+        drivingLicenceNumber: drivingLicenceNumber ?? this.drivingLicenceNumber,
+        driverEmailId: driverEmailId ?? this.driverEmailId,
+        driverPhoto: driverPhoto ?? this.driverPhoto,
+        vehicleRegistrationNumber:
+            vehicleRegistrationNumber ?? this.vehicleRegistrationNumber,
+        vehicleRcNumber: vehicleRcNumber ?? this.vehicleRcNumber,
+        vehicleMake: vehicleMake ?? this.vehicleMake,
+        vehicleModel: vehicleModel ?? this.vehicleModel,
+        vehicleFuelType: vehicleFuelType ?? this.vehicleFuelType,
+        vehicleMakeYear: vehicleMakeYear ?? this.vehicleMakeYear,
+        vehicleFitnessValidity:
+            vehicleFitnessValidity ?? this.vehicleFitnessValidity,
+        vehiclePucValidity: vehiclePucValidity ?? this.vehiclePucValidity,
+        vehicleInsuranceValidity:
+            vehicleInsuranceValidity ?? this.vehicleInsuranceValidity,
+        vehiclePhoto: vehiclePhoto ?? this.vehiclePhoto,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = id;
@@ -178,17 +189,19 @@ class RideDataModel {
     map['vehicle_photo'] = vehiclePhoto;
     return map;
   }
-
 }
 
-StartPoint startPointFromJson(String str) => StartPoint.fromJson(json.decode(str));
+StartPoint startPointFromJson(String str) =>
+    StartPoint.fromJson(json.decode(str));
 String startPointToJson(StartPoint data) => json.encode(data.toJson());
+
 class StartPoint {
   StartPoint({
     this.time,
     //required this.latitude,
-   // required this.longitude,
-    this.location,});
+    // required this.longitude,
+    this.location,
+  });
 
   StartPoint.fromJson(dynamic json) {
     time = json['time'];
@@ -197,25 +210,27 @@ class StartPoint {
     location = json['location'];
   }
   String? time;
-  String latitude="";
-  String longitude="";
+  String latitude = "";
+  String longitude = "";
   String? location;
-  StartPoint copyWith({  String? time,
+  StartPoint copyWith({
+    String? time,
     //String? latitude,
     //required String longitude,
     required String location,
-  }) => StartPoint(  time: time ?? this.time,
-   // latitude: latitude ?? this.latitude,
-    //longitude: longitude ?? this.longitude,
-    location: location ?? this.location,
-  );
+  }) =>
+      StartPoint(
+        time: time ?? this.time,
+        // latitude: latitude ?? this.latitude,
+        //longitude: longitude ?? this.longitude,
+        location: location ?? this.location,
+      );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['time'] = time;
-   // map['latitude'] = latitude;
+    // map['latitude'] = latitude;
     //map['longitude'] = longitude;
     map['location'] = location;
     return map;
   }
-
 }
