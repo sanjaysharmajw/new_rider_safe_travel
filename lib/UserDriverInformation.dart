@@ -67,6 +67,8 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
     date = DateFormat('yMd').format(now);
   }
 
+  var qresult;
+
   Future _scanQR() async {
     try {
       String? qrResult = await MajaScan.startScan(
@@ -75,9 +77,9 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
           qRCornerColor: Colors.orange,
           qRScannerColor: Colors.orange);
       setState(() {
-       var result = qrResult ?? 'null string';
-        if (result != "") {
-          Get.to(UserDriverInformation(result: result));
+        qresult = qrResult ?? 'null string';
+        if (qresult != "") {
+          Get.to(UserDriverInformation(result: qresult));
         } else {
           Get.to(MainPage());
         }
@@ -85,21 +87,25 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
     } on PlatformException catch (ex) {
       if (ex.code == MajaScan.CameraAccessDenied) {
         setState(() {
-          Get.to(MainPage());
-          //result = "Camera permission was denied";
+
+          qresult = "Camera permission was denied";
+
         });
       } else {
         setState(() {
-          // result = "Unknown Error $ex";
+          qresult = "Unknown Error $ex";
+
         });
       }
     } on FormatException {
       setState(() {
-        // result = "You pressed the back button before scanning anything";
+        qresult = "You pressed the back button before scanning anything";
+
       });
     } catch (ex) {
       setState(() {
-        //result = "Unknown Error $ex";
+        qresult = "Unknown Error $ex";
+
       });
     }
   }

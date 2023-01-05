@@ -73,6 +73,7 @@ class _SignUpState extends State<StartRide> {
     _initUser();
     sharePre();
     setState(() {});
+    OverlayLoadingProgress;
   }
 
   void sharePre() async {
@@ -136,7 +137,7 @@ class _SignUpState extends State<StartRide> {
           appBar: AppBar(
             centerTitle: true,
             title: const Text(
-              "Start Ride",
+              "On Going Journey",
               style:
                   TextStyle(color: CustomColor.black, fontFamily: 'transport'),
             ),

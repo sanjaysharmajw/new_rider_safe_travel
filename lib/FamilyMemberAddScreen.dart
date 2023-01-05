@@ -64,92 +64,100 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
         title: const Text("Add Family Member",
             style: TextStyle(fontFamily: 'transport', fontSize: 18)),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SizedBox(height: 50),
-          const SizedBox(height: 20),
-          const Text("User Who can track",
-              style: TextStyle(fontFamily: 'transport', fontSize: 20)),
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: TextFormField(
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(
-                    RegExp("[a-zA-Z\ ]")),
-              ],
-              validator: (value) {
-                if (value == null ||
-                    value.isEmpty ||
-                    value.length < 2) {
-                  return 'Please enter name!';
-                }
-                return null;
-              },
-              controller: controllerName,
-              style: const TextStyle(fontFamily: 'transport', fontSize: 14),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Enter Name',
-                hintText: 'Enter Name',
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: TextFormField(
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 50),
+            const SizedBox(height: 20),
+            const Text("User Who can track",
+                style: TextStyle(fontFamily: 'transport', fontSize: 20)),
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: TextFormField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                      RegExp("[a-zA-Z\ ]")),
+                  FilteringTextInputFormatter.deny('  ')
+                ],
                 validator: (value) {
-          if (value == null ||
-          value.isEmpty ||
-          value.length < 2) {
-          return 'Please enter valid relation!';
-          }
-          return null;
-          },
-              controller: controllerRelation,
-              style: const TextStyle(fontFamily: 'transport', fontSize: 14),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Enter Relation',
-                hintText: 'Enter Your Family Relation',
+                  if (value == null ||
+                      value.isEmpty ||
+                      value.length < 2) {
+                    return 'Please enter name!';
+                  }
+                  return null;
+                },
+                controller: controllerName,
+                style: const TextStyle(fontFamily: 'transport', fontSize: 14),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Enter Name',
+                  hintText: 'Enter Name',
+                ),
               ),
             ),
-
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: TextFormField(
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(
-                    RegExp("[0-9]")),
-                LengthLimitingTextInputFormatter(10),
-              ],
-              controller: controllerMobile,
-              style: const TextStyle(fontFamily: 'transport', fontSize: 14),
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Enter Mobile',
-                hintText: 'Enter Your Mobile Number',
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: TextFormField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                      RegExp("[a-zA-Z\]")),
+                  FilteringTextInputFormatter.deny(' ')
+                ],
+                  validator: (value) {
+            if (value == null ||
+            value.isEmpty ||
+            value.length < 2) {
+            return 'Please enter valid relation!';
+            }
+            return null;
+            },
+                controller: controllerRelation,
+                style: const TextStyle(fontFamily: 'transport', fontSize: 14),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Enter Relation',
+                  hintText: 'Enter Your Family Relation',
+                ),
               ),
-              // validator: Validator.validatePhoneNumber(controllerMobile.text.toString()),
 
-              validator: (value) {
-                Validator.validatePhoneNumber(controllerMobile.text.toString());
-              },
             ),
-          ),
-          RiderButton(
-              click: () {
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: TextFormField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                      RegExp("[0-9]")),
+                  LengthLimitingTextInputFormatter(10),
+                ],
+                controller: controllerMobile,
+                style: const TextStyle(fontFamily: 'transport', fontSize: 14),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Enter Mobile',
+                  hintText: 'Enter Your Mobile Number',
+                ),
+                // validator: Validator.validatePhoneNumber(controllerMobile.text.toString()),
 
-                OverlayLoadingProgress.start(context);
-                addFamilyMember(
-                    controllerName.text.toString(),
-                    userId,
-                    controllerRelation.text.toString(),
-                    controllerMobile.text.toString());
-              },
-              textBtn: 'Add')
-        ],
+                validator: (value) {
+                  Validator.validatePhoneNumber(controllerMobile.text.toString());
+                },
+              ),
+            ),
+            RiderButton(
+                click: () {
+
+                  OverlayLoadingProgress.start(context);
+                  addFamilyMember(
+                      controllerName.text.toString(),
+                      userId,
+                      controllerRelation.text.toString(),
+                      controllerMobile.text.toString());
+                },
+                textBtn: 'Add')
+          ],
+        ),
       ),
     ));
   }

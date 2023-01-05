@@ -617,6 +617,9 @@ tring firstName, String lastName,
                       Expanded(
                           child: Center(
                         child: TextFormField(
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(' ')
+                          ],
                           style: TextStyle(
                             fontFamily: 'transport',
                             fontSize: 16,
