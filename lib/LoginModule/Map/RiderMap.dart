@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -181,7 +183,8 @@ class _RiderMapState extends State<RiderMap> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Make_a_call.makePhoneCall("100");
+                                  openAndCloseLoadingDialog();
+
                                 },
                                 child: Column(
                                   children: [
@@ -229,26 +232,52 @@ class _RiderMapState extends State<RiderMap> {
         });
   }
 
-  /*Future<FamilyMemberReadRideDataModels> getRideData() async {
-    final response = await http.post(
-      Uri.parse(ApiUrl.getRideCurrentApi),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'ride_id': widget.rideId.toString(),
-      }),
+  Future<void> openAndCloseLoadingDialog() async {
+    showDialog(
+      context: Get.overlayContext!,
+      barrierDismissible: false,
+      builder: (_) => WillPopScope(
+        onWillPop: () async => false,
+        child: Center(
+          child: SizedBox(
+            width: 60,
+            height: 60,
+            child: CircularProgressIndicator(
+              strokeWidth: 3,
+            ),
+          ),
+        ),
+      ),
     );
-    print('Response:!${response.body}');
-    if (response.statusCode == 200) {
-      Get.snackbar("Ride Id", widget.rideId.toString());
-      print('Ride Id:!${widget.rideId}');
-      Get.snackbar("Response", jsonDecode(response.body).toString());
-      return FamilyMemberReadRideDataModels.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to load');
-    }
-  }*/
+
+    await Future.delayed(Duration(seconds: 3));
+    // Dismiss CircularProgressIndicator
+    Navigator.of(Get.overlayContext!).pop();
+
+    Get.dialog(
+      AlertDialog(
+        content: Text("Do you really wanr to call on 100 ?"),
+        actions: <Widget>[
+          TextButton(
+            child: Text("Yes"),
+            onPressed: () {
+              Make_a_call.makePhoneCall("100");
+            },
+          ),
+          TextButton(
+            child: Text("No"),
+            onPressed: () {
+              Get.back();
+            },
+          )
+        ],
+      ),
+      barrierDismissible: false,
+    );
+
+    // await Future.delayed(Duration(seconds: 3));
+    // Navigator.of(Get.overlayContext).pop();
+  }
 
   Future<http.Response> getSocketToken() async {
     final response = await http.post(

@@ -95,6 +95,10 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
                                 child: SizedBox(
                                   height: 45,
                                   child: TextFormField(
+                                    showCursor: true,
+                                    cursorHeight:25,
+                                    cursorWidth: 2.0,
+
                                     controller: _controllerMobile,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(

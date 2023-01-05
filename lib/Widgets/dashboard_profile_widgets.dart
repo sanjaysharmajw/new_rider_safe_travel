@@ -41,6 +41,7 @@ class DashboardProfileWidgets extends StatelessWidget {
                         )
                       : Image.asset('assets/user_avatar.png'),
                 ),
+
               ),
             ),
             SizedBox(height: 20.w),

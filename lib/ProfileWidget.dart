@@ -29,13 +29,32 @@ class ProfileWidget extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.only(left: 20.h),
-          child: CachedNetworkImage(
-            imageUrl: assetsPath,
-            width: 50.w,
-            height: 30.h,
-            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                CircularProgressIndicator(value: downloadProgress.progress),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+          child: CircleAvatar(
+            backgroundColor: CustomColor.yellow,
+            radius: 23.r,
+            child: CircleAvatar(
+              radius: 22.r,
+              backgroundColor: Colors.white,
+              child: ClipOval(
+                child: (assetsPath != null)
+                    ? Image.network(
+                  assetsPath,
+                  width: 80.w,
+                  height: 80.w,
+                  fit: BoxFit.cover,
+                )
+                    : Image.asset('assets/user_avatar.png'),
+              ),
+
+              /*CachedNetworkImage(
+                imageUrl: assetsPath,
+
+                fit: BoxFit.contain,
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    CircularProgressIndicator(value: downloadProgress.progress),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),*/
+            ),
           ),
         ),
         SizedBox(

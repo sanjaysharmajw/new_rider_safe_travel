@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
@@ -72,7 +73,19 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
               style: TextStyle(fontFamily: 'transport', fontSize: 20)),
           Padding(
             padding: const EdgeInsets.all(15),
-            child: TextField(
+            child: TextFormField(
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(
+                    RegExp("[a-zA-Z\ ]")),
+              ],
+              validator: (value) {
+                if (value == null ||
+                    value.isEmpty ||
+                    value.length < 2) {
+                  return 'Please enter name!';
+                }
+                return null;
+              },
               controller: controllerName,
               style: const TextStyle(fontFamily: 'transport', fontSize: 14),
               decoration: const InputDecoration(
@@ -84,7 +97,15 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
           ),
           Padding(
             padding: const EdgeInsets.all(15),
-            child: TextField(
+            child: TextFormField(
+                validator: (value) {
+          if (value == null ||
+          value.isEmpty ||
+          value.length < 2) {
+          return 'Please enter valid relation!';
+          }
+          return null;
+          },
               controller: controllerRelation,
               style: const TextStyle(fontFamily: 'transport', fontSize: 14),
               decoration: const InputDecoration(
@@ -93,10 +114,16 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
                 hintText: 'Enter Your Family Relation',
               ),
             ),
+
           ),
           Padding(
             padding: const EdgeInsets.all(15),
             child: TextFormField(
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(
+                    RegExp("[0-9]")),
+                LengthLimitingTextInputFormatter(10),
+              ],
               controller: controllerMobile,
               style: const TextStyle(fontFamily: 'transport', fontSize: 14),
               decoration: InputDecoration(
@@ -113,6 +140,7 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
           ),
           RiderButton(
               click: () {
+
                 OverlayLoadingProgress.start(context);
                 addFamilyMember(
                     controllerName.text.toString(),

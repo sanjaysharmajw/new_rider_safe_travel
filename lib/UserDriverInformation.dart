@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
+import 'package:majascan/majascan.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/DriverVehicleList.dart';
 import 'package:ride_safe_travel/FamilyMemberAddScreen.dart';
@@ -13,6 +15,7 @@ import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
 import 'package:ride_safe_travel/start_ride_map.dart';
 
 import 'Error.dart';
+import 'LoginModule/MainPage.dart';
 import 'LoginModule/Map/RideFamilyListModel.dart';
 import 'LoginModule/preferences.dart';
 import 'UserVehiclesInfo.dart';
@@ -27,6 +30,9 @@ class UserDriverInformation extends StatefulWidget {
 }
 
 class _UserDriverInformationState extends State<UserDriverInformation> {
+
+
+
   var vehicleId = "";
   var driverId = "";
   var driverName = "";
@@ -61,6 +67,42 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
     date = DateFormat('yMd').format(now);
   }
 
+  Future _scanQR() async {
+    try {
+      String? qrResult = await MajaScan.startScan(
+          title: "QR Code scanner",
+          titleColor: Colors.amberAccent[700],
+          qRCornerColor: Colors.orange,
+          qRScannerColor: Colors.orange);
+      setState(() {
+       var result = qrResult ?? 'null string';
+        if (result != "") {
+          Get.to(UserDriverInformation(result: result));
+        } else {
+          Get.to(MainPage());
+        }
+      });
+    } on PlatformException catch (ex) {
+      if (ex.code == MajaScan.CameraAccessDenied) {
+        setState(() {
+          Get.to(MainPage());
+          //result = "Camera permission was denied";
+        });
+      } else {
+        setState(() {
+          // result = "Unknown Error $ex";
+        });
+      }
+    } on FormatException {
+      setState(() {
+        // result = "You pressed the back button before scanning anything";
+      });
+    } catch (ex) {
+      setState(() {
+        //result = "Unknown Error $ex";
+      });
+    }
+  }
   void locationMethod() async {
     location = Location();
     location.onLocationChanged.listen((LocationData cLoc) async {
@@ -98,6 +140,10 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
         List<Data> driverDetails = jsonDecode(response.body)['data']
             .map<Data>((data) => Data.fromJson(data))
             .toList();
+        if(driverDetails.length==0)
+          {
+            _scanQR();
+          }
         driverName = driverDetails[0].driverName.toString();
         driverMob = driverDetails[0].driverMobileNumber.toString();
         driverLicense = driverDetails[0].drivingLicenceNumber.toString();

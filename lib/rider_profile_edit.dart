@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 import 'dart:ffi';
+import 'dart:ui';
 import 'dart:io';
 import 'dart:math';
 import 'package:age_calculator/age_calculator.dart';
@@ -32,6 +33,7 @@ import 'MyTextField.dart';
 
 import 'RiderUserListData.dart';
 import 'Sharepreferences.dart';
+
 
 class RiderProfileEdit extends StatefulWidget {
   String date;
@@ -213,6 +215,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
 
 
   }
+
+
 
   void preferences() async {
     await Preferences.setPreferences();
@@ -401,7 +405,38 @@ tring firstName, String lastName,
                                       child: Stack(
                                         alignment: Alignment.bottomRight,
                                         children: [
+
                                           CircleAvatar(
+                                            backgroundColor: CustomColor.yellow,
+                                            radius: 45.0.r,
+                                            child: CircleAvatar(
+                                              radius:43.0.r,
+                                              backgroundColor: Colors.white,
+                                              child: ClipOval(
+                                                child: (image != null)
+                                                    ? Image.file(
+                                                  image!,
+                                                  width: 250,
+                                                  height: 150,
+                                                  fit: BoxFit.fill,
+                                                )
+                                                    : Image.network(
+                                                    widget.imageProfile),
+
+                                              ),
+
+
+                                              /*CachedNetworkImage(
+                imageUrl: assetsPath,
+
+                fit: BoxFit.contain,
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    CircularProgressIndicator(value: downloadProgress.progress),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),*/
+                                            ),
+                                          ),
+                                         /* CircleAvatar(
                                             backgroundColor: CustomColor.yellow,
                                             radius: 45.0,
                                             child: CircleAvatar(
@@ -419,7 +454,7 @@ tring firstName, String lastName,
                                                     widget.imageProfile),
                                               ),
                                             ),
-                                          ),
+                                          ), */
 
                                           Image.asset(
                                               'assets/select_image.png'),
@@ -487,6 +522,7 @@ tring firstName, String lastName,
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
                                 RegExp("[a-zA-Z\ ]")),
+                            FilteringTextInputFormatter.deny('  ')
                           ],
                           style: TextStyle(
                             fontFamily: 'transport',
@@ -535,6 +571,7 @@ tring firstName, String lastName,
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
                                 RegExp("[a-zA-Z\ ]")),
+                            FilteringTextInputFormatter.deny('  ')
                           ],
                           style: TextStyle(
                             fontFamily: 'transport',
@@ -852,7 +889,8 @@ tring firstName, String lastName,
                               },
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
-                                    RegExp("[A-Za-z'\.\-\s\,\ ]")),
+                                    RegExp("[A-Za-z]")),
+                                FilteringTextInputFormatter.deny('  ')
                               ],
                               style: TextStyle(
                                 fontFamily: 'transport',
@@ -883,13 +921,14 @@ tring firstName, String lastName,
                             child: TextFormField(
                               validator: (value) {
                                 if (value == null) {
-                                  return 'Please enter your address.';
+                                  return 'Please enter your city name.';
                                 }
                                 return null;
                               },
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
-                                    RegExp("[A-Za-z'\.\-\s\,\ ]")),
+                                    RegExp("[A-Za-z]")),
+                                FilteringTextInputFormatter.deny('  ')
                               ],
                               style: TextStyle(
                                 fontFamily: 'transport',
@@ -1011,6 +1050,7 @@ tring firstName, String lastName,
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
                                     RegExp("[A-Za-z0-9'\.\-\s\,\ ]")),
+                                FilteringTextInputFormatter.deny('  ')
                               ],
                               style: TextStyle(
                                 fontFamily: 'transport',
