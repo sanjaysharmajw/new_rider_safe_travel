@@ -53,6 +53,8 @@ class _UserFamilyListState extends State<UserFamilyList> {
     _future = getUserFamilyList();
   }
 
+  var image;
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
@@ -90,6 +92,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
+                 image= "${snapshot.data![index].memberProfileImage.toString()}";
                   print(snapshot.data!.length);
                   print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                   return Container(
@@ -103,7 +106,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                           padding: const EdgeInsets.only(
                               left: 8, right: 8, top: 8, bottom: 25),
                           child: Container(
-                            height: 170,
+                            height: 185,
                             width: 360,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(24),
@@ -122,7 +125,27 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
-                                    CachedNetworkImage(
+                                    CircleAvatar(
+                                      backgroundColor: CustomColor.yellow,
+                                      radius: 30.r,
+                                      child: CircleAvatar(
+                                        radius: 30.r,
+                                        backgroundColor: Colors.white,
+                                        child: ClipOval(
+                                          child: (image != null)
+                                              ? Image.network(
+                                            image,
+                                            width: 80.w,
+                                            height: 80.w,
+                                            fit: BoxFit.cover,
+                                          )
+                                              : Image.asset('assets/user_avatar.png'),
+                                        ),
+
+
+                                      ),
+                                    ),
+                                   /* CachedNetworkImage(
                                       imageUrl:
                                           "${snapshot.data![index].memberProfileImage.toString()}",
                                       height: 60,
@@ -133,18 +156,41 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                               value: downloadProgress.progress),
                                       errorWidget: (context, url, error) =>
                                           Icon(Icons.error),
-                                    ),
+                                    ), */
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            "First Name.- ${snapshot.data![index].memberFName.toString()}",
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "First Name.-",style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800,
+                                              fontFamily: "transport"),
+                                              ),
+                                              Text(
+                                                "${snapshot.data![index].memberFName.toString()}",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          Text(
-                                            "Last Name.- ${snapshot.data![index].memberLName.toString()}",
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "Last Name.-",style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800,
+                                                  fontFamily: "transport"),
+                                              ),
+                                              Text(
+                                                "${snapshot.data![index].memberLName.toString()}",style: TextStyle(
+                                                  fontSize: 16,
+
+                                              ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
@@ -157,7 +203,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                         ),
                         Padding(
                             padding: EdgeInsets.only(
-                                left: 10, right: 10, top: 70, bottom: 10),
+                                left: 10, right: 10, top: 80, bottom: 10),
                             child: Divider(
                               color: Colors.white,
                               height: 20,
@@ -165,27 +211,60 @@ class _UserFamilyListState extends State<UserFamilyList> {
                             )),
                         Container(
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 90.0, left: 20),
+                            padding: const EdgeInsets.only(top: 100.0, left: 20),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Text(
-                                    "Mobile Number.- ${snapshot.data![index].memberMobileNumber.toString()}",
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Text(
-                                    "Email Id.- ${snapshot.data![index].memberEmailId.toString()}",
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Mobile Number.-",style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800,
+                                          fontFamily: "transport"),
+                                      ),
+                                      Text(
+                                        "${snapshot.data![index].memberMobileNumber.toString()}",style: TextStyle(
+                                        fontSize: 16,
+
+                                      ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(5.0),
-                                  child: Text(
-                                    "Member Relation.- ${snapshot.data![index].relation.toString()}",
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Email Id.-",style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800,
+                                          fontFamily: "transport"),
+                                      ),
+                                      Text(
+                                        "${snapshot.data![index].memberEmailId.toString()}",style: TextStyle(
+                                        fontSize: 16,
+
+                                      ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Member Relation.-",style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800,
+                                          fontFamily: "transport"),
+                                      ),
+                                      Text(
+                                        "${snapshot.data![index].relation.toString()}",style: TextStyle(
+                                        fontSize: 16,
+
+                                      ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
@@ -195,7 +274,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                         Center(
                           child: SizedBox(
                             width: double.infinity,
-                            height: 190,
+                            height: 200,
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),

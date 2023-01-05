@@ -72,8 +72,9 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
                     }
                     return null;
                   },
+                  cursorHeight: 25.0,
                   controller: controllerName,
-                  style: const TextStyle(fontFamily: 'transport', fontSize: 14),
+                  style: const TextStyle(fontFamily: 'transport', fontSize: 16),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Enter Name',
@@ -97,8 +98,9 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
                     }
                     return null;
                   },
+                  cursorHeight: 25.0,
                   controller: controllerRelation,
-                  style: const TextStyle(fontFamily: 'transport', fontSize: 14),
+                  style: const TextStyle(fontFamily: 'transport', fontSize: 16),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Enter Relation',
@@ -114,8 +116,9 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
                         RegExp("[0-9]")),
                     LengthLimitingTextInputFormatter(10),
                   ],
+                  cursorHeight: 25.0,
                   controller: controllerMobile,
-                  style: const TextStyle(fontFamily: 'transport', fontSize: 14),
+                  style: const TextStyle(fontFamily: 'transport', fontSize: 16),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Enter Mobile',

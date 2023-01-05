@@ -188,7 +188,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                               const Text("Driver Name",
                                                   style: TextStyle(
                                                       fontFamily: 'transport',
-                                                      fontSize: 15)),
+                                                      fontSize: 16,fontWeight: FontWeight.w800)),
                                               Text(
                                                   snapshot
                                                       .data![index].driverName
@@ -206,7 +206,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                               const Text("Driver Mobile",
                                                   style: TextStyle(
                                                       fontFamily: 'transport',
-                                                      fontSize: 15)),
+                                                      fontSize: 16,fontWeight: FontWeight.w800)),
                                               Text(
                                                   snapshot.data![index]
                                                       .driverMobileNumber
@@ -224,7 +224,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                               const Text("Ride Id",
                                                   style: TextStyle(
                                                       fontFamily: 'transport',
-                                                      fontSize: 15)),
+                                                      fontSize: 16,fontWeight: FontWeight.w800)),
                                               Text(
                                                   snapshot.data![index].id
                                                       .toString(),

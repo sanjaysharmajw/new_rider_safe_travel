@@ -67,18 +67,22 @@ class UserVehiclesInfo extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         backgroundColor: CustomColor.yellow,
-                        radius: 30.0,
+                        radius: 30,
                         child: CircleAvatar(
-                          radius: 29.0,
+                          radius: 30,
                           backgroundColor: Colors.white,
                           child: ClipOval(
                             child: (dInfoImage != null)
                                 ? Image.network(
-                                    dInfoImage!,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Image.asset('assets/car.png'),
+                              dInfoImage,
+                              width: 80,
+                              height: 80,
+                              fit: BoxFit.cover,
+                            )
+                                : Image.asset('assets/user_avatar.png'),
                           ),
+
+
                         ),
                       ),
                     ],
