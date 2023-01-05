@@ -64,20 +64,20 @@ class _MyRidesPageState extends State<MyRidesPage> {
                         },
                         child: Center(
                           child: Padding(
-                            padding: EdgeInsets.all(8.0.h),
+                            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                             child: Stack(
                               children: [
                                 Container(
-                                  height: 190.h,
+                                  height: 170.h,
                                   decoration: BoxDecoration(
                                       borderRadius:
-                                          BorderRadius.circular(20.0.h),
+                                          BorderRadius.circular(10.0.h),
                                       color: CustomColor.yellow),
                                 ),
                                 Positioned(
-                                  top: 10.h,
+                                  top: 20.h,
                                   // left: 90,
-                                  right: 30.w,
+                                  right: 10.w,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -93,7 +93,6 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                   ),
                                 ),
                                 Positioned.fill(
-                                  top: 20.h,
                                   child: Row(
                                     children: [
                                       SizedBox(
@@ -108,8 +107,8 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                                   snapshot
                                                       .data![index].driverPhoto
                                                       .toString(),
-                                                  width: 80.w,
-                                                  height: 80.h,
+                                                  width: 50.w,
+                                                  height: 60.h,
                                                   fit: BoxFit.cover,
                                                 )
                                               : Image.asset(
@@ -170,7 +169,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                             SizedBox(
                                               height: 10.h,
                                             ),
-                                            Text("Veicle Model Name: "),
+                                            Text("Veicle Model Name:"),
                                             Text(
                                                 snapshot
                                                     .data![index].vehicleModel

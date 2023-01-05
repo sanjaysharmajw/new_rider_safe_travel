@@ -35,7 +35,9 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.keyboard_backspace_sharp),
+        leading:  IconButton(icon: Icon(Icons.keyboard_backspace_sharp), onPressed: () {
+          Get.back();
+        },),
         centerTitle: true,
         backgroundColor: CustomColor.yellow,
         title: const Text("Add Family Member",
