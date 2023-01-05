@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
@@ -14,13 +12,24 @@ import 'package:ride_safe_travel/LoginModule/MainPage.dart';
 import 'package:ride_safe_travel/LoginModule/Map/Drawer.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
+import 'package:ride_safe_travel/MapAddFamily.dart';
 import 'package:ride_safe_travel/Utils/make_a_call.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:url_launcher/url_launcher.dart';
-import 'DriverVehicleList.dart';
 import 'LoginModule/Error.dart';
 import 'Utils/back_button_popup.dart';
 import 'Utils/exit_alert_dialog.dart';
+import 'Utils/share_content.dart';
+enum Share {
+  facebook,
+  messenger,
+  twitter,
+  whatsapp,
+  whatsapp_personal,
+  whatsapp_business,
+  share_system,
+  share_instagram,
+  share_telegram
+}
 
 class StartRide extends StatefulWidget {
   StartRide(
@@ -39,7 +48,6 @@ class StartRide extends StatefulWidget {
   State<StartRide> createState() => _SignUpState();
   final String riderId;
   final String socketToken;
-
   final String dName;
   final String dMobile;
   final String dPhoto;
@@ -142,7 +150,7 @@ class _SignUpState extends State<StartRide> {
                   TextStyle(color: CustomColor.black, fontFamily: 'transport'),
             ),
             elevation: 0,
-            backgroundColor: Colors.transparent,
+            backgroundColor: CustomColor.lightYellow,
             leading: IconButton(
               onPressed: () {
                 BackButtonPopup(context, () {
@@ -151,6 +159,20 @@ class _SignUpState extends State<StartRide> {
               },
               icon: Image.asset('assets/map_back.png'),
             ),
+            actions: <Widget>[
+              IconButton(icon: Icon(Icons.share,color: Colors.black,), onPressed: () {
+                String dName=widget.dName.toString();
+                String dMobile=widget.dMobile.toString();
+                String model=widget.model.toString();
+                String ownlerName=widget.vOwnerName.toString();
+                String regNo=widget.vRegNo.toString();
+                ShareContent.shareContent("Driver Name: $dName, Driver Mobile: $dMobile,Model: $model, "
+                    "Owner Name: $ownlerName, Registration No: $regNo, Link: https://play.google.com/store/search?q=pub%3ADivTag&c=apps");
+                    //         "$ownlerName, Registration No: $regNo")
+                //Share.share('hey! check out this new app https://play.google.com/store/search?q=pub%3ADivTag&c=apps');
+
+              }),
+            ],
           ),
           body: Stack(children: [
             LayoutBuilder(
@@ -203,7 +225,7 @@ class _SignUpState extends State<StartRide> {
                                           Text("End Ride",
                                               style: TextStyle(
                                                   fontFamily: 'transport',
-                                                  fontSize: 16.sp)),
+                                                  fontSize: 14.sp)),
                                         ],
                                       ),
                                     ),
@@ -221,7 +243,23 @@ class _SignUpState extends State<StartRide> {
                                       Text("Ride Details",
                                           style: TextStyle(
                                               fontFamily: 'transport',
-                                              fontSize: 16.sp)),
+                                              fontSize: 14.sp)),
+                                    ],
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Get.to(const MapFamilyAdd());
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Image.asset("images/family_icons.png",
+                                          width: 50.w, height: 50.h),
+                                      SizedBox(height: 10.h),
+                                      Text("Add Family",
+                                          style: TextStyle(
+                                              fontFamily: 'transport',
+                                              fontSize: 14.sp)),
                                     ],
                                   ),
                                 ),
@@ -229,8 +267,7 @@ class _SignUpState extends State<StartRide> {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        Make_a_call.makePhoneCall(
-                                            widget.dMobile);
+                                        Make_a_call.makePhoneCall("102");
                                       },
                                       child: Column(
                                         children: [
@@ -241,6 +278,7 @@ class _SignUpState extends State<StartRide> {
                                     ),
                                   ],
                                 ),
+
                               ],
                             ),
                           ],
@@ -399,4 +437,6 @@ class _SignUpState extends State<StartRide> {
       },
     );
   }
+
+
 }

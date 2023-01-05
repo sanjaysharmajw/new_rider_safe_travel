@@ -16,4 +16,5 @@ class ApiUrl {
   static var socketUrl = 'http://65.1.73.254:8090';
   //static var socketUrl = 'http://192.168.1.22:3000';
   static var endRide = 'userRide/endRide';
+  static var checkActiveUserRide = '${baseUrl}userRide/checkActiveUserRide';
 }

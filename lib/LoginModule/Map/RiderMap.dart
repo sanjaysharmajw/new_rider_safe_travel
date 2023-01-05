@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,6 +15,7 @@ import 'package:ride_safe_travel/LoginModule/Map/Drawer.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/Utils/make_a_call.dart';
+import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class RiderMap extends StatefulWidget {
@@ -79,6 +79,7 @@ class _RiderMapState extends State<RiderMap> {
     } else {
       visibility = true;
     }
+
   }
 
   void sharePre() async {
@@ -114,6 +115,7 @@ class _RiderMapState extends State<RiderMap> {
           ),
         ),
         body: Stack(children: [
+
           LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
             return SizedBox(
@@ -154,17 +156,23 @@ class _RiderMapState extends State<RiderMap> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                children: [
-                                  Image.asset("images/contact_driver.png",
-                                      width: 50.w, height: 50.h),
-                                  SizedBox(height: 10.h),
-                                  Text("Contact Driver",
-                                      style: TextStyle(
-                                          fontFamily: 'transport',
-                                          fontSize: 16.sp)),
-                                ],
+                              InkWell(
+                                onTap: () {
+                                  Make_a_call.makePhoneCall(widget.dMobile);
+                                },
+                                child:   Column(
+                                  children: [
+                                    Image.asset("images/contact_driver.png",
+                                        width: 50.w, height: 50.h),
+                                    SizedBox(height: 10.h),
+                                    Text("Contact Driver",
+                                        style: TextStyle(
+                                            fontFamily: 'transport',
+                                            fontSize: 16.sp)),
+                                  ],
+                                ),
                               ),
+
                               InkWell(
                                 onTap: () {
                                   showMenu();
@@ -206,7 +214,25 @@ class _RiderMapState extends State<RiderMap> {
                   ),
                 );
               }),
-        ]),
+         Positioned(child: Align(
+          alignment: Alignment.topRight,
+           child: InkWell(
+             onTap: (){
+               ToastMessage.toast("jsbfjbjfs");
+             },
+             child: Container(
+               width: 50,
+               height: 50,
+               decoration: BoxDecoration(
+                 color: CustomColor.yellow,
+                 borderRadius: BorderRadius.circular(50),
+               ),
+             ),
+           ),
+         ))
+
+        ]
+        ),
       ),
     );
   }

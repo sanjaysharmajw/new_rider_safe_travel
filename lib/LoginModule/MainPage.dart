@@ -1,5 +1,7 @@
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,13 +14,18 @@ import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/MainPageWidgets/MainPageCard.dart';
 import 'package:ride_safe_travel/UserDriverInformation.dart';
 import 'package:ride_safe_travel/Utils/exit_alert_dialog.dart';
+import 'package:ride_safe_travel/Utils/toast.dart';
 
 import '../MainPageWidgets/main_page_btn.dart';
+import '../Models/CheckActiveUserRide.dart';
 import '../MyRidesPage.dart';
 import '../UserFamilyList.dart';
 import '../Utils/logout_dialog_box.dart';
 import '../Widgets/dashboard_profile_widgets.dart';
 import '../rider_profile_view.dart';
+import '../start_ride_map.dart';
+import 'Api_Url.dart';
+import 'Error.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -30,6 +37,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   String result = "";
   String image = "";
+  String userId = "";
   String profileName = "";
   String profileMobile = "";
   String profileLastName = "";
@@ -75,6 +83,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     sharePreferences();
+
     print(image);
   }
 
@@ -83,11 +92,12 @@ class _MainPageState extends State<MainPage> {
     image = Preferences.getProfileImage().toString();
     profileName = Preferences.getFirstName(Preferences.firstname).toString();
     profileLastName = Preferences.getLastName(Preferences.lastname).toString();
+    userId = Preferences.getId(Preferences.id).toString();
     profileMobile =
         Preferences.getMobileNumber(Preferences.mobileNumber).toString();
     profileEmailId = Preferences.getEmailId(Preferences.emailId).toString();
     setState(() {});
-    OverlayLoadingProgress.stop();
+    //OverlayLoadingProgress.stop();
   }
 
   @override
@@ -168,7 +178,10 @@ class _MainPageState extends State<MainPage> {
                         child: MainPageCard(
                           icons: 'images/track_me.png',
                           text: 'Track Me',
-                          press: _scanQR,
+                          press: (){
+                            OverlayLoadingProgress.start(context);
+                            checkActiveUser();
+                          }, //_scanQR
                           width: 165.w,
                           height: 165.h,
                           widthImage: 45.w,
@@ -209,5 +222,55 @@ class _MainPageState extends State<MainPage> {
         ),
       )),
     );
+  }
+  Future<Data> checkActiveUser() async {
+    final response = await http.post(
+      Uri.parse(ApiUrl.checkActiveUserRide),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'user_id': userId,
+      }),
+    );
+    print("Resonse Main"+jsonEncode(<String, String>{
+      'user_id': userId,
+    }));
+    if (response.statusCode == 200) {
+      bool status = jsonDecode(response.body)[ErrorMessage.status];
+      String socketToken = jsonDecode(response.body)['token'];
+      if (socketToken !="") {
+        OverlayLoadingProgress.stop();
+        List<Data> userCheck = jsonDecode(response.body)['data'].map<Data>((data) => Data.fromJson(data)).toList();
+        ToastMessage.toast(userCheck[0].driverEmailId.toString());
+        Get.to(StartRide(
+            riderId: userCheck[0].id.toString(),
+            dName: userCheck[0].driverName.toString(),
+            dMobile: userCheck[0].driverMobileNumber.toString(),
+            dPhoto: userCheck[0].driverPhoto.toString(),
+            model: userCheck[0].vehicleModel.toString(),
+            vOwnerName: userCheck[0].ownerName.toString(),
+            vRegNo: userCheck[0].vehicleRegistrationNumber.toString(),
+            socketToken: socketToken.toString())
+        );
+        print(userCheck[0].id.toString());
+        print(userCheck[0].driverName.toString());
+        print(userCheck[0].driverMobileNumber.toString());
+        print(userCheck[0].driverPhoto.toString());
+        print(userCheck[0].vehicleModel.toString());
+        print(userCheck[0].ownerName.toString());
+        print(userCheck[0].vehicleRegistrationNumber.toString());
+        print(socketToken.toString());
+        setState(() {});
+      } else if (socketToken =="") {
+        _scanQR();
+        OverlayLoadingProgress.stop();
+        print("Print False........");
+      }
+      return Data.fromJson(response.body);
+    } else {
+      //Get.snackbar(response.body, 'Failed');
+      throw Exception('Failed to create album.');
+    }
   }
 }

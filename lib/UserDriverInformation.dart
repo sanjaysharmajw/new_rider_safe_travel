@@ -238,7 +238,8 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
       //var msg = jsonDecode(response.body)[ErrorMessage.message];
 
       if (status == true) {
-        Get.to(StartRide(
+        Get.to(
+            StartRide(
             riderId: rideId.toString(),
             dName: driverName.toString(),
             dMobile: driverMob.toString(),
@@ -246,7 +247,8 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
             model: vModel.toString(),
             vOwnerName: vOwnerName.toString(),
             vRegNo: vRegNumber.toString(),
-            socketToken: socketToken));
+            socketToken: socketToken)
+        );
         OverlayLoadingProgress.stop();
         print("Userinformation" + driverId + vehicleId);
       } else {
