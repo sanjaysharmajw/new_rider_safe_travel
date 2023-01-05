@@ -32,6 +32,7 @@ import 'MyTextField.dart';
 
 import 'RiderUserListData.dart';
 import 'Sharepreferences.dart';
+import 'Utils/toast.dart';
 
 class RiderProfileEdit extends StatefulWidget {
   String date;
@@ -1299,6 +1300,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
           colorText: CustomColor.white,
           margin: const EdgeInsets.all(15),
           duration: const Duration(seconds: 1));*/
+      ToastMessage.toast("Profile upload successful");
       print("Final Aws Upload$response.body");
     } else {
       OverlayLoadingProgress;
@@ -1445,7 +1447,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
 
       print(response.body);
       if (status == true) {
-        Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
+        //Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
+        ToastMessage.toast(msg);
         OverlayLoadingProgress;
         await Preferences.setPreferences();
         Preferences.setProfileImage(uploadedImage);

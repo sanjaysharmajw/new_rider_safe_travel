@@ -9,6 +9,7 @@ import 'package:ride_safe_travel/LoginModule/Error.dart';
 import 'package:ride_safe_travel/LoginModule/RiderVerifyOtpPage.dart';
 import 'package:ride_safe_travel/LoginModule/custom_button.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
+import 'package:ride_safe_travel/Utils/toast.dart';
 
 class RiderLoginPage extends StatefulWidget {
   const RiderLoginPage({super.key});
@@ -188,9 +189,11 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
         OverlayLoadingProgress.stop();
+
         Get.to(RiderVerifyOtpPage(mobileNumber: mobileNumber.toString()));
       } else {
         OverlayLoadingProgress.stop();
+        ToastMessage.toast(msg);
         //Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
       }
       return null;

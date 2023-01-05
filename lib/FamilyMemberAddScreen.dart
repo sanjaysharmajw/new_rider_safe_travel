@@ -13,6 +13,7 @@ import 'package:ride_safe_travel/start_ride_map.dart';
 import 'LoginModule/Error.dart';
 import 'LoginModule/preferences.dart';
 import 'Utils/Validators.dart';
+import 'Utils/toast.dart';
 
 class FamilyMemberAddScreen extends StatefulWidget {
   FamilyMemberAddScreen(
@@ -154,12 +155,10 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
             vOwnerName: widget.vOwnerName.toString(),
             vRegNo: widget.vRegNo.toString(),
             socketToken: widget.socketToken));
-        Get.snackbar("Message", msg.toString(),
-            snackPosition: SnackPosition.BOTTOM);
+        ToastMessage.toast(msg);
       } else {
         OverlayLoadingProgress;
-        Get.snackbar("Message", msg.toString(),
-            snackPosition: SnackPosition.BOTTOM);
+        ToastMessage.toast(msg);
       }
       return AffFamilyMemberNewModel.fromJson(response.body);
     } else {

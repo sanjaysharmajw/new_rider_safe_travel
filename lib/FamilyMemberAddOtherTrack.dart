@@ -13,6 +13,7 @@ import 'package:ride_safe_travel/Utils/RiderButton.dart';
 import 'LoginModule/Error.dart';
 import 'LoginModule/preferences.dart';
 import 'Utils/Validators.dart';
+import 'Utils/toast.dart';
 
 class FamilyMemberAddOtherTrack extends StatefulWidget {
   const FamilyMemberAddOtherTrack({Key? key}) : super(key: key);
@@ -120,14 +121,12 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
         OverlayLoadingProgress;
-        Get.snackbar("Message", msg.toString(),
-            snackPosition: SnackPosition.BOTTOM);
+        ToastMessage.toast(msg);
         Navigator.pop(context);
         print(userId + msg);
       } else {
         OverlayLoadingProgress;
-        Get.snackbar("Message", msg.toString(),
-            snackPosition: SnackPosition.BOTTOM);
+        ToastMessage.toast(msg);
         print(userId + msg);
       }
       return AffFamilyMemberNewModel.fromJson(response.body);
