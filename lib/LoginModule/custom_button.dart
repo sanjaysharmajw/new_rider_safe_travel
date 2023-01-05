@@ -39,7 +39,7 @@ class Button extends StatelessWidget {
                   color: textColor,
                   fontFamily: "transport",
                   fontWeight: FontWeight.w500,
-                  fontSize: 20),
+                  fontSize: 15),
             ),
           ),
         ),

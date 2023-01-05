@@ -12,6 +12,7 @@ import 'package:ride_safe_travel/LoginModule/custom_button.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/LoginModule/riderNewRegisterLoginModel.dart';
+import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RiderVerifyOtpPage extends StatefulWidget {
@@ -26,6 +27,7 @@ class RiderVerifyOtpPage extends StatefulWidget {
 class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
   OtpTimerButtonController timercontroller = OtpTimerButtonController();
   final otpController = TextEditingController();
+  final focusNode = FocusNode();
 
   _requestOtp() {
     timercontroller.loading();
@@ -35,32 +37,49 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
 
     sendOtpApi(widget.mobileNumber.toString());
   }
-
+  final defaultPinTheme = PinTheme(
+    width: 56,
+    height: 56,
+    textStyle: const TextStyle(
+      fontSize: 22,
+      color: Color.fromRGBO(30, 60, 87, 1),
+    ),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(19),
+      border: Border.all(color: Colors.red),
+    ),
+  );
   void initState() {
     super.initState();
+  }
+  @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     final defaultPinTheme = PinTheme(
-      width: 100,
-      height: 50,
-      textStyle: const TextStyle(
-          fontSize: 25,
-          color: Color.fromRGBO(30, 60, 87, 1),
+      width: 60.w,
+      height: 60.w,
+      textStyle:  TextStyle(
+          fontSize: 25.sp,
+          fontFamily: 'transport',
+          color: CustomColor.black,
           fontWeight: FontWeight.w600),
       decoration: BoxDecoration(
         border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(5.r),
       ),
     );
 
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
       border: Border.all(
-        color: const Color.fromRGBO(114, 178, 238, 1),
+        color: CustomColor.yellow,
       ),
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(5.r),
     );
     return SafeArea(
       child: Scaffold(
@@ -73,12 +92,12 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
           child: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.only(left: 40, right: 40),
+            padding:  EdgeInsets.only(left: 40, right: 40),
             child: Form(
               // key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
                     height: 20,
@@ -102,6 +121,8 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                     height: 5.h,
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         "your mobile number ",
@@ -115,7 +136,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                         style: TextStyle(
                             fontFamily: "transport",
                             fontWeight: FontWeight.w400,
-                            fontSize: 15.sp),
+                            fontSize: 13.sp),
                       ),
                       InkWell(
                         onTap: () {
@@ -127,23 +148,23 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                               color: CustomColor.yellow,
                               fontFamily: "transport",
                               fontWeight: FontWeight.w400,
-                              fontSize: 15.sp),
+                              fontSize: 14.sp),
                         ),
                       )
                     ],
                   ),
-                   SizedBox(
+                  SizedBox(
                     height: 50.h,
                   ),
-                   SizedBox(
-                    width: 315.w,
+                  SizedBox(
+                    width: 260.w,
                     child: Text(
                       "Enter OTP here",
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         fontFamily: "transport",
                         fontWeight: FontWeight.w400,
-                        fontSize: 15.sp,
+                        fontSize: 14.sp,
                       ),
                     ),
                   ),
@@ -152,60 +173,69 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                   ),
                   Center(
                     child: Pinput(
+                      defaultPinTheme: defaultPinTheme,
                       controller: otpController,
                       length: 4,
                       focusedPinTheme: focusedPinTheme,
+                      focusNode: focusNode,
+                      androidSmsAutofillMethod:
+                      AndroidSmsAutofillMethod.smsUserConsentApi,
+                      listenForMultipleSmsOnAndroid: true,
                       // submittedPinTheme: submittedPinTheme,
                       pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                       showCursor: true,
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
+                   SizedBox(
+                    height: 20.h,
                   ),
-                  const SizedBox(
-                    width: 300,
-                    child: Text(
-                      "Didn't receive OTP ? ",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontFamily: "transport",
-                        fontWeight: FontWeight.w400,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      OtpTimerButton(
-                        controller: timercontroller,
-                        onPressed: () => _requestOtp(),
-                        text: const Text(
-                          'RESEND OTP',
-                          style: TextStyle(
-                              fontFamily: "transport",
-                              fontSize: 15,
-                              color: Colors.red),
-                        ),
-                        duration: 15,
-                        backgroundColor: CustomColor.white,
-                        //textColor: Colors.indigo,
-                        buttonType: ButtonType.text_button,
-                        // or ButtonType.outlined_button
-                        loadingIndicator: const CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 70,
+                   Padding(
+                     padding: EdgeInsets.only(left: 25,right: 20),
+                     child: Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                         children: [
+
+                       SizedBox(
+                         child: Text(
+                           "Didn't receive OTP ? ",
+                           textAlign: TextAlign.left,
+                           style: TextStyle(
+                             fontFamily: "transport",
+                             fontWeight: FontWeight.w400,
+                             fontSize: 14.sp,
+                           ),
+                         ),
+                       ),
+                       Column(
+                         children: [
+                           OtpTimerButton(
+                             controller: timercontroller,
+                             onPressed: () => _requestOtp(),
+                             text:  Text(
+                               'RESEND OTP',
+                               style: TextStyle(
+                                   fontFamily: "transport",
+                                   fontSize: 12.sp,
+                                   color: Colors.red),
+                             ),
+                             duration: 15,
+                             backgroundColor: CustomColor.white,
+                             //textColor: Colors.indigo,
+                             buttonType: ButtonType.text_button,
+                             // or ButtonType.outlined_button
+                             loadingIndicator: const CircularProgressIndicator(
+                               strokeWidth: 2,
+                               color: Colors.red,
+                             ),
+                           ),
+                         ],
+                       ),
+                     ]),
+                   ),
+
+
+                   SizedBox(
+                    height: 70.h,
                   ),
                   Button(
                       textColor: CustomColor.black,
@@ -245,11 +275,13 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
         OverlayLoadingProgress.stop();
-        Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
+        //Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
+        ToastMessage.toast(msg);
         await regUserNew(mobileNumber.toString());
       } else {
         OverlayLoadingProgress.stop();
-        Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
+        ToastMessage.toast(msg);
+       // Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
       }
       return null;
     } else {
@@ -273,7 +305,8 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
         OverlayLoadingProgress.stop();
-        Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
+        //Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
+        ToastMessage.toast(msg);
         Get.to(RiderVerifyOtpPage(mobileNumber: mobileNumber.toString()));
       } else {
         OverlayLoadingProgress.stop();
@@ -301,12 +334,6 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       //var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
         OverlayLoadingProgress.stop();
-
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("asdfghjk")),
-        );
-
         List<Data> loginData = jsonDecode(response.body)['data']
             .map<Data>((data) => Data.fromJson(data))
             .toList();
@@ -333,11 +360,10 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         Preferences.setUserType(Preferences.userType, userType.toString());
         Preferences.setProfileImage(profileImage.toString());
         Get.to(const MainPage());
-        Get.snackbar("Message", "Successful", snackPosition: SnackPosition.BOTTOM);
+        ToastMessage.toast("Successful");
       } else {
         OverlayLoadingProgress.stop();
-        Get.snackbar("Message", "wertyuio",
-            snackPosition: SnackPosition.BOTTOM);
+        ToastMessage.toast("Failed");
       }
       return Data.fromJson(jsonDecode(response.body)['data']);
     } else {
