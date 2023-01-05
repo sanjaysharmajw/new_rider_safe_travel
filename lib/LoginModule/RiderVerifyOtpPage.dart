@@ -244,11 +244,11 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
-        OverlayLoadingProgress.stop(context);
+        OverlayLoadingProgress.stop();
         Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
         await regUserNew(mobileNumber.toString());
       } else {
-        OverlayLoadingProgress.stop(context);
+        OverlayLoadingProgress.stop();
         Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
       }
       return null;
@@ -272,11 +272,11 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
-        OverlayLoadingProgress.stop(context);
+        OverlayLoadingProgress.stop();
         Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
         Get.to(RiderVerifyOtpPage(mobileNumber: mobileNumber.toString()));
       } else {
-        OverlayLoadingProgress.stop(context);
+        OverlayLoadingProgress.stop();
         //Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
       }
       return null;
@@ -300,7 +300,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       //var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
-        OverlayLoadingProgress.stop(context);
+        OverlayLoadingProgress.stop();
 
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -319,23 +319,23 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         var userType = loginData[0].userType;
 
         print("UserId"+id! +
-            firstname! +
-            lastname! +
-            emailId! +
-            mobileNumber! +
-            profileImage!);
+            firstname.toString()+
+            lastname.toString() +
+            emailId.toString() +
+            mobileNumber.toString() +
+            profileImage.toString());
         await Preferences.setPreferences();
         Preferences.setId(Preferences.id, id);
-        Preferences.setFirstName(Preferences.firstname, firstname);
-        Preferences.setLastName(Preferences.lastname, lastname);
-        Preferences.setEmailID(Preferences.emailId, emailId);
-        Preferences.setMobileNumber(Preferences.mobileNumber, mobileNumber);
-        Preferences.setUserType(Preferences.userType, userType!);
-        Preferences.setProfileImage(profileImage);
+        Preferences.setFirstName(Preferences.firstname, firstname.toString());
+        Preferences.setLastName(Preferences.lastname, lastname.toString());
+        Preferences.setEmailID(Preferences.emailId, emailId.toString());
+        Preferences.setMobileNumber(Preferences.mobileNumber, mobileNumber.toString());
+        Preferences.setUserType(Preferences.userType, userType.toString());
+        Preferences.setProfileImage(profileImage.toString());
         Get.to(const MainPage());
         Get.snackbar("Message", "Successful", snackPosition: SnackPosition.BOTTOM);
       } else {
-        OverlayLoadingProgress.stop(context);
+        OverlayLoadingProgress.stop();
         Get.snackbar("Message", "wertyuio",
             snackPosition: SnackPosition.BOTTOM);
       }

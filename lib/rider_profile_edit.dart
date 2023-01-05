@@ -44,6 +44,7 @@ class RiderProfileEdit extends StatefulWidget {
   String emailId;
   String imageProfile;
   String mobileNumber;
+  String gender;
 
   RiderProfileEdit(
       {Key? key,
@@ -56,7 +57,8 @@ class RiderProfileEdit extends StatefulWidget {
       required this.lastname,
       required this.firstname,
       required this.mobileNumber,
-      required this.imageProfile})
+      required this.imageProfile,
+      required this.gender})
       : super(key: key);
 
   @override
@@ -77,6 +79,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   final TextEditingController dobController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController stateController = TextEditingController();
+  final TextEditingController cityController = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
 
   var firstname;
@@ -89,27 +92,28 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   var mystates;
   var mycities;
   var age;
+  var gender;
 
   final _formKey = GlobalKey<FormState>();
 
-  String radioButtonItem = 'Female';
-  int id = 1;
+  String radioButtonItem = 'Male';
+  var id=0;
   String type = "";
 
   // late Future<DateTime?> selectedDate;
   String date = "";
   String from = "";
 
-  var selectedState = [];
+ // var selectedState = [];
 
-  var states;
-  var statName;
-  bool isStateSelected = false;
+  //var states;
+  //var statName;
+  //bool isStateSelected = false;
 
-  var selectedCity = [];
-  var citiesname;
-  var stateid;
-  bool isCitySelected = false;
+ // var selectedCity = [];
+  //var citiesname;
+  //var stateid;
+  //bool isCitySelected = false;
 
   DateTime selectedDate = DateTime.now();
   DateTime fromDate = DateTime.now();
@@ -132,6 +136,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   late File file;
   var fileName = "";
 
+  var response_date = "";
+
   String imageFilePath = "";
   var birthDate;
   AwsSignedApi awsSignedApi = AwsSignedApi();
@@ -141,37 +147,71 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   initState() {
 
     print(widget.date);
+
+    print("###################");
     print(widget.pincode);
     print(widget.city);
     print(widget.state);
     print(widget.imageProfile);
+    print(widget.gender);
+
     print("********************************888");
-    dobController.text = widget.date.toString();
+    response_date=widget.date.toString();
+    if(response_date!=null || response_date.isEmpty) {
+      var agedate = widget.date.toString().split('-');
+      var date = agedate[0];
+      // agedate[1]=int.parse(agedate[1]);
+      var month = (int.parse(agedate[1]) < 10 ? '0' +
+          int.parse(agedate[1]).toString() : agedate[1]);
+      var year = (int.parse(agedate[2]) < 10 ? '0' +
+          int.parse(agedate[2]).toString() : agedate[2]);
+        response_date = date + "-" + month + "-" + year;
+        dobController.text = response_date;
+    }
     firstNameController.text = widget.firstname.toString();
     lastNameController.text = widget.lastname.toString();
     profile = widget.imageProfile.toString();
-
-    statename = widget.state.toString();
-    cityname = widget.city.toString();
     addressController.text = widget.address.toString();
+    stateController.text=widget.state.toString();
+    cityController.text=widget.city.toString();
     pinController.text = widget.pincode.toString();
     emailController.text = widget.emailId.toString();
     mobileNumberController.text = widget.mobileNumber.toString();
+    radioButtonItem = widget.gender.toString();
+    if(radioButtonItem=='Female')
+      {
+        id=1;
+      }
+    if(radioButtonItem=='Male')
+    {
+      id=2;
+    }
+    if(radioButtonItem=='Other')
+    {
+      id=3;
+    }
+    // id=3;
     print("************" + addressController.text.toString() + "************");
+    setState(() {
+
+    });
 
     // Preferences.setAge(Preferences.age, age);
     //SharePreferences.saveAge(age.toString());
 
     Random random = Random();
-    statesList();
+    //statesList();
     // expiryDateController.text = "";
 
     int randomNumber = random.nextInt(1000000);
     // _future = getRiderData();
     stringRandomNumber = randomNumber.toString();
     preferences();
-    //OverlayLoadingProgress.stop(context);
+    OverlayLoadingProgress.stop();
+
     super.initState();
+
+
   }
 
   void preferences() async {
@@ -188,7 +228,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
       filePath = imageTemp.path.split(Platform.pathSeparator).last;
       awsUpload(stringRandomNumber + filePath);
       imageFilePath = AwsUrl.awsImagePathUrl + stringRandomNumber + filePath;
-      print("Image Picker: " + stringRandomNumber + filePath);
+      print("Image Picker: " + imageFilePath);
       OverlayLoadingProgress.start(context);
       setState(() => this.image = imageTemp);
     } on PlatformException catch (e) {
@@ -204,7 +244,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
       file = File(await image.path);
       filePath = imageTemp.path.split(Platform.pathSeparator).last;
       awsUpload(stringRandomNumber + filePath);
-      fileName = AwsUrl.awsImagePathUrl + stringRandomNumber + filePath;
+      //fileName = AwsUrl.awsImagePathUrl + stringRandomNumber + filePath;
+      imageFilePath = AwsUrl.awsImagePathUrl + stringRandomNumber + filePath;
+
       print("Image Picker: " + stringRandomNumber + filePath);
       OverlayLoadingProgress.start(context);
       setState(() => this.image = imageTemp);
@@ -213,7 +255,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     }
   }
 
-/*  Future<UpdateRiderProfileModel> getUserData(BuildContext context,String mobileNumber, String firstName, String lastName,
+/*  Future<UpdateRiderProfileModel> getUserData(BuildContext context,String mobileNumber, S
+tring firstName, String lastName,
       String email, String dob, String gender , String address , String cities , String states, String profileImage ,
       String pincode) async {
 
@@ -298,6 +341,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -766,7 +810,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           child: Row(
                             children: [
                               Container(width: 15),
-                              const Text("Select State",
+                              const Text("State",
                                   style: TextStyle(
                                       color: CustomColor.black,
                                       fontFamily: 'transport',
@@ -780,7 +824,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           child: Row(
                             children: [
                               Container(width: 15),
-                              const Text("Select City",
+                              const Text("City",
                                   style: TextStyle(
                                       color: CustomColor.black,
                                       fontFamily: 'transport',
@@ -798,50 +842,36 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                         Expanded(
                           flex: 2,
                           child: SizedBox(
-                            height: 60,
-                            child: Card(
-                              color: Colors.white,
-                              shape: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                      BorderSide(color: CustomColor.yellow)),
-                              child: Padding(
-                                padding: EdgeInsets.all(15),
-                                child: DropdownButton(
-                                  underline: Container(),
-                                  hint: Text(widget.state),
-                                  icon: Icon(Icons.keyboard_arrow_down),
-                                  isDense: true,
-                                  isExpanded: true,
-                                  items: selectedState.map((e) {
-                                    return DropdownMenuItem(
-                                      value: e["state_id"].toString(),
-                                      child: Text(e['name'].toString()),
-                                    );
-                                  }).toList(),
-                                  value: states,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectedCity = [];
-                                      states = value;
-                                      isStateSelected = true;
-                                      for (int i = 0;
-                                          i < selectedState.length;
-                                          i++) {
-                                        if (states.toString() ==
-                                            selectedState[i]['state_id']
-                                                .toString()) {
-                                          statName = selectedState[i]['name'];
-                                          print(statName);
-                                        }
-                                      }
-                                      if (states != null) {
-                                        citiesList(states);
-                                      }
-                                    });
-                                  },
-                                ),
+                            height: 45,
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value == null) {
+                                  return 'Please enter your state name.';
+                                }
+                                return null;
+                              },
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp("[A-Za-z'\.\-\s\,\ ]")),
+                              ],
+                              style: TextStyle(
+                                fontFamily: 'transport',
+                                fontSize: 16,
                               ),
+                              controller: stateController,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                border: const UnderlineInputBorder(),
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: CustomColor.yellow)),
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 2, color: CustomColor.yellow)),
+                              ),
+                              onChanged: (value) {
+                                mystates = value;
+                              },
                             ),
                           ),
                         ),
@@ -849,36 +879,36 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                         Expanded(
                           flex: 2,
                           child: SizedBox(
-                            height: 60,
-                            child: Card(
-                              color: Colors.white,
-                              shape: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                      BorderSide(color: CustomColor.yellow)),
-                              child: Padding(
-                                padding: EdgeInsets.all(15),
-                                child: DropdownButton<String>(
-                                  underline: Container(),
-                                  hint: Text(widget.city),
-                                  icon: Icon(Icons.keyboard_arrow_down),
-                                  isDense: true,
-                                  isExpanded: true,
-                                  items: selectedCity.map((e) {
-                                    return DropdownMenuItem<String>(
-                                      child: Text(e["name"]),
-                                      value: e["name"],
-                                    );
-                                  }).toList(),
-                                  value: citiesname,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      citiesname = value;
-                                      print(citiesname);
-                                    });
-                                  },
-                                ),
+                            height: 45,
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value == null) {
+                                  return 'Please enter your address.';
+                                }
+                                return null;
+                              },
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp("[A-Za-z'\.\-\s\,\ ]")),
+                              ],
+                              style: TextStyle(
+                                fontFamily: 'transport',
+                                fontSize: 16,
                               ),
+                              controller: cityController,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                border: const UnderlineInputBorder(),
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: CustomColor.yellow)),
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 2, color: CustomColor.yellow)),
+                              ),
+                              onChanged: (value) {
+                                mycities = value;
+                              },
                             ),
                           ),
                         ),
@@ -1026,27 +1056,27 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             email = emailController.text.toString();
                             myaddress = addressController.text.toString();
                             pinNumber = pinController.text.toString();
-                            mobilenumber =
-                                mobileNumberController.text.toString();
-
+                            mobilenumber = mobileNumberController.text.toString();
+                            gender=radioButtonItem.toString();
                             uploadedImage = imageFilePath.toString();
-                            mystates = statName.toString();
-                            mycities = citiesname.toString();
+                            mystates = stateController.text.toString();
+                            mycities = cityController.text.toString();
                             print(userId);
                             print(pinNumber);
                             print(uploadedImage);
                             print(mycities);
                             print(mystates);
                             print(myaddress);
+                            print(gender);
                             print("**************************");
 
-                            if (age < 6) {
-                              openAndCloseLoadingDialog();
-                            } else {
+                            // if (age < 6) {
+                            //   openAndCloseLoadingDialog();
+                            // } else {
 
                               updateProfile(userId);
-                              OverlayLoadingProgress.start(context);
-                            }
+                              // OverlayLoadingProgress.start(context);
+                            // }
                           }
                         }),
                   )
@@ -1103,7 +1133,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(1900, 8),
-        lastDate: DateTime.now());
+        lastDate: selectedDate);
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
@@ -1111,15 +1141,17 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
             "${picked.toLocal().day}-${picked.toLocal().month}-${picked.toLocal().year}";
         dobController.text = birthDate;
         // print()
-        // calAge(birthDate);
-        calculateAge(picked);
+        // Get.snackbar("Selcted Date", birthDate.toString());
+            // calAge(birthDate);
+        //calculateAge(picked);
       });
     }
   }
 
-  calculateAge(DateTime birthDate) {
+  int calculateAge(DateTime birthDate) {
+
     DateTime currentDate = DateTime.now();
-    age = currentDate.year - birthDate.year;
+    var age = currentDate.year - birthDate.year;
     int month1 = currentDate.month;
     int month2 = birthDate.month;
     if (month2 > month1) {
@@ -1131,8 +1163,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
         age--;
       }
     }
-    print("age cal: $age");
-    Preferences.setAge(age);
+    //print("age cal: $age");
+    //Preferences.setAge(age);
     return age;
   }
 
@@ -1232,7 +1264,6 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
       ),
     );
   }
-
   Future<List<RiderUserListData>> getRiderData() async {
     await Preferences.setPreferences();
     String mobileNumber = Preferences.getMobileNumber(Preferences.mobileNumber);
@@ -1294,7 +1325,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
       body: await file.readAsBytes(),
     );
     if (response.statusCode == 200) {
-      OverlayLoadingProgress.stop(context);
+      OverlayLoadingProgress.stop();
       Get.snackbar("Message", "Successful Aws File",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: CustomColor.yellow,
@@ -1304,14 +1335,14 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
           duration: const Duration(seconds: 1));
       print(response.body);
     } else {
-      OverlayLoadingProgress.stop(context);
+      OverlayLoadingProgress.stop();
       throw Exception('Failed to AWS.');
     }
     return null;
   }
 
 
-  Future<StateModel> statesList() async {
+ /* Future<StateModel> statesList() async {
 
     final response = await http.post(
       Uri.parse(ApiUrl.stateApi),
@@ -1319,7 +1350,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    OverlayLoadingProgress.stop(context);
+    OverlayLoadingProgress.stop();
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body)['data'];
       bool status = jsonDecode(response.body)[ErrorMessage.status];
@@ -1367,101 +1398,132 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
 
       throw Exception('Unexpected error occured!');
     }
-  }
+  }  */
 
   Future<http.Response?> updateProfile(String userId) async {
     //  var updatedAge= Preferences.getAge(Preferences.age);
+    OverlayLoadingProgress.start(context);
+   /* mystates = statename.toString();
+    if (statName.toString() != null) {
+      mystates = statName.toString();
+      Get.snackbar("change mystate", mystates);
+    }
+
+   mycities = cityname.toString();
+    if (citiesname.toString() != null) {
+      mycities = citiesname.toString();
+      Get.snackbar("change mycity", mycities);
+    }*/
+
+
+
 
     uploadedImage = profile.toString();
+    //Get.snackbar("image", uploadedImage);
     if (imageFilePath.toString() != "") {
       uploadedImage = imageFilePath.toString();
+
+     // Get.snackbar("change image", uploadedImage);
     }
 
-    mystates = statename.toString();
-    if (statName.toString() == null) {
-      mystates = statName.toString();
-    }
 
-    mycities = cityname.toString();
-    if (citiesname.toString() == null) {
-      mycities = citiesname.toString();
-    }
+
 
     myaddress = addressController.text.toString();
     if (addressController.text.toString() == "") {
       myaddress = addressController.text.toString();
     }
+    var agedate=dobController.text.toString().split('-');
+    var year=agedate[2];
+    var month=(int.parse(agedate[1])<10?'0'+int.parse(agedate[1]).toString():agedate[1]);
+    var date=(int.parse(agedate[0])<10?'0'+int.parse(agedate[0]).toString():agedate[0]);
 
-    var data = {
-      "user_id": userId.toString(),
-      "first_name": firstname,
-      "last_name": lastname,
-      "email_id": email,
-      "gender": radioButtonItem.toString(),
-      "dob": dob,
-      "mobile_number": mobilenumber,
-      "alternate_contact_no": "",
-      "profile_image": uploadedImage,
-      "marital_status": "",
-      "city": mycities.toString(),
-      "state": mystates.toString(),
-      "permanent_address": {
-        "address": myaddress,
-        "city": mycities.toString(),
-        "state": mystates.toString(),
-        "pincode": pinNumber,
-      },
-      "present_address": {
-        "address": myaddress,
-        "city": mycities.toString(),
-        "state": mystates.toString(),
-        "pincode": pinNumber,
-      },
-      "same_address": myaddress,
-      "dldetails": {
-        "dl_number": "",
-        "dl_image": "",
-        "dl_expiry_date": "",
-        "dl_mobile_number": "",
-        "accidental_history": "",
-        "accidental_discription": "",
-        "available24by7": "",
-        "shift_time_from": "",
-        "shift_time_to": ""
-      },
-      "address": myaddress,
-    };
-    final response = await http.post(
-      Uri.parse(
-          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/updateUserProfile'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(data),
-    );
-    print(jsonEncode(data));
-
-    if (response.statusCode == 200) {
-      bool status = jsonDecode(response.body)[ErrorMessage.status];
-      var msg = jsonDecode(response.body)[ErrorMessage.message];
-      setState(() {
-        getRiderData();
-      });
+    // print(DateTime.parse(agedate[2]+"-"+'0'+agedate[1].padLeft(1, '0')+"-"+agedate[0].padLeft(1, '0'))); // 2020-01-02 00:00:00.000
 
 
-      print(response.body);
-      if (status == true) {
-        Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
-        OverlayLoadingProgress;
-        Get.to(MainPage());
-      } else {
-        OverlayLoadingProgress;
-
-        //Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
+    int age=calculateAge(DateTime.parse(year+"-"+month+"-"+date));
+    if(age<6)
+      {
+        Get.snackbar("Invalid Age", "Age should be greater than 6 years");
+        OverlayLoadingProgress.stop();
+        return null;
       }
-      return null;
-    } else {
-      throw Exception('Failed.');
+    else {
+      var data = {
+        "user_id": userId.toString(),
+        "first_name": firstname,
+        "last_name": lastname,
+        "email_id": email,
+        "gender": gender,
+        "dob": date+"-"+month+"-"+year,
+        "mobile_number": mobilenumber,
+        "alternate_contact_no": "",
+        "profile_image": uploadedImage,
+        "marital_status": "",
+        "city": mycities,
+        "state": mystates,
+        "permanent_address": {
+          "address": myaddress,
+          "city": mycities,
+          "state": mystates,
+          "pincode": pinNumber,
+        },
+        "present_address": {
+          "address": myaddress,
+          "city": mycities,
+          "state": mystates,
+          "pincode": pinNumber,
+        },
+        "same_address": myaddress,
+        "dldetails": {
+          "dl_number": "",
+          "dl_image": "",
+          "dl_expiry_date": "",
+          "dl_mobile_number": "",
+          "accidental_history": "",
+          "accidental_discription": "",
+          "available24by7": "",
+          "shift_time_from": "",
+          "shift_time_to": ""
+        },
+        "address": myaddress,
+      };
+      final response = await http.post(
+        Uri.parse(
+            'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/updateUserProfile'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(data),
+      );
+      print(jsonEncode(data));
+
+      if (response.statusCode == 200) {
+        bool status = jsonDecode(response.body)[ErrorMessage.status];
+        var msg = jsonDecode(response.body)[ErrorMessage.message];
+        setState(() {
+          getRiderData();
+        });
+
+
+        print(response.body);
+        if (status == true) {
+          Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
+          OverlayLoadingProgress;
+          await Preferences.setPreferences();
+          Preferences.setProfileImage(uploadedImage.toString());
+
+          print("imageprofile:" + Preferences.getProfileImage());
+          Get.to(MainPage());
+        } else {
+          OverlayLoadingProgress;
+
+          //Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
+        }
+        return null;
+      } else {
+        throw Exception('Failed.');
+      }
     }
   }
 }

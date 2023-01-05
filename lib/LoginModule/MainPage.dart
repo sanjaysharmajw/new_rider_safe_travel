@@ -75,6 +75,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     sharePreferences();
+    print(image);
   }
   void sharePreferences()async{
     await Preferences.setPreferences();
@@ -85,7 +86,7 @@ class _MainPageState extends State<MainPage> {
     profileEmailId=Preferences.getEmailId(Preferences.emailId).toString();
     setState(() {
     });
-    OverlayLoadingProgress.stop(context);
+    OverlayLoadingProgress.stop();
   }
 
   @override

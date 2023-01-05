@@ -44,16 +44,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
   String from = "";
 
 
-  var selectedState = [];
-  var state;
-  var states;
-  var statName;
-  bool isStateSelected = false;
 
-  var selectedCity = [];
-  var cities;
-  var stateid;
-  bool isCitySelected = false;
 
   DateTime selectedDate = DateTime.now();
   DateTime fromDate = DateTime.now();
@@ -137,11 +128,11 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                  profileImage= "${snapshot.data![index].profileImage}";
-                  mystate="${snapshot.data![index].presentAddress?.state.toString()}";
-                  mycity="${snapshot.data![index].presentAddress?.city.toString()}";
-                 print(mycity+" "+mystate);
+                  //mystate="${snapshot.data![index].presentAddress?.state.toString()}";
+                  //mycity="${snapshot.data![index].presentAddress?.city.toString()}";
+                // print(mycity+" "+mystate);
                  print(profileImage);
-                 print("******************************");
+                 print("@@@@@@@@@@@@@@@@@@@@@@@@@@");
                   return SafeArea(
                     child: SingleChildScrollView(
                       child: Column(
@@ -167,13 +158,13 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     RiderProfileEdit(date: '${snapshot.data![index].dob.toString()}',
                                       address: '${snapshot.data![index].presentAddress?.address.toString()}',
                                       pincode: '${snapshot.data![index].presentAddress?.pincode.toString()}',
-                                      city: mycity,
-                                      state: mystate,
+                                      city: '${snapshot.data![index].presentAddress?.city.toString()}',
+                                      state:'${snapshot.data![index].presentAddress?.state.toString()}',
                                       emailId: '${snapshot.data![index].emailId.toString()}',
                                       lastname: '${snapshot.data![index].lastName.toString()}',
                                       firstname: '${snapshot.data![index].firstName.toString()}',
                                       mobileNumber: '${snapshot.data![index].mobileNumber.toString()}',
-                                      imageProfile: profileImage,)
+                                      imageProfile: profileImage, gender: '${snapshot.data![index].gender.toString()}',)
                                 )).then((value) {
 
                                   setState(() {
@@ -329,7 +320,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                                 controller: _dateController,
                                                 decoration:  InputDecoration(
                                                   enabled: false,
-                                                  hintText: "${snapshot.data![index].dob.toString()}",
+                                                  hintText: this.formatDate("${snapshot.data![index].dob.toString()}"),
                                                   border: UnderlineInputBorder(),
                                                   enabledBorder: UnderlineInputBorder(
                                                       borderSide: BorderSide(
@@ -383,17 +374,25 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                 child: SizedBox(
                                   height: 45,
                                   child: TextFormField(
+                                    validator: (value) {
+                                      if (value == null) {
+                                        return 'Please enter your state name.';
+                                      }
+                                      return null;
+                                    },
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(
-                                          RegExp("[A-Za-z'\.\-\s\,\ ]")),
+                                          RegExp("[A-Za-z]")),
+                                     // LengthLimitingTextInputFormatter(6),
                                     ],
                                     style: const TextStyle(
-                                        fontFamily: 'transport', fontSize: 16),
+                                        fontSize: 16.0, fontFamily: "transport"),
+                                    keyboardType: TextInputType.text,
                                     maxLines: 1,
                                     controller: stateController,
                                     decoration:  InputDecoration(
-                                      hintText: "${snapshot.data![index].presentAddress?.state.toString()}",
                                       enabled: false,
+                                      hintText:  "${snapshot.data![index].presentAddress?.state.toString()}",
                                       border: UnderlineInputBorder(),
                                       enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
@@ -403,12 +402,6 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                             width: 1, color: Colors.amberAccent),
                                       ),
                                     ),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter your address.';
-                                      }
-                                      return null;
-                                    },
                                   ),
                                 ),
                               ),
@@ -437,17 +430,25 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                 child: SizedBox(
                                   height: 45,
                                   child: TextFormField(
+                                    validator: (value) {
+                                      if (value == null) {
+                                        return 'Please enter your city name.';
+                                      }
+                                      return null;
+                                    },
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(
-                                          RegExp("[A-Za-z'\.\-\s\,\ ]")),
+                                          RegExp("[A-Za-z]")),
+                                      //LengthLimitingTextInputFormatter(6),
                                     ],
                                     style: const TextStyle(
-                                        fontFamily: 'transport', fontSize: 16),
+                                        fontSize: 16.0, fontFamily: "transport"),
+                                    keyboardType: TextInputType.text,
                                     maxLines: 1,
                                     controller: cityController,
                                     decoration:  InputDecoration(
-                                      hintText: "${snapshot.data![index].presentAddress?.city.toString()}",
                                       enabled: false,
+                                      hintText:  "${snapshot.data![index].presentAddress?.city.toString()}",
                                       border: UnderlineInputBorder(),
                                       enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
@@ -457,12 +458,6 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                             width: 1, color: Colors.amberAccent),
                                       ),
                                     ),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter your address.';
-                                      }
-                                      return null;
-                                    },
                                   ),
                                 ),
                               ),
@@ -485,6 +480,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                   ),
                                 ],
                               ),
+                              VerticalDivider(width: 30.0),
                               VerticalDivider(width: 30.0),
                               Expanded(
                                 flex: 2,
@@ -694,6 +690,10 @@ class _RiderProfileViewState extends State<RiderProfileView> {
 
       throw Exception('Failed to load');
     }
+  }
+  String formatDate(String date)
+  {
+    return date;
   }
 
  /* Future<StateModel> statesList() async {

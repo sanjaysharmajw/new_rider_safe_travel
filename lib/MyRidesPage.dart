@@ -223,7 +223,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
     );
     print('User Id:${userId.toString()}');
     if (response.statusCode == 200) {
-      OverlayLoadingProgress.stop(context);
+      OverlayLoadingProgress.stop();
 
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
