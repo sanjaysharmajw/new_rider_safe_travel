@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:location/location.dart';
 import 'package:ride_safe_travel/LoginModule/MainPage.dart';
 import 'package:ride_safe_travel/LoginModule/RiderLoginPage.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
+import 'package:ride_safe_travel/Utils/toast.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,10 +36,29 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
+  late Location location;
   @override
   void initState() {
     super.initState();
+    _initUser();
     startTimer();
+  }
+
+  void _initUser() async {
+    location = Location();
+    //location.enableBackgroundMode(enable: true);
+    // location.changeNotificationOptions(
+    //     iconName: 'images/rider_launcher.png',
+    //     channelName: 'Nirbhaya',
+    //     title: 'Nirbhaya app is running');
+    location.onLocationChanged.listen((LocationData cLoc) async {
+      var lat = cLoc.latitude!;
+      var lng = cLoc.longitude!;
+    //  ToastMessage.toast(lat.toString());
+      //ToastMessage.toast(lng.toString());
+      print("lat: $lng, $lat");
+    });
+
   }
 
   void startTimer() {
