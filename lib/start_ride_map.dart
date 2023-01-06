@@ -14,6 +14,7 @@ import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/MapAddFamily.dart';
 import 'package:ride_safe_travel/Utils/make_a_call.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'LoginModule/Error.dart';
 import 'Utils/back_button_popup.dart';
@@ -444,7 +445,7 @@ class _SignUpState extends State<StartRide> {
     String ownlerName=widget.vOwnerName.toString();
     String regNo=widget.vRegNo.toString();
     RenderBox box = context.findRenderObject() as RenderBox;
-    Share.share(message,
+    Share.share("DriverName: $dName, DriverMobileNumber : $dMobile, Model : $model, OwnerName: $ownlerName, RegistrationNumber: $regNo,",
         subject: "Description", sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
 
 
