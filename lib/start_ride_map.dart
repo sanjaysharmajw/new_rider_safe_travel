@@ -19,7 +19,19 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'LoginModule/Error.dart';
 import 'Utils/back_button_popup.dart';
 import 'Utils/exit_alert_dialog.dart';
-import 'Utils/share_content.dart';
+import 'package:share_plus/share_plus.dart';
+
+enum Share {
+  facebook,
+  messenger,
+  twitter,
+  whatsapp,
+  whatsapp_personal,
+  whatsapp_business,
+  share_system,
+  share_instagram,
+  share_telegram
+}
 
 class StartRide extends StatefulWidget {
   const StartRide(
