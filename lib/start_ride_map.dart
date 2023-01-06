@@ -72,6 +72,7 @@ class _SignUpState extends State<StartRide> {
     setState(() {});
     OverlayLoadingProgress;
   }
+
   void sharePre() async {
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
@@ -149,14 +150,19 @@ class _SignUpState extends State<StartRide> {
               icon: Image.asset('assets/map_back.png'),
             ),
             actions: <Widget>[
-              IconButton(icon: Icon(Icons.share,color: Colors.black,), onPressed: () {
-                String dName=widget.dName.toString();
-                String dMobile=widget.dMobile.toString();
-                String model=widget.model.toString();
-                String ownlerName=widget.vOwnerName.toString();
-                String regNo=widget.vRegNo.toString();
-                ShareContent.shareContent("Driver Name: $dName, Driver Mobile: $dMobile,Model: $model, "
-                    "Owner Name: $ownlerName, Registration No: $regNo, Link: https://play.google.com/store/search?q=pub%3ADivTag&c=apps");
+              IconButton(icon: Icon(Icons.share,color: Colors.black,),
+                  onPressed: () {
+                shareData();
+               // String dName=widget.dName.toString();
+                //String dMobile=widget.dMobile.toString();
+                //String model=widget.model.toString();
+                //String ownlerName=widget.vOwnerName.toString();
+                //String regNo=widget.vRegNo.toString();
+              //  RenderBox box = context.findRenderObject() as RenderBox;
+
+
+               /* ShareContent.shareContent("Driver Name: $dName, Driver Mobile: $dMobile,Model: $model, "
+                    "Owner Name: $ownlerName, Registration No: $regNo, Link: https://play.google.com/store/search?q=pub%3ADivTag&c=apps");  */
                     //         "$ownlerName, Registration No: $regNo")
                 //Share.share('hey! check out this new app https://play.google.com/store/search?q=pub%3ADivTag&c=apps');
 
@@ -429,6 +435,19 @@ class _SignUpState extends State<StartRide> {
         return alert;
       },
     );
+  }
+
+  void shareData() {
+    String dName=widget.dName.toString();
+    String dMobile=widget.dMobile.toString();
+    String model=widget.model.toString();
+    String ownlerName=widget.vOwnerName.toString();
+    String regNo=widget.vRegNo.toString();
+    RenderBox box = context.findRenderObject() as RenderBox;
+    Share.share(message,
+        subject: "Description", sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+
+
   }
 
 
