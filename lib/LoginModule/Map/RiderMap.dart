@@ -80,6 +80,8 @@ class _RiderMapState extends State<RiderMap> {
       visibility = true;
     }
 
+
+
   }
 
   void sharePre() async {
@@ -96,17 +98,16 @@ class _RiderMapState extends State<RiderMap> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
-    return SafeArea(
+    return Material(
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: Text(
             widget.memberName.toString(),
-            style: const TextStyle(
-                color: CustomColor.black, fontFamily: 'transport'),
+            style: const TextStyle(color: CustomColor.black, fontFamily: 'transport'),
           ),
           elevation: 0,
-          backgroundColor: Colors.transparent,
+          backgroundColor: CustomColor.lightYellow,
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context, true);
@@ -214,23 +215,6 @@ class _RiderMapState extends State<RiderMap> {
                   ),
                 );
               }),
-         Positioned(child: Align(
-          alignment: Alignment.topRight,
-           child: InkWell(
-             onTap: (){
-               ToastMessage.toast("jsbfjbjfs");
-             },
-             child: Container(
-               width: 50,
-               height: 50,
-               decoration: BoxDecoration(
-                 color: CustomColor.yellow,
-                 borderRadius: BorderRadius.circular(50),
-               ),
-             ),
-           ),
-         ))
-
         ]
         ),
       ),

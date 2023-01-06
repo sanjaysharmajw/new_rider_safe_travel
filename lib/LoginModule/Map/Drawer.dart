@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
+import 'package:ride_safe_travel/Utils/circular_image_widgets.dart';
 
 class DrawerInfo extends StatelessWidget {
   final String dInfoName;
@@ -59,29 +60,8 @@ class DrawerInfo extends StatelessWidget {
                   child: Stack(
                     alignment: Alignment.bottomRight,
                     children: [
-                      Image.network(
-                        dInfoImage,
-                        width: 60.w,
-                        height: 60.h,
-                      ),
-                      // CircleAvatar(
-                      //   backgroundColor: CustomColor.yellow,
-                      //   radius: 30.0,
-                      //   child: CircleAvatar(
-                      //     radius: 29.0,
-                      //     backgroundColor: Colors.white,
-                      //     child: ClipOval(
-                      //       child: (dInfoImage != null)
-                      //           ? Image.network(
-                      //         dInfoImage!,
-                      //         width: 100,
-                      //         height: 100,
-                      //         fit: BoxFit.cover,
-                      //       )
-                      //           : Image.asset('images/bottom_drawer_comp.png'),
-                      //     ),
-                      //   ),
-                      // ),
+                      CircularImage(imageLink: dInfoImage, imageWidth: 40.w,
+                          imageHeight: 40.h, borderColor: CustomColor.yellow)
                     ],
                   ),
                 ),

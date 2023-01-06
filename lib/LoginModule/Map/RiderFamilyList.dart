@@ -73,7 +73,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                 dImage: snapshot.data![index].driverPhoto
                                     .toString(),
                                 memberName:
-                                    snapshot.data![index].memberName.toString(),
+                                    snapshot.data![index].memberName??"N/A",
                               ));
                             } else {
                               Center(child: CircularProgressIndicator());

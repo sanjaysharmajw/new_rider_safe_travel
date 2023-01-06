@@ -19,20 +19,9 @@ import 'LoginModule/Error.dart';
 import 'Utils/back_button_popup.dart';
 import 'Utils/exit_alert_dialog.dart';
 import 'Utils/share_content.dart';
-enum Share {
-  facebook,
-  messenger,
-  twitter,
-  whatsapp,
-  whatsapp_personal,
-  whatsapp_business,
-  share_system,
-  share_instagram,
-  share_telegram
-}
 
 class StartRide extends StatefulWidget {
-  StartRide(
+  const StartRide(
       {Key? key,
       required this.riderId,
       required this.socketToken,
@@ -83,7 +72,6 @@ class _SignUpState extends State<StartRide> {
     setState(() {});
     OverlayLoadingProgress;
   }
-
   void sharePre() async {
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
@@ -140,7 +128,7 @@ class _SignUpState extends State<StartRide> {
         socket.disconnect();
         Navigator.pop(context, true);
       }),
-      child: SafeArea(
+      child: Material(
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -153,8 +141,9 @@ class _SignUpState extends State<StartRide> {
             backgroundColor: CustomColor.lightYellow,
             leading: IconButton(
               onPressed: () {
-                BackButtonPopup(context, () {
-                  Navigator.pop(context, true);
+                showExitPopup(context,"Do you want to stop ride?",(){
+                  socket.disconnect();
+                  Get.to(const MainPage());
                 });
               },
               icon: Image.asset('assets/map_back.png'),
@@ -184,6 +173,10 @@ class _SignUpState extends State<StartRide> {
                     mapType: MapType.normal,
                     myLocationEnabled: true,
                     compassEnabled: true,
+                    zoomControlsEnabled: false,
+                    rotateGesturesEnabled: true,
+                    myLocationButtonEnabled: true,
+                    mapToolbarEnabled: true,
                     onMapCreated: (GoogleMapController controller) {
                       _completer.complete(controller);
                     },

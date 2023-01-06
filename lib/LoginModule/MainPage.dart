@@ -242,7 +242,6 @@ class _MainPageState extends State<MainPage> {
       if (socketToken !="") {
         OverlayLoadingProgress.stop();
         List<Data> userCheck = jsonDecode(response.body)['data'].map<Data>((data) => Data.fromJson(data)).toList();
-        ToastMessage.toast(userCheck[0].driverEmailId.toString());
         Get.to(StartRide(
             riderId: userCheck[0].id.toString(),
             dName: userCheck[0].driverName.toString(),

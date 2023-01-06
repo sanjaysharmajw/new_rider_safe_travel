@@ -405,7 +405,6 @@ tring firstName, String lastName,
                                       child: Stack(
                                         alignment: Alignment.bottomRight,
                                         children: [
-
                                           CircleAvatar(
                                             backgroundColor: CustomColor.yellow,
                                             radius: 45.0.r,
@@ -417,7 +416,7 @@ tring firstName, String lastName,
                                                     ? Image.file(
                                                   image!,
                                                   width: 250,
-                                                  height: 150,
+                                                  height: 250,
                                                   fit: BoxFit.fill,
                                                 )
                                                     : Image.network(
