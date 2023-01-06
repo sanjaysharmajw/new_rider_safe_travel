@@ -75,7 +75,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                       color: CustomColor.yellow),
                                 ),
                                 Positioned(
-                                  top: 20.h,
+                                  top: 10.0.h,
                                   // left: 90,
                                   right: 10.w,
                                   child: Column(
@@ -92,11 +92,13 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                     ],
                                   ),
                                 ),
+                                SizedBox(height: 20,),
                                 Positioned.fill(
                                   child: Row(
                                     children: [
                                       SizedBox(
                                         width: 10.w,
+                                        height: 20.w,
                                       ),
                                       Expanded(
                                         child: ClipOval(

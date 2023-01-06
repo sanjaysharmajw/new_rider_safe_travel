@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
-import 'dart:ffi';
-import 'dart:ui';
+
 import 'dart:io';
 import 'dart:math';
 import 'package:age_calculator/age_calculator.dart';
@@ -259,107 +258,25 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     }
   }
 
-/*  Future<UpdateRiderProfileModel> getUserData(BuildContext context,String mobileNumber, S
-tring firstName, String lastName,
-      String email, String dob, String gender , String address , String cities , String states, String profileImage ,
-      String pincode) async {
 
-    await Preferences.setPreferences();
-    String userId = Preferences.getId(Preferences.id);
-
-
-
-   var data = {
-    "user_id": userId,
-     "first_name" : firstName ,
-     "last_name" :lastName,
-     "email_id": email,
-     "gender": radioButtonItem.toString(),
-     "dob": dob,
-     "mobile_number": mobileNumber,
-    "alternate_contact_no": "",
-    "profile_image": fileName,
-    "marital_status": "",
-     "city": cities.toString(),
-     "state": states.toString(),
-    "permanent_address": {
-    "address": address,
-    "city":cities.toString(),
-    "state": states.toString(),
-    "pincode": pincode,
-    },
-
-    "present_address": {
-    "address":address,
-    "city": cities.toString(),
-    "state": states.toString(),
-    "pincode": pincode,
-    },
-    "same_address": address,
-     "pincode":pincode,
-    "dldetails": {
-    "dl_number": "",
-    "dl_image": "",
-    "dl_expiry_date": "",
-    "dl_mobile_number": "",
-    "accidental_history": "",
-    "accidental_discription": "",
-    "available24by7": "",
-    "shift_time_from": "",
-    "shift_time_to": ""
-    },
-     "address" : address,
-    } ;
-
-    print(jsonEncode(data));
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2");
-
-    final response = await http.post(
-      Uri.parse(
-          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/updateUserProfile'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(data),
-    );
-
-    if (response.statusCode == 200) {
-      bool status = jsonDecode(response.body)[ErrorMessage.status];
-      var msg = jsonDecode(response.body)[ErrorMessage.message];
-      if (status == true) {
-        OverlayLoadingProgress.stop(context);
-        Text("Sucessfully updated");
-        print("Sucessfully updated");
-        Get.snackbar("Message", msg,snackPosition: SnackPosition.BOTTOM);
-      }else{
-        OverlayLoadingProgress.stop(context);
-        // Get.to(DrawerScreen());
-        // throw Exception('Failed to load')
-          Get.snackbar("Failed to load", msg,snackPosition: SnackPosition.BOTTOM);
-      }
-      return UpdateRiderProfileModel.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to create album.');
-    }
-  } */
 
   @override
   Widget build(BuildContext context) {
-
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
+            padding: EdgeInsets.only(left: 10.sp, right: 10.sp),
             child: IconButton(
                 onPressed: () {
                   Get.back(canPop: true);
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.arrow_back_sharp,
                   color: CustomColor.black,
-                  size: 30,
+                  size: 30.sp,
                 )),
           ),
         ),
@@ -371,18 +288,18 @@ tring firstName, String lastName,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20, top: 10),
+                   Padding(
+                    padding: EdgeInsets.only(left: 20.sp, top: 10.sp),
                     child: Text(
                       "Rider Profile",
                       style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                           color: CustomColor.riderprofileColor),
                     ),
                   ),
-                  const SizedBox(
-                    height: 12,
+                  SizedBox(
+                    height: 12.h,
                   ),
                   Row(
                     children: [
@@ -400,8 +317,8 @@ tring firstName, String lastName,
                                               bottomSheet()));
                                     },
                                     child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          0, 20, 10, 0),
+                                      padding: EdgeInsets.fromLTRB(
+                                          0.sp, 20.sp, 10.sp, 0.sp),
                                       child: Stack(
                                         alignment: Alignment.bottomRight,
                                         children: [
@@ -415,8 +332,8 @@ tring firstName, String lastName,
                                                 child: (image != null)
                                                     ? Image.file(
                                                   image!,
-                                                  width: 250,
-                                                  height: 250,
+                                                  width: 250.w,
+                                                  height: 250.h,
                                                   fit: BoxFit.fill,
                                                 )
                                                     : Image.network(
@@ -425,35 +342,10 @@ tring firstName, String lastName,
                                               ),
 
 
-                                              /*CachedNetworkImage(
-                imageUrl: assetsPath,
 
-                fit: BoxFit.contain,
-                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                    CircularProgressIndicator(value: downloadProgress.progress),
-                errorWidget: (context, url, error) => Icon(Icons.error),
-              ),*/
                                             ),
                                           ),
-                                         /* CircleAvatar(
-                                            backgroundColor: CustomColor.yellow,
-                                            radius: 45.0,
-                                            child: CircleAvatar(
-                                              radius: 43.0,
-                                              backgroundColor: Colors.white,
-                                              child: ClipOval(
-                                                child: (image != null)
-                                                    ? Image.file(
-                                                  image!,
-                                                  width: 100,
-                                                  height: 100,
-                                                  fit: BoxFit.cover,
-                                                )
-                                                    : Image.network(
-                                                    widget.imageProfile),
-                                              ),
-                                            ),
-                                          ), */
+
 
                                           Image.asset(
                                               'assets/select_image.png'),
@@ -466,7 +358,7 @@ tring firstName, String lastName,
                             ],
                           )),
                       SizedBox(
-                        width: 14,
+                        width: 14.w,
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -482,39 +374,39 @@ tring firstName, String lastName,
                                 color: CustomColor.riderprofileColor),
                           ),
                           SizedBox(
-                            height: 5,
+                            height: 5.h,
                           ),
                           Text(
                             mobileNumberController.text.toString(),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 15,
+                                fontSize: 15.sp,
                                 color: CustomColor.text),
                           ),
                         ],
                       ),
                       SizedBox(
-                        width: 64,
+                        width: 64.w,
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
+                   SizedBox(
+                    height: 10.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: 20.sp),
                         child: Text(
                           "First Name  -",
                           style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
                               color: CustomColor.riderprofileColor),
                         ),
                       ),
-                      VerticalDivider(width: 40.0),
+                      VerticalDivider(width: 40.0.w),
                       Expanded(
                           child: Center(
                         child: TextFormField(
@@ -525,7 +417,7 @@ tring firstName, String lastName,
                           ],
                           style: TextStyle(
                             fontFamily: 'transport',
-                            fontSize: 16,
+                            fontSize: 16.sp,
                           ),
                           controller: firstNameController,
                           keyboardType: TextInputType.text,
@@ -554,16 +446,16 @@ tring firstName, String lastName,
                   Row(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: 20.sp),
                         child: Text(
                           "Last Name  -",
                           style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
                               color: CustomColor.riderprofileColor),
                         ),
                       ),
-                      VerticalDivider(width: 40.0),
+                      VerticalDivider(width: 40.0.w),
                       Expanded(
                           child: Center(
                         child: TextFormField(
@@ -698,7 +590,7 @@ tring firstName, String lastName,
                                                 // keyboardType: TextInputType.number,
                                                 style: const TextStyle(
                                                     fontFamily: 'transport',
-                                                    fontSize: 18),
+                                                    fontSize: 16),
                                                 maxLines: 1,
                                                 controller: dobController,
                                                 decoration:
@@ -848,7 +740,7 @@ tring firstName, String lastName,
                           flex: 2,
                           child: Row(
                             children: [
-                              Container(width: 15),
+
                               const Text("State",
                                   style: TextStyle(
                                       color: CustomColor.black,
@@ -857,7 +749,7 @@ tring firstName, String lastName,
                             ],
                           ),
                         ),
-                        Container(width: 35),
+
                         Expanded(
                           flex: 2,
                           child: Row(
@@ -884,8 +776,8 @@ tring firstName, String lastName,
                             height: 45,
                             child: TextFormField(
                               validator: (value) {
-                                if (value == null) {
-                                  return 'Please enter your state name.';
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your state name';
                                 }
                                 return null;
                               },
@@ -922,8 +814,8 @@ tring firstName, String lastName,
                             height: 45,
                             child: TextFormField(
                               validator: (value) {
-                                if (value == null) {
-                                  return 'Please enter your city name.';
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your city name';
                                 }
                                 return null;
                               },
@@ -985,8 +877,8 @@ tring firstName, String lastName,
                                 child: Center(
                               child: TextFormField(
                                 validator: (value) {
-                                  if (value == null || value.length != 6) {
-                                    return 'Please enter 6 digit number.';
+                                  if (value == null || value.isEmpty || value.length != 6) {
+                                    return 'Please enter 6 pincode.';
                                   }
                                   return null;
                                 },
@@ -1044,8 +936,8 @@ tring firstName, String lastName,
                             height: 45,
                             child: TextFormField(
                               validator: (value) {
-                                if (value == null) {
-                                  return 'Please enter your address.';
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your address';
                                 }
                                 return null;
                               },
@@ -1551,7 +1443,7 @@ tring firstName, String lastName,
         print(response.body);
         if (status == true) {
           Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
-          OverlayLoadingProgress;
+          OverlayLoadingProgress.stop();
           await Preferences.setPreferences();
           Preferences.setProfileImage(uploadedImage.toString());
 
