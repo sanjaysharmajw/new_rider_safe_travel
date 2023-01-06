@@ -30,7 +30,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
     print("@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     final response = await http.post(
       (Uri.parse(
-          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userFamilyList')),
+          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/myFamilyList')), //old end url: userFamilyList
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

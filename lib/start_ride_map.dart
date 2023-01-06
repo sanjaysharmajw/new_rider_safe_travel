@@ -14,6 +14,7 @@ import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/MapAddFamily.dart';
 import 'package:ride_safe_travel/Utils/make_a_call.dart';
+import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -94,13 +95,16 @@ class _SignUpState extends State<StartRide> {
     location.onLocationChanged.listen((LocationData cLoc) async {
       lat = cLoc.latitude!;
       lng = cLoc.longitude!;
-      print('LatLng${lat}');
+      var distance=cLoc.speed;
+      print('Start rIDER : LatLng${lat}');
+      //ToastMessage.toast("Start RIde $distance");
       await Preferences.setPreferences();
       Preferences.setStartLat(cLoc.latitude!.toString());
       Preferences.setStartLng(cLoc.longitude!.toString());
       socket.emit("message", {
-        "message": {'lat': lat, 'lng': lng},
+        "message": {'lat': lat, 'lng': lng,"timestamp": DateTime.now().millisecondsSinceEpoch.toString()},
         "roomName": widget.riderId,
+
       });
       final GoogleMapController controller = await _completer.future;
       controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -131,6 +135,7 @@ class _SignUpState extends State<StartRide> {
     return WillPopScope(
       onWillPop: () => showExitPopup(context, "Do you want to stop ride?", () {
         socket.disconnect();
+        endRide();
         Navigator.pop(context, true);
       }),
       child: SafeArea(
@@ -148,6 +153,7 @@ class _SignUpState extends State<StartRide> {
               onPressed: () {
                 showExitPopup(context,"Do you want to stop ride?",(){
                   socket.disconnect();
+                  endRide();
                   Get.to(const MainPage());
                 });
               },
@@ -218,7 +224,12 @@ class _SignUpState extends State<StartRide> {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        showAlertDialog(context);
+                                        showExitPopup(context,"Do you want to stop ride?",(){
+                                          socket.disconnect();
+                                          endRide();
+                                          Get.to(const MainPage());
+                                        });
+                                        //showAlertDialog(context);
                                       },
                                       child: Column(
                                         children: [
@@ -448,9 +459,10 @@ class _SignUpState extends State<StartRide> {
     String ownlerName=widget.vOwnerName.toString();
     String regNo=widget.vRegNo.toString();
     RenderBox box = context.findRenderObject() as RenderBox;
-    Share.share("DriverName: $dName, DriverMobileNumber : $dMobile, Model : $model, OwnerName: $ownlerName, RegistrationNumber: $regNo,",
+    Share.share("Hi! Nirbhaya...Welcome to the new way to easily share your real-time location with your friends, family, co-workers, customers, suppliers, and more.\n\n"
+        "Driver Name: $dName, Driver Mobile Number : $dMobile, Model : $model, Owner Name: $ownlerName, Registration Number: $regNo, "
+        "Hey check out my app at: https://play.google.com/store/apps/details?id=com.rider_safe_travel.ride_safe_travel",
         subject: "Description", sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
-
 
   }
 

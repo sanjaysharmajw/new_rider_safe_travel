@@ -98,7 +98,7 @@ class _RiderMapState extends State<RiderMap> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
-    return Material(
+    return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
