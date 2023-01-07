@@ -22,9 +22,6 @@ import 'LoginModule/Error.dart';
 import 'Utils/back_button_popup.dart';
 import 'Utils/exit_alert_dialog.dart';
 
-
-
-
 class StartRide extends StatefulWidget {
   const StartRide(
       {Key? key,
@@ -95,16 +92,19 @@ class _SignUpState extends State<StartRide> {
     location.onLocationChanged.listen((LocationData cLoc) async {
       lat = cLoc.latitude!;
       lng = cLoc.longitude!;
-      var distance=cLoc.speed;
+      var distance = cLoc.speed;
       print('Start rIDER : LatLng${lat}');
       //ToastMessage.toast("Start RIde $distance");
       await Preferences.setPreferences();
       Preferences.setStartLat(cLoc.latitude!.toString());
       Preferences.setStartLng(cLoc.longitude!.toString());
       socket.emit("message", {
-        "message": {'lat': lat, 'lng': lng,"timestamp": DateTime.now().millisecondsSinceEpoch.toString()},
+        "message": {
+          'lat': lat,
+          'lng': lng,
+          "timestamp": DateTime.now().millisecondsSinceEpoch.toString()
+        },
         "roomName": widget.riderId,
-
       });
       final GoogleMapController controller = await _completer.future;
       controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -133,10 +133,11 @@ class _SignUpState extends State<StartRide> {
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return WillPopScope(
-      onWillPop: () => showExitPopup(context, "Do you want to stop ride?", () {
-        socket.disconnect();
-        endRide();
+      onWillPop: () => showExitPopup(context, "Do you want to stop ride?", () async {
+        OverlayLoadingProgress.start(context);
         Navigator.pop(context, true);
+        await endRide();
+
       }),
       child: SafeArea(
         child: Scaffold(
@@ -151,32 +152,35 @@ class _SignUpState extends State<StartRide> {
             backgroundColor: CustomColor.lightYellow,
             leading: IconButton(
               onPressed: () {
-                showExitPopup(context,"Do you want to stop ride?",(){
-                  socket.disconnect();
-                  endRide();
-                  Get.to(const MainPage());
+                showExitPopup(context, "Do you want to stop ride?", () async {
+                  OverlayLoadingProgress.start(context);
+                  Navigator.pop(context, true);
+                  await endRide();
+
                 });
               },
               icon: Image.asset('assets/map_back.png'),
             ),
             actions: <Widget>[
-              IconButton(icon: Icon(Icons.share,color: Colors.black,),
+              IconButton(
+                  icon: Icon(
+                    Icons.share,
+                    color: Colors.black,
+                  ),
                   onPressed: () {
-                shareData();
-               // String dName=widget.dName.toString();
-                //String dMobile=widget.dMobile.toString();
-                //String model=widget.model.toString();
-                //String ownlerName=widget.vOwnerName.toString();
-                //String regNo=widget.vRegNo.toString();
-              //  RenderBox box = context.findRenderObject() as RenderBox;
+                    shareData();
+                    // String dName=widget.dName.toString();
+                    //String dMobile=widget.dMobile.toString();
+                    //String model=widget.model.toString();
+                    //String ownlerName=widget.vOwnerName.toString();
+                    //String regNo=widget.vRegNo.toString();
+                    //  RenderBox box = context.findRenderObject() as RenderBox;
 
-
-               /* ShareContent.shareContent("Driver Name: $dName, Driver Mobile: $dMobile,Model: $model, "
+                    /* ShareContent.shareContent("Driver Name: $dName, Driver Mobile: $dMobile,Model: $model, "
                     "Owner Name: $ownlerName, Registration No: $regNo, Link: https://play.google.com/store/search?q=pub%3ADivTag&c=apps");  */
                     //         "$ownlerName, Registration No: $regNo")
-                //Share.share('hey! check out this new app https://play.google.com/store/search?q=pub%3ADivTag&c=apps');
-
-              }),
+                    //Share.share('hey! check out this new app https://play.google.com/store/search?q=pub%3ADivTag&c=apps');
+                  }),
             ],
           ),
           body: Stack(children: [
@@ -224,11 +228,12 @@ class _SignUpState extends State<StartRide> {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        showExitPopup(context,"Do you want to stop ride?",(){
-                                          socket.disconnect();
-                                          endRide();
-                                          Get.to(const MainPage());
-                                        });
+                                        showExitPopup(context,
+                                            "Do you want to stop ride?", () async {
+                                          OverlayLoadingProgress.start(context);
+                                          Navigator.pop(context, true);
+                                          await endRide();
+                                            });
                                         //showAlertDialog(context);
                                       },
                                       child: Column(
@@ -281,7 +286,11 @@ class _SignUpState extends State<StartRide> {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        Make_a_call.makePhoneCall("102");
+                                        showExitPopup(context,
+                                            "Are you in trouble?", () {
+                                              OverlayLoadingProgress.start(context);
+                                              SOSNotification();
+                                            });
                                       },
                                       child: Column(
                                         children: [
@@ -292,7 +301,6 @@ class _SignUpState extends State<StartRide> {
                                     ),
                                   ],
                                 ),
-
                               ],
                             ),
                           ],
@@ -408,12 +416,15 @@ class _SignUpState extends State<StartRide> {
     if (response.statusCode == 200) {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
+      print("End Res: $response");
       if (status == true) {
+        OverlayLoadingProgress.stop();
+        ToastMessage.toast(msg);
         socket.disconnect();
-        // Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
         Get.to(const MainPage());
       } else {
-        // Get.snackbar("Message", msg.toString(),snackPosition: SnackPosition.BOTTOM);
+        OverlayLoadingProgress.stop();
+        ToastMessage.toast(msg);
       }
       return response;
     } else {
@@ -421,50 +432,48 @@ class _SignUpState extends State<StartRide> {
     }
   }
 
-  showAlertDialog(BuildContext context) {
-    Widget cancelButton = TextButton(
-      child: Text("No"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-    Widget continueButton = TextButton(
-      child: const Text("Yes"),
-      onPressed: () {
-        endRide();
-      },
-    );
+  Future<http.Response> SOSNotification() async {
+    final response = await http.post(Uri.parse(ApiUrl.SOS_Push_Notification),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode({
+          'user_id': userId.toString(),
+          'ride_id': widget.riderId,
+        }));
+    print(json.encode({
+      'user_id': userId.toString(),
+      'ride_id': widget.riderId,
+    }));
 
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: const Text("End Ride"),
-      content: const Text("Are you sure want to end ride?"),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
+    if (response.statusCode == 200) {
+      bool status = jsonDecode(response.body)[ErrorMessage.status];
+      var msg = jsonDecode(response.body)[ErrorMessage.message];
+      if (status == true) {
+        OverlayLoadingProgress.stop();
+        ToastMessage.toast(msg.toString());
+        Navigator.of(context).pop();
+      } else {
+        OverlayLoadingProgress.stop();
+        ToastMessage.toast(msg.toString());
+      }
+      return response;
+    } else {
+      throw Exception('Failed');
+    }
   }
-
   void shareData() {
-    String dName=widget.dName.toString();
-    String dMobile=widget.dMobile.toString();
-    String model=widget.model.toString();
-    String ownlerName=widget.vOwnerName.toString();
-    String regNo=widget.vRegNo.toString();
+    String dName = widget.dName.toString();
+    String dMobile = widget.dMobile.toString();
+    String model = widget.model.toString();
+    String ownlerName = widget.vOwnerName.toString();
+    String regNo = widget.vRegNo.toString();
     RenderBox box = context.findRenderObject() as RenderBox;
-    Share.share("Hi! Nirbhaya...Welcome to the new way to easily share your real-time location with your friends, family, co-workers, customers, suppliers, and more.\n\n"
+    Share.share(
+        "Hi! Nirbhaya...Welcome to the new way to easily share your real-time location with your friends, family, co-workers, customers, suppliers, and more.\n\n"
         "Driver Name: $dName, Driver Mobile Number : $dMobile, Model : $model, Owner Name: $ownlerName, Registration Number: $regNo, "
         "Hey check out my app at: https://play.google.com/store/apps/details?id=com.rider_safe_travel.ride_safe_travel",
-        subject: "Description", sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
-
+        subject: "Description",
+        sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
   }
-
-
 }
