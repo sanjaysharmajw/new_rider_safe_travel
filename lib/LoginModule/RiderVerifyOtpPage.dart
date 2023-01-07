@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -28,7 +29,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
   OtpTimerButtonController timercontroller = OtpTimerButtonController();
   final otpController = TextEditingController();
   final focusNode = FocusNode();
-
+  String? fcmToken;
   _requestOtp() {
     timercontroller.loading();
     Future.delayed(const Duration(seconds: 2), () {
@@ -51,11 +52,18 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
   );
   void initState() {
     super.initState();
+    firebaseToken();
   }
   @override
   void dispose() {
     focusNode.dispose();
     super.dispose();
+  }
+  void firebaseToken()async{
+    fcmToken = await FirebaseMessaging.instance.getToken();
+      ToastMessage.toast(fcmToken.toString());
+      print("Firebase Token: $fcmToken");
+
   }
 
   @override
@@ -327,6 +335,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       },
       body: jsonEncode(<String, String>{
         'mobile_number': mobileNumber.toString(),
+        'fcmtoken': fcmToken.toString(),
       }),
     );
     if (response.statusCode == 200) {

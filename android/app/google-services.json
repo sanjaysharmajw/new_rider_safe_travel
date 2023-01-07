@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "621805870576",
+    "project_id": "nirbhaya-rider",
+    "storage_bucket": "nirbhaya-rider.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621805870576:android:a1cf834008e7e697679135",
+        "android_client_info": {
+          "package_name": "com.rider_safe_travel.ride_safe_travel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "621805870576-6bmdbi8dto9569n5e9nll3533jjlqgad.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfn1tLkA7-hWaenJ5XXxxJTC8qL7F95Og"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "621805870576-6bmdbi8dto9569n5e9nll3533jjlqgad.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
