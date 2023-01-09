@@ -2,13 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
+import 'package:mapmyindia_gl/mapmyindia_gl.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
 import 'package:ride_safe_travel/LoginModule/Map/Drawer.dart';
@@ -17,6 +18,8 @@ import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/Utils/make_a_call.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+
+import '../../Utils/MapMyIndiaKeys.dart';
 
 class RiderMap extends StatefulWidget {
   RiderMap({
@@ -54,20 +57,25 @@ class _RiderMapState extends State<RiderMap> {
   var vehicleId = '', driverId = '', userId = '', riderId = '';
   String date = '';
   bool visibility = false;
+  late MapmyIndiaMapController mapController;
+  late Symbol symbol;
 
-  late Map<MarkerId, Marker> _markers;
-  Completer<GoogleMapController> _completer = Completer();
   static const CameraPosition _cameraPosition = CameraPosition(
     target: LatLng(19.0654285394954, 73.00269069070602),
     zoom: 14,
   );
 
+
   @override
   void initState() {
     super.initState();
     // getDataEverySec();
-    _markers = <MarkerId, Marker>{};
-    _markers.clear();
+    setState(() {
+      MapmyIndiaAccountManager.setMapSDKKey(MyMyIndiaKeys.mapSKDKey);
+      MapmyIndiaAccountManager.setRestAPIKey(MyMyIndiaKeys.MapRestAPIKey);
+      MapmyIndiaAccountManager.setAtlasClientId(MyMyIndiaKeys.ClientId);
+      MapmyIndiaAccountManager.setAtlasClientSecret(MyMyIndiaKeys.ClientSecretId);
+    });
     sharePre();
     //getRideData();
     //_initUser();
@@ -121,16 +129,19 @@ class _RiderMapState extends State<RiderMap> {
               builder: (BuildContext context, BoxConstraints constraints) {
             return SizedBox(
               height: constraints.maxHeight / 1.1,
-              child: GoogleMap(
+              child: MapmyIndiaMap(
                 initialCameraPosition: _cameraPosition,
-                mapType: MapType.normal,
-                //myLocationEnabled: true,
-                //compassEnabled: true,
-                zoomControlsEnabled: false,
-                onMapCreated: (GoogleMapController controller) {
-                  _completer.complete(controller);
+                scrollGesturesEnabled: true,
+                tiltGesturesEnabled: true,
+                compassEnabled: true,
+                compassViewPosition: CompassViewPosition.BottomLeft,
+                onMapCreated: (map) =>
+                {
+                  mapController = map,
                 },
-                markers: Set<Marker>.of(_markers.values),
+                onStyleLoadedCallback: () => {
+                  mapController,
+                },
               ),
             );
           }),
@@ -333,16 +344,8 @@ class _RiderMapState extends State<RiderMap> {
         var lat = jsonDecode(data)['lat'];
         var lng = jsonDecode(data)['lng'];
         print('Received lat: $lat + $lng');
-        final GoogleMapController controller = await _completer.future;
-        controller.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(target: LatLng(lat, lng), zoom: 19)));
-        var image = await BitmapDescriptor.fromAssetImage(
-            const ImageConfiguration(), "images/map_marker.png");
-        Marker marker = Marker(
-            markerId: MarkerId('ID'), icon: image, position: LatLng(lat, lng));
-        setState(() {
-          _markers[MarkerId('ID')] = marker;
-        });
+        marker(lat,lng);
+        mapController.removeSymbol(symbol);
       });
       socket.on('error', (error) {
         print('Error: $error');
@@ -350,5 +353,12 @@ class _RiderMapState extends State<RiderMap> {
     } catch (e) {
       print(e.toString());
     }
+  }
+  void marker(double lat,double lng)async{
+    mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 15));
+    final ByteData bytes = await rootBundle.load("assets/family_map_pin.png");
+    final Uint8List list = bytes.buffer.asUint8List();
+    mapController.addImage("icon", list);
+    symbol = await mapController.addSymbol(SymbolOptions(geometry: LatLng(lat, lng), iconImage: "icon"));
   }
 }

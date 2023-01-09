@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mapmyindia_gl/mapmyindia_gl.dart';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
@@ -19,6 +21,7 @@ import 'package:share_plus/share_plus.dart';
 
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'LoginModule/Error.dart';
+import 'Utils/MapMyIndiaKeys.dart';
 import 'Utils/back_button_popup.dart';
 import 'Utils/exit_alert_dialog.dart';
 
@@ -58,9 +61,9 @@ class _SignUpState extends State<StartRide> {
   var userId = '';
   String socketToken = '';
   bool visibility = false;
+  late MapmyIndiaMapController mapController;
+  late Symbol symbol;
 
-  late Map<MarkerId, Marker> _markers;
-  Completer<GoogleMapController> _completer = Completer();
   static const CameraPosition _cameraPosition = CameraPosition(
     target: LatLng(19.0654285394954, 73.00269069070602),
     zoom: 14,
@@ -69,6 +72,12 @@ class _SignUpState extends State<StartRide> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      MapmyIndiaAccountManager.setMapSDKKey(MyMyIndiaKeys.mapSKDKey);
+      MapmyIndiaAccountManager.setRestAPIKey(MyMyIndiaKeys.MapRestAPIKey);
+      MapmyIndiaAccountManager.setAtlasClientId(MyMyIndiaKeys.ClientId);
+      MapmyIndiaAccountManager.setAtlasClientSecret(MyMyIndiaKeys.ClientSecretId);
+    });
     _initUser();
     sharePre();
     setState(() {});
@@ -94,6 +103,8 @@ class _SignUpState extends State<StartRide> {
       lng = cLoc.longitude!;
       var distance = cLoc.speed;
       print('Start rIDER : LatLng${lat}');
+      marker(cLoc.latitude!,cLoc.longitude!);
+      mapController.removeSymbol(symbol);
       //ToastMessage.toast("Start RIde $distance");
       await Preferences.setPreferences();
       Preferences.setStartLat(cLoc.latitude!.toString());
@@ -106,21 +117,15 @@ class _SignUpState extends State<StartRide> {
         },
         "roomName": widget.riderId,
       });
-      final GoogleMapController controller = await _completer.future;
-      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target: LatLng(cLoc.latitude!, cLoc.longitude!), zoom: 19)));
-      var image = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(), "images/map_marker.png");
-      Marker marker = Marker(
-          markerId: MarkerId('ID'),
-          icon: image,
-          position: LatLng(cLoc.latitude!, cLoc.longitude!));
-      setState(() {
-        _markers[MarkerId('ID')] = marker;
-      });
+
     });
-    _markers = <MarkerId, Marker>{};
-    _markers.clear();
+  }
+  void marker(double lat,double lng)async{
+    mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 15));
+    final ByteData bytes = await rootBundle.load("assets/driver_map_min.png");
+    final Uint8List list = bytes.buffer.asUint8List();
+    mapController.addImage("icon", list);
+    symbol = await mapController.addSymbol(SymbolOptions(geometry: LatLng(lat, lng), iconImage: "icon"));
   }
 
   @override
@@ -188,20 +193,22 @@ class _SignUpState extends State<StartRide> {
                 builder: (BuildContext context, BoxConstraints constraints) {
               return SizedBox(
                   height: constraints.maxHeight / 1.1,
-                  child: GoogleMap(
+                  child: MapmyIndiaMap(
                     initialCameraPosition: _cameraPosition,
-                    mapType: MapType.normal,
-                    myLocationEnabled: true,
+                    scrollGesturesEnabled: true,
+                    tiltGesturesEnabled: true,
                     compassEnabled: true,
-                    zoomControlsEnabled: false,
-                    rotateGesturesEnabled: true,
-                    myLocationButtonEnabled: true,
-                    mapToolbarEnabled: true,
-                    onMapCreated: (GoogleMapController controller) {
-                      _completer.complete(controller);
+                    compassViewPosition: CompassViewPosition.BottomLeft,
+                    onMapCreated: (map) =>
+                    {
+                      mapController = map,
                     },
-                    markers: Set<Marker>.of(_markers.values),
-                  ));
+                    onStyleLoadedCallback: () => {
+                      mapController,
+                    },
+                  )
+
+              );
             }),
             DraggableScrollableSheet(
                 initialChildSize: 0.15,
