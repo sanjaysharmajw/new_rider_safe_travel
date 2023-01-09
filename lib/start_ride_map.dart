@@ -63,6 +63,9 @@ class _SignUpState extends State<StartRide> {
   bool visibility = false;
   late MapmyIndiaMapController mapController;
   late Symbol symbol;
+  late Line line;
+  late List<LatLng> polyline_latlng;
+
 
   static const CameraPosition _cameraPosition = CameraPosition(
     target: LatLng(19.0654285394954, 73.00269069070602),
@@ -92,7 +95,9 @@ class _SignUpState extends State<StartRide> {
   }
 
   void _initUser() async {
+    polyline_latlng = <LatLng>[];
     location = Location();
+
     location.enableBackgroundMode(enable: true);
     location.changeNotificationOptions(
         iconName: 'images/rider_launcher.png',
@@ -101,11 +106,13 @@ class _SignUpState extends State<StartRide> {
     location.onLocationChanged.listen((LocationData cLoc) async {
       lat = cLoc.latitude!;
       lng = cLoc.longitude!;
-      var distance = cLoc.speed;
       print('Start rIDER : LatLng${lat}');
+      polyline_latlng.add(LatLng(cLoc.latitude!, cLoc.longitude!));
+      LatLngBounds latLngBounds = boundsFromLatLngList(polyline_latlng);
+      mapController.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds));
+      line = await mapController.addLine(LineOptions(geometry: polyline_latlng, lineColor: "#4285F4",lineOpacity: 0.5, lineWidth: 6));
       marker(cLoc.latitude!,cLoc.longitude!);
       mapController.removeSymbol(symbol);
-      //ToastMessage.toast("Start RIde $distance");
       await Preferences.setPreferences();
       Preferences.setStartLat(cLoc.latitude!.toString());
       Preferences.setStartLng(cLoc.longitude!.toString());
@@ -117,7 +124,6 @@ class _SignUpState extends State<StartRide> {
         },
         "roomName": widget.riderId,
       });
-
     });
   }
   void marker(double lat,double lng)async{
@@ -174,17 +180,6 @@ class _SignUpState extends State<StartRide> {
                   ),
                   onPressed: () {
                     shareData();
-                    // String dName=widget.dName.toString();
-                    //String dMobile=widget.dMobile.toString();
-                    //String model=widget.model.toString();
-                    //String ownlerName=widget.vOwnerName.toString();
-                    //String regNo=widget.vRegNo.toString();
-                    //  RenderBox box = context.findRenderObject() as RenderBox;
-
-                    /* ShareContent.shareContent("Driver Name: $dName, Driver Mobile: $dMobile,Model: $model, "
-                    "Owner Name: $ownlerName, Registration No: $regNo, Link: https://play.google.com/store/search?q=pub%3ADivTag&c=apps");  */
-                    //         "$ownlerName, Registration No: $regNo")
-                    //Share.share('hey! check out this new app https://play.google.com/store/search?q=pub%3ADivTag&c=apps');
                   }),
             ],
           ),
@@ -204,10 +199,9 @@ class _SignUpState extends State<StartRide> {
                       mapController = map,
                     },
                     onStyleLoadedCallback: () => {
-                      mapController,
+                    mapController,
                     },
                   )
-
               );
             }),
             DraggableScrollableSheet(
@@ -482,5 +476,23 @@ class _SignUpState extends State<StartRide> {
         "Hey check out my app at: https://play.google.com/store/apps/details?id=com.rider_safe_travel.ride_safe_travel",
         subject: "Description",
         sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+  }
+
+
+  boundsFromLatLngList(List<LatLng> list) {
+    assert(list.isNotEmpty);
+    double? x0, x1, y0, y1;
+    for (LatLng latLng in list) {
+      if (x0 == null || x1 == null || y0 == null || y1 == null) {
+        x0 = x1 = latLng.latitude;
+        y0 = y1 = latLng.longitude;
+      } else {
+        if (latLng.latitude > x1) x1 = latLng.latitude;
+        if (latLng.latitude < x0) x0 = latLng.latitude;
+        if (latLng.longitude > y1) y1 = latLng.longitude;
+        if (latLng.longitude < y0) y0 = latLng.longitude;
+      }
+    }
+    return LatLngBounds(northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
   }
 }
