@@ -60,6 +60,10 @@ class _RiderMapState extends State<RiderMap> {
   late MapmyIndiaMapController mapController;
   late Symbol symbol;
 
+  //Polyline
+  late Line line;
+  late List<LatLng> polyline_latlng;
+
   static const CameraPosition _cameraPosition = CameraPosition(
     target: LatLng(19.0654285394954, 73.00269069070602),
     zoom: 14,
@@ -69,7 +73,7 @@ class _RiderMapState extends State<RiderMap> {
   @override
   void initState() {
     super.initState();
-    // getDataEverySec();
+    polyline_latlng = <LatLng>[];
     setState(() {
       MapmyIndiaAccountManager.setMapSDKKey(MyMyIndiaKeys.mapSKDKey);
       MapmyIndiaAccountManager.setRestAPIKey(MyMyIndiaKeys.MapRestAPIKey);
@@ -81,15 +85,11 @@ class _RiderMapState extends State<RiderMap> {
     //_initUser();
     final now = DateTime.now();
     date = DateFormat('yMd').format(now);
-
     if (widget.dLicenseNo.isEmpty) {
       visibility = false;
     } else {
       visibility = true;
     }
-
-
-
   }
 
   void sharePre() async {
@@ -344,6 +344,10 @@ class _RiderMapState extends State<RiderMap> {
         var lat = jsonDecode(data)['lat'];
         var lng = jsonDecode(data)['lng'];
         print('Received lat: $lat + $lng');
+        polyline_latlng.add(LatLng(lat, lng));
+        LatLngBounds latLngBounds = boundsFromLatLngList(polyline_latlng);
+        mapController.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds));
+        line = await mapController.addLine(LineOptions(geometry: polyline_latlng, lineColor: "#4285F4",lineOpacity: 0.5, lineWidth: 6));
         marker(lat,lng);
         mapController.removeSymbol(symbol);
       });
@@ -355,10 +359,26 @@ class _RiderMapState extends State<RiderMap> {
     }
   }
   void marker(double lat,double lng)async{
-    mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 15));
+    mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 16));
     final ByteData bytes = await rootBundle.load("assets/family_map_pin.png");
     final Uint8List list = bytes.buffer.asUint8List();
     mapController.addImage("icon", list);
     symbol = await mapController.addSymbol(SymbolOptions(geometry: LatLng(lat, lng), iconImage: "icon"));
+  }
+  boundsFromLatLngList(List<LatLng> list) {
+    assert(list.isNotEmpty);
+    double? x0, x1, y0, y1;
+    for (LatLng latLng in list) {
+      if (x0 == null || x1 == null || y0 == null || y1 == null) {
+        x0 = x1 = latLng.latitude;
+        y0 = y1 = latLng.longitude;
+      } else {
+        if (latLng.latitude > x1) x1 = latLng.latitude;
+        if (latLng.latitude < x0) x0 = latLng.latitude;
+        if (latLng.longitude > y1) y1 = latLng.longitude;
+        if (latLng.longitude < y0) y0 = latLng.longitude;
+      }
+    }
+    return LatLngBounds(northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
   }
 }

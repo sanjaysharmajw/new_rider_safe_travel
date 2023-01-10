@@ -127,7 +127,7 @@ class _SignUpState extends State<StartRide> {
     });
   }
   void marker(double lat,double lng)async{
-    mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 15));
+    mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 16));
     final ByteData bytes = await rootBundle.load("assets/driver_map_min.png");
     final Uint8List list = bytes.buffer.asUint8List();
     mapController.addImage("icon", list);
