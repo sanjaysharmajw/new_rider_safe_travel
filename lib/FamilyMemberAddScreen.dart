@@ -58,7 +58,10 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.keyboard_backspace_sharp),
+        leading:  IconButton( onPressed: () {
+          Get.back();
+        }, icon: Icon(Icons.keyboard_backspace_sharp,)),
+
         centerTitle: true,
         backgroundColor: CustomColor.yellow,
         title: const Text("Add Family Member",

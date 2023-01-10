@@ -410,17 +410,25 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                       Expanded(
                           child: Center(
                         child: TextFormField(
+
+                          showCursor: true,
+                          cursorHeight:30,
+                          cursorWidth: 2.0,
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
-                                RegExp("[a-zA-Z\ ]")),
-                            FilteringTextInputFormatter.deny('  ')
+                                RegExp("[a-zA-Z\]")),
+                            FilteringTextInputFormatter.deny('  '),
+
                           ],
                           style: TextStyle(
                             fontFamily: 'transport',
-                            fontSize: 16.sp,
+                            fontSize: 18.sp,
                           ),
+
                           controller: firstNameController,
+                          textCapitalization: TextCapitalization.sentences,
                           keyboardType: TextInputType.text,
+
                           decoration: InputDecoration(
                             border: const UnderlineInputBorder(),
                             enabledBorder: UnderlineInputBorder(
@@ -437,7 +445,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your first name';
                             }
-                            return null;
+                            return value.length < 2 ? 'Name must be greater than two characters' : null;
                           },
                         ),
                       )),
@@ -459,16 +467,20 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                       Expanded(
                           child: Center(
                         child: TextFormField(
+                          showCursor: true,
+                          cursorHeight:30,
+                          cursorWidth: 2.0,
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
-                                RegExp("[a-zA-Z\ ]")),
+                                RegExp("[a-zA-Z\]")),
                             FilteringTextInputFormatter.deny('  ')
                           ],
                           style: TextStyle(
                             fontFamily: 'transport',
-                            fontSize: 16,
+                            fontSize: 18,
                           ),
                           controller: lastNameController,
+                          textCapitalization: TextCapitalization.sentences,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             border: const UnderlineInputBorder(),
@@ -486,7 +498,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your last name';
                             }
-                            return null;
+                            return value.length < 2 ? 'Name must be greater than two characters' : null;
                           },
                         ),
                       )),
@@ -508,12 +520,17 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                       Expanded(
                           child: Center(
                         child: TextFormField(
+
+                          showCursor: true,
+                          cursorHeight:30,
+                          cursorWidth: 2.0,
                           inputFormatters: [
-                            FilteringTextInputFormatter.deny(' ')
+                            FilteringTextInputFormatter.deny(' '),
+
                           ],
                           style: TextStyle(
                             fontFamily: 'transport',
-                            fontSize: 16,
+                            fontSize: 18,
                           ),
                           controller: emailController,
                           keyboardType: TextInputType.emailAddress,
@@ -531,10 +548,12 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           },
                           validator: (value) {
                             if (value == null ||
-                                value.isEmpty ||
-                                !value.contains('@') ||
-                                !value.contains('.')) {
-                              return 'Invalid Email';
+                                value.isEmpty) {
+                              return 'Email is Required !';
+                            } if (!RegExp(
+                                r'^[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]+')
+                            .hasMatch(value)) {
+                            return 'Please enter a valid Email';
                             }
                             return null;
                           },
@@ -590,7 +609,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                                 // keyboardType: TextInputType.number,
                                                 style: const TextStyle(
                                                     fontFamily: 'transport',
-                                                    fontSize: 16),
+                                                    fontSize: 18),
                                                 maxLines: 1,
                                                 controller: dobController,
                                                 decoration:
@@ -775,6 +794,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           child: SizedBox(
                             height: 45,
                             child: TextFormField(
+                              showCursor: true,
+                              cursorHeight:30,
+                              cursorWidth: 2.0,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter your state name';
@@ -788,9 +810,10 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               ],
                               style: TextStyle(
                                 fontFamily: 'transport',
-                                fontSize: 16,
+                                fontSize: 18,
                               ),
                               controller: stateController,
+                              textCapitalization: TextCapitalization.sentences,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 border: const UnderlineInputBorder(),
@@ -809,10 +832,14 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                         ),
                         Container(width: 15),
                         Expanded(
+
                           flex: 2,
                           child: SizedBox(
                             height: 45,
                             child: TextFormField(
+                              showCursor: true,
+                              cursorHeight:30,
+                              cursorWidth: 2.0,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter your city name';
@@ -826,9 +853,10 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               ],
                               style: TextStyle(
                                 fontFamily: 'transport',
-                                fontSize: 16,
+                                fontSize: 18,
                               ),
                               controller: cityController,
+                              textCapitalization: TextCapitalization.sentences,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 border: const UnderlineInputBorder(),
@@ -876,6 +904,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             child: Expanded(
                                 child: Center(
                               child: TextFormField(
+                                showCursor: true,
+                                cursorHeight:30,
+                                cursorWidth: 2.0,
                                 validator: (value) {
                                   if (value == null || value.isEmpty || value.length != 6) {
                                     return 'Please enter 6 pincode.';
@@ -889,7 +920,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 ],
                                 style: TextStyle(
                                   fontFamily: 'transport',
-                                  fontSize: 16,
+                                  fontSize: 18,
                                 ),
                                 controller: pinController,
                                 keyboardType: TextInputType.number,
@@ -935,6 +966,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           child: SizedBox(
                             height: 45,
                             child: TextFormField(
+                              showCursor: true,
+                              cursorHeight:30,
+                              cursorWidth: 2.0,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter your address';
@@ -948,9 +982,10 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               ],
                               style: TextStyle(
                                 fontFamily: 'transport',
-                                fontSize: 16,
+                                fontSize: 18,
                               ),
                               controller: addressController,
+                              textCapitalization: TextCapitalization.sentences,
                               keyboardType: TextInputType.multiline,
                               decoration: InputDecoration(
                                 border: const UnderlineInputBorder(),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -15,6 +16,8 @@ import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/LoginModule/riderNewRegisterLoginModel.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'RiderLoginPage.dart';
 
 class RiderVerifyOtpPage extends StatefulWidget {
   RiderVerifyOtpPage({Key? key, required this.mobileNumber}) : super(key: key);
@@ -50,7 +53,9 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       border: Border.all(color: Colors.red),
     ),
   );
+  final TextEditingController mobileController = TextEditingController();
   void initState() {
+    mobileController.text=widget.mobileNumber.toString();
     super.initState();
     firebaseToken();
   }
@@ -119,7 +124,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                     height: 15.h,
                   ),
                    Text(
-                    "Enter 4 digit verification code set to",
+                    "Enter 4 digit verification code sent to",
                     style: TextStyle(
                         fontFamily: "transport",
                         fontWeight: FontWeight.w400,
@@ -140,7 +145,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                             fontSize: 15.sp),
                       ),
                       Text(
-                        widget.mobileNumber.toString(),
+                        mobileController.text.toString(),
                         style: TextStyle(
                             fontFamily: "transport",
                             fontWeight: FontWeight.w400,
@@ -148,7 +153,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                       ),
                       InkWell(
                         onTap: () {
-                          //Get.to(const RiderLoginPage());
+                          Get.to(RiderLoginPage());
                         },
                         child: Text(
                           '  Edit',
@@ -181,6 +186,9 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                   ),
                   Center(
                     child: Pinput(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
                       defaultPinTheme: defaultPinTheme,
                       controller: otpController,
                       length: 4,
@@ -253,7 +261,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                         setState(() {
                           OverlayLoadingProgress.start(context);
                         });
-                        await new_VerifyOtpApi(widget.mobileNumber.toString(),
+                        await new_VerifyOtpApi(mobileController.text.toString(),
                             otpController.text.toString());
                       }),
                 ],
