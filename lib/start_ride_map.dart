@@ -153,8 +153,8 @@ class _SignUpState extends State<StartRide> {
             leading: IconButton(
               onPressed: () {
                 showExitPopup(context, "Do you want to stop ride?", () async {
-                  OverlayLoadingProgress.start(context);
-                  Navigator.pop(context, true);
+                 // OverlayLoadingProgress.start(context);
+                  //Navigator.pop(context, true);
                   await endRide();
 
                 });

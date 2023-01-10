@@ -12,7 +12,7 @@ import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
 
 class RiderLoginPage extends StatefulWidget {
-  const RiderLoginPage({super.key});
+  RiderLoginPage({Key? key, }) : super(key: key);
 
   // const LoginScreenPage({Key? key}) : super(key: key);
 
@@ -103,6 +103,7 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(
                                           RegExp("[0-9]")),
+                                      FilteringTextInputFormatter.deny(RegExp(r'^0+')),
                                       LengthLimitingTextInputFormatter(10),
                                     ],
                                     style: const TextStyle(

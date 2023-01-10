@@ -146,7 +146,7 @@ class MyHomePageState extends State<MyHomePage> {
     await Preferences.setPreferences();
     String? userId = Preferences.getId(Preferences.id);
     if (userId == null) {
-      Get.to(const RiderLoginPage());
+      Get.to( RiderLoginPage());
     } else {
       Get.to(const MainPage());
     }

@@ -200,7 +200,9 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
             vInfoFitness: vFitnessValidity.toString(),
             vInfoInsurance: vInsurance.toString(),
             dInfoLicense: driverLicense.toString(),
-            press: () {},
+            press: () {
+              Get.to(MainPage());
+            },
             pressBtn: () async {
               OverlayLoadingProgress.start(context);
               await userRideAdd(
