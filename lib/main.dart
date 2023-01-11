@@ -37,6 +37,7 @@ Future<void> main() async {
       AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 
+
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true,
     badge: true,
@@ -92,9 +93,19 @@ class MyHomePageState extends State<MyHomePage> {
                 playSound: true,
                 icon: '@mipmap/ic_launcher',
               ),
-            ));
+            )
+        );
       }
     });
+    Future selectNotification(String payload) async {
+      if (payload != null) {
+        debugPrint('notification payload: $payload');
+      }
+      await Navigator.push(
+        context,
+        MaterialPageRoute<void>(builder: (context) =>
+            MainPage()),);
+    }
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('A new onMessageOpenedApp event was published!');
       RemoteNotification? notification = message.notification;
