@@ -61,7 +61,7 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
                     child: TextFormField(
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
-                            RegExp("[a-zA-Z\ ]")),
+                            RegExp("[a-zA-Z\]")),
                         FilteringTextInputFormatter.deny('  ')
                       ],
                       validator: (value) {
@@ -86,7 +86,7 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
                     child: TextFormField(
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
-                            RegExp("[a-zA-Z\ ]")),
+                            RegExp("[a-zA-Z\]")),
                         FilteringTextInputFormatter.deny('  ')
                       ],
                       validator: (value) {
@@ -112,6 +112,7 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
                             RegExp("[0-9]")),
+                        FilteringTextInputFormatter.deny(RegExp(r'^0+')),
                         LengthLimitingTextInputFormatter(10),
                       ],
                       controller: controllerMobile,

@@ -99,6 +99,18 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
+          leading: Padding(
+            padding: EdgeInsets.only(left: 10.sp, right: 10.sp),
+            child: IconButton(
+                onPressed: () {
+                  Get.back(canPop: true);
+                },
+                icon: Icon(
+                  Icons.arrow_back_sharp,
+                  color: CustomColor.black,
+                  size: 30.sp,
+                )),
+          ),
         ),
         backgroundColor: const Color(0xFFffffff),
         body: SingleChildScrollView(

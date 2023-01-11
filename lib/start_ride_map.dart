@@ -28,14 +28,14 @@ import 'Utils/exit_alert_dialog.dart';
 class StartRide extends StatefulWidget {
   const StartRide(
       {Key? key,
-      required this.riderId,
-      required this.socketToken,
-      required this.dName,
-      required this.dMobile,
-      required this.dPhoto,
-      required this.model,
-      required this.vOwnerName,
-      required this.vRegNo})
+        required this.riderId,
+        required this.socketToken,
+        required this.dName,
+        required this.dMobile,
+        required this.dPhoto,
+        required this.model,
+        required this.vOwnerName,
+        required this.vRegNo})
       : super(key: key);
 
   @override
@@ -157,14 +157,14 @@ class _SignUpState extends State<StartRide> {
             title: const Text(
               "On Going Journey",
               style:
-                  TextStyle(color: CustomColor.black, fontFamily: 'transport'),
+              TextStyle(color: CustomColor.black, fontFamily: 'transport'),
             ),
             elevation: 0,
             backgroundColor: CustomColor.lightYellow,
             leading: IconButton(
               onPressed: () {
                 showExitPopup(context, "Do you want to stop ride?", () async {
-                 // OverlayLoadingProgress.start(context);
+                  // OverlayLoadingProgress.start(context);
                   //Navigator.pop(context, true);
                   await endRide();
 
@@ -186,27 +186,27 @@ class _SignUpState extends State<StartRide> {
           body: Stack(children: [
             LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
-              return SizedBox(
-                  height: constraints.maxHeight / 1.1,
-                  child: MapmyIndiaMap(
-                    initialCameraPosition: _cameraPosition,
-                    scrollGesturesEnabled: true,
-                    tiltGesturesEnabled: true,
-                    compassEnabled: true,
-                    //myLocationEnabled: true,
-                    rotateGesturesEnabled: true,
-                    zoomGesturesEnabled: true,
-                    compassViewPosition: CompassViewPosition.BottomLeft,
-                    onMapCreated: (map) =>
-                    {
-                      mapController = map,
-                    },
-                    onStyleLoadedCallback: () => {
-                    mapController,
-                    },
-                  )
-              );
-            }),
+                  return SizedBox(
+                      height: constraints.maxHeight / 1.1,
+                      child: MapmyIndiaMap(
+                        initialCameraPosition: _cameraPosition,
+                        scrollGesturesEnabled: true,
+                        tiltGesturesEnabled: true,
+                        compassEnabled: true,
+                        //myLocationEnabled: true,
+                        rotateGesturesEnabled: true,
+                        zoomGesturesEnabled: true,
+                        compassViewPosition: CompassViewPosition.BottomLeft,
+                        onMapCreated: (map) =>
+                        {
+                          mapController = map,
+                        },
+                        onStyleLoadedCallback: () => {
+                          mapController,
+                        },
+                      )
+                  );
+                }),
             DraggableScrollableSheet(
                 initialChildSize: 0.15,
                 minChildSize: 0.10,
@@ -234,9 +234,9 @@ class _SignUpState extends State<StartRide> {
                                       onTap: () {
                                         showExitPopup(context,
                                             "Do you want to stop ride?", () async {
-                                          OverlayLoadingProgress.start(context);
-                                          Navigator.pop(context, true);
-                                          await endRide();
+                                              OverlayLoadingProgress.start(context);
+                                              Navigator.pop(context, true);
+                                              await endRide();
                                             });
                                         //showAlertDialog(context);
                                       },
@@ -477,8 +477,8 @@ class _SignUpState extends State<StartRide> {
     RenderBox box = context.findRenderObject() as RenderBox;
     Share.share(
         "Hi! Nirbhaya...Welcome to the new way to easily share your real-time location with your friends, family, co-workers, customers, suppliers, and more.\n\n"
-        "Driver Name: $dName, Driver Mobile Number : $dMobile, Model : $model, Owner Name: $ownlerName, Registration Number: $regNo, "
-        "Hey check out my app at: https://play.google.com/store/apps/details?id=com.rider_safe_travel.ride_safe_travel",
+            "Driver Name: $dName, Driver Mobile Number : $dMobile, Model : $model, Owner Name: $ownlerName, Registration Number: $regNo, "
+            "Hey check out my app at: https://play.google.com/store/apps/details?id=com.rider_safe_travel.ride_safe_travel",
         subject: "Description",
         sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
   }
