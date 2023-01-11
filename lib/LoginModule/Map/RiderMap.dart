@@ -20,6 +20,7 @@ import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../../Utils/MapMyIndiaKeys.dart';
+import '../../Utils/exit_alert_dialog.dart';
 
 class RiderMap extends StatefulWidget {
   RiderMap({
@@ -203,8 +204,10 @@ class _RiderMapState extends State<RiderMap> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  openAndCloseLoadingDialog();
-
+                                  showExitPopup(context,"Do you really want to call on 100 ?",(){
+                                    Make_a_call.makePhoneCall("100");
+                                    Navigator.pop(context, true);
+                                  });
                                 },
                                 child: Column(
                                   children: [
@@ -251,53 +254,6 @@ class _RiderMapState extends State<RiderMap> {
             visibility: visibility,
           );
         });
-  }
-
-  Future<void> openAndCloseLoadingDialog() async {
-    showDialog(
-      context: Get.overlayContext!,
-      barrierDismissible: false,
-      builder: (_) => WillPopScope(
-        onWillPop: () async => false,
-        child: Center(
-          child: SizedBox(
-            width: 60,
-            height: 60,
-            child: CircularProgressIndicator(
-              strokeWidth: 3,
-            ),
-          ),
-        ),
-      ),
-    );
-
-    await Future.delayed(Duration(seconds: 3));
-    // Dismiss CircularProgressIndicator
-    Navigator.of(Get.overlayContext!).pop();
-
-    Get.dialog(
-      AlertDialog(
-        content: Text("Do you really wanr to call on 100 ?"),
-        actions: <Widget>[
-          TextButton(
-            child: Text("Yes"),
-            onPressed: () {
-              Make_a_call.makePhoneCall("100");
-            },
-          ),
-          TextButton(
-            child: Text("No"),
-            onPressed: () {
-              Get.back();
-            },
-          )
-        ],
-      ),
-      barrierDismissible: false,
-    );
-
-    // await Future.delayed(Duration(seconds: 3));
-    // Navigator.of(Get.overlayContext).pop();
   }
 
   Future<http.Response> getSocketToken() async {

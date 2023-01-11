@@ -193,6 +193,9 @@ class _SignUpState extends State<StartRide> {
                     scrollGesturesEnabled: true,
                     tiltGesturesEnabled: true,
                     compassEnabled: true,
+                    //myLocationEnabled: true,
+                    rotateGesturesEnabled: true,
+                    zoomGesturesEnabled: true,
                     compassViewPosition: CompassViewPosition.BottomLeft,
                     onMapCreated: (map) =>
                     {
@@ -413,7 +416,6 @@ class _SignUpState extends State<StartRide> {
         'location': ""
       }
     }));
-
     if (response.statusCode == 200) {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
@@ -441,6 +443,9 @@ class _SignUpState extends State<StartRide> {
         body: json.encode({
           'user_id': userId.toString(),
           'ride_id': widget.riderId,
+          "lat":lat.toString(),
+          "lng":lng.toString(),
+          "timestamp":DateTime.now().millisecondsSinceEpoch.toString()
         }));
     print(json.encode({
       'user_id': userId.toString(),
