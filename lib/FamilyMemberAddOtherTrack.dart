@@ -61,13 +61,13 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
                 child: TextFormField(
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(
-                        RegExp("[a-zA-Z\ ]")),
+                        RegExp("[a-zA-Z\]")),
                     FilteringTextInputFormatter.deny('  ')
                   ],
                   validator: (value) {
                     if (value == null ||
                         value.isEmpty ||
-                        value.length < 2) {
+                        value.length < 3) {
                       return 'Please enter name!';
                     }
                     return null;
@@ -87,7 +87,7 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
                 child: TextFormField(
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(
-                        RegExp("[a-zA-Z\ ]")),
+                        RegExp("[a-zA-Z\]")),
                     FilteringTextInputFormatter.deny('  ')
                   ],
                   validator: (value) {
@@ -114,6 +114,7 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(
                         RegExp("[0-9]")),
+                    FilteringTextInputFormatter.deny(RegExp(r'^0+')),
                     LengthLimitingTextInputFormatter(10),
                   ],
                   cursorHeight: 25.0,

@@ -31,8 +31,6 @@ class UserDriverInformation extends StatefulWidget {
 
 class _UserDriverInformationState extends State<UserDriverInformation> {
 
-
-
   var vehicleId = "";
   var driverId = "";
   var driverName = "";
@@ -65,6 +63,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
     driverVehicleListApi(context);
     final now = DateTime.now();
     date = DateFormat('yMd').format(now);
+
   }
 
   var qresult;
@@ -174,6 +173,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
         setState(() {});
       } else if (status == false) {
         OverlayLoadingProgress.stop();
+        _scanQR();
       }
       return DriverVehicleList.fromJson(response.body);
     } else {

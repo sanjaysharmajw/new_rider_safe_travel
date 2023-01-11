@@ -399,8 +399,8 @@ class _SignUpState extends State<StartRide> {
           'ride_id': widget.riderId,
           'end_point': {
             'time': DateTime.now().millisecondsSinceEpoch.toString(),
-            'latitude': lat,
-            'longitude': lng,
+            'latitude': lat.toString(),
+            'longitude': lng.toString(),
             'location': ""
           }
         }));

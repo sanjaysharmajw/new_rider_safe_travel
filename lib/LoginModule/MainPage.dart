@@ -14,6 +14,7 @@ import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/MainPageWidgets/MainPageCard.dart';
 import 'package:ride_safe_travel/UserDriverInformation.dart';
 import 'package:ride_safe_travel/Utils/exit_alert_dialog.dart';
+import 'package:ride_safe_travel/Utils/toast.dart';
 import '../MainPageWidgets/main_page_btn.dart';
 import '../Models/CheckActiveUserRide.dart';
 import '../MyRidesPage.dart';
@@ -50,6 +51,7 @@ class _MainPageState extends State<MainPage> {
       setState(() {
         result = qrResult ?? 'null string';
         if (result != "") {
+          ToastMessage.toast(result);
           Get.to(UserDriverInformation(result: result));
         } else {
           Get.to(MainPage());
