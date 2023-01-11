@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:badges/badges.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -18,6 +19,7 @@ import 'package:ride_safe_travel/Utils/toast.dart';
 import '../MainPageWidgets/main_page_btn.dart';
 import '../Models/CheckActiveUserRide.dart';
 import '../MyRidesPage.dart';
+import '../Notification/NotificationScreen.dart';
 import '../UserFamilyList.dart';
 import '../Utils/logout_dialog_box.dart';
 import '../Widgets/dashboard_profile_widgets.dart';
@@ -41,6 +43,13 @@ class _MainPageState extends State<MainPage> {
   String profileMobile = "";
   String profileLastName = "";
   String profileEmailId = "";
+  late int countNitification=0;
+  // bool refreshValue=false;
+  // void refreshData(){
+  //   setState(() {
+  //     refreshValue=true;
+  //   });
+  // }
   Future _scanQR() async {
     try {
       String? qrResult = await MajaScan.startScan(
@@ -92,6 +101,7 @@ class _MainPageState extends State<MainPage> {
     profileName = Preferences.getFirstName(Preferences.firstname).toString();
     profileLastName = Preferences.getLastName(Preferences.lastname).toString();
     userId = Preferences.getId(Preferences.id).toString();
+    await countNotification();
     profileMobile =
         Preferences.getMobileNumber(Preferences.mobileNumber).toString();
     profileEmailId = Preferences.getEmailId(Preferences.emailId).toString();
@@ -112,6 +122,26 @@ class _MainPageState extends State<MainPage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           actions: <Widget>[
+            InkWell(
+              onTap: () async {
+                Get.to(NotificationScreen());
+                String refresh= await Navigator.push(context,
+                    MaterialPageRoute(builder: (context)=>const NotificationScreen()));
+                if(refresh=='refresh'){
+                  await countNotification();
+                }
+              },
+              child: Badge(
+                padding: EdgeInsets.symmetric(vertical: 15,horizontal: 8),
+                badgeContent:  Text(
+                  countNitification.toString(),
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
+                badgeColor: Colors.green,
+                child: const Icon(Icons.notifications, size: 30),
+              ),
+            ),
+            SizedBox(width: 10),
             IconButton(
                 icon: const Icon(Icons.logout),
                 onPressed: () {
@@ -250,6 +280,33 @@ class _MainPageState extends State<MainPage> {
     } else {
       //Get.snackbar(response.body, 'Failed');
       throw Exception('Failed to create album.');
+    }
+  }
+  Future<http.Response> countNotification() async {
+    final response = await http.post(Uri.parse(ApiUrl.countNotification),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode({
+          'user_id': userId.toString(),
+          'count': true,
+          'unread': true,
+        }));
+    print(json.encode({
+      'user_id': userId.toString(),
+      'count': true,
+      'unread': true,
+    }));
+    if (response.statusCode == 200) {
+      //bool status = jsonDecode(response.body)[ErrorMessage.status];
+      countNitification = jsonDecode(response.body)['data'];
+      print("respins noti $countNitification");
+      //ToastMessage.toast(status.toString());
+      setState(() {
+      });
+      return response;
+    } else {
+      throw Exception('Failed');
     }
   }
 }
