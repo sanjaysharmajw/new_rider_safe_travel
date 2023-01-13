@@ -66,6 +66,7 @@ dependencies:
   firebase_core: ^2.4.1
   flutter_local_notifications: ^13.0.0
   mapmyindia_gl: ^0.2.2
+  mapmyindia_place_widget: ^0.1.0
 
 
 dev_dependencies:
