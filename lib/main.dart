@@ -97,15 +97,6 @@ class MyHomePageState extends State<MyHomePage> {
         );
       }
     });
-    Future selectNotification(String payload) async {
-      if (payload != null) {
-        debugPrint('notification payload: $payload');
-      }
-      await Navigator.push(
-        context,
-        MaterialPageRoute<void>(builder: (context) =>
-            MainPage()),);
-    }
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('A new onMessageOpenedApp event was published!');
       RemoteNotification? notification = message.notification;
