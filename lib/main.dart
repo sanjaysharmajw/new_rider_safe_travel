@@ -10,6 +10,8 @@ import 'package:ride_safe_travel/LoginModule/MainPage.dart';
 import 'package:ride_safe_travel/LoginModule/RiderLoginPage.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
+import 'package:ride_safe_travel/search_place/SearchPlace.dart';
+import 'package:ride_safe_travel/search_place/demomap.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
@@ -57,7 +59,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(),
+      home:  POIAlongRouteWidget(),
       debugShowCheckedModeBanner: false,
     );
   }
