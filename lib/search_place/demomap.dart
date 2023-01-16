@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:http/http.dart';
 import 'dart:typed_data';
 import 'package:location/location.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mapmyindia_gl/mapmyindia_gl.dart';
 import 'package:mapmyindia_gl/mapmyindia_gl.dart';
+import 'package:mapmyindia_place_widget/mapmyindia_place_widget.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:ride_safe_travel/search_place/plyline.dart';
 import '../Utils/MapMyIndiaKeys.dart';
@@ -32,21 +34,24 @@ class POIAlongRouteWidgetState extends State {
   late double lati;
   late double lng;
   String? eloc;
+  late  ELocation eLocation;
 
   double? desLat;
   double? desLng;
   late Symbol sourceSymbol;
   late Symbol destinationSymbol;
+  late Line line;
+  late LatLng latLngSource;
 
   @override
   void initState() {
     super.initState();
+    eLocation = ELocation();
     setState(() {
       MapmyIndiaAccountManager.setMapSDKKey(MyMyIndiaKeys.mapSKDKey);
       MapmyIndiaAccountManager.setRestAPIKey(MyMyIndiaKeys.MapRestAPIKey);
       MapmyIndiaAccountManager.setAtlasClientId(MyMyIndiaKeys.ClientId);
-      MapmyIndiaAccountManager.setAtlasClientSecret(
-          MyMyIndiaKeys.ClientSecretId);
+      MapmyIndiaAccountManager.setAtlasClientSecret(MyMyIndiaKeys.ClientSecretId);
     });
     _initUser();
   }
@@ -58,22 +63,26 @@ class POIAlongRouteWidgetState extends State {
       lng = cLoc.longitude!;
       originMarker(lati, lng);
       controller.removeSymbol(sourceSymbol);
+      latLngSource=LatLng(cLoc.latitude!, cLoc.longitude!);
+      //controller.removeLine(line);
     });
   }
-
-  void add(String typeAddress) async {
+  openMapmyIndiaSearchWidget() async {
+    ELocation eLocation;
     try {
-      GeocodeResponse? response =
-          await MapmyIndiaGeoCoding(address: "Ulwe").callGeocoding();
-      eloc = response?.results![0].eLoc;
-      print('Latitude: $eloc');
-      print(
-          response?.toJson()); //originELoc: lat,destination: LatLng(lati, lng)
-      destination(eloc!);
-    } catch (e) {
-      PlatformException map = e as PlatformException;
-      print(map.code);
+      eLocation = await openPlaceAutocomplete(PlaceOptions());
+    } on PlatformException {
+      eLocation = ELocation();
     }
+    print('elocstion: $eLocation');
+    typeAddress.text=eLocation.placeName==null?'Destination:': eLocation.placeName.toString();
+    eloc=eLocation.eLoc;
+    destination(eLocation.eLoc!);
+    print(json.encode(eLocation.toJson()));
+    if (!mounted) return;
+    setState(() {
+      eLocation = eLocation;
+    });
   }
 
   destination(String eloc) async {
@@ -81,8 +90,7 @@ class POIAlongRouteWidgetState extends State {
       DirectionResponse? directionResponse = await MapmyIndiaDirection(
               origin: LatLng(lati, lng), destinationELoc: eloc)
           .callDirection();
-      print('direction:');
-
+      print('direction: $eloc');
       desLat = directionResponse?.waypoints![0].location?.longitude;
       desLng = directionResponse?.waypoints![0].location?.longitude;
       destinationMarker(desLat!, desLng!, eloc);
@@ -125,35 +133,17 @@ class POIAlongRouteWidgetState extends State {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                          child: TextFormField(
-                        controller: typeAddress,
-                        decoration: const InputDecoration(
-                            hintText: "Source(e.g.,Lat,Lng/ELOC)",
-                            fillColor: Colors.white),
-                      )),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Expanded(
-                          child: TextButton(
-                              onPressed: () => {
-                                    //callDirection()
-                                    add(typeAddress.text.toString())
-                                  },
-                              child: Text("Submit"),
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all(Colors.yellow),
-                                  textStyle: MaterialStateProperty.all(
-                                      TextStyle(color: Colors.white)))))
-                    ],
+                  InkWell(
+                    onTap: (){
+                      openMapmyIndiaSearchWidget();
+                    },
+                    child: TextFormField(
+                      enabled: false,
+                      controller: typeAddress,
+                      decoration: const InputDecoration(
+                          hintText: 'Destination',
+                          fillColor: Colors.white),
+                    ),
                   ),
                 ])),
         result.isNotEmpty && isShowList
@@ -195,7 +185,7 @@ class POIAlongRouteWidgetState extends State {
       controller.clearLines();
       controller.clearSymbols();
       DirectionResponse? directionResponse = await MapmyIndiaDirection(
-        origin: LatLng(lati, lng),
+        origin: latLngSource,
         destinationELoc: eloc,
       ).callDirection();
       ToastMessage.toast(lati.toString());
@@ -218,8 +208,8 @@ class POIAlongRouteWidgetState extends State {
   }
 
   void drawPath(List<LatLng> latlngList) {
-    controller.addLine(
-        LineOptions(geometry: latlngList, lineColor: "#3bb2d0", lineWidth: 4));
+    //controller.addLine(LineOptions(geometry: latlngList, lineColor: "#3bb2d0", lineWidth: 4));
+    line = controller.addLine(LineOptions(geometry: latlngList, lineColor: "#3bb2d0", lineWidth: 4)) as Line;
     LatLngBounds latLngBounds = boundsFromLatLngList(latlngList);
     controller.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds));
   }
@@ -259,4 +249,5 @@ class POIAlongRouteWidgetState extends State {
     destinationSymbol = await controller
         .addSymbol(SymbolOptions(eLoc: eLoc, iconImage: "icon"));
   }
+
 }
