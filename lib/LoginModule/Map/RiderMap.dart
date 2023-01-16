@@ -214,7 +214,7 @@ class _RiderMapState extends State<RiderMap> {
                                     Image.asset("images/hundred_number.png",
                                         width: 50.w, height: 50.h),
                                     SizedBox(height: 10.h),
-                                    Text("100",
+                                    const Text("100",
                                         style: TextStyle(
                                             fontFamily: 'transport',
                                             fontSize: 16)),
