@@ -16,6 +16,7 @@ import 'package:ride_safe_travel/MainPageWidgets/MainPageCard.dart';
 import 'package:ride_safe_travel/UserDriverInformation.dart';
 import 'package:ride_safe_travel/Utils/exit_alert_dialog.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
+import '../DriverVehicleList.dart';
 import '../MainPageWidgets/main_page_btn.dart';
 import '../Models/CheckActiveUserRide.dart';
 import '../MyRidesPage.dart';
@@ -57,13 +58,15 @@ class _MainPageState extends State<MainPage> {
           titleColor: Colors.amberAccent[700],
           qRCornerColor: Colors.orange,
           qRScannerColor: Colors.orange);
-      setState(() {
+      setState(() async {
         result = qrResult ?? 'null string';
         if (result != "") {
-          ToastMessage.toast(result);
-          Get.to(UserDriverInformation(result: result));
-        } else {
-          Get.to(MainPage());
+          if(result.length==24){
+            ToastMessage.toast(result);
+            driverVehicleListApi(result);
+          }else{
+            ToastMessage.toast("Invalid QR");
+          }
         }
       });
     } on PlatformException catch (ex) {
@@ -124,7 +127,7 @@ class _MainPageState extends State<MainPage> {
           actions: <Widget>[
             InkWell(
               onTap: () async {
-                Get.to(NotificationScreen());
+                Get.to(const NotificationScreen());
                 String refresh= await Navigator.push(context,
                     MaterialPageRoute(builder: (context)=>const NotificationScreen()));
                 if(refresh=='refresh'){
@@ -307,6 +310,60 @@ class _MainPageState extends State<MainPage> {
       return response;
     } else {
       throw Exception('Failed');
+    }
+  }
+  Future<DriverVehicleList> driverVehicleListApi(String result) async {
+    final response = await http.post(
+      Uri.parse(ApiUrl.driverVehicleList),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'driver_id': result.toString(),
+        'status': "Active",
+      }),
+    );
+    print(jsonEncode(<String, String>{
+      'driver_id': result.toString(),
+      'status': "Active",
+    }));
+
+    if (response.statusCode == 200) {
+      bool status = jsonDecode(response.body)[ErrorMessage.status];
+      if (status == true) {
+        OverlayLoadingProgress.stop();
+        List<VehicleListData> driverDetails = jsonDecode(response.body)['data']
+            .map<VehicleListData>((data) => VehicleListData.fromJson(data))
+            .toList();
+        print('family: $driverDetails');
+       var driverName = driverDetails[0].driverName.toString();
+        var driverMob = driverDetails[0].driverMobileNumber.toString();
+        var driverLicense = driverDetails[0].drivingLicenceNumber.toString()??"";
+        var vOwnerName = driverDetails[0].ownerName.toString();
+        var vRegNumber = driverDetails[0].vehicledetails![0].registrationNumber.toString();
+        var vPucvalidity = driverDetails[0].vehicledetails![0].pucValidity.toString();
+        var  vFitnessValidity = driverDetails[0].vehicledetails![0].fitnessValidity.toString();
+        var vInsurance = driverDetails[0].vehicledetails![0].insuranceValidity.toString();
+        var vModel = driverDetails[0].vehicledetails![0].model.toString();
+        var dPhoto = driverDetails[0].driverPhoto.toString();
+        var vPhoto = driverDetails[0].ownerPhoto.toString();
+        var vehicleIds = driverDetails[0].vehicledetails![0].id.toString();
+        var driverIds = driverDetails[0].driverId.toString();
+        print(response.body);
+        Get.to(UserDriverInformation(
+            vehicleId: vehicleIds.toString(), driverId: driverIds.toString(), driverName: driverName.toString(),
+          driverMob: driverMob.toString(),
+          driverLicense: driverLicense.toString(), vOwnerName: vOwnerName.toString(), vRegNumber: vRegNumber.toString(),
+          vPucvalidity: vPucvalidity.toString(), vFitnessValidity: vFitnessValidity.toString(),
+          vInsurance: vInsurance.toString(), vModel: vModel.toString(), dPhoto: dPhoto.toString(), vPhoto: vPhoto.toString()));
+        setState(() {});
+      } else if (status == false) {
+        OverlayLoadingProgress.stop();
+      }
+      return DriverVehicleList.fromJson(response.body);
+    } else {
+      //Get.snackbar(response.body, 'Failed');
+      throw Exception('Failed to create album.');
     }
   }
 }

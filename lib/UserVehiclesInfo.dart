@@ -19,7 +19,7 @@ class UserVehiclesInfo extends StatelessWidget {
   final VoidCallback pressBtn;
   final String pressBtnText;
 
-  const UserVehiclesInfo(
+   const UserVehiclesInfo(
       {Key? key,
       required this.dInfoName,
       required this.dInfoMobile,

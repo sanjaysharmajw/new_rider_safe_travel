@@ -16,15 +16,15 @@ class DriverVehicleList {
     if (json['data'] != null) {
       data = [];
       json['data'].forEach((v) {
-        data?.add(Data.fromJson(v));
+        data?.add(VehicleListData.fromJson(v));
       });
     }
   }
   bool? status;
-  List<Data>? data;
+  List<VehicleListData>? data;
   DriverVehicleList copyWith({
     bool? status,
-    List<Data>? data,
+    List<VehicleListData>? data,
   }) =>
       DriverVehicleList(
         status: status ?? this.status,
@@ -40,11 +40,11 @@ class DriverVehicleList {
   }
 }
 
-Data dataFromJson(String str) => Data.fromJson(json.decode(str));
-String dataToJson(Data data) => json.encode(data.toJson());
+VehicleListData dataFromJson(String str) => VehicleListData.fromJson(json.decode(str));
+String dataToJson(VehicleListData data) => json.encode(data.toJson());
 
-class Data {
-  Data({
+class VehicleListData {
+  VehicleListData({
     this.id,
     this.status,
     this.shift,
@@ -61,7 +61,7 @@ class Data {
     this.ownerPhoto,
   });
 
-  Data.fromJson(dynamic json) {
+  VehicleListData.fromJson(dynamic json) {
     id = json['_id'];
     status = json['status'];
     shift = json['shift'];
@@ -96,7 +96,7 @@ class Data {
   String? ownerMobileNumber;
   String? ownerEmailId;
   String? ownerPhoto;
-  Data copyWith({
+  VehicleListData copyWith({
     String? id,
     String? status,
     String? shift,
@@ -112,7 +112,7 @@ class Data {
     String? ownerEmailId,
     String? ownerPhoto,
   }) =>
-      Data(
+      VehicleListData(
         id: id ?? this.id,
         status: status ?? this.status,
         shift: shift ?? this.shift,
