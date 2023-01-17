@@ -71,6 +71,7 @@ class POIAlongRouteWidgetState extends State {
     ELocation eLocation;
     try {
       eLocation = await openPlaceAutocomplete(PlaceOptions());
+      print('elocstion: $eLocation');
     } on PlatformException {
       eLocation = ELocation();
     }
@@ -93,7 +94,7 @@ class POIAlongRouteWidgetState extends State {
       print('direction: $eloc');
       desLat = directionResponse?.waypoints![0].location?.longitude;
       desLng = directionResponse?.waypoints![0].location?.longitude;
-      destinationMarker(desLat!, desLng!, eloc);
+      destinationMarker(eloc);
       callDirection();
     } catch (e) {
       PlatformException map = e as PlatformException;
@@ -166,14 +167,6 @@ class POIAlongRouteWidgetState extends State {
                         })))
             : Container()
       ]),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => {
-          setState(() {
-            isShowList = !isShowList;
-          })
-        },
-        child: isShowList ? const Icon(Icons.map) : const Icon(Icons.list),
-      ),
     );
   }
 
@@ -188,12 +181,10 @@ class POIAlongRouteWidgetState extends State {
         origin: latLngSource,
         destinationELoc: eloc,
       ).callDirection();
-      ToastMessage.toast(lati.toString());
       if (directionResponse != null &&
           directionResponse.routes != null &&
           directionResponse.routes!.isNotEmpty) {
-        Polyline polyline = Polyline.Decode(
-            encodedString: directionResponse.routes![0].geometry, precision: 6);
+        Polyline polyline = Polyline.Decode(encodedString: directionResponse.routes![0].geometry, precision: 6);
         List<LatLng> latLngList = [];
         if (polyline.decodedCoords != null) {
           polyline.decodedCoords?.forEach((element) {
@@ -241,8 +232,8 @@ class POIAlongRouteWidgetState extends State {
         SymbolOptions(geometry: LatLng(lat, lng), iconImage: "icon"));
   }
 
-  void destinationMarker(double lat, double lng, String eLoc) async {
-    controller.animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 15));
+  void destinationMarker(String eLoc) async {
+    controller.animateCamera(CameraUpdate.newLatLngZoom(LatLng(desLat!, desLng!), 15));
     final ByteData bytes = await rootBundle.load("assets/driver_map_min.png");
     final Uint8List list = bytes.buffer.asUint8List();
     controller.addImage("icon", list);

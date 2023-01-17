@@ -21,9 +21,29 @@ import 'LoginModule/preferences.dart';
 import 'UserVehiclesInfo.dart';
 
 class UserDriverInformation extends StatefulWidget {
-  String result;
+  String vehicleId = "";
+  String driverId = "";
+  String driverName = "";
+  String driverMob = "";
+  String driverLicense = "";
+  String vOwnerName = "";
+  String vRegNumber = "";
+  String vPucvalidity = "";
+  String vFitnessValidity = "";
+  String vInsurance = "";
+  String vModel = "";
+  String dPhoto = "";
+  String vPhoto = "";
 
-  UserDriverInformation({Key? key, required this.result}) : super(key: key);
+  UserDriverInformation({Key? key,
+    required this.vehicleId,required this.driverId,
+    required this.driverName,required this.driverMob,
+    required this.driverLicense,required this.vOwnerName,
+    required this.vRegNumber,required this.vPucvalidity,
+    required this.vFitnessValidity,required this.vInsurance,
+    required this.vModel,required this.dPhoto,
+    required this.vPhoto,
+  }) : super(key: key);
 
   @override
   State<UserDriverInformation> createState() => _UserDriverInformationState();
@@ -31,19 +51,6 @@ class UserDriverInformation extends StatefulWidget {
 
 class _UserDriverInformationState extends State<UserDriverInformation> {
 
-  var vehicleId = "";
-  var driverId = "";
-  var driverName = "";
-  var driverMob = "";
-  var driverLicense = "";
-  var vOwnerName = "";
-  var vRegNumber = "";
-  var vPucvalidity = "";
-  var vFitnessValidity = "";
-  var vInsurance = "";
-  var vModel = "";
-  var dPhoto = "";
-  var vPhoto = "";
   var date = "";
   Timer? timer;
   var userId;
@@ -51,63 +58,17 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
   double? lat;
   double? lng;
 
-  var vehicleIds;
-  var driverIds;
 
   @override
   void initState() {
     super.initState();
     locationMethod();
     sharePre();
-    OverlayLoadingProgress.start(context);
-    driverVehicleListApi(context);
     final now = DateTime.now();
     date = DateFormat('yMd').format(now);
-
   }
 
-  var qresult;
 
-  Future _scanQR() async {
-    try {
-      String? qrResult = await MajaScan.startScan(
-          title: "QR Code scanner",
-          titleColor: Colors.amberAccent[700],
-          qRCornerColor: Colors.orange,
-          qRScannerColor: Colors.orange);
-      setState(() {
-        qresult = qrResult ?? 'null string';
-        if (qresult != "") {
-          Get.to(UserDriverInformation(result: qresult));
-        } else {
-          Get.to(MainPage());
-        }
-      });
-    } on PlatformException catch (ex) {
-      if (ex.code == MajaScan.CameraAccessDenied) {
-        setState(() {
-
-          qresult = "Camera permission was denied";
-
-        });
-      } else {
-        setState(() {
-          qresult = "Unknown Error $ex";
-
-        });
-      }
-    } on FormatException {
-      setState(() {
-        qresult = "You pressed the back button before scanning anything";
-
-      });
-    } catch (ex) {
-      setState(() {
-        qresult = "Unknown Error $ex";
-
-      });
-    }
-  }
   void locationMethod() async {
     location = Location();
     location.onLocationChanged.listen((LocationData cLoc) async {
@@ -122,65 +83,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
     // Get.snackbar("Hit with time", userId);
   }
 
-  Future<DriverVehicleList> driverVehicleListApi(BuildContext context) async {
-    final response = await http.post(
-      Uri.parse(ApiUrl.driverVehicleList),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'driver_id': widget.result.toString(),
-        'status': "Active",
-      }),
-    );
-    print(jsonEncode(<String, String>{
-      'driver_id': widget.result.toString(),
-      'status': "Active",
-    }));
 
-    if (response.statusCode == 200) {
-      bool status = jsonDecode(response.body)[ErrorMessage.status];
-      if (status == true) {
-        OverlayLoadingProgress.stop();
-        List<Data> driverDetails = jsonDecode(response.body)['data']
-            .map<Data>((data) => Data.fromJson(data))
-            .toList();
-        if(driverDetails.length==0)
-          {
-            _scanQR();
-          }
-        driverName = driverDetails[0].driverName.toString();
-        driverMob = driverDetails[0].driverMobileNumber.toString();
-        driverLicense = driverDetails[0].drivingLicenceNumber.toString();
-        vOwnerName = driverDetails[0].ownerName.toString();
-        vRegNumber =
-            driverDetails[0].vehicledetails![0].registrationNumber.toString();
-        vPucvalidity = formatDate(
-            driverDetails[0].vehicledetails![0].pucValidity.toString());
-        vFitnessValidity = formatDate(
-            driverDetails[0].vehicledetails![0].fitnessValidity.toString());
-        vInsurance = formatDate(
-            driverDetails[0].vehicledetails![0].insuranceValidity.toString());
-        vModel = driverDetails[0].vehicledetails![0].model.toString();
-        dPhoto = driverDetails[0].driverPhoto.toString();
-        vPhoto = driverDetails[0].ownerPhoto.toString();
-
-        vehicleIds = driverDetails[0].vehicledetails![0].id.toString();
-        driverIds = driverDetails[0].driverId.toString();
-        setState(() {});
-        // Preferences.setVehicleId(vehicleIds);
-        // Preferences.setDriverId(driverIds);
-        setState(() {});
-      } else if (status == false) {
-        OverlayLoadingProgress.stop();
-        _scanQR();
-      }
-      return DriverVehicleList.fromJson(response.body);
-    } else {
-      //Get.snackbar(response.body, 'Failed');
-      throw Exception('Failed to create album.');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -189,24 +92,24 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
       body: Column(
         children: [
           UserVehiclesInfo(
-            dInfoName: driverName.toString(),
-            dInfoMobile: driverMob.toString(),
-            dInfoImage: dPhoto.toString(),
-            vInfoImage: vPhoto.toString(),
-            vInfoModel: vModel.toString(),
-            vInfoOwnerName: vOwnerName.toString(),
-            vInfoRegNo: vRegNumber.toString(),
-            vInfoPuc: vPucvalidity.toString(),
-            vInfoFitness: vFitnessValidity.toString(),
-            vInfoInsurance: vInsurance.toString(),
-            dInfoLicense: driverLicense.toString(),
+            dInfoName: widget.driverName.toString(),
+            dInfoMobile: widget.driverMob.toString(),
+            dInfoImage: widget.dPhoto.toString(),
+            vInfoImage: widget.vPhoto.toString(),
+            vInfoModel: widget.vModel.toString(),
+            vInfoOwnerName: widget.vOwnerName.toString(),
+            vInfoRegNo: widget.vRegNumber.toString(),
+            vInfoPuc: formatDate(widget.vPucvalidity.toString()),
+            vInfoFitness: formatDate(widget.vFitnessValidity.toString()),
+            vInfoInsurance: formatDate(widget.vInsurance.toString()),
+            dInfoLicense: widget.driverLicense.toString(),
             press: () {
               Get.to(MainPage());
             },
             pressBtn: () async {
               OverlayLoadingProgress.start(context);
               await userRideAdd(
-                  userId, vehicleIds.toString(), driverIds.toString());
+                  userId, widget.vehicleId.toString(), widget.driverId.toString());
               setState(() {});
             },
             pressBtnText: 'Start Ride',
@@ -243,27 +146,27 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
         Get.to(
             StartRide(
             riderId: rideId.toString(),
-            dName: driverName.toString(),
-            dMobile: driverMob.toString(),
-            dPhoto: dPhoto.toString(),
-            model: vModel.toString(),
-            vOwnerName: vOwnerName.toString(),
-            vRegNo: vRegNumber.toString(),
+            dName: widget.driverName.toString(),
+            dMobile: widget.driverMob.toString(),
+            dPhoto: widget.dPhoto.toString(),
+            model: widget.vModel.toString(),
+            vOwnerName: widget.vOwnerName.toString(),
+            vRegNo: widget.vRegNumber.toString(),
             socketToken: socketToken)
         );
         OverlayLoadingProgress.stop();
-        print("Userinformation" + driverId + vehicleId);
+        print("Userinformation" + widget.driverId + widget.vehicleId);
       } else {
         Get.to(FamilyMemberAddScreen(
-            driverId: driverId,
-            vehicleId: vehicleId,
+            driverId: widget.driverId,
+            vehicleId: widget.vehicleId,
             riderId: rideId.toString(),
-            dName: driverName.toString(),
-            dMobile: driverMob.toString(),
-            dPhoto: dPhoto.toString(),
-            model: vModel.toString(),
-            vOwnerName: vOwnerName.toString(),
-            vRegNo: vRegNumber.toString(),
+            dName: widget.driverName.toString(),
+            dMobile: widget.driverMob.toString(),
+            dPhoto: widget.dPhoto.toString(),
+            model: widget.vModel.toString(),
+            vOwnerName: widget.vOwnerName.toString(),
+            vRegNo: widget.vRegNumber.toString(),
             socketToken: socketToken));
         OverlayLoadingProgress.stop();
       }

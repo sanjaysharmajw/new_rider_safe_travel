@@ -1,6 +1,7 @@
 import UIKit
 import Flutter
 import FirebaseCore
+import MapmyIndiaAPIKit
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {

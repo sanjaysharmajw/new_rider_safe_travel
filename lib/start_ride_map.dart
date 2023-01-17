@@ -66,7 +66,6 @@ class _SignUpState extends State<StartRide> {
   late Line line;
   late List<LatLng> polyline_latlng;
 
-
   static const CameraPosition _cameraPosition = CameraPosition(
     target: LatLng(19.0654285394954, 73.00269069070602),
     zoom: 14,
@@ -79,7 +78,8 @@ class _SignUpState extends State<StartRide> {
       MapmyIndiaAccountManager.setMapSDKKey(MyMyIndiaKeys.mapSKDKey);
       MapmyIndiaAccountManager.setRestAPIKey(MyMyIndiaKeys.MapRestAPIKey);
       MapmyIndiaAccountManager.setAtlasClientId(MyMyIndiaKeys.ClientId);
-      MapmyIndiaAccountManager.setAtlasClientSecret(MyMyIndiaKeys.ClientSecretId);
+      MapmyIndiaAccountManager.setAtlasClientSecret(
+          MyMyIndiaKeys.ClientSecretId);
     });
     _initUser();
     sharePre();
@@ -107,12 +107,18 @@ class _SignUpState extends State<StartRide> {
       lat = cLoc.latitude!;
       lng = cLoc.longitude!;
       print('Start rIDER : LatLng${lat}');
+
       polyline_latlng.add(LatLng(cLoc.latitude!, cLoc.longitude!));
       LatLngBounds latLngBounds = boundsFromLatLngList(polyline_latlng);
       mapController.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds));
-      line = await mapController.addLine(LineOptions(geometry: polyline_latlng, lineColor: "#4285F4",lineOpacity: 0.5, lineWidth: 6));
-      marker(cLoc.latitude!,cLoc.longitude!);
+      line = await mapController.addLine(LineOptions(
+          geometry: polyline_latlng,
+          lineColor: "#4285F4",
+          lineOpacity: 0.5,
+          lineWidth: 6));
+      marker(cLoc.latitude!, cLoc.longitude!);
       mapController.removeSymbol(symbol);
+
       await Preferences.setPreferences();
       Preferences.setStartLat(cLoc.latitude!.toString());
       Preferences.setStartLng(cLoc.longitude!.toString());
@@ -126,12 +132,15 @@ class _SignUpState extends State<StartRide> {
       });
     });
   }
-  void marker(double lat,double lng)async{
-    mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 16));
+
+  void marker(double lat, double lng) async {
+    mapController
+        .animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 20));
     final ByteData bytes = await rootBundle.load("assets/driver_map_min.png");
     final Uint8List list = bytes.buffer.asUint8List();
     mapController.addImage("icon", list);
-    symbol = await mapController.addSymbol(SymbolOptions(geometry: LatLng(lat, lng), iconImage: "icon"));
+    symbol = await mapController.addSymbol(
+        SymbolOptions(geometry: LatLng(lat, lng), iconImage: "icon"));
   }
 
   @override
@@ -144,12 +153,12 @@ class _SignUpState extends State<StartRide> {
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return WillPopScope(
-      onWillPop: () => showExitPopup(context, "Do you want to stop ride?", () async {
-        OverlayLoadingProgress.start(context);
-        Navigator.pop(context, true);
-        await endRide();
-
-      }),
+      onWillPop: () =>
+          showExitPopup(context, "Do you want to stop ride?", () async {
+            OverlayLoadingProgress.start(context);
+            Navigator.pop(context, true);
+            await endRide();
+          }),
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -167,14 +176,13 @@ class _SignUpState extends State<StartRide> {
                   // OverlayLoadingProgress.start(context);
                   //Navigator.pop(context, true);
                   await endRide();
-
                 });
               },
               icon: Image.asset('assets/map_back.png'),
             ),
             actions: <Widget>[
               IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.share,
                     color: Colors.black,
                   ),
@@ -197,15 +205,13 @@ class _SignUpState extends State<StartRide> {
                         rotateGesturesEnabled: true,
                         zoomGesturesEnabled: true,
                         compassViewPosition: CompassViewPosition.BottomLeft,
-                        onMapCreated: (map) =>
-                        {
+                        onMapCreated: (map) => {
                           mapController = map,
                         },
                         onStyleLoadedCallback: () => {
                           mapController,
                         },
-                      )
-                  );
+                      ));
                 }),
             DraggableScrollableSheet(
                 initialChildSize: 0.15,
@@ -233,7 +239,8 @@ class _SignUpState extends State<StartRide> {
                                     InkWell(
                                       onTap: () {
                                         showExitPopup(context,
-                                            "Do you want to stop ride?", () async {
+                                            "Do you want to stop ride?",
+                                                () async {
                                               OverlayLoadingProgress.start(context);
                                               Navigator.pop(context, true);
                                               await endRide();
@@ -290,11 +297,11 @@ class _SignUpState extends State<StartRide> {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        showExitPopup(context,
-                                            "Are you in trouble?", () {
-                                              OverlayLoadingProgress.start(context);
-                                              SOSNotification();
-                                            });
+                                        showExitPopup(
+                                            context, "Are you in trouble?", () {
+                                          OverlayLoadingProgress.start(context);
+                                          SOSNotification();
+                                        });
                                       },
                                       child: Column(
                                         children: [
@@ -443,9 +450,9 @@ class _SignUpState extends State<StartRide> {
         body: json.encode({
           'user_id': userId.toString(),
           'ride_id': widget.riderId,
-          "lat":lat.toString(),
-          "lng":lng.toString(),
-          "timestamp":DateTime.now().millisecondsSinceEpoch.toString()
+          "lat": lat.toString(),
+          "lng": lng.toString(),
+          "timestamp": DateTime.now().millisecondsSinceEpoch.toString()
         }));
     print(json.encode({
       'user_id': userId.toString(),
@@ -468,6 +475,7 @@ class _SignUpState extends State<StartRide> {
       throw Exception('Failed');
     }
   }
+
   void shareData() {
     String dName = widget.dName.toString();
     String dMobile = widget.dMobile.toString();
@@ -483,7 +491,6 @@ class _SignUpState extends State<StartRide> {
         sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
   }
 
-
   boundsFromLatLngList(List<LatLng> list) {
     assert(list.isNotEmpty);
     double? x0, x1, y0, y1;
@@ -498,6 +505,8 @@ class _SignUpState extends State<StartRide> {
         if (latLng.longitude < y0) y0 = latLng.longitude;
       }
     }
-    return LatLngBounds(northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
+    return LatLngBounds(
+        northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
   }
 }
+
