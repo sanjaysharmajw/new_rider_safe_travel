@@ -108,8 +108,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
             },
             pressBtn: () async {
               OverlayLoadingProgress.start(context);
-              await userRideAdd(
-                  userId, widget.vehicleId.toString(), widget.driverId.toString());
+              await userRideAdd(userId, widget.vehicleId.toString(), widget.driverId.toString());
               setState(() {});
             },
             pressBtnText: 'Start Ride',
@@ -129,11 +128,8 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
   Future<http.Response?> userFamilyList(
       String userId, rideId, socketToken) async {
     final response = await http.post(
-      Uri.parse(
-          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userFamilyList'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+      Uri.parse('https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userFamilyList'),
+      headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8',},
       body: jsonEncode(<String, String>{
         'user_id': userId,
       }),
