@@ -38,13 +38,13 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        leading:  IconButton(icon: Icon(Icons.keyboard_backspace_sharp), onPressed: () {
+        leading:  IconButton(icon: Icon(Icons.keyboard_backspace_sharp,color: CustomColor.black,), onPressed: () {
           Get.back();
         },),
         centerTitle: true,
         backgroundColor: CustomColor.yellow,
         title: const Text("Add Family Member",
-            style: TextStyle(fontFamily: 'transport', fontSize: 18)),
+            style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',)),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -135,6 +135,7 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
                   },
                 ),
               ),
+              SizedBox(height: 30,),
               RiderButton(
                   click: () {
            if (_formKey.currentState!.validate()) {

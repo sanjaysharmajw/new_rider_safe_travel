@@ -14,17 +14,27 @@ class RiderButton extends StatelessWidget {
       child: InkWell(
         onTap: click,
         child: Container(
-          height: 55,
-          width: 120,
-          decoration: const BoxDecoration(
-              color: CustomColor.yellow,
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          child: Center(
-              child: Text(textBtn,
-                  style: const TextStyle(
-                      color: CustomColor.white,
-                      fontFamily: 'transport',
-                      fontSize: 14))),
+          decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              border: Border.all(color: CustomColor.yellow, width: 1.5)),
+          child: SizedBox(
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Container(
+                height: 55,
+                width: 120,
+                decoration: const BoxDecoration(
+                    color: CustomColor.yellow,
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: Center(
+                    child: Text(textBtn,
+                        style: const TextStyle(
+                            color: CustomColor.black,
+                            fontFamily: 'transport',
+                            fontSize: 14))),
+              ),
+            ),
+          ),
         ),
       ),
     );

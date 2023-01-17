@@ -208,7 +208,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     // _future = getRiderData();
     stringRandomNumber = randomNumber.toString();
     preferences();
-    OverlayLoadingProgress.stop();
+   // OverlayLoadingProgress.stop();
 
     super.initState();
 
@@ -265,8 +265,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+          backgroundColor: CustomColor.yellow,
+          elevation: 15,
           leading: Padding(
             padding: EdgeInsets.only(left: 10.sp, right: 10.sp),
             child: IconButton(
@@ -279,6 +279,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                   size: 30.sp,
                 )),
           ),
+          title: Text("Edit Profile",
+            style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',),),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -288,7 +290,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Padding(
+                  /* Padding(
                     padding: EdgeInsets.only(left: 20.sp, top: 10.sp),
                     child: Text(
                       "Rider Profile",
@@ -297,15 +299,15 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           fontWeight: FontWeight.bold,
                           color: CustomColor.riderprofileColor),
                     ),
-                  ),
+                  ), */
                   SizedBox(
-                    height: 12.h,
+                    height: 40.h,
                   ),
                   Row(
                     children: [
                       Padding(
                           padding: EdgeInsets.only(left: 20),
-                          child: Column(
+                          child:  Column(
                             children: [
                               Column(
                                 children: [
@@ -317,36 +319,36 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                               bottomSheet()));
                                     },
                                     child: Padding(
-                                      padding: EdgeInsets.fromLTRB(
-                                          0.sp, 20.sp, 10.sp, 0.sp),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 10, 10, 0),
                                       child: Stack(
                                         alignment: Alignment.bottomRight,
                                         children: [
                                           CircleAvatar(
                                             backgroundColor: CustomColor.yellow,
-                                            radius: 45.0.r,
+                                            radius: 45.0,
                                             child: CircleAvatar(
-                                              radius:43.0.r,
-                                              backgroundColor: Colors.white,
-                                              child: ClipOval(
-                                                child: (image != null)
-                                                    ? Image.file(
-                                                  image!,
-                                                  width: 250.w,
-                                                  height: 250.h,
-                                                  fit: BoxFit.fill,
-                                                )
-                                                    : Image.network(
-                                                    widget.imageProfile),
-
+                                              radius: 43.0,
+                                                backgroundColor: Colors.white,
+                                              //backgroundImage: NetworkImage(),
+                                              child: AspectRatio(
+                                                aspectRatio: 1,
+                                                child: ClipOval(
+                                                  child: (image != null)
+                                                      ? Image.file(
+                                                    image!,
+                                                    width: 100,
+                                                    height: 100,
+                                                    fit: BoxFit.fill,
+                                                  )
+                                                      : Image.network(
+                                                      widget.imageProfile,
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                ),
                                               ),
-
-
-
                                             ),
                                           ),
-
-
                                           Image.asset(
                                               'assets/select_image.png'),
                                         ],
@@ -356,7 +358,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 ],
                               ),
                             ],
-                          )),
+                          )
+                      ),
                       SizedBox(
                         width: 14.w,
                       ),
@@ -370,7 +373,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 lastNameController.text.toString(),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 15,
+                                fontSize: 17,
                                 color: CustomColor.riderprofileColor),
                           ),
                           SizedBox(
@@ -380,7 +383,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             mobileNumberController.text.toString(),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 15.sp,
+                                fontSize: 17.sp,
                                 color: CustomColor.text),
                           ),
                         ],

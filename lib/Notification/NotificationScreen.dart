@@ -27,7 +27,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
-              elevation: 0,
+              elevation: 15,
               backgroundColor: CustomColor.yellow,
               leading: IconButton(
                   icon: Icon(Icons.arrow_back, color: Colors.black),
@@ -35,7 +35,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     Navigator.of(context).pop('refresh');
                   }),
               title: const Text("Notification",
-                  style: TextStyle(color: Colors.white)),
+                style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',),),
             ),
             body: FutureBuilder<List<NotificationData>>(
               future: getNotification(),

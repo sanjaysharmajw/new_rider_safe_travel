@@ -30,10 +30,10 @@ class _MyRidesPageState extends State<MyRidesPage> {
         child: Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
-              backgroundColor: CustomColor.white,
-              elevation: 0,
+              backgroundColor: CustomColor.yellow,
+              elevation: 15,
               title: const Text("My Trips List",
-                  style: TextStyle(color: CustomColor.black)),
+                  style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',)),
               leading: IconButton(
                 color: Colors.black,
                 onPressed: () {
@@ -42,6 +42,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
                 icon: const Icon(Icons.arrow_back_outlined),
               ),
             ),
+
             body: FutureBuilder<List<RideDataModel>>(
               future: getData(),
               builder: (context, snapshot) {
@@ -64,128 +65,151 @@ class _MyRidesPageState extends State<MyRidesPage> {
                         },
                         child: Center(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                            child: Stack(
-                              children: [
-                                Container(
-                                  height: 170.h,
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(10.0.h),
-                                      color: CustomColor.yellow),
-                                ),
-                                Positioned(
-                                  top: 10.0.h,
-                                  // left: 90,
-                                  right: 10.w,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                          "DATE:  " +
-                                              snapshot.data![index].date
-                                                  .toString(),
-                                          style: TextStyle(
-                                              fontFamily: 'transport',
-                                              fontSize: 15.sp)),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 20,),
-                                Positioned.fill(
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 10.w,
-                                        height: 20.w,
-                                      ),
-                                      Expanded(
-                                        child: ClipOval(
-                                          child: (snapshot.data![index]
-                                                      .driverPhoto !=
-                                                  null)
-                                              ? Image.network(
-                                                  snapshot
-                                                      .data![index].driverPhoto
-                                                      .toString(),
-                                                  width: 50.w,
-                                                  height: 60.h,
-                                                  fit: BoxFit.cover,
-                                                )
-                                              : Image.asset(
-                                                  'assets/user_avatar.png'),
+                            padding: const EdgeInsets.only(
+                                left: 10, right: 10, top: 20),
+                            child: Card(
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              color: CustomColor.yellow,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(8)),
+                                        border: Border.all(
+                                            color: CustomColor.black,
+                                            width: 1.5)),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(15),
+                                          color: CustomColor.yellow,
                                         ),
-                                        flex: 2,
-                                      ),
-                                      SizedBox(
-                                        width: 20.w,
-                                      ),
-                                      Expanded(
-                                        flex: 4,
                                         child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
                                           children: [
-                                            Text("Driver Name: "),
-                                            Text(
-                                                snapshot.data![index].driverName
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontFamily: 'transport',
-                                                    fontSize: 15.sp)),
-                                            SizedBox(
-                                              height: 10.h,
+                                            Positioned(
+                                              top: 10.0.h,
+                                              // left: 90,
+                                              right: 10.w,
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                crossAxisAlignment: CrossAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                      "DATE:  " +
+                                                          snapshot.data![index].date
+                                                              .toString(),
+                                                      style: TextStyle(
+                                                          fontFamily: 'transport',
+                                                          fontSize: 15.sp)),
+                                                ],
+                                              ),
                                             ),
-                                            Text("Driver Mobile Number: "),
-                                            Text(
-                                                snapshot.data![index]
-                                                    .driverMobileNumber
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontFamily: 'transport',
-                                                  fontSize: 15.sp,
-                                                ))
+                                            SizedBox(height: 20,),
+                                            Positioned.fill(
+                                              child: Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 10.w,
+                                                    height: 20.w,
+                                                  ),
+                                                  Expanded(
+                                                    child: ClipOval(
+                                                      child: (snapshot.data![index]
+                                                                  .driverPhoto !=
+                                                              null)
+                                                          ? Image.network(
+                                                              snapshot
+                                                                  .data![index].driverPhoto
+                                                                  .toString(),
+                                                              width: 50.w,
+                                                              height: 60.h,
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                          : Image.asset(
+                                                              'assets/user_avatar.png'),
+                                                    ),
+                                                    flex: 2,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 20.w,
+                                                  ),
+                                                  Expanded(
+                                                    flex: 4,
+                                                    child: Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text("Driver Name: "),
+                                                        Text(
+                                                            snapshot.data![index].driverName
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                fontFamily: 'transport',
+                                                                fontSize: 15.sp)),
+                                                        SizedBox(
+                                                          height: 10.h,
+                                                        ),
+                                                        Text("Driver Mobile Number: "),
+                                                        Text(
+                                                            snapshot.data![index]
+                                                                .driverMobileNumber
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                              fontFamily: 'transport',
+                                                              fontSize: 15.sp,
+                                                            ))
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10.w,
+                                                  ),
+                                                  Expanded(
+                                                    flex: 4,
+                                                    child: Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text("Vehicle Re.No. : "),
+                                                        Text(
+                                                            snapshot.data![index]
+                                                                .vehicleRegistrationNumber
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                fontFamily: 'transport',
+                                                                fontSize: 15.sp)),
+                                                        SizedBox(
+                                                          height: 10.h,
+                                                        ),
+                                                        Text("Veicle Model Name:"),
+                                                        Text(
+                                                            snapshot
+                                                                .data![index].vehicleModel
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                fontFamily: 'transport',
+                                                                fontSize: 15.sp))
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            )
                                           ],
                                         ),
                                       ),
-                                      SizedBox(
-                                        width: 10.w,
-                                      ),
-                                      Expanded(
-                                        flex: 4,
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text("Vehicle Re.No. : "),
-                                            Text(
-                                                snapshot.data![index]
-                                                    .vehicleRegistrationNumber
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontFamily: 'transport',
-                                                    fontSize: 15.sp)),
-                                            SizedBox(
-                                              height: 10.h,
-                                            ),
-                                            Text("Veicle Model Name:"),
-                                            Text(
-                                                snapshot
-                                                    .data![index].vehicleModel
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontFamily: 'transport',
-                                                    fontSize: 15.sp))
-                                          ],
-                                        ),
-                                      )
-                                    ],
+                                    ),
                                   ),
-                                )
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -215,7 +239,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
     );
     print('User Id:${userId.toString()}');
     if (response.statusCode == 200) {
-      OverlayLoadingProgress.stop();
+      //OverlayLoadingProgress.stop();
 
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];

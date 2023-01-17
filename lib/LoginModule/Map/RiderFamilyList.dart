@@ -29,10 +29,10 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
         child: Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
-              backgroundColor: CustomColor.white,
-              elevation: 0,
+              backgroundColor: CustomColor.yellow,
+              elevation: 15,
               title: const Text("Family Members",
-                  style: TextStyle(color: CustomColor.black)),
+                  style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',)),
               leading: IconButton(
                 color: Colors.black,
                 onPressed: () {
@@ -82,7 +82,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 10),
+                              left: 10, right: 10, top: 20),
                           child: Card(
                             elevation: 5,
                             shape: RoundedRectangleBorder(

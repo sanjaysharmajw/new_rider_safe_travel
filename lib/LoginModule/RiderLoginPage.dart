@@ -33,13 +33,13 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(
+         /* leading: IconButton(
               onPressed: () {},
               icon: const Icon(
                 Icons.keyboard_backspace_rounded,
                 color: CustomColor.black,
                 size: 30,
-              )),
+              )),  */
         ),
         backgroundColor: const Color(0xFFffffff),
         body: SingleChildScrollView(

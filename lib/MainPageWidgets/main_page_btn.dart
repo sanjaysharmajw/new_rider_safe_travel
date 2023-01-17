@@ -16,20 +16,28 @@ class MainPageBtn extends StatelessWidget {
     return InkWell(
       onTap: press,
       child: Container(
-        height: 60.h,
         decoration: BoxDecoration(
-          color: CustomColor.lightYellow,
-          borderRadius: BorderRadius.circular(8.r),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(icons, height: 20.h, width: 20.w),
-            SizedBox(width: 10.w),
-            Text(text,
-                style: const TextStyle(
-                    fontFamily: 'transport', fontWeight: FontWeight.w500))
-          ],
+            borderRadius: const BorderRadius.all(
+                Radius.circular(8)),
+            border: Border.all(
+                color: Colors.black38,
+                width: 1.5)),
+        child: Container(
+          height: 60.h,
+          decoration: BoxDecoration(
+            color: CustomColor.lightYellow,
+            borderRadius: BorderRadius.circular(8.r),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(icons, height: 20.h, width: 20.w),
+              SizedBox(width: 10.w),
+              Text(text,
+                  style: const TextStyle(
+                      fontFamily: 'transport', fontWeight: FontWeight.w500))
+            ],
+          ),
         ),
       ),
     );

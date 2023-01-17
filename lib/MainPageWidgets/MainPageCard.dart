@@ -29,21 +29,30 @@ class MainPageCard extends StatelessWidget {
       child: InkWell(
         onTap: press,
         child: Container(
-          width: width,
-          height: height,
           decoration: BoxDecoration(
-            color: CustomColor.lightYellow,
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(icons, height: heightImage, width: widthImage),
-              const SizedBox(height: 10),
-              Text(text,
-                  style: const TextStyle(
-                      fontFamily: 'transport', fontWeight: FontWeight.w500))
-            ],
+              borderRadius: const BorderRadius.all(
+                  Radius.circular(8)),
+              border: Border.all(
+                  color: Colors.black38,
+                  width: 1.5)),
+          child: Container(
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              color: CustomColor.lightYellow,
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+
+                Image.asset(icons, height: heightImage, width: widthImage),
+                const SizedBox(height: 10),
+                Text(text,
+                    style: const TextStyle(
+                        fontFamily: 'transport', fontWeight: FontWeight.w500))
+              ],
+            ),
           ),
         ),
       ),

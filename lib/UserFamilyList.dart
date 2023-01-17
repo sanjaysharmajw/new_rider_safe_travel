@@ -60,8 +60,8 @@ class _UserFamilyListState extends State<UserFamilyList> {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+          backgroundColor: CustomColor.yellow,
+          elevation: 15,
           leading: Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: IconButton(
@@ -74,17 +74,49 @@ class _UserFamilyListState extends State<UserFamilyList> {
                   size: 30,
                 )),
           ),
+          title: const Text("My Family List",
+              style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',)),
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: Container(
+          height: 60,
+          width: 60,
+          child: Material(
+            type: MaterialType
+                .transparency,
+            child: Ink(
+              decoration: BoxDecoration(
+                border: Border.all(color: CustomColor.black, width: 2.0),
+                color: CustomColor.yellow,
+                shape: BoxShape.circle,
+              ),
+              child: InkWell(
+
+                borderRadius: BorderRadius.circular(
+                    500.0),
+                onTap: () {
+                  Get.to(const FamilyMemberAddOtherTrack());
+                },
+                child: Icon(
+                  Icons.add,
+                  color: CustomColor.black,
+                  size: 38,
+                ),
+              ),
+            ),
+          ),
+        ),
+       /* floatingActionButton: FloatingActionButton(
           onPressed: () {
             Get.to(const FamilyMemberAddOtherTrack());
           },
-          backgroundColor: CustomColor.white,
+          backgroundColor: CustomColor.yellow,
+
           child: const Icon(
             Icons.add,
             color: CustomColor.black,
+
           ),
-        ),
+        ),*/
         body: FutureBuilder<List<FamilyMembersData>>(
           future: _future,
           builder: (context, snapshot) {
@@ -99,6 +131,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                     padding: const EdgeInsets.only(
                       left: 15,
                       right: 15,
+                      top: 20,
                     ),
                     child: Stack(
                       children: [

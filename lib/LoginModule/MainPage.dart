@@ -53,8 +53,10 @@ class _MainPageState extends State<MainPage> {
   Future _scanQR() async {
     try {
       String? qrResult = await MajaScan.startScan(
+        barColor: CustomColor.yellow,
+
           title: "QR Code scanner",
-          titleColor: Colors.amberAccent[700],
+          titleColor: CustomColor.black,
           qRCornerColor: Colors.orange,
           qRScannerColor: Colors.orange);
       setState(() {
@@ -135,24 +137,25 @@ class _MainPageState extends State<MainPage> {
                 padding: EdgeInsets.symmetric(vertical: 15,horizontal: 8),
                 badgeContent:  Text(
                   countNitification.toString(),
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+                  style: TextStyle(color: CustomColor.black,fontSize: 15, fontFamily: 'transport',),
                 ),
                 badgeColor: Colors.green,
-                child: const Icon(Icons.notifications, size: 30),
+                child: const Icon(Icons.notifications_outlined, size: 30,color: CustomColor.black,),
               ),
             ),
             SizedBox(width: 10),
             IconButton(
                 icon: const Icon(Icons.logout),
+                color: CustomColor.black,
                 onPressed: () {
                   logoutPopup(context);
                 }),
           ],
-          elevation: 0,
+          elevation: 15,
           centerTitle: true,
           backgroundColor: CustomColor.yellow,
           title: Text("Dashboard",
-              style: TextStyle(fontSize: 16.sp, fontFamily: 'transport')),
+            style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',),),
         ),
         body: Column(
           children: [

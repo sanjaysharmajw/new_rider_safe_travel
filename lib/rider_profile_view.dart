@@ -105,8 +105,8 @@ class _RiderProfileViewState extends State<RiderProfileView> {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return  Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        backgroundColor: CustomColor.yellow,
+        elevation: 15,
         leading: Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),
           child: IconButton(
@@ -119,6 +119,8 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                 size: 30,
               )),
         ),
+        title: Text("Your Profile",
+            style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',)),
       ),
         body: FutureBuilder<List<RiderData>>(
           future: _future,
@@ -139,16 +141,16 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
+                         /* Padding(
                             padding: EdgeInsets.only(left: 20.h,top: 10.h),
                             child:  MyText(
                                 text: "Rider Profile",
                                 fontFamily: 'transport',
                                 color: CustomColor.black,
                                 fontSize: 20.sp),
-                          ),
+                          ),*/
                           const SizedBox(
-                            height: 20,
+                            height: 40,
                           ),
                           ProfileWidget(profileName:"${snapshot.data![index].firstName.toString()} ${snapshot.data![index].lastName.toString()}",
                               profileMobile:  '${snapshot.data![index].mobileNumber.toString()}',
