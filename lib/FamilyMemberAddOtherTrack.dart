@@ -59,10 +59,13 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
               Padding(
                 padding: const EdgeInsets.all(15),
                 child: TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  keyboardType: TextInputType.text,
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(
-                        RegExp("[a-zA-Z\]")),
-                    FilteringTextInputFormatter.deny('  ')
+                        RegExp("[A-Za-z]")),
+                    FilteringTextInputFormatter.deny('  '),
+
                   ],
                   validator: (value) {
                     if (value == null ||
@@ -74,6 +77,7 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
                   },
                   cursorHeight: 25.0,
                   controller: controllerName,
+
                   style: const TextStyle(fontFamily: 'transport', fontSize: 16),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -87,7 +91,7 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
                 child: TextFormField(
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(
-                        RegExp("[a-zA-Z\]")),
+                        RegExp("[A-Za-z\]")),
                     FilteringTextInputFormatter.deny('  ')
                   ],
                   validator: (value) {
@@ -99,6 +103,8 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
                     return null;
                   },
                   cursorHeight: 25.0,
+                  textCapitalization: TextCapitalization.sentences,
+                  keyboardType: TextInputType.text,
                   controller: controllerRelation,
                   style: const TextStyle(fontFamily: 'transport', fontSize: 16),
                   decoration: const InputDecoration(

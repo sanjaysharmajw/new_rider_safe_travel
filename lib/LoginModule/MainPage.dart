@@ -98,6 +98,7 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     sharePreferences();
     print(image);
+    print("mainpageUserId:"+userId);
   }
 
   void sharePreferences() async {
@@ -195,34 +196,39 @@ class _MainPageState extends State<MainPage> {
                 ),
               ],
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                MainPageCard(
-                  icons: 'images/track_me.png',
-                  text: 'Track Me',
-                  press: (){
-                    OverlayLoadingProgress.start(context);
-                    checkActiveUser();
-                  }, //_scanQR
-                  width: 165.w,
-                  height: 165.h,
-                  widthImage: 45.w,
-                  heightImage: 45.h,
-                ),
-                MainPageCard(
-                  icons: 'images/track_me.png',
-                  text: 'Track Others',
-                  press: () {
-                    Get.to(const FamilyMemberListScreen());
-                  },
-                  width: 165.w,
-                  height: 165.h,
-                  widthImage: 45.w,
-                  heightImage: 45.h,
-                ),
-              ],
+            Flexible(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  MainPageCard(
+                    icons: 'images/track_me.png',
+                    text: 'Track Me',
+                    press: (){
+                      OverlayLoadingProgress.start(context);
+                      checkActiveUser();
+                    }, //_scanQR
+                    width: 165.w,
+                    height: 165.h,
+                    widthImage: 45.w,
+                    heightImage: 45.h,
+                  ),
+                  MainPageCard(
+                    icons: 'images/track_me.png',
+                    text: 'Track Others',
+                    press: () {
+                     Get.to( FamilyMemberListScreen());
+                      //Navigator.push(context, MaterialPageRoute(builder:
+                      //(context)=>FamilyMemberListScreen(userId: userId.toString(),)));
+                    },
+                    width: 165.w,
+                    height: 165.h,
+                    widthImage: 45.w,
+                    heightImage: 45.h,
+                  ),
+                ],
+              ),
             ),
             SizedBox(height: 8.h),
             Padding(

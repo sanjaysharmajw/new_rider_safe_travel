@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:age_calculator/age_calculator.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -553,9 +554,12 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             if (value == null ||
                                 value.isEmpty) {
                               return 'Email is Required !';
-                            } if (!RegExp(
-                                r'^[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]+')
-                            .hasMatch(value)) {
+                            } if (
+                            //!RegExp(
+                              //  r'^[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]')
+                            //.hasMatch(value)
+                            !EmailValidator.validate(value)
+                            ) {
                             return 'Please enter a valid Email';
                             }
                             return null;

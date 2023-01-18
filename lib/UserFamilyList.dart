@@ -77,7 +77,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
           title: const Text("My Family List",
               style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',)),
         ),
-        floatingActionButton: Container(
+       /* floatingActionButton: Container(
           height: 60,
           width: 60,
           child: Material(
@@ -104,19 +104,8 @@ class _UserFamilyListState extends State<UserFamilyList> {
               ),
             ),
           ),
-        ),
-       /* floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Get.to(const FamilyMemberAddOtherTrack());
-          },
-          backgroundColor: CustomColor.yellow,
+        ),  */
 
-          child: const Icon(
-            Icons.add,
-            color: CustomColor.black,
-
-          ),
-        ),*/
         body: FutureBuilder<List<FamilyMembersData>>(
           future: _future,
           builder: (context, snapshot) {

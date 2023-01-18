@@ -14,7 +14,8 @@ import '../../FamilyMemberAddOtherTrack.dart';
 import '../../FamilyMemberAddScreen.dart';
 
 class FamilyMemberListScreen extends StatefulWidget {
-  const FamilyMemberListScreen({Key? key}) : super(key: key);
+
+   FamilyMemberListScreen({Key? key,}) : super(key: key);
 
   @override
   State<FamilyMemberListScreen> createState() => _FamilyMemberListScreenState();
@@ -22,6 +23,12 @@ class FamilyMemberListScreen extends StatefulWidget {
 
 class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
   var _future;
+
+  void initState(){
+    super.initState();
+   // print("UserId: "+ widget.userId.toString());
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +49,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
               ),
             ),
             body: FutureBuilder<List<Familymodel>>(
-              future: _future,
+              future: getData(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
@@ -254,7 +261,11 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
             )));
   }
 
-  Future<List<Familymodel>> getData(String userId) async {
+  Future<List<Familymodel>> getData() async {
+    await Preferences.setPreferences();
+    String userId = Preferences.getId(Preferences.id).toString();
+    print('User Id:${userId.toString()}');
+
     final response = await http.post(
       Uri.parse(ApiUrl.familyMember),
       headers: <String, String>{
@@ -264,7 +275,6 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
         'user_id': userId,
       }),
     );
-    print('User Id:${userId.toString()}');
 
     if (response.statusCode == 200) {
       List<Familymodel> familyData = jsonDecode(response.body)['data']
@@ -276,17 +286,16 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
     }
   }
 
-  @override
+  /*@override
   void initState() {
     super.initState();
     sharePre();
   }
 
   void sharePre() async {
-    await Preferences.setPreferences();
-    String userId = Preferences.getId(Preferences.id).toString();
-    _future = getData(userId);
+
+    //_future = getData();
     //Get.snackbar("Hit with time", userId);
     setState(() {});
-  }
+  }*/
 }
