@@ -65,8 +65,9 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
     super.dispose();
   }
   void firebaseToken()async{
+    FirebaseMessaging.instance.requestPermission();
     fcmToken = await FirebaseMessaging.instance.getToken();
-      //ToastMessage.toast(fcmToken.toString());
+      ToastMessage.toast(fcmToken.toString());
       print("Firebase Token: $fcmToken");
 
   }
