@@ -53,28 +53,28 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                           setState(() {
                             if (snapshot.hasData) {
                               OverlayLoadingProgress.start(context);
-                              Get.to(RiderMap(
-                                riderId: snapshot.data![index].id.toString(),
-                                dName:
-                                    snapshot.data![index].driverName.toString(),
-                                dLicenseNo: snapshot
-                                    .data![index].drivingLicenceNumber
-                                    .toString(),
-                                vModel: snapshot.data![index].vehicleModel
-                                    .toString(),
-                                vOwnerName:
-                                    snapshot.data![index].ownerName.toString(),
-                                vRegistration: snapshot
-                                    .data![index].vehicleRegistrationNumber
-                                    .toString(),
-                                dMobile: snapshot
-                                    .data![index].driverMobileNumber
-                                    .toString(),
-                                dImage: snapshot.data![index].driverPhoto
-                                    .toString(),
-                                memberName:
-                                    snapshot.data![index].memberName??"N/A",
-                              ));
+                              // Get.to(RiderMap(
+                              //   riderId: snapshot.data![index].id.toString(),
+                              //   dName:
+                              //       snapshot.data![index].driverName.toString(),
+                              //   dLicenseNo: snapshot
+                              //       .data![index].drivingLicenceNumber
+                              //       .toString(),
+                              //   vModel: snapshot.data![index].vehicleModel
+                              //       .toString(),
+                              //   vOwnerName:
+                              //       snapshot.data![index].ownerName.toString(),
+                              //   vRegistration: snapshot
+                              //       .data![index].vehicleRegistrationNumber
+                              //       .toString(),
+                              //   dMobile: snapshot
+                              //       .data![index].driverMobileNumber
+                              //       .toString(),
+                              //   dImage: snapshot.data![index].driverPhoto
+                              //       .toString(),
+                              //   memberName:
+                              //       snapshot.data![index].memberName??"N/A",
+                              // ));
                             } else {
                               Center(child: CircularProgressIndicator());
                             }

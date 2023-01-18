@@ -65,6 +65,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
   @override
@@ -133,7 +134,7 @@ class MyHomePageState extends State<MyHomePage> {
     location.onLocationChanged.listen((LocationData cLoc) async {
       var lat = cLoc.latitude!;
       var lng = cLoc.longitude!;
-    //  ToastMessage.toast(lat.toString());
+      //  ToastMessage.toast(lat.toString());
       //ToastMessage.toast(lng.toString());
       print("lat: $lng, $lat");
     });
@@ -170,3 +171,4 @@ class MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+

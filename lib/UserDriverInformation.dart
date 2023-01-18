@@ -139,17 +139,17 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
       //var msg = jsonDecode(response.body)[ErrorMessage.message];
 
       if (status == true) {
-        Get.to(
-            StartRide(
-            riderId: rideId.toString(),
-            dName: widget.driverName.toString(),
-            dMobile: widget.driverMob.toString(),
-            dPhoto: widget.dPhoto.toString(),
-            model: widget.vModel.toString(),
-            vOwnerName: widget.vOwnerName.toString(),
-            vRegNo: widget.vRegNumber.toString(),
-            socketToken: socketToken)
-        );
+        // Get.to(
+        //     StartRide(
+        //     riderId: rideId.toString(),
+        //     dName: widget.driverName.toString(),
+        //     dMobile: widget.driverMob.toString(),
+        //     dPhoto: widget.dPhoto.toString(),
+        //     model: widget.vModel.toString(),
+        //     vOwnerName: widget.vOwnerName.toString(),
+        //     vRegNo: widget.vRegNumber.toString(),
+        //     socketToken: socketToken)
+        // );
         OverlayLoadingProgress.stop();
         print("Userinformation" + widget.driverId + widget.vehicleId);
       } else {

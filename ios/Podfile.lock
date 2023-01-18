@@ -72,42 +72,6 @@ PODS:
     - Flutter
   - majascan (0.0.5):
     - Flutter
-  - mapmyindia_gl (0.2.2):
-    - Flutter
-    - MapmyIndiaAnnotationExtension/Base (~> 0.0.4)
-    - MapmyIndiaAPIKit (~> 1.4.17)
-    - MapmyIndiaDirections (~> 0.23.12)
-    - MapmyIndiaMaps/Base (~> 5.7.20)
-  - mapmyindia_place_widget (0.0.1):
-    - Flutter
-    - MapmyIndiaUIWidgets
-  - MapmyIndiaAnnotationExtension/Base (0.0.4)
-  - MapmyIndiaAPIKit (1.4.24)
-  - MapmyIndiaDirections (0.23.21):
-    - MapmyIndiaDirections/Complete (= 0.23.21)
-  - MapmyIndiaDirections/Base (0.23.21)
-  - MapmyIndiaDirections/Complete (0.23.21):
-    - MapmyIndiaDirections/Base
-    - MapmyIndiaDirections/Dependencies
-  - MapmyIndiaDirections/Dependencies (0.23.21):
-    - MapmyIndiaAPIKit (~> 1.4.24)
-  - MapmyIndiaMaps (5.7.22):
-    - MapmyIndiaMaps/Complete (= 5.7.22)
-  - MapmyIndiaMaps/Base (5.7.22)
-  - MapmyIndiaMaps/Complete (5.7.22):
-    - MapmyIndiaMaps/Base
-    - MapmyIndiaMaps/Dependencies
-  - MapmyIndiaMaps/Dependencies (5.7.22):
-    - MapmyIndiaAPIKit (~> 1.4.22)
-  - MapmyIndiaUIWidgets (0.3.10):
-    - MapmyIndiaUIWidgets/Complete (= 0.3.10)
-  - MapmyIndiaUIWidgets/Base (0.3.10)
-  - MapmyIndiaUIWidgets/Complete (0.3.10):
-    - MapmyIndiaUIWidgets/Base
-    - MapmyIndiaUIWidgets/Dependencies
-  - MapmyIndiaUIWidgets/Dependencies (0.3.10):
-    - MapmyIndiaAPIKit (~> 1.4.24)
-    - MapmyIndiaMaps (~> 5.7.22)
   - multi_image_picker (4.8.00):
     - BSImagePicker (~> 2.10.3)
     - Flutter
@@ -141,8 +105,6 @@ DEPENDENCIES:
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - location (from `.symlinks/plugins/location/ios`)
   - majascan (from `.symlinks/plugins/majascan/ios`)
-  - mapmyindia_gl (from `.symlinks/plugins/mapmyindia_gl/ios`)
-  - mapmyindia_place_widget (from `.symlinks/plugins/mapmyindia_place_widget/ios`)
   - multi_image_picker (from `.symlinks/plugins/multi_image_picker/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
@@ -164,11 +126,6 @@ SPEC REPOS:
     - FMDB
     - GoogleDataTransport
     - GoogleUtilities
-    - MapmyIndiaAnnotationExtension
-    - MapmyIndiaAPIKit
-    - MapmyIndiaDirections
-    - MapmyIndiaMaps
-    - MapmyIndiaUIWidgets
     - nanopb
     - PromisesObjC
     - Toast
@@ -190,10 +147,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/location/ios"
   majascan:
     :path: ".symlinks/plugins/majascan/ios"
-  mapmyindia_gl:
-    :path: ".symlinks/plugins/mapmyindia_gl/ios"
-  mapmyindia_place_widget:
-    :path: ".symlinks/plugins/mapmyindia_place_widget/ios"
   multi_image_picker:
     :path: ".symlinks/plugins/multi_image_picker/ios"
   path_provider_ios:
@@ -229,13 +182,6 @@ SPEC CHECKSUMS:
   image_picker_ios: b786a5dcf033a8336a657191401bfdf12017dabb
   location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
   majascan: 473bd426fa19600b6ca287bc948d40b2194d5c0b
-  mapmyindia_gl: 759bf85427efb16d85c59a728061c21d16cd7da6
-  mapmyindia_place_widget: 1a0aa0d1483468adf7b886c7b183ac30dd1db573
-  MapmyIndiaAnnotationExtension: f12c054fb876b66e38a908cdbfbd26f073dad170
-  MapmyIndiaAPIKit: c87cfa288dde56c8d971278d36868e529bc9f1fb
-  MapmyIndiaDirections: 46749e9c8c3491b745acda5242d2d420e19525ec
-  MapmyIndiaMaps: 8bf5839462459915cba29f795c6111baad52c05e
-  MapmyIndiaUIWidgets: da20123b3df64af981fac8a94b4ae338bcda3e78
   multi_image_picker: 443e776a762d7901641854043b60abf88a85d5ef
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
