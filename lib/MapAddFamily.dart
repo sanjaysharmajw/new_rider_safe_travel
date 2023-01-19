@@ -38,13 +38,13 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
     return SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            leading:  IconButton(icon: Icon(Icons.keyboard_backspace_sharp), onPressed: () {
+            leading:  IconButton(icon: Icon(Icons.keyboard_backspace_sharp,color: CustomColor.black,), onPressed: () {
               Get.back();
             },),
             centerTitle: true,
             backgroundColor: CustomColor.yellow,
             title: const Text("Add Family Member",
-                style: TextStyle(fontFamily: 'transport', fontSize: 18)),
+                style: TextStyle(fontFamily: 'transport', fontSize: 18,color: CustomColor.black)),
           ),
           body: SingleChildScrollView(
             child: Form(
@@ -61,7 +61,7 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
                     child: TextFormField(
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
-                            RegExp("[a-zA-Z\]")),
+                            RegExp("[a-zA-Z]")),
                         FilteringTextInputFormatter.deny('  ')
                       ],
                       validator: (value) {
@@ -73,6 +73,8 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
                         return null;
                       },
                       controller: controllerName,
+                      textCapitalization: TextCapitalization.sentences,
+                      keyboardType: TextInputType.text,
                       style: const TextStyle(fontFamily: 'transport', fontSize: 14),
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -86,7 +88,7 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
                     child: TextFormField(
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
-                            RegExp("[a-zA-Z\]")),
+                            RegExp("[a-zA-Z]")),
                         FilteringTextInputFormatter.deny('  ')
                       ],
                       validator: (value) {
@@ -98,6 +100,8 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
                         return null;
                       },
                       controller: controllerRelation,
+                      textCapitalization: TextCapitalization.sentences,
+                      keyboardType: TextInputType.text,
                       style: const TextStyle(fontFamily: 'transport', fontSize: 14),
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),

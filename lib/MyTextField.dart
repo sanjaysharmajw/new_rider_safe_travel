@@ -10,6 +10,7 @@ class MyTextField extends StatelessWidget {
   final TextInputType textInputType;
   final bool enable;
   final String hintText;
+  final Color textColor;
 
   TextEditingController textEditingController;
 
@@ -24,7 +25,8 @@ class MyTextField extends StatelessWidget {
       required this.broad,
       required this.textInputType,
       required this.enable,
-      required this.hintText})
+      required this.hintText,
+      required this.textColor})
       : super(key: key);
 
   @override
@@ -32,7 +34,7 @@ class MyTextField extends StatelessWidget {
     return TextField(
       enabled: enable,
       keyboardType: textInputType,
-      style: TextStyle(fontFamily: fontName, fontSize: fontSize),
+      style: TextStyle(fontFamily: fontName, fontSize: fontSize,),
       maxLines: width,
       controller: textEditingController,
       decoration: InputDecoration(
@@ -41,7 +43,11 @@ class MyTextField extends StatelessWidget {
               borderSide: BorderSide(width: broad, color: enabledBorderColor)),
           focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(width: broad, color: focusedBorderColor)),
-          hintText: hintText),
+          hintText: hintText,
+        hintStyle: TextStyle( fontFamily: 'transport',
+            fontSize: 15,color: textColor)
+
+      ),
     );
   }
 }

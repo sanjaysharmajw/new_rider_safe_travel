@@ -193,11 +193,11 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
-       // OverlayLoadingProgress;
+        OverlayLoadingProgress.stop();
 
         Get.to(RiderVerifyOtpPage(mobileNumber: mobileNumber.toString()));
       } else {
-       // OverlayLoadingProgress;
+        OverlayLoadingProgress;
         ToastMessage.toast(msg);
         //Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
       }

@@ -287,7 +287,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                       width: 1, broad: 4,
                                       textInputType: TextInputType.emailAddress,
                                       enable: false,
-                                      hintText: '${snapshot.data![index].emailId.toString()}',),
+                                      hintText: '${snapshot.data![index].emailId.toString()}', textColor: Colors.black54, ),
                                   )),
                             ],
                           ),
@@ -336,7 +336,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                                   // hintText: 'YYYY/MM/DD',
                                                   hintStyle: TextStyle(
                                                       fontFamily: 'transport',
-                                                      fontSize: 15),
+                                                      fontSize: 15,color: Colors.black54),
                                                 ),
                                                 readOnly: true,
                                                 onTap: () async {
@@ -395,6 +395,9 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     decoration:  InputDecoration(
                                       enabled: false,
                                       hintText:  "${snapshot.data![index].presentAddress?.state.toString()}",
+                                      hintStyle: TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 15,color: Colors.black54),
                                       border: UnderlineInputBorder(),
                                       enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
@@ -451,6 +454,9 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     decoration:  InputDecoration(
                                       enabled: false,
                                       hintText:  "${snapshot.data![index].presentAddress?.city.toString()}",
+                                      hintStyle: TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 15,color: Colors.black54),
                                       border: UnderlineInputBorder(),
                                       enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
@@ -508,6 +514,9 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     decoration:  InputDecoration(
                                       enabled: false,
                                       hintText:  "${snapshot.data![index].presentAddress?.pincode.toString()}",
+                                      hintStyle: TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 15,color: Colors.black54),
                                       border: UnderlineInputBorder(),
                                       enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
@@ -557,6 +566,9 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     decoration:  InputDecoration(
                                       enabled: false,
                                       hintText:  "${snapshot.data![index].gender.toString()}",
+                                      hintStyle: TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 15,color: Colors.black54),
                                       border: UnderlineInputBorder(),
                                       enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
@@ -609,6 +621,9 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                       controller: addressController,
                                       decoration:  InputDecoration(
                                         hintText: "${snapshot.data![index].presentAddress?.address.toString()}",
+                                        hintStyle: TextStyle(
+                                            fontFamily: 'transport',
+                                            fontSize: 15,color: Colors.black54),
                                         enabled: false,
                                         border: UnderlineInputBorder(),
                                         enabledBorder: UnderlineInputBorder(
