@@ -147,7 +147,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
 
   @override
   initState() {
-
+    OverlayLoadingProgress.stop();
     print(widget.date);
 
     print("###################");
@@ -209,7 +209,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     // _future = getRiderData();
     stringRandomNumber = randomNumber.toString();
     preferences();
-   // OverlayLoadingProgress.stop();
+
 
     super.initState();
 
@@ -601,65 +601,64 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 flex: 2,
                                 child: SizedBox(
                                   height: 45,
-                                  child: Expanded(
-                                      child: Center(
+                                  child: Center(
                                     child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 15, left: 15),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Expanded(
-                                            flex: 2,
-                                            child: SizedBox(
-                                              height: 45,
-                                              child: TextFormField(
-                                                // keyboardType: TextInputType.number,
-                                                style: const TextStyle(
-                                                    fontFamily: 'transport',
-                                                    fontSize: 18),
-                                                maxLines: 1,
-                                                controller: dobController,
-                                                decoration:
-                                                    const InputDecoration(
-                                                  border:
-                                                      UnderlineInputBorder(),
-                                                  enabledBorder:
-                                                      UnderlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              width: 1,
-                                                              color: CustomColor
-                                                                  .yellow)),
-                                                  focusedBorder:
-                                                      UnderlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        width: 2,
-                                                        color:
-                                                            Colors.amberAccent),
-                                                  ),
-                                                  // hintText: 'YYYY/MM/DD',
-                                                  hintStyle: TextStyle(
-                                                      fontFamily: 'transport',
-                                                      fontSize: 15),
-                                                ),
-                                                readOnly: true,
-
-                                                onTap: () async {
-                                                  _selectDate(context);
-                                                },
-                                                validator: (value) {
-                                                  if (value == null ||
-                                                      value.isEmpty) {
-                                                    return 'Please enter your Date of Birth';
-                                                  }
-                                                  return null;
-                                                },
+                                  padding: const EdgeInsets.only(
+                                      right: 15, left: 15),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        flex: 2,
+                                        child: SizedBox(
+                                          height: 45,
+                                          child: TextFormField(
+                                            // keyboardType: TextInputType.number,
+                                            style: const TextStyle(
+                                                fontFamily: 'transport',
+                                                fontSize: 18),
+                                            maxLines: 1,
+                                            controller: dobController,
+                                            decoration:
+                                                const InputDecoration(
+                                              border:
+                                                  UnderlineInputBorder(),
+                                              enabledBorder:
+                                                  UnderlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          width: 1,
+                                                          color: CustomColor
+                                                              .yellow)),
+                                              focusedBorder:
+                                                  UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    width: 2,
+                                                    color:
+                                                        Colors.amberAccent),
                                               ),
+                                              // hintText: 'YYYY/MM/DD',
+                                              hintStyle: TextStyle(
+                                                  fontFamily: 'transport',
+                                                  fontSize: 15),
                                             ),
+                                            readOnly: true,
+
+                                            onTap: () async {
+                                              _selectDate(context);
+                                            },
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Please enter your Date of Birth';
+                                              }
+                                              return null;
+                                            },
                                           ),
-                                        ],
+                                        ),
                                       ),
+                                    ],
+                                  ),
                                     ),
-                                  )),
+                                  ),
                                 ),
                               ),
                             ],
@@ -908,40 +907,39 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           flex: 2,
                           child: SizedBox(
                             height: 45,
-                            child: Expanded(
-                                child: Center(
+                            child: Center(
                               child: TextFormField(
-                                showCursor: true,
-                                cursorHeight:30,
-                                cursorWidth: 2.0,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty || value.length != 6) {
-                                    return 'Please enter 6 pincode.';
-                                  }
-                                  return null;
-                                },
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp("[0-9]")),
-                                  LengthLimitingTextInputFormatter(6),
-                                ],
-                                style: TextStyle(
-                                  fontFamily: 'transport',
-                                  fontSize: 18,
-                                ),
-                                controller: pinController,
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  border: const UnderlineInputBorder(),
-                                  enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          width: 1, color: CustomColor.yellow)),
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          width: 2, color: CustomColor.yellow)),
-                                ),
+                            showCursor: true,
+                            cursorHeight:30,
+                            cursorWidth: 2.0,
+                            validator: (value) {
+                              if (value == null || value.isEmpty || value.length != 6) {
+                                return 'Please enter 6 pincode.';
+                              }
+                              return null;
+                            },
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp("[0-9]")),
+                              LengthLimitingTextInputFormatter(6),
+                            ],
+                            style: TextStyle(
+                              fontFamily: 'transport',
+                              fontSize: 18,
+                            ),
+                            controller: pinController,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              border: const UnderlineInputBorder(),
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1, color: CustomColor.yellow)),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 2, color: CustomColor.yellow)),
+                            ),
                               ),
-                            )),
+                            ),
                           ),
                         ),
                       ],
