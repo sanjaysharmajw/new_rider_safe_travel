@@ -59,8 +59,10 @@ class _MyRidesPageState extends State<MyRidesPage> {
                           setState(() {
                             // Get.to(FamilyMemberViewRiderMap(
                             //   rideId: snapshot.data![index].id.toString(), driverName: snapshot.data![index].driverName.toString(), driverImage: snapshot.data![index].driverPhoto.toString(),
-                            // driverLicenseNo: snapshot.data![index].drivingLicenceNumber.toString(), driverMobile: snapshot.data![index].driverMobileNumber.toString(),
-                            //vRegistration: snapshot.data![index].vehicleRegistrationNumber.toString(), vModel:  snapshot.data![index].vehicleModel.toString(), vOwner: snapshot.data![index].ownerName.toString()));
+                            // driverLicenseNo: snapshot.data![index].drivingLicenceNumber.toString(), driverMobile:
+                            // snapshot.data![index].driverMobileNumber.toString(),
+                            //vRegistration: snapshot.data![index].vehicleRegistrationNumber.toString(),
+                            // vModel:  snapshot.data![index].vehicleModel.toString(), vOwner: snapshot.data![index].ownerName.toString()));
                           });
                         },
                         child: Center(

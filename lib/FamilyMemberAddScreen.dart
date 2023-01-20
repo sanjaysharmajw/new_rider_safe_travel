@@ -185,15 +185,15 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
         OverlayLoadingProgress;
-        // Get.to(StartRide(
-        //     riderId: widget.riderId.toString(),
-        //     dName: widget.dName.toString(),
-        //     dMobile: widget.dMobile.toString(),
-        //     dPhoto: widget.dPhoto.toString(),
-        //     model: widget.model.toString(),
-        //     vOwnerName: widget.vOwnerName.toString(),
-        //     vRegNo: widget.vRegNo.toString(),
-        //     socketToken: widget.socketToken));
+        Get.to(StartRide(
+            riderId: widget.riderId.toString(),
+            dName: widget.dName.toString(),
+            dMobile: widget.dMobile.toString(),
+            dPhoto: widget.dPhoto.toString(),
+            model: widget.model.toString(),
+            vOwnerName: widget.vOwnerName.toString(),
+            vRegNo: widget.vRegNo.toString(),
+            socketToken: widget.socketToken));
         ToastMessage.toast(msg);
       } else {
         OverlayLoadingProgress;
