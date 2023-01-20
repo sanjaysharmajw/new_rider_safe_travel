@@ -9,9 +9,6 @@ import 'package:location/location.dart';
 import 'package:ride_safe_travel/LoginModule/MainPage.dart';
 import 'package:ride_safe_travel/LoginModule/RiderLoginPage.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
-import 'package:ride_safe_travel/Utils/toast.dart';
-import 'package:ride_safe_travel/search_place/SearchPlace.dart';
-import 'package:ride_safe_travel/search_place/demomap.dart';
 
 
 import 'BottomSheet/TabWidget.dart';
@@ -42,7 +39,6 @@ Future<void> main() async {
       .resolvePlatformSpecificImplementation<
       AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
-
 
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true,

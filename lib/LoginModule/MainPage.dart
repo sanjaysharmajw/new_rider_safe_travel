@@ -304,18 +304,17 @@ class _MainPageState extends State<MainPage> {
       if (socketToken !="") {
         OverlayLoadingProgress.stop();
         List<Data> userCheck = jsonDecode(response.body)['data'].map<Data>((data) => Data.fromJson(data)).toList();
-        // Get.to(StartRide(
-        //     riderId: userCheck[0].id.toString(),
-        //     dName: userCheck[0].driverName.toString(),
-        //     dMobile: userCheck[0].driverMobileNumber.toString(),
-        //     dPhoto: userCheck[0].driverPhoto.toString(),
-        //     model: userCheck[0].vehicleModel.toString(),
-        //     vOwnerName: userCheck[0].ownerName.toString(),
-        //     vRegNo: userCheck[0].vehicleRegistrationNumber.toString(),
-        //     socketToken: socketToken.toString()
-        //
-        // )
-        // );
+        Get.to(StartRide(
+            riderId: userCheck[0].id.toString(),
+            dName: userCheck[0].driverName.toString(),
+            dMobile: userCheck[0].driverMobileNumber.toString(),
+            dPhoto: userCheck[0].driverPhoto.toString(),
+            model: userCheck[0].vehicleModel.toString(),
+            vOwnerName: userCheck[0].ownerName.toString(),
+            vRegNo: userCheck[0].vehicleRegistrationNumber.toString(),
+            socketToken: socketToken.toString()
+        )
+        );
         print(userCheck[0].id.toString());
         print(userCheck[0].driverName.toString());
         print(userCheck[0].driverMobileNumber.toString());
