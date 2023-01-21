@@ -122,9 +122,11 @@ class _RiderMapState extends State<RiderMap> {
               child: GoogleMap(
                 initialCameraPosition: _cameraPosition,
                 mapType: MapType.normal,
-                //myLocationEnabled: true,
-                //compassEnabled: true,
-                zoomControlsEnabled: false,
+                myLocationEnabled: true,
+                padding: const EdgeInsets.symmetric(vertical: 50),
+                compassEnabled: true,
+                zoomControlsEnabled: true,
+                myLocationButtonEnabled: true,
                 onMapCreated: (GoogleMapController controller) {
                   _completer.complete(controller);
                 },

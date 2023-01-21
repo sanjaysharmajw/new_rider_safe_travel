@@ -172,9 +172,12 @@ class _SignUpState extends State<StartRide> {
                         initialCameraPosition: _cameraPosition,
                         mapType: MapType.normal,
                         myLocationEnabled: true,
+                        padding: const EdgeInsets.symmetric(vertical: 50),
                         compassEnabled: true,
                         zoomControlsEnabled: true,
-                        padding: const EdgeInsets.only(bottom: 50),
+                        mapToolbarEnabled: true,
+                        zoomGesturesEnabled: true,
+                        myLocationButtonEnabled: true,
                         onMapCreated: (GoogleMapController controller) {
                           _completer.complete(controller);
                         },
