@@ -6,10 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
-import 'package:mapmyindia_gl/mapmyindia_gl.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
 import 'package:ride_safe_travel/LoginModule/Map/Drawer.dart';
@@ -79,15 +79,9 @@ final ScrollController scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
-    _fabHeight = _initFabHeight;
-    polyline_latlng = <LatLng>[];
-    setState(() {
-      MapmyIndiaAccountManager.setMapSDKKey(MyMyIndiaKeys.mapSKDKey);
-      MapmyIndiaAccountManager.setRestAPIKey(MyMyIndiaKeys.MapRestAPIKey);
-      MapmyIndiaAccountManager.setAtlasClientId(MyMyIndiaKeys.ClientId);
-      MapmyIndiaAccountManager.setAtlasClientSecret(MyMyIndiaKeys.ClientSecretId);
-    });
     sharePre();
+    _markers = <MarkerId, Marker>{};
+    _markers.clear();
     //getRideData();
     //_initUser();
     final now = DateTime.now();
@@ -161,19 +155,18 @@ final ScrollController scrollController = ScrollController();
               builder: (BuildContext context, BoxConstraints constraints) {
             return SizedBox(
               height: constraints.maxHeight / 1.1,
-              child: MapmyIndiaMap(
+              child: GoogleMap(
                 initialCameraPosition: _cameraPosition,
-                scrollGesturesEnabled: true,
-                tiltGesturesEnabled: true,
+                mapType: MapType.normal,
+                myLocationEnabled: true,
+                padding: const EdgeInsets.symmetric(vertical: 50),
                 compassEnabled: true,
-                compassViewPosition: CompassViewPosition.BottomLeft,
-                onMapCreated: (map) =>
-                {
-                  mapController = map,
+                zoomControlsEnabled: true,
+                myLocationButtonEnabled: true,
+                onMapCreated: (GoogleMapController controller) {
+                  _completer.complete(controller);
                 },
-                onStyleLoadedCallback: () => {
-                  mapController,
-                },
+                markers: Set<Marker>.of(_markers.values),
               ),
             );
           }),
@@ -666,190 +659,23 @@ final ScrollController scrollController = ScrollController();
         var lat = jsonDecode(data)['lat'];
         var lng = jsonDecode(data)['lng'];
         print('Received lat: $lat + $lng');
-        polyline_latlng.add(LatLng(lat, lng));
-        LatLngBounds latLngBounds = boundsFromLatLngList(polyline_latlng);
-        mapController.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds));
-        line = await mapController.addLine(LineOptions(geometry: polyline_latlng, lineColor: "#4285F4",lineOpacity: 0.5, lineWidth: 6));
-        marker(lat,lng);
-        mapController.removeSymbol(symbol);
+        final GoogleMapController controller = await _completer.future;
+        controller.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(target: LatLng(lat, lng), zoom: 19)));
+        var image = await BitmapDescriptor.fromAssetImage(
+            const ImageConfiguration(), "images/map_marker.png");
+        Marker marker = Marker(
+            markerId: MarkerId('ID'), icon: image, position: LatLng(lat, lng));
+        setState(() {
+          _markers[MarkerId('ID')] = marker;
+        });
       });
+
       socket.on('error', (error) {
         print('Error: $error');
       });
     } catch (e) {
       print(e.toString());
     }
-  }
-  void marker(double lat,double lng)async{
-    mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 16));
-    final ByteData bytes = await rootBundle.load("assets/family_map_pin.png");
-    final Uint8List list = bytes.buffer.asUint8List();
-    mapController.addImage("icon", list);
-    symbol = await mapController.addSymbol(SymbolOptions(geometry: LatLng(lat, lng), iconImage: "icon"));
-  }
-  boundsFromLatLngList(List<LatLng> list) {
-    assert(list.isNotEmpty);
-    double? x0, x1, y0, y1;
-    for (LatLng latLng in list) {
-      if (x0 == null || x1 == null || y0 == null || y1 == null) {
-        x0 = x1 = latLng.latitude;
-        y0 = y1 = latLng.longitude;
-      } else {
-        if (latLng.latitude > x1) x1 = latLng.latitude;
-        if (latLng.latitude < x0) x0 = latLng.latitude;
-        if (latLng.longitude > y1) y1 = latLng.longitude;
-        if (latLng.longitude < y0) y0 = latLng.longitude;
-      }
-    }
-    return LatLngBounds(northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
-  }
-
-  void bottomSheet(context){
-    showModalBottomSheet(
-      isScrollControlled: true,
-        isDismissible: true,
-        context: context,
-
-        builder: (context) {
-          return ListView(
-           // controller: sc,
-            children: <Widget>[
-              SizedBox(
-                height: 12.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    width: 30,
-                    height: 5,
-                    decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.all(Radius.circular(12.0))),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 18.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Text(
-                      "Select a location",
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 20.0,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 30.0,
-              ),
-              Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child:
-                  Autocomplete<Country>(
-                      optionsBuilder:
-                          (TextEditingValue textEditingValue) {
-                        return countryOptions
-                            .where((Country county) => county.name
-                            .toLowerCase()
-                            .startsWith(textEditingValue.text
-                            .toLowerCase()))
-                            .toList();
-                      },
-                      displayStringForOption: (Country option) =>
-                      option.name,
-                      fieldViewBuilder: (BuildContext context,
-                          TextEditingController
-                          fieldTextEditingController,
-                          FocusNode fieldFocusNode,
-                          VoidCallback onFieldSubmitted) {
-                        return Card(
-                          child: ListTile(
-                            //leading: Icon(Icons.search),
-                            title: TextFormField(
-
-
-                              onChanged: (value) {
-                                setState(() {
-                                  searchString = value.toString();
-                                });
-                              },
-                              controller: fieldTextEditingController,
-                              focusNode: fieldFocusNode,
-                              decoration: InputDecoration(
-                                  hintText: "Search",
-                                  border: InputBorder.none,
-                                  prefixIcon: IconButton(
-                                      onPressed: (){
-                                        // searchMemberApi(mobileController.text,widget.userId);
-                                      }, icon:  Icon(Icons.search,))
-                              ),
-                            ),
-                            trailing: IconButton(onPressed: (){
-                              fieldTextEditingController.clear();
-                            }, icon: Icon(Icons.clear)),
-                          ),
-                        );
-                        },
-
-                      onSelected: (Country selection) {
-                        print('Selected: ${selection.name}');
-                      },
-                      optionsViewBuilder: (BuildContext context,
-                          AutocompleteOnSelected<Country>
-                          onSelected,
-                          Iterable<Country> options) {
-                        return Align(
-                          alignment: Alignment.topLeft,
-                          child: Material(
-                            child: Container(
-                              width: 365,
-                              //color: Colors.grey,
-                              child: ListView.builder(
-                                padding: EdgeInsets.all(10.0),
-                                itemCount: options.length,
-                                itemBuilder:
-                                    (BuildContext context,
-                                    int index) {
-                                  final Country option =
-                                  options.elementAt(index);
-
-                                  return GestureDetector(
-                                    onTap: () {
-                                      onSelected(option);
-                                    },
-                                    child: Card(
-                                      elevation: 1,
-                                      margin: EdgeInsets.symmetric(vertical: 2),
-                                      child: ListTile(
-                                        leading: Icon(Icons.location_on_rounded,color: Colors.red,),
-                                        title: Text(option.name,
-                                            style: const TextStyle(
-                                                color:
-                                                Colors.black)
-                                        ),
-                                        subtitle: Text(option.address.toString()),
-
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        );
-                      })
-              )
-
-            ],
-          );
-        });
   }
 }
