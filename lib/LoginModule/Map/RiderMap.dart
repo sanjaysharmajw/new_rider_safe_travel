@@ -17,8 +17,11 @@ import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/Utils/make_a_call.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
+import '../../BottomSheet/Country.dart';
+import '../../BottomSheet/TabWidget.dart';
 import '../../Utils/MapMyIndiaKeys.dart';
 import '../../Utils/exit_alert_dialog.dart';
 
@@ -70,10 +73,13 @@ class _RiderMapState extends State<RiderMap> {
     zoom: 14,
   );
 
-
+  final TextEditingController destinationController = TextEditingController();
+  final TextEditingController fieldTextEditingController = TextEditingController();
+final ScrollController scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
+    _fabHeight = _initFabHeight;
     polyline_latlng = <LatLng>[];
     setState(() {
       MapmyIndiaAccountManager.setMapSDKKey(MyMyIndiaKeys.mapSKDKey);
@@ -103,9 +109,34 @@ class _RiderMapState extends State<RiderMap> {
     OverlayLoadingProgress.stop();
     getSocketToken();
   }
+  final double _initFabHeight = 120.0;
+  double _fabHeight = 0;
+  double _panelHeightOpen = 0;
+  double _panelHeightClosed = 95.0;
+
+  List<Country> countryOptions = <Country>[
+    Country(name: 'Mumbai', address: "Maharashtra, India"),
+    Country(name: 'Thiruvananthapuram', address: "Kerala, India"),
+    Country(name: 'Bangalore', address: "Karnataka, India"),
+    Country(name: 'Ranchi', address: "Jharkhand, India"),
+    Country(name: 'Shimla', address: "Himachal Pradesh, India"),
+    Country(name: 'Chandigarh', address: "Haryana, India"),
+    Country(name: 'Panji', address: "Goa, India"),
+    Country(name: 'Chennai', address: "TamilNadu, India"),
+    Country(name: 'Lucknow', address: "Uttar Pradesh, India"),
+    Country(name: 'Dehradun', address: "Uttarakhand, India"),
+  ];
+
+
+  String searchString = "";
+
 
   @override
   Widget build(BuildContext context) {
+    _panelHeightOpen = MediaQuery
+        .of(context)
+        .size
+        .height * .80;
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return SafeArea(
       child: Scaffold(
@@ -147,7 +178,7 @@ class _RiderMapState extends State<RiderMap> {
             );
           }),
           DraggableScrollableSheet(
-              initialChildSize: 0.15,
+              initialChildSize: 0.25,
               minChildSize: 0.10,
               maxChildSize: 1,
               snapSizes: [0.5, 1],
@@ -162,69 +193,236 @@ class _RiderMapState extends State<RiderMap> {
                   ),
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                        vertical: 10.0.h, horizontal: 20.0.w),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Make_a_call.makePhoneCall(widget.dMobile);
-                                },
-                                child:   Column(
-                                  children: [
-                                    Image.asset("images/contact_driver.png",
-                                        width: 50.w, height: 50.h),
-                                    SizedBox(height: 10.h),
-                                    Text("Contact Driver",
-                                        style: TextStyle(
-                                            fontFamily: 'transport',
-                                            fontSize: 16.sp)),
-                                  ],
-                                ),
-                              ),
+                        horizontal: 20.0.w),
+                    child: Column(
+                      children: [
+                    Card(
+                    child: ListTile(
+                      title: TextFormField(
+                        controller: destinationController,
+                        decoration: InputDecoration(
+                         hintText: "Destination",
+                       hintStyle: TextStyle(fontSize: 18,color: Colors.black),
+                       border: InputBorder.none
+                     ),
+                        readOnly: true,
+                      onTap: (){
+                        showModalBottomSheet(
+                 isScrollControlled: true,
+                            context: context,
 
-                              InkWell(
-                                onTap: () {
-                                  showMenu();
-                                },
-                                child: Column(
-                                  children: [
-                                    Image.asset("images/Ride_Details.png",
-                                        width: 50.w, height: 50.h),
-                                    SizedBox(height: 10.h),
-                                    Text("Ride Details",
-                                        style: TextStyle(
-                                            fontFamily: 'transport',
-                                            fontSize: 16.sp)),
-                                  ],
-                                ),
+                            builder: (context) {
+                              return ListView(
+                                 controller: scrollController,
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: 12.0,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Container(
+                                        width: 30,
+                                        height: 5,
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey[300],
+                                            borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 18.0,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 15),
+                                        child: Text(
+                                          "Select a location",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 20.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 30.0,
+                                  ),
+                                  Padding(
+                                      padding: EdgeInsets.all(15.0),
+                                      child:
+                                      Autocomplete<Country>(
+                                          optionsBuilder:
+                                              (TextEditingValue textEditingValue) {
+                                            return countryOptions
+                                                .where((Country county) => county.name
+                                                .toLowerCase()
+                                                .startsWith(textEditingValue.text
+                                                .toLowerCase()))
+                                                .toList();
+                                          },
+                                          displayStringForOption: (Country option) =>
+                                          option.name,
+                                          fieldViewBuilder: (BuildContext context,
+                                              TextEditingController
+                                              fieldTextEditingController,
+                                              FocusNode fieldFocusNode,
+                                              VoidCallback onFieldSubmitted) {
+                                            return Card(
+                                              child: ListTile(
+                                                //leading: Icon(Icons.search),
+                                                title: TextFormField(
+
+
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      searchString = value.toString();
+                                                    });
+                                                  },
+                                                  controller: fieldTextEditingController,
+                                                  focusNode: fieldFocusNode,
+                                                  decoration: InputDecoration(
+                                                      hintText: "Search",
+                                                      border: InputBorder.none,
+                                                      prefixIcon: IconButton(
+                                                          onPressed: (){
+                                                            // searchMemberApi(mobileController.text,widget.userId);
+                                                          }, icon:  Icon(Icons.search,))
+                                                  ),
+                                                ),
+                                                trailing: IconButton(onPressed: (){
+                                                  fieldTextEditingController.clear();
+                                                }, icon: Icon(Icons.clear)),
+                                              ),
+                                            );
+                                          },
+
+                                          onSelected: (Country selection) {
+                                            print('Selected: ${selection.name}');
+                                            fieldTextEditingController.text=selection.name;
+                                          },
+                                          optionsViewBuilder: (BuildContext context,
+                                              AutocompleteOnSelected<Country>
+                                              onSelected,
+                                              Iterable<Country> options) {
+                                            return Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Material(
+                                                child: Container(
+                                                  width: 365,
+                                                  //color: Colors.grey,
+                                                  child: ListView.builder(
+                                                    padding: EdgeInsets.all(10.0),
+                                                    itemCount: options.length,
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                        int index) {
+                                                      final Country option =
+                                                      options.elementAt(index);
+
+                                                      return GestureDetector(
+                                                        onTap: () {
+                                                          onSelected(option);
+                                                          destinationController.text=option.name.toString();
+                                                          Navigator.pop(context);
+
+                                                        },
+                                                        child: Card(
+                                                          elevation: 1,
+                                                          margin: EdgeInsets.symmetric(vertical: 2),
+                                                          child: ListTile(
+                                                            leading: Icon(Icons.location_on_rounded,color: Colors.red,),
+                                                            title: Text(option.name,
+                                                                style: const TextStyle(
+                                                                    color:
+                                                                    Colors.black)
+                                                            ),
+                                                            subtitle: Text(option.address.toString()),
+
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          })
+                                  )
+
+                                ],
+                              );
+                            });
+
+                      },
+                  ),
+
+                ),
+                ),
+
+             SizedBox(height: 12,),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Make_a_call.makePhoneCall(widget.dMobile);
+                              },
+                              child:   Column(
+                                children: [
+                                  Image.asset("images/contact_driver.png",
+                                      width: 50.w, height: 50.h),
+                                  SizedBox(height: 10.h),
+                                  Text("Contact Driver",
+                                      style: TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 16.sp)),
+                                ],
                               ),
-                              InkWell(
-                                onTap: () {
-                                  showExitPopup(context,"Do you really want to call on 100 ?",(){
-                                    Make_a_call.makePhoneCall("100");
-                                    Navigator.pop(context, true);
-                                  });
-                                },
-                                child: Column(
-                                  children: [
-                                    Image.asset("images/hundred_number.png",
-                                        width: 50.w, height: 50.h),
-                                    SizedBox(height: 10.h),
-                                    const Text("100",
-                                        style: TextStyle(
-                                            fontFamily: 'transport',
-                                            fontSize: 16)),
-                                  ],
-                                ),
+                            ),
+
+                            InkWell(
+                              onTap: () {
+                                showMenu();
+                              },
+                              child: Column(
+                                children: [
+                                  Image.asset("images/Ride_Details.png",
+                                      width: 50.w, height: 50.h),
+                                  SizedBox(height: 10.h),
+                                  Text("Ride Details",
+                                      style: TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 16.sp)),
+                                ],
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                showExitPopup(context,"Do you really want to call on 100 ?",(){
+                                  Make_a_call.makePhoneCall("100");
+                                  Navigator.pop(context, true);
+                                });
+                              },
+                              child: Column(
+                                children: [
+                                  Image.asset("images/hundred_number.png",
+                                      width: 50.w, height: 50.h),
+                                  SizedBox(height: 10.h),
+                                  const Text("100",
+                                      style: TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 16)),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 );
@@ -275,6 +473,174 @@ class _RiderMapState extends State<RiderMap> {
     } else {
       throw Exception('Failed');
     }
+  }
+
+  Widget _panel() {
+    return MediaQuery.removePadding(
+        context: context,
+        removeTop: true,
+        child: ListView(
+          controller: null,
+          children: <Widget>[
+            SizedBox(
+              height: 12.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: 30,
+                  height: 5,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 18.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Text(
+                    "Select a location",
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 20.0,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 30.0,
+            ),
+            Padding(
+                padding: EdgeInsets.all(15.0),
+                child:
+                Autocomplete<Country>(
+                    optionsBuilder:
+                        (TextEditingValue textEditingValue) {
+                      return countryOptions
+                          .where((Country county) => county.name
+                          .toLowerCase()
+                          .startsWith(textEditingValue.text
+                          .toLowerCase()))
+                          .toList();
+                    },
+                    displayStringForOption: (Country option) =>
+                    option.name,
+                    fieldViewBuilder: (BuildContext context,
+                        TextEditingController
+                        fieldTextEditingController,
+                        FocusNode fieldFocusNode,
+                        VoidCallback onFieldSubmitted) {
+                      return Card(
+                        child: ListTile(
+                          //leading: Icon(Icons.search),
+                          title: TextFormField(
+
+
+                            onChanged: (value) {
+                              setState(() {
+                                searchString = value.toString();
+                              });
+                            },
+                            controller: fieldTextEditingController,
+                            focusNode: fieldFocusNode,
+                            decoration: InputDecoration(
+                                hintText: "Search",
+                                border: InputBorder.none,
+                                prefixIcon: IconButton(
+                                    onPressed: (){
+                                      // searchMemberApi(mobileController.text,widget.userId);
+                                    }, icon:  Icon(Icons.search,))
+                            ),
+                          ),
+                          trailing: IconButton(onPressed: (){
+                            fieldTextEditingController.clear();
+                          }, icon: Icon(Icons.clear)),
+                        ),
+                      );
+                      /* ListTile(
+                        title: TextField(
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              suffixIcon: IconButton(
+                                  onPressed: (){
+                                   // searchMemberApi(mobileController.text,widget.userId);
+                                  }, icon:  Icon(Icons.search)),
+
+                          ),
+
+
+                          controller: fieldTextEditingController,
+                          focusNode: fieldFocusNode,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold),
+                        ),
+                        trailing: IconButton(onPressed: (){
+                         // mobileController.clear();
+                        }, icon: Icon(Icons.clear)),
+                      ); */
+
+
+                    },
+
+                    onSelected: (Country selection) {
+                      print('Selected: ${selection.name}');
+                    },
+                    optionsViewBuilder: (BuildContext context,
+                        AutocompleteOnSelected<Country>
+                        onSelected,
+                        Iterable<Country> options) {
+                      return Align(
+                        alignment: Alignment.topLeft,
+                        child: Material(
+                          child: Container(
+                            width: 365,
+                            //color: Colors.grey,
+                            child: ListView.builder(
+                              padding: EdgeInsets.all(10.0),
+                              itemCount: options.length,
+                              itemBuilder:
+                                  (BuildContext context,
+                                  int index) {
+                                final Country option =
+                                options.elementAt(index);
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    onSelected(option);
+                                  },
+                                  child: Card(
+                                    elevation: 1,
+                                    margin: EdgeInsets.symmetric(vertical: 2),
+                                    child: ListTile(
+                                      leading: Icon(Icons.location_on_rounded,color: Colors.red,),
+                                      title: Text(option.name,
+                                          style: const TextStyle(
+                                              color:
+                                              Colors.black)
+                                      ),
+                                      subtitle: Text(option.address.toString()),
+
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      );
+                    })
+            )
+
+          ],
+        ));
   }
 
   Future<void> socketConnect(String token) async {
@@ -336,5 +702,154 @@ class _RiderMapState extends State<RiderMap> {
       }
     }
     return LatLngBounds(northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
+  }
+
+  void bottomSheet(context){
+    showModalBottomSheet(
+      isScrollControlled: true,
+        isDismissible: true,
+        context: context,
+
+        builder: (context) {
+          return ListView(
+           // controller: sc,
+            children: <Widget>[
+              SizedBox(
+                height: 12.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    width: 30,
+                    height: 5,
+                    decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 18.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Text(
+                      "Select a location",
+                      style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 30.0,
+              ),
+              Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child:
+                  Autocomplete<Country>(
+                      optionsBuilder:
+                          (TextEditingValue textEditingValue) {
+                        return countryOptions
+                            .where((Country county) => county.name
+                            .toLowerCase()
+                            .startsWith(textEditingValue.text
+                            .toLowerCase()))
+                            .toList();
+                      },
+                      displayStringForOption: (Country option) =>
+                      option.name,
+                      fieldViewBuilder: (BuildContext context,
+                          TextEditingController
+                          fieldTextEditingController,
+                          FocusNode fieldFocusNode,
+                          VoidCallback onFieldSubmitted) {
+                        return Card(
+                          child: ListTile(
+                            //leading: Icon(Icons.search),
+                            title: TextFormField(
+
+
+                              onChanged: (value) {
+                                setState(() {
+                                  searchString = value.toString();
+                                });
+                              },
+                              controller: fieldTextEditingController,
+                              focusNode: fieldFocusNode,
+                              decoration: InputDecoration(
+                                  hintText: "Search",
+                                  border: InputBorder.none,
+                                  prefixIcon: IconButton(
+                                      onPressed: (){
+                                        // searchMemberApi(mobileController.text,widget.userId);
+                                      }, icon:  Icon(Icons.search,))
+                              ),
+                            ),
+                            trailing: IconButton(onPressed: (){
+                              fieldTextEditingController.clear();
+                            }, icon: Icon(Icons.clear)),
+                          ),
+                        );
+                        },
+
+                      onSelected: (Country selection) {
+                        print('Selected: ${selection.name}');
+                      },
+                      optionsViewBuilder: (BuildContext context,
+                          AutocompleteOnSelected<Country>
+                          onSelected,
+                          Iterable<Country> options) {
+                        return Align(
+                          alignment: Alignment.topLeft,
+                          child: Material(
+                            child: Container(
+                              width: 365,
+                              //color: Colors.grey,
+                              child: ListView.builder(
+                                padding: EdgeInsets.all(10.0),
+                                itemCount: options.length,
+                                itemBuilder:
+                                    (BuildContext context,
+                                    int index) {
+                                  final Country option =
+                                  options.elementAt(index);
+
+                                  return GestureDetector(
+                                    onTap: () {
+                                      onSelected(option);
+                                    },
+                                    child: Card(
+                                      elevation: 1,
+                                      margin: EdgeInsets.symmetric(vertical: 2),
+                                      child: ListTile(
+                                        leading: Icon(Icons.location_on_rounded,color: Colors.red,),
+                                        title: Text(option.name,
+                                            style: const TextStyle(
+                                                color:
+                                                Colors.black)
+                                        ),
+                                        subtitle: Text(option.address.toString()),
+
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        );
+                      })
+              )
+
+            ],
+          );
+        });
   }
 }

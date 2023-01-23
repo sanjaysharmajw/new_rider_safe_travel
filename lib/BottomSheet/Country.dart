@@ -2,14 +2,14 @@ class Country {
 
   const Country({
     required this.name,
-    required this.size,
+    required this.address,
   });
 
   final String name;
-  final int size;
+  final String address;
 
   @override
   String toString() {
-    return '$name ($size)';
+    return '$name ($address)';
   }
 }

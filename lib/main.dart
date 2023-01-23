@@ -13,6 +13,10 @@ import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:ride_safe_travel/search_place/SearchPlace.dart';
 import 'package:ride_safe_travel/search_place/demomap.dart';
 
+
+import 'BottomSheet/TabWidget.dart';
+import 'LoginModule/Map/RiderMap.dart';
+
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications', // title
@@ -59,7 +63,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  const MyHomePage(),
+      home:   RiderMap(riderId: '', dName: '', dLicenseNo: '', vModel: '', vOwnerName: '',
+        vRegistration: '', dMobile: '', dImage: '', memberName: '',),
       debugShowCheckedModeBanner: false,
     );
   }
