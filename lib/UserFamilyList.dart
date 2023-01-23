@@ -77,46 +77,35 @@ class _UserFamilyListState extends State<UserFamilyList> {
           title: const Text("My Family List",
               style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',)),
         ),
-        floatingActionButton: Container(
-          height: 60,
-          width: 60,
-          child: Material(
-            type: MaterialType
-                .transparency,
-            child: Ink(
-              decoration: BoxDecoration(
-                border: Border.all(color: CustomColor.black, width: 2.0),
-                color: CustomColor.yellow,
-                shape: BoxShape.circle,
-              ),
-              child: InkWell(
+        // floatingActionButton: Container(
+        //   height: 60,
+        //   width: 60,
+        //   child: Material(
+        //     type: MaterialType
+        //         .transparency,
+        //     child: Ink(
+        //       decoration: BoxDecoration(
+        //         border: Border.all(color: CustomColor.black, width: 2.0),
+        //         color: CustomColor.yellow,
+        //         shape: BoxShape.circle,
+        //       ),
+        //       child: InkWell(
+        //
+        //         borderRadius: BorderRadius.circular(
+        //             500.0),
+        //         onTap: () {
+        //           Get.to(const FamilyMemberAddOtherTrack());
+        //         },
+        //         child: Icon(
+        //           Icons.add,
+        //           color: CustomColor.black,
+        //           size: 38,
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
 
-                borderRadius: BorderRadius.circular(
-                    500.0),
-                onTap: () {
-                  Get.to(const FamilyMemberAddOtherTrack());
-                },
-                child: Icon(
-                  Icons.add,
-                  color: CustomColor.black,
-                  size: 38,
-                ),
-              ),
-            ),
-          ),
-        ),
-       /* floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Get.to(const FamilyMemberAddOtherTrack());
-          },
-          backgroundColor: CustomColor.yellow,
-
-          child: const Icon(
-            Icons.add,
-            color: CustomColor.black,
-
-          ),
-        ),*/
         body: FutureBuilder<List<FamilyMembersData>>(
           future: _future,
           builder: (context, snapshot) {

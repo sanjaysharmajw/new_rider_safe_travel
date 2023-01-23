@@ -35,17 +35,17 @@ import 'Sharepreferences.dart';
 
 
 class RiderProfileEdit extends StatefulWidget {
-  String date;
-  String state;
-  String city;
-  String pincode;
-  String address;
-  String firstname;
-  String lastname;
-  String emailId;
-  String imageProfile;
-  String mobileNumber;
-  String gender;
+  String? date;
+  String? state;
+  String? city;
+  String? pincode;
+  String? address;
+  String? firstname;
+  String? lastname;
+  String? emailId;
+  String? imageProfile;
+  String? mobileNumber;
+  String? gender;
 
   RiderProfileEdit(
       {Key? key,
@@ -83,17 +83,17 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   final TextEditingController cityController = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
 
-  var firstname;
-  var lastname;
-  var dob;
-  var email;
-  var myaddress;
-  var pinNumber;
-  var mobilenumber;
-  var mystates;
-  var mycities;
-  var age;
-  var gender;
+  String firstname="";
+  String lastname="";
+  String dob="";
+  String email="";
+  String myaddress="";
+  String pinNumber="";
+  String mobilenumber="";
+  String mystates="";
+  String mycities="";
+  String age="";
+  String gender="";
 
   final _formKey = GlobalKey<FormState>();
 
@@ -342,7 +342,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                                     fit: BoxFit.fill,
                                                   )
                                                       : Image.network(
-                                                      widget.imageProfile,
+                                                      widget.imageProfile.toString(),
                                                     fit: BoxFit.fill,
                                                   ),
                                                 ),

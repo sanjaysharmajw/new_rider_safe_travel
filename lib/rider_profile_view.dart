@@ -43,9 +43,6 @@ class _RiderProfileViewState extends State<RiderProfileView> {
   String date = "";
   String from = "";
 
-
-
-
   DateTime selectedDate = DateTime.now();
   DateTime fromDate = DateTime.now();
   DateTime toDate = DateTime.now();
@@ -157,16 +154,16 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                               onPress: () async {
                                 OverlayLoadingProgress.start(context);
                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                                    RiderProfileEdit(date: '${snapshot.data![index].dob.toString()}',
-                                      address: '${snapshot.data![index].presentAddress?.address.toString()}',
-                                      pincode: '${snapshot.data![index].presentAddress?.pincode.toString()}',
-                                      city: '${snapshot.data![index].presentAddress?.city.toString()}',
-                                      state:'${snapshot.data![index].presentAddress?.state.toString()}',
-                                      emailId: '${snapshot.data![index].emailId.toString()}',
-                                      lastname: '${snapshot.data![index].lastName.toString()}',
-                                      firstname: '${snapshot.data![index].firstName.toString()}',
-                                      mobileNumber: '${snapshot.data![index].mobileNumber.toString()}',
-                                      imageProfile: profileImage, gender: '${snapshot.data![index].gender.toString()}',)
+                                    RiderProfileEdit(date: snapshot.data![0].dob,
+                                      address: snapshot.data![0].presentAddress?.address,
+                                      pincode: snapshot.data![0].presentAddress?.pincode,
+                                      city: snapshot.data![0].presentAddress?.city,
+                                      state:snapshot.data![0].presentAddress?.state,
+                                      emailId: snapshot.data![0].emailId,
+                                      lastname: snapshot.data![0].lastName,
+                                      firstname: snapshot.data![0].firstName,
+                                      mobileNumber: snapshot.data![0].mobileNumber,
+                                      imageProfile: profileImage, gender: snapshot.data![0].gender)
                                 )).then((value) {
 
                                   setState(() {

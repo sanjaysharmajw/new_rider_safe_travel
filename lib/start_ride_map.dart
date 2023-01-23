@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -131,169 +132,167 @@ class _SignUpState extends State<StartRide> {
             Navigator.pop(context, true);
             await endRide();
           }),
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: const Text(
-              "On Going Journey",
-              style:
-              TextStyle(color: CustomColor.black, fontFamily: 'transport'),
-            ),
-            elevation: 0,
-            backgroundColor: CustomColor.lightYellow,
-            leading: IconButton(
-              onPressed: () {
-                showExitPopup(context, "Do you want to stop ride?", () async {
-                  // OverlayLoadingProgress.start(context);
-                  //Navigator.pop(context, true);
-                  await endRide();
-                });
-              },
-              icon: Image.asset('assets/map_back.png'),
-            ),
-            actions: <Widget>[
-              IconButton(
-                  icon: const Icon(
-                    Icons.share,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    shareData();
-                  }),
-            ],
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text(
+            "On Going Journey",
+            style:
+            TextStyle(color: CustomColor.black, fontFamily: 'transport'),
           ),
-          body: Stack(children: [
-            LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  return SizedBox(
-                      height: constraints.maxHeight / 1.1,
-                      child: GoogleMap(
-                        initialCameraPosition: _cameraPosition,
-                        mapType: MapType.normal,
-                        myLocationEnabled: true,
-                        padding: const EdgeInsets.symmetric(vertical: 50),
-                        compassEnabled: true,
-                        zoomControlsEnabled: true,
-                        mapToolbarEnabled: true,
-                        zoomGesturesEnabled: true,
-                        myLocationButtonEnabled: true,
-                        onMapCreated: (GoogleMapController controller) {
-                          _completer.complete(controller);
-                        },
-                        markers: Set<Marker>.of(_markers.values),
-                      )
-                  );
+          elevation: 0,
+          backgroundColor: CustomColor.lightYellow,
+          leading: IconButton(
+            onPressed: () {
+              showExitPopup(context, "Do you want to stop ride?", () async {
+                // OverlayLoadingProgress.start(context);
+                //Navigator.pop(context, true);
+                await endRide();
+              });
+            },
+            icon: Image.asset('assets/map_back.png'),
+          ),
+          actions: <Widget>[
+            IconButton(
+                icon: const Icon(
+                  Icons.share,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  shareData();
                 }),
-            DraggableScrollableSheet(
-                initialChildSize: 0.15,
-                minChildSize: 0.10,
-                maxChildSize: 1,
-                snapSizes: [0.5, 1],
-                snap: true,
-                builder: (BuildContext context, scrollSheetController) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: CustomColor.white,
-                      borderRadius: BorderRadius.circular(15.r),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10.0.h, horizontal: 20.0.w),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        showExitPopup(context,
-                                            "Do you want to stop ride?",
-                                                () async {
-                                              OverlayLoadingProgress.start(context);
-                                              Navigator.pop(context, true);
-                                              await endRide();
-                                            });
-                                        //showAlertDialog(context);
-                                      },
-                                      child: Column(
-                                        children: [
-                                          Image.asset("images/End_Ride.png",
-                                              width: 50.w, height: 50.h),
-                                          SizedBox(height: 10.h),
-                                          Text("End Ride",
-                                              style: TextStyle(
-                                                  fontFamily: 'transport',
-                                                  fontSize: 14.sp)),
-                                        ],
-                                      ),
+          ],
+        ),
+        body: Stack(children: [
+          LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return SizedBox(
+                    height: constraints.maxHeight / 1.1,
+                    child: GoogleMap(
+                      initialCameraPosition: _cameraPosition,
+                      mapType: MapType.normal,
+                      myLocationEnabled: true,
+                      padding: const EdgeInsets.symmetric(vertical: 50),
+                      compassEnabled: true,
+                      zoomControlsEnabled: true,
+                      mapToolbarEnabled: true,
+                      zoomGesturesEnabled: true,
+                      myLocationButtonEnabled: true,
+                      onMapCreated: (GoogleMapController controller) {
+                        _completer.complete(controller);
+                      },
+                      markers: Set<Marker>.of(_markers.values),
+                    )
+                );
+              }),
+          DraggableScrollableSheet(
+              initialChildSize: 0.15,
+              minChildSize: 0.10,
+              maxChildSize: 1,
+              snapSizes: [0.5, 1],
+              snap: true,
+              builder: (BuildContext context, scrollSheetController) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: CustomColor.white,
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: 10.0.h, horizontal: 20.0.w),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      showExitPopup(context,
+                                          "Do you want to stop ride?",
+                                              () async {
+                                            OverlayLoadingProgress.start(context);
+                                            Navigator.pop(context, true);
+                                            await endRide();
+                                          });
+                                      //showAlertDialog(context);
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Image.asset("images/End_Ride.png",
+                                            width: 50.w, height: 50.h),
+                                        SizedBox(height: 10.h),
+                                        Text("End Ride",
+                                            style: TextStyle(
+                                                fontFamily: 'transport',
+                                                fontSize: 14.sp)),
+                                      ],
                                     ),
+                                  ),
+                                ],
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  showMenu();
+                                },
+                                child: Column(
+                                  children: [
+                                    Image.asset("images/Ride_Details.png",
+                                        width: 50.w, height: 50.h),
+                                    SizedBox(height: 10.h),
+                                    Text("Ride Details",
+                                        style: TextStyle(
+                                            fontFamily: 'transport',
+                                            fontSize: 14.sp)),
                                   ],
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    showMenu();
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Image.asset("images/Ride_Details.png",
-                                          width: 50.w, height: 50.h),
-                                      SizedBox(height: 10.h),
-                                      Text("Ride Details",
-                                          style: TextStyle(
-                                              fontFamily: 'transport',
-                                              fontSize: 14.sp)),
-                                    ],
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Get.to(const MapFamilyAdd());
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Image.asset("images/family_icons.png",
-                                          width: 50.w, height: 50.h),
-                                      SizedBox(height: 10.h),
-                                      Text("Add Family",
-                                          style: TextStyle(
-                                              fontFamily: 'transport',
-                                              fontSize: 14.sp)),
-                                    ],
-                                  ),
-                                ),
-                                Column(
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Get.to(const MapFamilyAdd());
+                                },
+                                child: Column(
                                   children: [
-                                    InkWell(
-                                      onTap: () {
-                                        showExitPopup(
-                                            context, "Are you in trouble?", () {
-                                          OverlayLoadingProgress.start(context);
-                                          SOSNotification();
-                                        });
-                                      },
-                                      child: Column(
-                                        children: [
-                                          Image.asset("images/SOS.png",
-                                              width: 50.w, height: 50.h),
-                                        ],
-                                      ),
-                                    ),
+                                    Image.asset("images/family_icons.png",
+                                        width: 50.w, height: 50.h),
+                                    SizedBox(height: 10.h),
+                                    Text("Add Family",
+                                        style: TextStyle(
+                                            fontFamily: 'transport',
+                                            fontSize: 14.sp)),
                                   ],
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
+                              Column(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      showExitPopup(
+                                          context, "Are you in trouble?", () {
+                                        OverlayLoadingProgress.start(context);
+                                        SOSNotification();
+                                      });
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Image.asset("images/SOS.png",
+                                            width: 50.w, height: 50.h),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                  );
-                }),
-          ]),
-        ),
+                  ),
+                );
+              }),
+        ]),
       ),
     );
   }

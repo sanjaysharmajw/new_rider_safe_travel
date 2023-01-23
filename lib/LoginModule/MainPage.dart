@@ -137,16 +137,16 @@ class _MainPageState extends State<MainPage> {
                 }
               },
               child: Badge(
-                padding: EdgeInsets.symmetric(vertical: 15,horizontal: 8),
+                padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 8),
                 badgeContent:  Text(
                   countNitification.toString(),
-                  style: TextStyle(color: CustomColor.black,fontSize: 15, fontFamily: 'transport',),
+                  style: const TextStyle(color: CustomColor.black,fontSize: 15, fontFamily: 'transport',),
                 ),
                 badgeColor: Colors.green,
                 child: const Icon(Icons.notifications_outlined, size: 30,color: CustomColor.black,),
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             IconButton(
                 icon: const Icon(Icons.logout),
                 color: CustomColor.black,
@@ -157,7 +157,7 @@ class _MainPageState extends State<MainPage> {
           elevation: 15,
           centerTitle: true,
           backgroundColor: CustomColor.yellow,
-          title: Text("Dashboard",
+          title:const Text("Dashboard",
             style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',),),
         ),
         body: Column(
@@ -249,9 +249,6 @@ class _MainPageState extends State<MainPage> {
         'user_id': userId,
       }),
     );
-    print("Resonse Main"+jsonEncode(<String, String>{
-      'user_id': userId,
-    }));
     if (response.statusCode == 200) {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       String socketToken = jsonDecode(response.body)['token'];
@@ -285,8 +282,7 @@ class _MainPageState extends State<MainPage> {
       }
       return Data.fromJson(response.body.toString());
     } else {
-      //Get.snackbar(response.body, 'Failed');
-      throw Exception('Failed to create album.');
+      throw Exception('Failed to create.');
     }
   }
   Future<http.Response> countNotification() async {
@@ -307,7 +303,6 @@ class _MainPageState extends State<MainPage> {
     if (response.statusCode == 200) {
       //bool status = jsonDecode(response.body)[ErrorMessage.status];
       countNitification = jsonDecode(response.body)['data'];
-      print("respins noti $countNitification");
       //ToastMessage.toast(status.toString());
       setState(() {
       });
@@ -366,7 +361,6 @@ class _MainPageState extends State<MainPage> {
       }
       return DriverVehicleList.fromJson(response.body);
     } else {
-      //Get.snackbar(response.body, 'Failed');
       throw Exception('Failed to create.');
     }
   }

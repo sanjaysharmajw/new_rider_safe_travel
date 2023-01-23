@@ -96,129 +96,127 @@ class _RiderMapState extends State<RiderMap> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            widget.memberName.toString(),
-            style: const TextStyle(color: CustomColor.black, fontFamily: 'transport'),
-          ),
-          elevation: 0,
-          backgroundColor: CustomColor.lightYellow,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context, true);
-            },
-            icon: Image.asset('assets/map_back.png'),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          widget.memberName.toString(),
+          style: const TextStyle(color: CustomColor.black, fontFamily: 'transport'),
         ),
-        body: Stack(children: [
+        elevation: 0,
+        backgroundColor: CustomColor.lightYellow,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context, true);
+          },
+          icon: Image.asset('assets/map_back.png'),
+        ),
+      ),
+      body: Stack(children: [
 
-          LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-            return SizedBox(
-              height: constraints.maxHeight / 1.1,
-              child: GoogleMap(
-                initialCameraPosition: _cameraPosition,
-                mapType: MapType.normal,
-                myLocationEnabled: true,
-                padding: const EdgeInsets.symmetric(vertical: 50),
-                compassEnabled: true,
-                zoomControlsEnabled: true,
-                myLocationButtonEnabled: true,
-                onMapCreated: (GoogleMapController controller) {
-                  _completer.complete(controller);
-                },
-                markers: Set<Marker>.of(_markers.values),
-              ),
-            );
-          }),
-          DraggableScrollableSheet(
-              initialChildSize: 0.15,
-              minChildSize: 0.10,
-              maxChildSize: 1,
-              snapSizes: [0.5, 1],
-              snap: true,
-              builder: (BuildContext context, scrollSheetController) {
-                return Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: CustomColor.white,
-                    borderRadius: BorderRadius.circular(15.h),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: 10.0.h, horizontal: 20.0.w),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Make_a_call.makePhoneCall(widget.dMobile);
-                                },
-                                child:   Column(
-                                  children: [
-                                    Image.asset("images/contact_driver.png",
-                                        width: 50.w, height: 50.h),
-                                    SizedBox(height: 10.h),
-                                    Text("Contact Driver",
-                                        style: TextStyle(
-                                            fontFamily: 'transport',
-                                            fontSize: 16.sp)),
-                                  ],
-                                ),
+        LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+          return SizedBox(
+            height: constraints.maxHeight / 1.1,
+            child: GoogleMap(
+              initialCameraPosition: _cameraPosition,
+              mapType: MapType.normal,
+              myLocationEnabled: true,
+              padding: const EdgeInsets.symmetric(vertical: 50),
+              compassEnabled: true,
+              zoomControlsEnabled: true,
+              myLocationButtonEnabled: true,
+              onMapCreated: (GoogleMapController controller) {
+                _completer.complete(controller);
+              },
+              markers: Set<Marker>.of(_markers.values),
+            ),
+          );
+        }),
+        DraggableScrollableSheet(
+            initialChildSize: 0.15,
+            minChildSize: 0.10,
+            maxChildSize: 1,
+            snapSizes: [0.5, 1],
+            snap: true,
+            builder: (BuildContext context, scrollSheetController) {
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: CustomColor.white,
+                  borderRadius: BorderRadius.circular(15.h),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: 10.0.h, horizontal: 20.0.w),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Make_a_call.makePhoneCall(widget.dMobile);
+                              },
+                              child:   Column(
+                                children: [
+                                  Image.asset("images/contact_driver.png",
+                                      width: 50.w, height: 50.h),
+                                  SizedBox(height: 10.h),
+                                  Text("Contact Driver",
+                                      style: TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 16.sp)),
+                                ],
                               ),
+                            ),
 
-                              InkWell(
-                                onTap: () {
-                                  showMenu();
-                                },
-                                child: Column(
-                                  children: [
-                                    Image.asset("images/Ride_Details.png",
-                                        width: 50.w, height: 50.h),
-                                    SizedBox(height: 10.h),
-                                    Text("Ride Details",
-                                        style: TextStyle(
-                                            fontFamily: 'transport',
-                                            fontSize: 16.sp)),
-                                  ],
-                                ),
+                            InkWell(
+                              onTap: () {
+                                showMenu();
+                              },
+                              child: Column(
+                                children: [
+                                  Image.asset("images/Ride_Details.png",
+                                      width: 50.w, height: 50.h),
+                                  SizedBox(height: 10.h),
+                                  Text("Ride Details",
+                                      style: TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 16.sp)),
+                                ],
                               ),
-                              InkWell(
-                                onTap: () {
-                                  showExitPopup(context,"Do you really want to call on 100 ?",(){
-                                    Make_a_call.makePhoneCall("100");
-                                    Navigator.pop(context, true);
-                                  });
-                                },
-                                child: Column(
-                                  children: [
-                                    Image.asset("images/hundred_number.png",
-                                        width: 50.w, height: 50.h),
-                                    SizedBox(height: 10.h),
-                                    const Text("100",
-                                        style: TextStyle(
-                                            fontFamily: 'transport',
-                                            fontSize: 16)),
-                                  ],
-                                ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                showExitPopup(context,"Do you really want to call on 100 ?",(){
+                                  Make_a_call.makePhoneCall("100");
+                                  Navigator.pop(context, true);
+                                });
+                              },
+                              child: Column(
+                                children: [
+                                  Image.asset("images/hundred_number.png",
+                                      width: 50.w, height: 50.h),
+                                  SizedBox(height: 10.h),
+                                  const Text("100",
+                                      style: TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 16)),
+                                ],
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                );
-              }),
-        ]
-        ),
+                ),
+              );
+            }),
+      ]
       ),
     );
   }
@@ -292,7 +290,7 @@ class _RiderMapState extends State<RiderMap> {
         controller.animateCamera(CameraUpdate.newCameraPosition(
             CameraPosition(target: LatLng(lat, lng), zoom: 19)));
         var image = await BitmapDescriptor.fromAssetImage(
-            const ImageConfiguration(), "images/map_marker.png");
+            const ImageConfiguration(), "images/family_map_pin.png");
         Marker marker = Marker(
             markerId: MarkerId('ID'), icon: image, position: LatLng(lat, lng));
         setState(() {

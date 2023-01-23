@@ -35,123 +35,122 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
-    return SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            leading:  IconButton(icon: Icon(Icons.keyboard_backspace_sharp), onPressed: () {
-              Get.back();
-            },),
-            centerTitle: true,
-            backgroundColor: CustomColor.yellow,
-            title: const Text("Add Family Member",
-                style: TextStyle(fontFamily: 'transport', fontSize: 18)),
-          ),
-          body: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 50),
-                  const SizedBox(height: 20),
-                  const Text("User Who can track",
-                      style: TextStyle(fontFamily: 'transport', fontSize: 20)),
-                  Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: TextFormField(
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                            RegExp("[a-zA-Z\]")),
-                        FilteringTextInputFormatter.deny('  ')
-                      ],
-                      validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            value.length < 2) {
-                          return 'Please enter name!';
-                        }
-                        return null;
-                      },
-                      controller: controllerName,
-                      style: const TextStyle(fontFamily: 'transport', fontSize: 14),
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Enter Name',
-                        hintText: 'Enter Name',
-                      ),
-                    ),
+    return Scaffold(
+      appBar: AppBar(
+        leading:  IconButton(icon: Icon(Icons.keyboard_backspace_sharp), onPressed: () {
+          Get.back();
+        },),
+        centerTitle: true,
+        backgroundColor: CustomColor.yellow,
+        title: const Text("Add Family Member",
+            style: TextStyle(fontFamily: 'transport', fontSize: 18)),
+      ),
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 50),
+              const SizedBox(height: 20),
+              const Text("User Who can track",
+                  style: TextStyle(fontFamily: 'transport', fontSize: 20)),
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: TextFormField(
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        RegExp("[a-zA-Z\]")),
+                    FilteringTextInputFormatter.deny('  ')
+                  ],
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        value.length < 2) {
+                      return 'Please enter name!';
+                    }
+                    return null;
+                  },
+                  controller: controllerName,
+                  style: const TextStyle(fontFamily: 'transport', fontSize: 14),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter Name',
+                    hintText: 'Enter Name',
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: TextFormField(
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                            RegExp("[a-zA-Z\]")),
-                        FilteringTextInputFormatter.deny('  ')
-                      ],
-                      validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            value.length < 2) {
-                          return 'Please enter valid relation!';
-                        }
-                        return null;
-                      },
-                      controller: controllerRelation,
-                      style: const TextStyle(fontFamily: 'transport', fontSize: 14),
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Enter Relation',
-                        hintText: 'Enter Your Family Relation',
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: TextFormField(
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                            RegExp("[0-9]")),
-                        FilteringTextInputFormatter.deny(RegExp(r'^0+')),
-                        LengthLimitingTextInputFormatter(10),
-                      ],
-                      controller: controllerMobile,
-                      style: const TextStyle(fontFamily: 'transport', fontSize: 14),
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Enter Mobile',
-                        hintText: 'Enter Your Mobile Number',
-                      ),
-                      validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            value.length != 10) {
-                          return 'Please enter valid mobile number!';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  RiderButton(
-                      click: () {
-                        if (_formKey.currentState!.validate()) {
-                          OverlayLoadingProgress.start(context);
-                          addFamilyMember(
-                              controllerName.text.toString(),
-                              userId,
-                              controllerRelation.text.toString(),
-                              controllerMobile.text.toString());
-
-
-                        }
-
-                      },
-                      textBtn: 'Add')
-                ],
+                ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: TextFormField(
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        RegExp("[a-zA-Z\]")),
+                    FilteringTextInputFormatter.deny('  ')
+                  ],
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        value.length < 2) {
+                      return 'Please enter valid relation!';
+                    }
+                    return null;
+                  },
+                  controller: controllerRelation,
+                  style: const TextStyle(fontFamily: 'transport', fontSize: 14),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter Relation',
+                    hintText: 'Enter Your Family Relation',
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: TextFormField(
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        RegExp("[0-9]")),
+                    FilteringTextInputFormatter.deny(RegExp(r'^0+')),
+                    LengthLimitingTextInputFormatter(10),
+                  ],
+                  controller: controllerMobile,
+                  style: const TextStyle(fontFamily: 'transport', fontSize: 14),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter Mobile',
+                    hintText: 'Enter Your Mobile Number',
+                  ),
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        value.length != 10) {
+                      return 'Please enter valid mobile number!';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              RiderButton(
+                  click: () {
+                    if (_formKey.currentState!.validate()) {
+                      OverlayLoadingProgress.start(context);
+                      addFamilyMember(
+                          controllerName.text.toString(),
+                          userId,
+                          controllerRelation.text.toString(),
+                          controllerMobile.text.toString());
+
+
+                    }
+
+                  },
+                  textBtn: 'Add')
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Future<AffFamilyMemberNewModel> addFamilyMember(
