@@ -61,13 +61,8 @@ class _RiderMapState extends State<RiderMap> {
   var vehicleId = '', driverId = '', userId = '', riderId = '';
   String date = '';
   bool visibility = false;
-  late MapmyIndiaMapController mapController;
-  late Symbol symbol;
-
-  //Polyline
-  late Line line;
-  late List<LatLng> polyline_latlng;
-
+  late Map<MarkerId, Marker> _markers;
+  Completer<GoogleMapController> _completer = Completer();
   static const CameraPosition _cameraPosition = CameraPosition(
     target: LatLng(19.0654285394954, 73.00269069070602),
     zoom: 14,
@@ -132,24 +127,23 @@ final ScrollController scrollController = ScrollController();
         .size
         .height * .80;
     ScreenUtil.init(context, designSize: const Size(375, 812));
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            widget.memberName.toString(),
-            style: const TextStyle(color: CustomColor.black, fontFamily: 'transport'),
-          ),
-          elevation: 0,
-          backgroundColor: CustomColor.lightYellow,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context, true);
-            },
-            icon: Image.asset('assets/map_back.png'),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          widget.memberName.toString(),
+          style: const TextStyle(color: CustomColor.black, fontFamily: 'transport'),
         ),
-        body: Stack(children: [
+        elevation: 0,
+        backgroundColor: CustomColor.lightYellow,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context, true);
+          },
+          icon: Image.asset('assets/map_back.png'),
+        ),
+      ),
+      body: Stack(children: [
 
           LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
@@ -418,10 +412,8 @@ final ScrollController scrollController = ScrollController();
                       ],
                     ),
                   ),
-                );
-              }),
-        ]
-        ),
+            }),
+      ]
       ),
     );
   }
@@ -663,7 +655,7 @@ final ScrollController scrollController = ScrollController();
         controller.animateCamera(CameraUpdate.newCameraPosition(
             CameraPosition(target: LatLng(lat, lng), zoom: 19)));
         var image = await BitmapDescriptor.fromAssetImage(
-            const ImageConfiguration(), "images/map_marker.png");
+            const ImageConfiguration(), "images/family_map_pin.png");
         Marker marker = Marker(
             markerId: MarkerId('ID'), icon: image, position: LatLng(lat, lng));
         setState(() {

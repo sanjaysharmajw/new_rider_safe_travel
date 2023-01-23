@@ -24,8 +24,23 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This application requires location services to work</string>
+	<key>NSLocationUsageDescription</key>
+	<string>I need location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This application requires location services to work</string>
+
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need photo access</string>
+
+	<key>NSCameraUsageDescription</key>
+    	<string>We need camera access</string>
+
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -53,21 +68,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-    <false/>
-    <key>NSCameraUsageDescription</key>
-    <string>Camera permission is required for qrcode scanning.</string>
-
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>This application requires location services to work</string>
-
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>This application requires location services to work</string>
-
-    <key>NSLocationUsageDescription</key>
-    <string>I need location</string>
-
-
-
 </dict>
 </plist>
