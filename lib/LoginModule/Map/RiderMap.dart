@@ -19,10 +19,8 @@ import 'package:ride_safe_travel/Utils/make_a_call.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-
 import '../../BottomSheet/Country.dart';
 import '../../BottomSheet/TabWidget.dart';
-import '../../Utils/MapMyIndiaKeys.dart';
 import '../../Utils/exit_alert_dialog.dart';
 
 class RiderMap extends StatefulWidget {
@@ -410,8 +408,7 @@ final ScrollController scrollController = ScrollController();
                           ],
                         ),
                       ],
-                    ),
-                  ),
+                )));
             }),
       ]
       ),
@@ -460,174 +457,6 @@ final ScrollController scrollController = ScrollController();
     }
   }
 
-  Widget _panel() {
-    return MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: ListView(
-          controller: null,
-          children: <Widget>[
-            SizedBox(
-              height: 12.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: 30,
-                  height: 5,
-                  decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.all(Radius.circular(12.0))),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 18.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Text(
-                    "Select a location",
-                    style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 20.0,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 30.0,
-            ),
-            Padding(
-                padding: EdgeInsets.all(15.0),
-                child:
-                Autocomplete<Country>(
-                    optionsBuilder:
-                        (TextEditingValue textEditingValue) {
-                      return countryOptions
-                          .where((Country county) => county.name
-                          .toLowerCase()
-                          .startsWith(textEditingValue.text
-                          .toLowerCase()))
-                          .toList();
-                    },
-                    displayStringForOption: (Country option) =>
-                    option.name,
-                    fieldViewBuilder: (BuildContext context,
-                        TextEditingController
-                        fieldTextEditingController,
-                        FocusNode fieldFocusNode,
-                        VoidCallback onFieldSubmitted) {
-                      return Card(
-                        child: ListTile(
-                          //leading: Icon(Icons.search),
-                          title: TextFormField(
-
-
-                            onChanged: (value) {
-                              setState(() {
-                                searchString = value.toString();
-                              });
-                            },
-                            controller: fieldTextEditingController,
-                            focusNode: fieldFocusNode,
-                            decoration: InputDecoration(
-                                hintText: "Search",
-                                border: InputBorder.none,
-                                prefixIcon: IconButton(
-                                    onPressed: (){
-                                      // searchMemberApi(mobileController.text,widget.userId);
-                                    }, icon:  Icon(Icons.search,))
-                            ),
-                          ),
-                          trailing: IconButton(onPressed: (){
-                            fieldTextEditingController.clear();
-                          }, icon: Icon(Icons.clear)),
-                        ),
-                      );
-                      /* ListTile(
-                        title: TextField(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              suffixIcon: IconButton(
-                                  onPressed: (){
-                                   // searchMemberApi(mobileController.text,widget.userId);
-                                  }, icon:  Icon(Icons.search)),
-
-                          ),
-
-
-                          controller: fieldTextEditingController,
-                          focusNode: fieldFocusNode,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold),
-                        ),
-                        trailing: IconButton(onPressed: (){
-                         // mobileController.clear();
-                        }, icon: Icon(Icons.clear)),
-                      ); */
-
-
-                    },
-
-                    onSelected: (Country selection) {
-                      print('Selected: ${selection.name}');
-                    },
-                    optionsViewBuilder: (BuildContext context,
-                        AutocompleteOnSelected<Country>
-                        onSelected,
-                        Iterable<Country> options) {
-                      return Align(
-                        alignment: Alignment.topLeft,
-                        child: Material(
-                          child: Container(
-                            width: 365,
-                            //color: Colors.grey,
-                            child: ListView.builder(
-                              padding: EdgeInsets.all(10.0),
-                              itemCount: options.length,
-                              itemBuilder:
-                                  (BuildContext context,
-                                  int index) {
-                                final Country option =
-                                options.elementAt(index);
-
-                                return GestureDetector(
-                                  onTap: () {
-                                    onSelected(option);
-                                  },
-                                  child: Card(
-                                    elevation: 1,
-                                    margin: EdgeInsets.symmetric(vertical: 2),
-                                    child: ListTile(
-                                      leading: Icon(Icons.location_on_rounded,color: Colors.red,),
-                                      title: Text(option.name,
-                                          style: const TextStyle(
-                                              color:
-                                              Colors.black)
-                                      ),
-                                      subtitle: Text(option.address.toString()),
-
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      );
-                    })
-            )
-
-          ],
-        ));
-  }
-
   Future<void> socketConnect(String token) async {
     try {
       socket = IO.io(ApiUrl.socketUrl, <String, dynamic>{
@@ -655,7 +484,7 @@ final ScrollController scrollController = ScrollController();
         controller.animateCamera(CameraUpdate.newCameraPosition(
             CameraPosition(target: LatLng(lat, lng), zoom: 19)));
         var image = await BitmapDescriptor.fromAssetImage(
-            const ImageConfiguration(), "images/family_map_pin.png");
+            const ImageConfiguration(), "images/map_marker.png");
         Marker marker = Marker(
             markerId: MarkerId('ID'), icon: image, position: LatLng(lat, lng));
         setState(() {
