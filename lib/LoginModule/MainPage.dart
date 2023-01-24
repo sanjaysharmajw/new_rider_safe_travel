@@ -123,166 +123,137 @@ class _MainPageState extends State<MainPage> {
       onWillPop: () => showExitPopup(context, "Do you want to exit?", () {
         exit(0);
       }),
-      child: SafeArea(
-        child: Scaffold(
-        //debugShowCheckedModeBanner: false,
-        //  home: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          actions: <Widget>[
-            InkWell(
-              onTap: () async {
-                Get.to(const NotificationScreen());
-                String refresh= await Navigator.push(context,
-                    MaterialPageRoute(builder: (context)=>const NotificationScreen()));
-                if(refresh=='refresh'){
-                  await countNotification();
-                }
-              },
-              child: Badge(
-                padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 8),
-                badgeContent:  Text(
-                  countNitification.toString(),
-                  style: const TextStyle(color: CustomColor.black,fontSize: 15, fontFamily: 'transport',),
-                ),
-                badgeColor: Colors.green,
-                child: const Icon(Icons.notifications_outlined, size: 30,color: CustomColor.black,),
+      child: Scaffold(
+      //debugShowCheckedModeBanner: false,
+      //  home: Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        actions: <Widget>[
+          InkWell(
+            onTap: () async {
+              Get.to(const NotificationScreen());
+              String refresh= await Navigator.push(context,
+                  MaterialPageRoute(builder: (context)=>const NotificationScreen()));
+              if(refresh=='refresh'){
+                await countNotification();
+              }
+            },
+            child: Badge(
+              padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 8),
+              badgeContent:  Text(
+                countNitification.toString(),
+                style: const TextStyle(color: CustomColor.black,fontSize: 15, fontFamily: 'transport',),
               ),
+              badgeColor: Colors.green,
+              child: const Icon(Icons.notifications_outlined, size: 30,color: CustomColor.black,),
             ),
-            const SizedBox(width: 10),
-            IconButton(
-                icon: const Icon(Icons.logout),
-                color: CustomColor.black,
-                onPressed: () {
-                  logoutPopup(context);
-                }),
-          ],
-          elevation: 15,
-          centerTitle: true,
-          backgroundColor: CustomColor.yellow,
-          title:const Text("Dashboard",
-            style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',),),
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            height: 800,
-            child: Column(
-              children: [
-                DashboardProfileWidgets(
-                    image: image,
-                    profileName: profileName + " " + profileLastName,
-                    profileMobile: profileMobile,
-                    emailId: profileEmailId),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    MainPageCard(
-                      icons: 'images/my_profile.png',
-                      text: 'My Profile',
-                      press: () {
-                        Get.to(const RiderProfileView());
-                      },
-                      width: 165.w,
-                      height: 165.h,
-                      widthImage: 45.w,
-                      heightImage: 45.h,
-                    ),
-                    MainPageCard(
-                      icons: 'images/my_rides.png',
-                      text: 'My Rides',
-                      press: () {
-                        Get.to(const MyRidesPage());
-                      },
-                      width: 165.w,
-                      height: 165.h,
-                      widthImage: 45.w,
-                      heightImage: 45.h,
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    MainPageCard(
-                      icons: 'images/track_me.png',
-                      text: 'Track Me',
-                      press: (){
-                        OverlayLoadingProgress.start(context);
-                        checkActiveUser();
-                      }, //_scanQR
-                      width: 165.w,
-                      height: 165.h,
-                      widthImage: 45.w,
-                      heightImage: 45.h,
-                    ),
-                    MainPageCard(
-                      icons: 'images/track_me.png',
-                      text: 'Track Others',
-                      press: () {
-                       Get.to( FamilyMemberListScreen());
-                        //Navigator.push(context, MaterialPageRoute(builder:
-                        //(context)=>FamilyMemberListScreen(userId: userId.toString(),)));
-                      },
-                      width: 165.w,
-                      height: 165.h,
-                      widthImage: 45.w,
-                      heightImage: 45.h,
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0.w),
-                  child: MainPageBtn(
-                      icons: 'images/my_family_icons.png',
-                      text: 'My Family List',
-                      press: () {
-                        Get.to(const UserFamilyList());
-                      }),
-                ),
-                SizedBox(height: 15.h),
+          ),
+          const SizedBox(width: 10),
+          IconButton(
+              icon: const Icon(Icons.feedback_outlined),
+              color: CustomColor.black,
+              onPressed: () {
+                Get.to(const FeedBackScreenPage());
+              }),
+          IconButton(
+              icon: const Icon(Icons.logout),
+              color: CustomColor.black,
+              onPressed: () {
+                logoutPopup(context);
+              }),
 
+
+        ],
+        elevation: 15,
+        centerTitle: true,
+        backgroundColor: CustomColor.yellow,
+        title:const Text("Dashboard",
+          style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',),),
+      ),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          child: Column(
+            children: [
+              DashboardProfileWidgets(
+                  image: image,
+                  profileName: profileName + " " + profileLastName,
+                  profileMobile: profileMobile,
+                  emailId: profileEmailId),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  MainPageCard(
+                    icons: 'images/my_profile.png',
+                    text: 'My Profile',
+                    press: () {
+                      Get.to(const RiderProfileView());
+                    },
+                    width: 165.w,
+                    height: 165.h,
+                    widthImage: 45.w,
+                    heightImage: 45.h,
+                  ),
+                  MainPageCard(
+                    icons: 'images/my_rides.png',
+                    text: 'My Rides',
+                    press: () {
+                      Get.to(const MyRidesPage());
+                    },
+                    width: 165.w,
+                    height: 165.h,
+                    widthImage: 45.w,
+                    heightImage: 45.h,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  MainPageCard(
+                    icons: 'images/track_me.png',
+                    text: 'Track Me',
+                    press: (){
+                      OverlayLoadingProgress.start(context);
+                      checkActiveUser();
+                    }, //_scanQR
+                    width: 165.w,
+                    height: 165.h,
+                    widthImage: 45.w,
+                    heightImage: 45.h,
+                  ),
+                  MainPageCard(
+                    icons: 'images/track_me.png',
+                    text: 'Track Others',
+                    press: () {
+                     Get.to( FamilyMemberListScreen());
+                      //Navigator.push(context, MaterialPageRoute(builder:
+                      //(context)=>FamilyMemberListScreen(userId: userId.toString(),)));
+                    },
+                    width: 165.w,
+                    height: 165.h,
+                    widthImage: 45.w,
+                    heightImage: 45.h,
+                  ),
+                ],
+              ),
+              SizedBox(height: 8.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12.0.w),
-                child: InkWell(
-                  onTap: (){
-                    Get.to(const FeedBackScreenPage());
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(
-                            Radius.circular(8)),
-                        border: Border.all(
-                            color: Colors.black38,
-                            width: 1.5)),
-                    child: Container(
-                      height: 60.h,
-                      decoration: BoxDecoration(
-                        color: CustomColor.lightYellow,
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                         Icon(Icons.feedback_outlined),
-                          SizedBox(width: 10.w),
-                          Text("Feedback",
-                              style: const TextStyle(
-                                  fontFamily: 'transport', fontWeight: FontWeight.w500))
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              )
-              ]
-          ),
+                child: MainPageBtn(
+                    icons: 'images/my_family_icons.png',
+                    text: 'My Family List',
+                    press: () {
+                      Get.to(const UserFamilyList());
+                    }),
+              ),
+              SizedBox(height: 15.h),
+            ]
         ),
+      ),
      )
-    ),
-      )
+    )
     );
   }
   Future<Data> checkActiveUser() async {

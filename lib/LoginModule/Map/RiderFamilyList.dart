@@ -75,7 +75,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                 snapshot.data![index].memberName??"N/A",
                           ));
                         } else {
-                          Center(child: CircularProgressIndicator());
+                          const Center(child: CircularProgressIndicator());
                         }
                       });
                     },

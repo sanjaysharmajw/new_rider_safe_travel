@@ -12,6 +12,7 @@ import 'package:ride_safe_travel/LoginModule/preferences.dart';
 
 
 import 'LoginModule/Map/RiderMap.dart';
+import 'Utils/demod.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
@@ -58,7 +59,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  const MyHomePage(),
+      home:   MyHomePage(),
       debugShowCheckedModeBanner: false,
     );
   }

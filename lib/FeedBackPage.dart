@@ -40,419 +40,414 @@ class _FeedBackScreenPageState extends State<FeedBackScreenPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: CustomColor.yellow,
-            elevation: 15,
-            leading: Padding(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              child: IconButton(
-                  onPressed: () {
-                    Get.back(canPop: true);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_sharp,
-                    color: CustomColor.black,
-                    size: 30,
-                  )),
-            ),
-            title: Text("FeedBack",
-              style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',),),
-          ),
-          body: Container(
-            padding: const EdgeInsets.only(left: 15, right: 15,top: 15),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 40,
-                ),
-                Expanded(
-                  child: FutureBuilder<List<TripDataModel>>(
-                    future: getData(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          itemCount: snapshot.data?.length,
-                          itemBuilder: (context, index) {
-                            print(snapshot.data?.length,);
-                            print("______________________________________");
-                            return InkWell(
-                                onTap: (){},
-                                child:
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: CustomColor.yellow,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: IconButton(
+              onPressed: () {
+                Get.back(canPop: true);
+              },
+              icon: Icon(
+                Icons.arrow_back_sharp,
+                color: CustomColor.black,
+                size: 30,
+              )),
+        ),
+        title: Text("FeedBack",
+          style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',),),
+      ),
+      body: Container(
+        padding: const EdgeInsets.only(left: 15, right: 15,top: 5),
+        child: Column(
+          children: [
+            Expanded(
+              child: FutureBuilder<List<TripDataModel>>(
+                future: getData(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      itemCount: snapshot.data?.length,
+                      itemBuilder: (context, index) {
+                        print(snapshot.data?.length,);
+                        print("______________________________________");
+                        return InkWell(
+                            onTap: (){},
+                            child:
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(color: CustomColor.yellow)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Container(
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(color: CustomColor.yellow)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(8),
-                                            color: CustomColor.yellow),
-                                        child: Column(
+                                        color: CustomColor.yellow),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: 10,),
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          crossAxisAlignment: CrossAxisAlignment.end,
                                           children: [
-                                            SizedBox(height: 10,),
-                                            Column(
-                                              mainAxisAlignment: MainAxisAlignment.end,
-                                              crossAxisAlignment: CrossAxisAlignment.end,
-                                              children: [
-                                                Text(
-                                                    "DATE:  " +
-                                                        snapshot.data![index].date.toString() == null ? '' : snapshot.data![index].date.toString(),
-                                                    style: TextStyle(
-                                                        fontFamily: 'transport',
-                                                        fontSize: 15)),
-                                              ],
-                                            ),
-                                            Column(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets.all(12.0),
-                                                  child: Row(
-                                                    children: [
-                                                      CircleAvatar(
-                                                        backgroundColor: CustomColor.yellow,
-                                                        radius: 30,
-                                                        child: CircleAvatar(
-                                                          backgroundColor: CustomColor.yellow,
-                                                          radius: 29,
-                                                          child: ClipOval(
-                                                            child:
-                                                            ( snapshot.data![index].vehiclePhoto !=
-                                                                null)
-                                                                ? Image.network(
-                                                              snapshot.data![index].vehiclePhoto
-                                                                  .toString(),
-                                                              width: 55,
-                                                              height: 50,
-                                                              fit: BoxFit
-                                                                  .cover,
-                                                            )
-                                                                : Image.asset(
-                                                                'assets/user_avatar.png'),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding: const EdgeInsets.only(top: 2, left: 6),
-                                                        child: Column(
-                                                          mainAxisSize: MainAxisSize.min,
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            const Text(
-                                                              "Driver Name",
-                                                              style: TextStyle(
-                                                                  color: CustomColor.text,
-                                                                  fontWeight: FontWeight.bold),
-                                                            ),
-                                                            Text(snapshot.data![index].driverName == null ? '' : snapshot.data![index].driverName.toString(),
-                                                                style: const TextStyle(
-                                                                    color: CustomColor.black,
-                                                                    fontWeight: FontWeight.bold))
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding: const EdgeInsets.only(top: 2, left: 25),
-                                                        child: Column(
-                                                          mainAxisSize: MainAxisSize.min,
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            const Text(
-                                                              "Vehicle Reg. No",
-                                                              style: TextStyle(
-                                                                  color: CustomColor.text,
-                                                                  fontWeight: FontWeight.bold),
-                                                            ),
-                                                            Text(snapshot.data![index].vehicleRegistrationNumber == null ? '' : snapshot.data![index].vehicleRegistrationNumber.toString(),
-                                                                style: const TextStyle(
-                                                                    color: CustomColor.black,
-                                                                    fontWeight: FontWeight.bold))
-                                                          ],
-                                                        ),
-                                                      ),
-
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const Divider(
-                                              color: Colors.white,
-                                              height: 3,
-                                              thickness: 1,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left:10, right: 5, top: 5, bottom: 5),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  const Text(
-                                                    "Source Location :",
-                                                    style: TextStyle(
-                                                        color: CustomColor.text,
-                                                        fontWeight: FontWeight.bold),
-                                                  ),
-                                                  Text(snapshot.data![index].fromDestination == null ? '' : snapshot.data![index].fromDestination.toString(),
-                                                      style: const TextStyle(
-                                                          color: CustomColor.text,
-                                                          fontWeight: FontWeight.bold)),
-
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(left: 10,right: 5,  bottom: 10),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  const Text(
-                                                    "Destination Location :",
-                                                    style: TextStyle(
-                                                        color: CustomColor.text,
-                                                        fontWeight: FontWeight.bold),
-                                                  ),
-                                                  Text( snapshot.data![index].toDestination == null ? '' : snapshot.data![index].toDestination.toString(),
-                                                      style: const TextStyle(
-                                                          color: CustomColor.text,
-                                                          fontWeight: FontWeight.bold)),
-
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(left: 180),
-                                              child: ElevatedButton(
-                                                child: Text("Give Feedback"),
-                                                onPressed: (){
-                                                  showDialog(
-                                                    context: context,
-                                                    builder: (BuildContext context) {
-                                                      return AlertDialog(
-                                                        content:Container(
-                                                          height: 200,
-                                                          child: Column(
-                                                            children: [
-                                                              const Center(
-                                                                  child: Text(
-                                                                    "Say Something About Your Experience ",
-                                                                    style: TextStyle(fontWeight: FontWeight.w900, color: CustomColor.black
-                                                                    ),)
-                                                              ),
-                                                              const SizedBox(height: 22,),
-                                                              SizedBox(
-                                                                child: Container(
-                                                                  height: 100,
-                                                                  decoration:  BoxDecoration (
-                                                                    borderRadius:  BorderRadius.circular(8),
-                                                                    border:  Border.all(color: Color(0xffffd91d)),
-                                                                  ),
-                                                                  child: Padding(
-                                                                    padding: EdgeInsets.only(left: 20,top: 2),
-                                                                    child: TextFormField(
-                                                                      controller: reviewController,
-                                                                      // autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
-                                                                      decoration: InputDecoration(
-                                                                        border: InputBorder.none,
-                                                                        hintText: 'Write a Review',
-                                                                      ),
-                                                                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                                                                      validator: (text) {
-                                                                        if (text == null || text.isEmpty) {
-                                                                          return 'Can\'t be empty';
-                                                                        }
-                                                                        if (text.length < 4) {
-                                                                          return 'Too short';
-                                                                        }
-                                                                        return null;
-                                                                      },
-                                                                      // update the state variable when the text changes
-                                                                      onChanged: (text) => setState(() => _name = text),
-                                                                    ),
-
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              RatingBar.builder(
-                                                                initialRating: 3,
-                                                                minRating: 1,
-                                                                direction: Axis.horizontal,
-                                                                allowHalfRating: true,
-                                                                itemCount: 5,
-                                                                itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                                                                itemBuilder: (context, _) => Icon(
-                                                                  Icons.star,
-                                                                  color: Colors.amber,
-                                                                ),
-                                                                onRatingUpdate: (rating) {
-                                                                  print(rating);
-                                                                  starRating = rating.toString() ;
-                                                                },
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        actions: <Widget>[
-                                                          Column(
-                                                            children: [
-                                                              Center(
-                                                                child: SmallButton(
-                                                                    textColor: CustomColor.black,
-                                                                    height: 50,
-                                                                    buttonTitle: "Submit",
-                                                                    onPressed: () async {
-                                                                      print("RIDER-USER-FEEDBACK-ID");
-                                                                      print(snapshot.data![index].id.toString());
-                                                                      saveRiderFeedback(snapshot.data![index].id.toString());
-                                                                    },
-                                                                    width: 160),
-                                                              ),
-                                                            ],
-                                                          )
-                                                        ],
-                                                      );
-                                                    },
-                                                  );
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Colors.green,
-                                                  onPrimary: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(32.0),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(height: 10,)
+                                            Text(
+                                                "DATE:  " +
+                                                    snapshot.data![index].date.toString() == null ? '' : snapshot.data![index].date.toString(),
+                                                style: TextStyle(
+                                                    fontFamily: 'transport',
+                                                    fontSize: 15)),
                                           ],
                                         ),
-                                      ),
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(12.0),
+                                              child: Row(
+                                                children: [
+                                                  CircleAvatar(
+                                                    backgroundColor: CustomColor.yellow,
+                                                    radius: 30,
+                                                    child: CircleAvatar(
+                                                      backgroundColor: CustomColor.yellow,
+                                                      radius: 29,
+                                                      child: ClipOval(
+                                                        child:
+                                                        ( snapshot.data![index].vehiclePhoto !=
+                                                            null)
+                                                            ? Image.network(
+                                                          snapshot.data![index].vehiclePhoto
+                                                              .toString(),
+                                                          width: 55,
+                                                          height: 50,
+                                                          fit: BoxFit
+                                                              .cover,
+                                                        )
+                                                            : Image.asset(
+                                                            'assets/user_avatar.png'),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(top: 2, left: 6),
+                                                    child: Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        const Text(
+                                                          "Driver Name",
+                                                          style: TextStyle(
+                                                              color: CustomColor.text,
+                                                              fontWeight: FontWeight.bold),
+                                                        ),
+                                                        Text(snapshot.data![index].driverName == null ? '' : snapshot.data![index].driverName.toString(),
+                                                            style: const TextStyle(
+                                                                color: CustomColor.black,
+                                                                fontWeight: FontWeight.bold))
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(top: 2, left: 25),
+                                                    child: Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        const Text(
+                                                          "Vehicle Reg. No",
+                                                          style: TextStyle(
+                                                              color: CustomColor.text,
+                                                              fontWeight: FontWeight.bold),
+                                                        ),
+                                                        Text(snapshot.data![index].vehicleRegistrationNumber == null ? '' : snapshot.data![index].vehicleRegistrationNumber.toString(),
+                                                            style: const TextStyle(
+                                                                color: CustomColor.black,
+                                                                fontWeight: FontWeight.bold))
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const Divider(
+                                          color: Colors.white,
+                                          height: 3,
+                                          thickness: 1,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left:10, right: 5, top: 5, bottom: 5),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              const Text(
+                                                "Source Location :",
+                                                style: TextStyle(
+                                                    color: CustomColor.text,
+                                                    fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(snapshot.data![index].fromDestination == null ? '' : snapshot.data![index].fromDestination.toString(),
+                                                  style: const TextStyle(
+                                                      color: CustomColor.text,
+                                                      fontWeight: FontWeight.bold)),
+
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10,right: 5,  bottom: 10),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              const Text(
+                                                "Destination Location :",
+                                                style: TextStyle(
+                                                    color: CustomColor.text,
+                                                    fontWeight: FontWeight.bold),
+                                              ),
+                                              Text( snapshot.data![index].toDestination == null ? '' : snapshot.data![index].toDestination.toString(),
+                                                  style: const TextStyle(
+                                                      color: CustomColor.text,
+                                                      fontWeight: FontWeight.bold)),
+
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 180),
+                                          child: ElevatedButton(
+                                            child: Text("Give Feedback"),
+                                            onPressed: (){
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    content:Container(
+                                                      height: 200,
+                                                      child: Column(
+                                                        children: [
+                                                          const Center(
+                                                              child: Text(
+                                                                "Say Something About Your Experience ",
+                                                                style: TextStyle(fontWeight: FontWeight.w900, color: CustomColor.black
+                                                                ),)
+                                                          ),
+                                                          const SizedBox(height: 22,),
+                                                          SizedBox(
+                                                            child: Container(
+                                                              height: 100,
+                                                              decoration:  BoxDecoration (
+                                                                borderRadius:  BorderRadius.circular(8),
+                                                                border:  Border.all(color: Color(0xffffd91d)),
+                                                              ),
+                                                              child: Padding(
+                                                                padding: EdgeInsets.only(left: 20,top: 2),
+                                                                child: TextFormField(
+                                                                  controller: reviewController,
+                                                                  // autovalidateMode: _submitted ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
+                                                                  decoration: InputDecoration(
+                                                                    border: InputBorder.none,
+                                                                    hintText: 'Write a Review',
+                                                                  ),
+                                                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                                                  validator: (text) {
+                                                                    if (text == null || text.isEmpty) {
+                                                                      return 'Can\'t be empty';
+                                                                    }
+                                                                    if (text.length < 4) {
+                                                                      return 'Too short';
+                                                                    }
+                                                                    return null;
+                                                                  },
+                                                                  // update the state variable when the text changes
+                                                                  onChanged: (text) => setState(() => _name = text),
+                                                                ),
+
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          RatingBar.builder(
+                                                            initialRating: 3,
+                                                            minRating: 1,
+                                                            direction: Axis.horizontal,
+                                                            allowHalfRating: true,
+                                                            itemCount: 5,
+                                                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                                            itemBuilder: (context, _) => Icon(
+                                                              Icons.star,
+                                                              color: Colors.amber,
+                                                            ),
+                                                            onRatingUpdate: (rating) {
+                                                              print(rating);
+                                                              starRating = rating.toString() ;
+                                                            },
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    actions: <Widget>[
+                                                      Column(
+                                                        children: [
+                                                          Center(
+                                                            child: SmallButton(
+                                                                textColor: CustomColor.black,
+                                                                height: 50,
+                                                                buttonTitle: "Submit",
+                                                                onPressed: () async {
+                                                                  print("RIDER-USER-FEEDBACK-ID");
+                                                                  print(snapshot.data![index].id.toString());
+                                                                  saveRiderFeedback(snapshot.data![index].id.toString());
+                                                                },
+                                                                width: 160),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.green,
+                                              onPrimary: Colors.white,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(32.0),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10,)
+                                      ],
                                     ),
                                   ),
-                                )
-                            );
-                          },
+                                ),
+                              ),
+                            )
                         );
-                      } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
-                      }
-                      // By default, show a loading spinner.
-                      return Center(child: const CircularProgressIndicator());
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+                  // By default, show a loading spinner.
+                  return Center(child: const CircularProgressIndicator());
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: CustomColor.yellow)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: CustomColor.yellow)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: CustomColor.yellow),
-                            child: Column(
-                              children: [
-                                Padding(
-                                    padding:  EdgeInsets.only(
-                                        left:10, right: 5, top: 15, bottom: 5),
-                                    child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Help ?",style: TextStyle(color: CustomColor.black,fontWeight: FontWeight.bold),),
+                            color: CustomColor.yellow),
+                        child: Column(
+                          children: [
+                            Padding(
+                                padding:  EdgeInsets.only(
+                                    left:10, right: 5, top: 15, bottom: 5),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Help ?",style: TextStyle(color: CustomColor.black,fontWeight: FontWeight.bold),),
 
-                                        ]
-                                    )
-                                ),
-                                Divider(
-                                  color: Colors.white,
-                                  height: 3,
-                                  thickness: 1,
-                                ),
-                                Padding(
-                                    padding:  EdgeInsets.only(
-                                        left:10, right: 5, top: 5, bottom: 5),
-                                    child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Driver Feedback",style: TextStyle(color: CustomColor.black,fontWeight: FontWeight.bold),),
-                                          InkWell(
-                                            onTap: (){
-                                              showDialgueBox("driver");
-                                            },
-                                            child: Image(image: AssetImage('images/turn-right.png'),width: 30,height: 30,),
-                                          )
-                                        ]
-                                    )
-                                ),
-                                Divider(
-                                  color: Colors.white,
-                                  height: 3,
-                                  thickness: 1,
-                                ),
-                                Padding(
-                                    padding:  EdgeInsets.only(
-                                        left:10, right: 5, top: 5, bottom: 5),
-                                    child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Usage Feedback",style: TextStyle(color: CustomColor.black,fontWeight: FontWeight.bold),),
-                                          InkWell(
-                                            onTap: (){
-                                              showDialgueBox("usage");
-                                            },
-                                            child: Image(image: AssetImage('images/turn-right.png'),width: 30,height: 30,),
-                                          )
-                                        ]
-                                    )
-                                ),
-                                Divider(
-                                  color: Colors.white,
-                                  height: 3,
-                                  thickness: 1,
-                                ),
-                                Padding(
-                                    padding:  EdgeInsets.only(
-                                        left:10, right: 5, top: 5, bottom: 5),
-                                    child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("App Feedback",style: TextStyle(color: CustomColor.black,fontWeight: FontWeight.bold),),
-                                          InkWell(
-                                            onTap: (){
-                                              showDialgueBox("app");
-                                            },
-                                            child: Image(image: AssetImage('images/turn-right.png'),width: 30,height: 30,),
-                                          )
-                                        ]
-                                    )
-                                ),
-                              ],
+                                    ]
+                                )
                             ),
-                          ),
+                            Divider(
+                              color: Colors.white,
+                              height: 3,
+                              thickness: 1,
+                            ),
+                            Padding(
+                                padding:  EdgeInsets.only(
+                                    left:10, right: 5, top: 5, bottom: 5),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Driver Feedback",style: TextStyle(color: CustomColor.black,fontWeight: FontWeight.bold),),
+                                      InkWell(
+                                        onTap: (){
+                                          showDialgueBox("driver");
+                                        },
+                                        child: Image(image: AssetImage('images/turn-right.png'),width: 30,height: 30,),
+                                      )
+                                    ]
+                                )
+                            ),
+                            Divider(
+                              color: Colors.white,
+                              height: 3,
+                              thickness: 1,
+                            ),
+                            Padding(
+                                padding:  EdgeInsets.only(
+                                    left:10, right: 5, top: 5, bottom: 5),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Usage Feedback",style: TextStyle(color: CustomColor.black,fontWeight: FontWeight.bold),),
+                                      InkWell(
+                                        onTap: (){
+                                          showDialgueBox("usage");
+                                        },
+                                        child: Image(image: AssetImage('images/turn-right.png'),width: 30,height: 30,),
+                                      )
+                                    ]
+                                )
+                            ),
+                            Divider(
+                              color: Colors.white,
+                              height: 3,
+                              thickness: 1,
+                            ),
+                            Padding(
+                                padding:  EdgeInsets.only(
+                                    left:10, right: 5, top: 5, bottom: 5),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("App Feedback",style: TextStyle(color: CustomColor.black,fontWeight: FontWeight.bold),),
+                                      InkWell(
+                                        onTap: (){
+                                          showDialgueBox("app");
+                                        },
+                                        child: Image(image: AssetImage('images/turn-right.png'),width: 30,height: 30,),
+                                      )
+                                    ]
+                                )
+                            ),
+                          ],
                         ),
                       ),
-                    )
-                  ],
-                ),
-
+                    ),
+                  ),
+                )
               ],
             ),
-          ),
-    ));
+
+          ],
+        ),
+      ),
+    );
   }
 
   Future<List<TripDataModel>> getData() async {
