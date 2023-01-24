@@ -20,4 +20,6 @@ class ApiUrl {
   //static var socketUrl = 'http://192.168.1.25:3000';
   static var endRide = 'userRide/endRide';
   static var checkActiveUserRide = '${baseUrl}userRide/checkActiveUserRide';
+  static var geolocatelist = '${baseUrl}user/geocodelats';
+  static var geolocationDetails = '${baseUrl}user/geocodelocationdetails';
 }

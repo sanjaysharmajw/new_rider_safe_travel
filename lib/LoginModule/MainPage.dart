@@ -165,7 +165,7 @@ class _MainPageState extends State<MainPage> {
         ),
         body: SingleChildScrollView(
           child: Container(
-            height: 750,
+            height: 800,
             child: Column(
               children: [
                 DashboardProfileWidgets(

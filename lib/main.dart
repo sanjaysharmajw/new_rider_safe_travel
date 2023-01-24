@@ -10,7 +10,7 @@ import 'package:ride_safe_travel/LoginModule/RiderLoginPage.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 
 
-import 'BottomSheet/TabWidget.dart';
+
 import 'LoginModule/Map/RiderMap.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(

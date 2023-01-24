@@ -19,8 +19,8 @@ import 'package:ride_safe_travel/Utils/make_a_call.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-import '../../BottomSheet/Country.dart';
-import '../../BottomSheet/TabWidget.dart';
+
+
 import '../../Utils/exit_alert_dialog.dart';
 
 class RiderMap extends StatefulWidget {
@@ -101,18 +101,7 @@ final ScrollController scrollController = ScrollController();
   double _panelHeightOpen = 0;
   double _panelHeightClosed = 95.0;
 
-  List<Country> countryOptions = <Country>[
-    Country(name: 'Mumbai', address: "Maharashtra, India"),
-    Country(name: 'Thiruvananthapuram', address: "Kerala, India"),
-    Country(name: 'Bangalore', address: "Karnataka, India"),
-    Country(name: 'Ranchi', address: "Jharkhand, India"),
-    Country(name: 'Shimla', address: "Himachal Pradesh, India"),
-    Country(name: 'Chandigarh', address: "Haryana, India"),
-    Country(name: 'Panji', address: "Goa, India"),
-    Country(name: 'Chennai', address: "TamilNadu, India"),
-    Country(name: 'Lucknow', address: "Uttar Pradesh, India"),
-    Country(name: 'Dehradun', address: "Uttarakhand, India"),
-  ];
+
 
 
   String searchString = "";
@@ -163,7 +152,7 @@ final ScrollController scrollController = ScrollController();
             );
           }),
           DraggableScrollableSheet(
-              initialChildSize: 0.25,
+              initialChildSize: 0.15,
               minChildSize: 0.10,
               maxChildSize: 1,
               snapSizes: [0.5, 1],
@@ -181,7 +170,7 @@ final ScrollController scrollController = ScrollController();
                         horizontal: 20.0.w),
                     child: Column(
                       children: [
-                    Card(
+                  /*  Card(
                     child: ListTile(
                       title: TextFormField(
                         controller: destinationController,
@@ -329,11 +318,6 @@ final ScrollController scrollController = ScrollController();
 
                                                           ),
                                                         ),
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
                                             );
                                           })
                                   )
@@ -341,14 +325,19 @@ final ScrollController scrollController = ScrollController();
                                 ],
                               );
                             });
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
 
                       },
                   ),
 
                 ),
-                ),
+                ),*/
 
-             SizedBox(height: 12,),
+             SizedBox(height: 15,),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

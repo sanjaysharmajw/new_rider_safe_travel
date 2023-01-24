@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
+import 'package:ride_safe_travel/BottomSheet/GeocodeModel.dart';
 import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
 import 'package:ride_safe_travel/LoginModule/MainPage.dart';
 import 'package:ride_safe_travel/LoginModule/Map/Drawer.dart';
@@ -18,6 +20,8 @@ import 'package:ride_safe_travel/MapAddFamily.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+
+import 'BottomSheet/GeocodeResultModel.dart';
 import 'LoginModule/Error.dart';
 import 'Utils/exit_alert_dialog.dart';
 
@@ -122,6 +126,13 @@ class _SignUpState extends State<StartRide> {
     super.dispose();
   }
 
+  final TextEditingController destinationController = TextEditingController();
+  final TextEditingController fieldTextEditingController = TextEditingController();
+  final ScrollController scrollController = ScrollController();
+
+  List<Result> locationData=[];
+  String searchString = "";
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
@@ -186,7 +197,7 @@ class _SignUpState extends State<StartRide> {
                 );
               }),
           DraggableScrollableSheet(
-              initialChildSize: 0.15,
+              initialChildSize: 0.25,
               minChildSize: 0.10,
               maxChildSize: 1,
               snapSizes: [0.5, 1],
@@ -203,6 +214,203 @@ class _SignUpState extends State<StartRide> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
+                          Card(
+                            child: ListTile(
+                              title: TextFormField(
+                                controller: destinationController,
+                                decoration: InputDecoration(
+                                    hintText: "Destination",
+                                    hintStyle: TextStyle(
+                                        fontSize: 18, color: Colors.black),
+                                    border: InputBorder.none
+                                ),
+                                readOnly: true,
+                                onTap: () {
+                                 // getSuggestions();
+                                  showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      context: context,
+
+                                      builder: (context) {
+                                        return ListView(
+                                          controller: scrollController,
+                                          children: <Widget>[
+                                            SizedBox(
+                                              height: 12.0,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment
+                                                  .center,
+                                              children: <Widget>[
+                                                Container(
+                                                  width: 30,
+                                                  height: 5,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.grey[300],
+                                                      borderRadius: BorderRadius
+                                                          .all(Radius.circular(
+                                                          12.0))),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 18.0,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment
+                                                  .start,
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .only(left: 15),
+                                                  child: Text(
+                                                    "Select a location",
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight
+                                                          .normal,
+                                                      fontSize: 20.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 30.0,
+                                            ),
+                                            Padding(
+                                                padding: EdgeInsets.all(15.0),
+                                                child:
+                                               /* TypeAheadField(
+                                                  textFieldConfiguration: TextFieldConfiguration(
+                                                      autofocus: true,
+                                                      style: DefaultTextStyle.of(context).style.copyWith(
+                                                          fontStyle: FontStyle.italic
+                                                      ),
+                                                      decoration: InputDecoration(
+                                                          border: OutlineInputBorder()
+                                                      )
+                                                  ),
+                                                  suggestionsCallback: (pattern)  {
+                                                    return getSuggestions();
+                                                  },
+                                                  itemBuilder: (context, suggestion) {
+                                                    return ListTile(
+                                                      leading: Icon(Icons.location_on_rounded),
+                                                      title: Text(suggestion.text.toString()),
+
+                                                    );
+                                                  },
+                                                  onSuggestionSelected: (suggestion) {
+                                                    print('Selected: ${suggestion.text}');
+                                                    fieldTextEditingController.text=suggestion.text!;
+                                                    //Navigator.of(context).push(MaterialPageRoute(
+                                                      //  builder: (context) => ProductPage(product: suggestion)
+                                                    //)
+                                                   // );
+                                                  },
+                                                )*/
+
+                                                Autocomplete<Result>(
+                                                    optionsBuilder:
+                                                        (TextEditingValue textEditingValue) {
+                                                      return getSuggestions(textEditingValue);
+                                                    },
+                                                    displayStringForOption: (Result option) =>
+                                                    option.text.toString(),
+                                                    fieldViewBuilder: (BuildContext context,
+                                                        TextEditingController
+                                                        fieldTextEditingController,
+                                                        FocusNode fieldFocusNode,
+                                                        VoidCallback onFieldSubmitted) {
+                                                      return Card(
+                                                        child: ListTile(
+                                                          //leading: Icon(Icons.search),
+                                                          title: TextFormField(
+                                                            onChanged: (value) {
+                                                              setState(() {
+                                                                searchString = value.toString();
+                                                              });
+                                                            },
+                                                            controller: fieldTextEditingController,
+                                                            focusNode: fieldFocusNode,
+                                                            decoration: InputDecoration(
+                                                                hintText: "Search",
+                                                                border: InputBorder.none,
+                                                                prefixIcon: IconButton(
+                                                                    onPressed: (){
+                                                                      // searchMemberApi(mobileController.text,widget.userId);
+                                                                    }, icon:  Icon(Icons.search,))
+                                                            ),
+                                                          ),
+                                                          trailing: IconButton(onPressed: (){
+                                                            fieldTextEditingController.clear();
+                                                          }, icon: Icon(Icons.clear)),
+                                                        ),
+                                                      );
+                                                    },
+
+                                                    onSelected: (Result selection) {
+                                                      print('Selected: ${selection.text}');
+                                                      fieldTextEditingController.text=selection.text.toString();
+                                                    },
+                                                    optionsViewBuilder: (BuildContext context,
+                                                        AutocompleteOnSelected<Result>
+                                                        onSelected,
+                                                        Iterable<Result> options) {
+                                                      return Align(
+                                                        alignment: Alignment.topLeft,
+                                                        child: Material(
+                                                          child: Container(
+                                                            width: 365,
+                                                            //color: Colors.grey,
+                                                            child: ListView.builder(
+                                                              padding: EdgeInsets.all(10.0),
+                                                              itemCount: options.length,
+                                                              itemBuilder:
+                                                                  (BuildContext context,
+                                                                  int index) {
+                                                                final Result option =
+                                                                options.elementAt(index);
+
+                                                                return GestureDetector(
+                                                                  onTap: () {
+                                                                    onSelected(option);
+                                                                    destinationController.text=option.text.toString();
+                                                                    Navigator.pop(context);
+
+                                                                  },
+                                                                  child: Card(
+                                                                    elevation: 1,
+                                                                    margin: EdgeInsets.symmetric(vertical: 2),
+                                                                    child: ListTile(
+                                                                      leading: Icon(Icons.location_on_rounded,color: Colors.red,),
+                                                                      title: Text(option.text.toString(),
+                                                                          style: const TextStyle(
+                                                                              color:
+                                                                              Colors.black)
+                                                                      ),
+
+
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    })
+                                            )
+
+                                          ],
+                                        );
+                                      });
+                                },
+                              ),
+
+                            ),
+                          ),
+                          SizedBox(height: 12,),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -213,7 +421,8 @@ class _SignUpState extends State<StartRide> {
                                       showExitPopup(context,
                                           "Do you want to stop ride?",
                                               () async {
-                                            OverlayLoadingProgress.start(context);
+                                            OverlayLoadingProgress.start(
+                                                context);
                                             Navigator.pop(context, true);
                                             await endRide();
                                           });
@@ -354,7 +563,10 @@ class _SignUpState extends State<StartRide> {
         body: json.encode({
           'ride_id': widget.riderId,
           'end_point': {
-            'time': DateTime.now().millisecondsSinceEpoch.toString(),
+            'time': DateTime
+                .now()
+                .millisecondsSinceEpoch
+                .toString(),
             'latitude': lat.toString(),
             'longitude': lng.toString(),
             'location': ""
@@ -363,7 +575,10 @@ class _SignUpState extends State<StartRide> {
     print(json.encode({
       'ride_id': widget.riderId,
       'end_point': {
-        'time': DateTime.now().millisecondsSinceEpoch.toString(),
+        'time': DateTime
+            .now()
+            .millisecondsSinceEpoch
+            .toString(),
         'latitude': lat,
         'longitude': lng,
         'location': ""
@@ -398,7 +613,10 @@ class _SignUpState extends State<StartRide> {
           'ride_id': widget.riderId,
           "lat": lat.toString(),
           "lng": lng.toString(),
-          "timestamp": DateTime.now().millisecondsSinceEpoch.toString()
+          "timestamp": DateTime
+              .now()
+              .millisecondsSinceEpoch
+              .toString()
         }));
     print(json.encode({
       'user_id': userId.toString(),
@@ -437,6 +655,69 @@ class _SignUpState extends State<StartRide> {
         sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
   }
 
+  Future<List<Result>> getSuggestions(TextEditingValue textEditingValue) async {
+    if(textEditingValue.text.toString().length > 3){
+
+      final response = await http.post(
+        Uri.parse(ApiUrl.geolocatelist),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "search": textEditingValue.text.toString()
+        }),
+      );
+      print('getSuggestions:${ jsonEncode(<String, String>{
+        "search": textEditingValue.text.toString()
+      })}');
+
+      if (response.statusCode == 200) {
+        print("getData"+response.body);
+        String placeId = jsonDecode(response.body)['result'][0]['PlaceId'];
+        print("getPlaceId::::"+placeId);
+        await getDestination(placeId);
+        locationData = jsonDecode(response.body)['result']
+            .map<Result>((data) => Result.fromJson(data))
+            .toList();
+        return locationData;
+      } else {
+        throw Exception('Failed to load');
+      }
+    }else {
+      throw Exception('No Result');
+    }
+
+  }
+
+
+  Future<List<Result>> getDestination(String placeId) async {
+    final response = await http.post(
+      Uri.parse(ApiUrl.geolocationDetails),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        "PlaceId": placeId
+      }),
+    );
+    print('getDestination:${ jsonEncode(<String, String>{
+       "PlaceId": placeId
+    })}');
+
+    if (response.statusCode == 200) {
+      print("getDetails"+response.body);
+      var locationDetails= jsonDecode(response.body)['result']
+          .map<Result>((data) => Result.fromJson(data))
+          .toList();
+      return locationDetails;
+    } else {
+      throw Exception('Failed to load');
+    }
+  }
+
+
 
 }
+
+
 

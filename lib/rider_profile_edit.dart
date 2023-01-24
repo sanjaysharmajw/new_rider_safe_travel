@@ -36,31 +36,31 @@ import 'Sharepreferences.dart';
 
 
 class RiderProfileEdit extends StatefulWidget {
-  String? date;
-  String? state;
-  String? city;
-  String? pincode;
-  String? address;
-  String? firstname;
-  String? lastname;
-  String? emailId;
-  String? imageProfile;
-  String? mobileNumber;
-  String? gender;
+  String date;
+  String state;
+  String city;
+  String pincode;
+  String address;
+  String firstname;
+  String lastname;
+  String emailId;
+  String imageProfile;
+  String mobileNumber;
+  String gender;
 
   RiderProfileEdit(
       {Key? key,
-      required this.date,
-      required this.address,
-      required this.pincode,
-      required this.city,
-      required this.state,
-      required this.emailId,
-      required this.lastname,
-      required this.firstname,
-      required this.mobileNumber,
-      required this.imageProfile,
-      required this.gender})
+        required this.date,
+        required this.address,
+        required this.pincode,
+        required this.city,
+        required this.state,
+        required this.emailId,
+        required this.lastname,
+        required this.firstname,
+        required this.mobileNumber,
+        required this.imageProfile,
+        required this.gender})
       : super(key: key);
 
   @override
@@ -84,17 +84,17 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   final TextEditingController cityController = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
 
-  String firstname="";
-  String lastname="";
-  String dob="";
-  String email="";
-  String myaddress="";
-  String pinNumber="";
-  String mobilenumber="";
-  String mystates="";
-  String mycities="";
-  String age="";
-  String gender="";
+  var firstname;
+  var lastname;
+  var dob;
+  var email;
+  var myaddress;
+  var pinNumber;
+  var mobilenumber;
+  var mystates;
+  var mycities;
+  var age;
+  var gender;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -106,13 +106,13 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   String date = "";
   String from = "";
 
- // var selectedState = [];
+  // var selectedState = [];
 
   //var states;
   //var statName;
   //bool isStateSelected = false;
 
- // var selectedCity = [];
+  // var selectedCity = [];
   //var citiesname;
   //var stateid;
   //bool isCitySelected = false;
@@ -167,8 +167,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
           int.parse(agedate[1]).toString() : agedate[1]);
       var year = (int.parse(agedate[2]) < 10 ? '0' +
           int.parse(agedate[2]).toString() : agedate[2]);
-        response_date = date + "-" + month + "-" + year;
-        dobController.text = response_date;
+      response_date = date + "-" + month + "-" + year;
+      dobController.text = response_date;
     }
     firstNameController.text = widget.firstname.toString();
     lastNameController.text = widget.lastname.toString();
@@ -181,9 +181,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     mobileNumberController.text = widget.mobileNumber.toString();
     radioButtonItem = widget.gender.toString();
     if(radioButtonItem=='Female')
-      {
-        id=1;
-      }
+    {
+      id=1;
+    }
     if(radioButtonItem=='Male')
     {
       id=2;
@@ -330,7 +330,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                             radius: 45.0,
                                             child: CircleAvatar(
                                               radius: 43.0,
-                                                backgroundColor: Colors.white,
+                                              backgroundColor: Colors.white,
                                               //backgroundImage: NetworkImage(),
                                               child: AspectRatio(
                                                 aspectRatio: 1,
@@ -343,7 +343,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                                     fit: BoxFit.fill,
                                                   )
                                                       : Image.network(
-                                                      widget.imageProfile.toString(),
+                                                    widget.imageProfile,
                                                     fit: BoxFit.fill,
                                                   ),
                                                 ),
@@ -394,7 +394,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                       ),
                     ],
                   ),
-                   SizedBox(
+                  SizedBox(
                     height: 10.h,
                   ),
                   Row(
@@ -413,46 +413,46 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                       VerticalDivider(width: 40.0.w),
                       Expanded(
                           child: Center(
-                        child: TextFormField(
+                            child: TextFormField(
 
-                          showCursor: true,
-                          cursorHeight:30,
-                          cursorWidth: 2.0,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp("[a-zA-Z\]")),
-                            FilteringTextInputFormatter.deny('  '),
+                              showCursor: true,
+                              cursorHeight:30,
+                              cursorWidth: 2.0,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp("[a-zA-Z\]")),
+                                FilteringTextInputFormatter.deny('  '),
 
-                          ],
-                          style: TextStyle(
-                            fontFamily: 'transport',
-                            fontSize: 18.sp,
-                          ),
+                              ],
+                              style: TextStyle(
+                                fontFamily: 'transport',
+                                fontSize: 18.sp,
+                              ),
 
-                          controller: firstNameController,
-                          textCapitalization: TextCapitalization.sentences,
-                          keyboardType: TextInputType.text,
+                              controller: firstNameController,
+                              textCapitalization: TextCapitalization.sentences,
+                              keyboardType: TextInputType.text,
 
-                          decoration: InputDecoration(
-                            border: const UnderlineInputBorder(),
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 1, color: CustomColor.yellow)),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 2, color: CustomColor.yellow)),
-                          ),
-                          onChanged: (value) {
-                            firstname = value;
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your first name';
-                            }
-                            return value.length < 2 ? 'Name must be greater than two characters' : null;
-                          },
-                        ),
-                      )),
+                              decoration: InputDecoration(
+                                border: const UnderlineInputBorder(),
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: CustomColor.yellow)),
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 2, color: CustomColor.yellow)),
+                              ),
+                              onChanged: (value) {
+                                firstname = value;
+                              },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your first name';
+                                }
+                                return value.length < 2 ? 'Name must be greater than two characters' : null;
+                              },
+                            ),
+                          )),
                     ],
                   ),
                   Row(
@@ -470,42 +470,42 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                       VerticalDivider(width: 40.0.w),
                       Expanded(
                           child: Center(
-                        child: TextFormField(
-                          showCursor: true,
-                          cursorHeight:30,
-                          cursorWidth: 2.0,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp("[a-zA-Z\]")),
-                            FilteringTextInputFormatter.deny('  ')
-                          ],
-                          style: TextStyle(
-                            fontFamily: 'transport',
-                            fontSize: 18,
-                          ),
-                          controller: lastNameController,
-                          textCapitalization: TextCapitalization.sentences,
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            border: const UnderlineInputBorder(),
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 1, color: CustomColor.yellow)),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 2, color: CustomColor.yellow)),
-                          ),
-                          onChanged: (value) {
-                            lastname = value;
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your last name';
-                            }
-                            return value.length < 2 ? 'Name must be greater than two characters' : null;
-                          },
-                        ),
-                      )),
+                            child: TextFormField(
+                              showCursor: true,
+                              cursorHeight:30,
+                              cursorWidth: 2.0,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp("[a-zA-Z\]")),
+                                FilteringTextInputFormatter.deny('  ')
+                              ],
+                              style: TextStyle(
+                                fontFamily: 'transport',
+                                fontSize: 18,
+                              ),
+                              controller: lastNameController,
+                              textCapitalization: TextCapitalization.sentences,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                border: const UnderlineInputBorder(),
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: CustomColor.yellow)),
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 2, color: CustomColor.yellow)),
+                              ),
+                              onChanged: (value) {
+                                lastname = value;
+                              },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your last name';
+                                }
+                                return value.length < 2 ? 'Name must be greater than two characters' : null;
+                              },
+                            ),
+                          )),
                     ],
                   ),
                   Row(
@@ -523,49 +523,49 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                       VerticalDivider(width: 60.0),
                       Expanded(
                           child: Center(
-                        child: TextFormField(
+                            child: TextFormField(
 
-                          showCursor: true,
-                          cursorHeight:30,
-                          cursorWidth: 2.0,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.deny(' '),
+                              showCursor: true,
+                              cursorHeight:30,
+                              cursorWidth: 2.0,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.deny(' '),
 
-                          ],
-                          style: TextStyle(
-                            fontFamily: 'transport',
-                            fontSize: 18,
-                          ),
-                          controller: emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                            border: const UnderlineInputBorder(),
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 1, color: CustomColor.yellow)),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 2, color: CustomColor.yellow)),
-                          ),
-                          onChanged: (value) {
-                            email = value;
-                          },
-                          validator: (value) {
-                            if (value == null ||
-                                value.isEmpty) {
-                              return 'Email is Required !';
-                            } if (
-                            //!RegExp(
-                              //  r'^[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]')
-                            //.hasMatch(value)
-                            !EmailValidator.validate(value)
-                            ) {
-                            return 'Please enter a valid Email';
-                            }
-                            return null;
-                          },
-                        ),
-                      )),
+                              ],
+                              style: TextStyle(
+                                fontFamily: 'transport',
+                                fontSize: 18,
+                              ),
+                              controller: emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                border: const UnderlineInputBorder(),
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: CustomColor.yellow)),
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 2, color: CustomColor.yellow)),
+                              ),
+                              onChanged: (value) {
+                                email = value;
+                              },
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty) {
+                                  return 'Email is Required !';
+                                } if (
+                                //!RegExp(
+                                //  r'^[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]')
+                                //.hasMatch(value)
+                                !EmailValidator.validate(value)
+                                ) {
+                                  return 'Please enter a valid Email';
+                                }
+                                return null;
+                              },
+                            ),
+                          )),
                     ],
                   ),
                   Row(
@@ -593,78 +593,78 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                       VerticalDivider(width: 45.0),
                       Expanded(
                           child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 15, left: 15),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                flex: 2,
-                                child: SizedBox(
-                                  height: 45,
-                                  child: Center(
-                                    child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 15, left: 15),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        flex: 2,
-                                        child: SizedBox(
-                                          height: 45,
-                                          child: TextFormField(
-                                            // keyboardType: TextInputType.number,
-                                            style: const TextStyle(
-                                                fontFamily: 'transport',
-                                                fontSize: 18),
-                                            maxLines: 1,
-                                            controller: dobController,
-                                            decoration:
-                                                const InputDecoration(
-                                              border:
-                                                  UnderlineInputBorder(),
-                                              enabledBorder:
-                                                  UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          width: 1,
-                                                          color: CustomColor
-                                                              .yellow)),
-                                              focusedBorder:
-                                                  UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    width: 2,
-                                                    color:
-                                                        Colors.amberAccent),
-                                              ),
-                                              // hintText: 'YYYY/MM/DD',
-                                              hintStyle: TextStyle(
-                                                  fontFamily: 'transport',
-                                                  fontSize: 15),
-                                            ),
-                                            readOnly: true,
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 15, left: 15),
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    flex: 2,
+                                    child: SizedBox(
+                                      height: 45,
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 15, left: 15),
+                                          child: Row(
+                                            children: <Widget>[
+                                              Expanded(
+                                                flex: 2,
+                                                child: SizedBox(
+                                                  height: 45,
+                                                  child: TextFormField(
+                                                    // keyboardType: TextInputType.number,
+                                                    style: const TextStyle(
+                                                        fontFamily: 'transport',
+                                                        fontSize: 18),
+                                                    maxLines: 1,
+                                                    controller: dobController,
+                                                    decoration:
+                                                    const InputDecoration(
+                                                      border:
+                                                      UnderlineInputBorder(),
+                                                      enabledBorder:
+                                                      UnderlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              width: 1,
+                                                              color: CustomColor
+                                                                  .yellow)),
+                                                      focusedBorder:
+                                                      UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            width: 2,
+                                                            color:
+                                                            Colors.amberAccent),
+                                                      ),
+                                                      // hintText: 'YYYY/MM/DD',
+                                                      hintStyle: TextStyle(
+                                                          fontFamily: 'transport',
+                                                          fontSize: 15),
+                                                    ),
+                                                    readOnly: true,
 
-                                            onTap: () async {
-                                              _selectDate(context);
-                                            },
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return 'Please enter your Date of Birth';
-                                              }
-                                              return null;
-                                            },
+                                                    onTap: () async {
+                                                      _selectDate(context);
+                                                    },
+                                                    validator: (value) {
+                                                      if (value == null ||
+                                                          value.isEmpty) {
+                                                        return 'Please enter your Date of Birth';
+                                                      }
+                                                      return null;
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  ),
                                     ),
                                   ),
-                                ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                      )),
+                            ),
+                          )),
                     ],
                   ),
                   const SizedBox(
@@ -691,9 +691,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                         children: <Widget>[
                           Radio(
                             fillColor: MaterialStateColor.resolveWith(
-                                (states) => CustomColor.yellow),
+                                    (states) => CustomColor.yellow),
                             focusColor: MaterialStateColor.resolveWith(
-                                (states) => CustomColor.yellow),
+                                    (states) => CustomColor.yellow),
                             value: 1,
                             groupValue: id,
                             onChanged: (val) {
@@ -709,9 +709,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           ),
                           Radio(
                             fillColor: MaterialStateColor.resolveWith(
-                                (states) => CustomColor.yellow),
+                                    (states) => CustomColor.yellow),
                             focusColor: MaterialStateColor.resolveWith(
-                                (states) => CustomColor.yellow),
+                                    (states) => CustomColor.yellow),
                             value: 2,
                             groupValue: id,
                             onChanged: (val) {
@@ -729,9 +729,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           ),
                           Radio(
                             fillColor: MaterialStateColor.resolveWith(
-                                (states) => CustomColor.yellow),
+                                    (states) => CustomColor.yellow),
                             focusColor: MaterialStateColor.resolveWith(
-                                (states) => CustomColor.yellow),
+                                    (states) => CustomColor.yellow),
                             value: 3,
                             groupValue: id,
                             onChanged: (val) {
@@ -909,35 +909,35 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             height: 45,
                             child: Center(
                               child: TextFormField(
-                            showCursor: true,
-                            cursorHeight:30,
-                            cursorWidth: 2.0,
-                            validator: (value) {
-                              if (value == null || value.isEmpty || value.length != 6) {
-                                return 'Please enter 6 pincode.';
-                              }
-                              return null;
-                            },
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp("[0-9]")),
-                              LengthLimitingTextInputFormatter(6),
-                            ],
-                            style: TextStyle(
-                              fontFamily: 'transport',
-                              fontSize: 18,
-                            ),
-                            controller: pinController,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              border: const UnderlineInputBorder(),
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1, color: CustomColor.yellow)),
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 2, color: CustomColor.yellow)),
-                            ),
+                                showCursor: true,
+                                cursorHeight:30,
+                                cursorWidth: 2.0,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty || value.length != 6) {
+                                    return 'Please enter 6 pincode.';
+                                  }
+                                  return null;
+                                },
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp("[0-9]")),
+                                  LengthLimitingTextInputFormatter(6),
+                                ],
+                                style: TextStyle(
+                                  fontFamily: 'transport',
+                                  fontSize: 18,
+                                ),
+                                controller: pinController,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  border: const UnderlineInputBorder(),
+                                  enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: CustomColor.yellow)),
+                                  focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 2, color: CustomColor.yellow)),
+                                ),
                               ),
                             ),
                           ),
@@ -1048,8 +1048,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             //   openAndCloseLoadingDialog();
                             // } else {
 
-                              updateProfile(userId);
-                              // OverlayLoadingProgress.start(context);
+                            updateProfile(userId);
+                            // OverlayLoadingProgress.start(context);
                             // }
                           }
                         }),
@@ -1112,11 +1112,11 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
       setState(() {
         selectedDate = picked;
         birthDate =
-            "${picked.toLocal().day}-${picked.toLocal().month}-${picked.toLocal().year}";
+        "${picked.toLocal().day}-${picked.toLocal().month}-${picked.toLocal().year}";
         dobController.text = birthDate;
         // print()
         // Get.snackbar("Selcted Date", birthDate.toString());
-            // calAge(birthDate);
+        // calAge(birthDate);
         //calculateAge(picked);
       });
     }
@@ -1255,7 +1255,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     );
 
     if (response.statusCode == 200) {
-     // OverlayLoadingProgress.stop(context);
+      // OverlayLoadingProgress.stop(context);
       print('RES:${response.body}');
       List<RiderUserListData> loginData = jsonDecode(response.body)['data']
           .map<RiderUserListData>((data) => RiderUserListData.fromJson(data))
@@ -1316,7 +1316,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   }
 
 
- /* Future<StateModel> statesList() async {
+  /* Future<StateModel> statesList() async {
 
     final response = await http.post(
       Uri.parse(ApiUrl.stateApi),
@@ -1377,7 +1377,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   Future<http.Response?> updateProfile(String userId) async {
     //  var updatedAge= Preferences.getAge(Preferences.age);
     OverlayLoadingProgress.start(context);
-   /* mystates = statename.toString();
+    /* mystates = statename.toString();
     if (statName.toString() != null) {
       mystates = statName.toString();
       Get.snackbar("change mystate", mystates);
@@ -1397,7 +1397,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     if (imageFilePath.toString() != "") {
       uploadedImage = imageFilePath.toString();
 
-     // Get.snackbar("change image", uploadedImage);
+      // Get.snackbar("change image", uploadedImage);
     }
 
 
@@ -1417,11 +1417,11 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
 
     int age=calculateAge(DateTime.parse(year+"-"+month+"-"+date));
     if(age<6)
-      {
-        Get.snackbar("Invalid Age", "Age should be greater than 6 years");
-        OverlayLoadingProgress.stop();
-        return null;
-      }
+    {
+      Get.snackbar("Invalid Age", "Age should be greater than 6 years");
+      OverlayLoadingProgress.stop();
+      return null;
+    }
     else {
       var data = {
         "user_id": userId.toString(),
