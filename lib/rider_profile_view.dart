@@ -154,16 +154,17 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                               onPress: () async {
                                 OverlayLoadingProgress.start(context);
                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                                     RiderProfileEdit(date: '${snapshot.data![index].dob.toString()}',
-                                       address: '${snapshot.data![index].presentAddress?.address.toString()}',
-                                       pincode: '${snapshot.data![index].presentAddress?.pincode.toString()}',
-                                       city: '${snapshot.data![index].presentAddress?.city.toString()}',
-                                       state:'${snapshot.data![index].presentAddress?.state.toString()}',
-                                       emailId: '${snapshot.data![index].emailId.toString()}',
-                                       lastname: '${snapshot.data![index].lastName.toString()}',
-                                       firstname: '${snapshot.data![index].firstName.toString()}',
-                                       mobileNumber: '${snapshot.data![index].mobileNumber.toString()}',
-                                       imageProfile: profileImage, gender: '${snapshot.data![index].gender.toString()}',)
+                                     RiderProfileEdit(birthdate: '${snapshot.data![index].dob.toString()}' == "null" ? " " : '${snapshot.data![index].dob}',
+                                       address: '${snapshot.data![index].presentAddress?.address.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.address.toString()}',
+                                       pincode: '${snapshot.data![index].presentAddress?.pincode.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.pincode.toString()}',
+                                       city: '${snapshot.data![index].presentAddress?.city.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.city.toString()}',
+                                       state:'${snapshot.data![index].presentAddress?.state.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.state.toString()}',
+                                       emailId: '${snapshot.data![index].emailId.toString()}' == "null" ? " " : '${snapshot.data![index].emailId.toString()}',
+                                       lastname: '${snapshot.data![index].lastName.toString()}' == "null" ? " " : '${snapshot.data![index].lastName.toString()}',
+                                       firstname: '${snapshot.data![index].firstName.toString()}' == "null" ? " " : '${snapshot.data![index].firstName.toString()}',
+                                       mobileNumber: '${snapshot.data![index].mobileNumber.toString()}' == "null" ? " " : '${snapshot.data![index].mobileNumber.toString()}',
+                                       imageProfile: profileImage,
+                                       gender: '${snapshot.data![index].gender.toString()}' == "null" ? " " : '${snapshot.data![index].gender.toString()}',)
                                  ))
                                      .then((value) {
 
@@ -285,8 +286,9 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                       width: 1, broad: 4,
                                       textInputType: TextInputType.emailAddress,
                                       enable: false,
-                                      hintText: '${snapshot.data![index].emailId.toString()}', textColor: Colors.black54, ),
+                                      hintText:'${snapshot.data![index].emailId.toString()}' == "null" ? " " : '${snapshot.data![index].emailId.toString()}' , textColor: Colors.black54, ),
                                   )),
+
                             ],
                           ),
                           Row(
@@ -320,7 +322,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                                 controller: _dateController,
                                                 decoration:  InputDecoration(
                                                   enabled: false,
-                                                  hintText: this.formatDate("${snapshot.data![index].dob.toString()}"),
+                                                  hintText: this.formatDate('${snapshot.data![index].dob.toString()}' == "null" ? " " : '${snapshot.data![index].dob.toString()}'),
                                                   border: UnderlineInputBorder(),
                                                   enabledBorder: UnderlineInputBorder(
                                                       borderSide: BorderSide(
@@ -392,7 +394,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     controller: stateController,
                                     decoration:  InputDecoration(
                                       enabled: false,
-                                      hintText:  "${snapshot.data![index].presentAddress?.state.toString()}",
+                                      hintText:  '${snapshot.data![index].presentAddress?.state.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.state.toString()}',
                                       hintStyle: TextStyle(
                                           fontFamily: 'transport',
                                           fontSize: 15,color: Colors.black54),
@@ -451,7 +453,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     controller: cityController,
                                     decoration:  InputDecoration(
                                       enabled: false,
-                                      hintText:  "${snapshot.data![index].presentAddress?.city.toString()}",
+                                      hintText:  '${snapshot.data![index].presentAddress?.city.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.city.toString()}',
                                       hintStyle: TextStyle(
                                           fontFamily: 'transport',
                                           fontSize: 15,color: Colors.black54),
@@ -511,7 +513,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     controller: pinController,
                                     decoration:  InputDecoration(
                                       enabled: false,
-                                      hintText:  "${snapshot.data![index].presentAddress?.pincode.toString()}",
+                                      hintText:  '${snapshot.data![index].presentAddress?.pincode.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.pincode.toString()}',
                                       hintStyle: TextStyle(
                                           fontFamily: 'transport',
                                           fontSize: 15,color: Colors.black54),
@@ -563,7 +565,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     controller: genderController,
                                     decoration:  InputDecoration(
                                       enabled: false,
-                                      hintText:  "${snapshot.data![index].gender.toString()}",
+                                      hintText:  '${snapshot.data![index].gender.toString()}' == "null" ? " " : '${snapshot.data![index].gender.toString()}',
                                       hintStyle: TextStyle(
                                           fontFamily: 'transport',
                                           fontSize: 15,color: Colors.black54),
@@ -618,7 +620,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                       maxLines: 1,
                                       controller: addressController,
                                       decoration:  InputDecoration(
-                                        hintText: "${snapshot.data![index].presentAddress?.address.toString()}",
+                                        hintText: '${snapshot.data![index].presentAddress?.address.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.address.toString()}',
                                         hintStyle: TextStyle(
                                             fontFamily: 'transport',
                                             fontSize: 15,color: Colors.black54),

@@ -36,7 +36,7 @@ import 'Sharepreferences.dart';
 
 
 class RiderProfileEdit extends StatefulWidget {
-  String date;
+  String birthdate;
   String state;
   String city;
   String pincode;
@@ -50,7 +50,7 @@ class RiderProfileEdit extends StatefulWidget {
 
   RiderProfileEdit(
       {Key? key,
-        required this.date,
+        required this.birthdate,
         required this.address,
         required this.pincode,
         required this.city,
@@ -148,7 +148,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   @override
   initState() {
     OverlayLoadingProgress.stop();
-    print(widget.date);
+    print(widget.birthdate);
 
     print("###################");
     print(widget.pincode);
@@ -158,9 +158,10 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     print(widget.gender);
 
     print("********************************888");
-    response_date=widget.date.toString();
-    if(response_date!=null || response_date.isEmpty) {
-      var agedate = widget.date.toString().split('-');
+    response_date=widget.birthdate.toString();
+    print(response_date);
+    if(response_date.toString() == "null" || response_date.toString().isEmpty) {
+      var agedate = widget.birthdate.toString().split('-');
       var date = agedate[0];
       // agedate[1]=int.parse(agedate[1]);
       var month = (int.parse(agedate[1]) < 10 ? '0' +
@@ -168,8 +169,12 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
       var year = (int.parse(agedate[2]) < 10 ? '0' +
           int.parse(agedate[2]).toString() : agedate[2]);
       response_date = date + "-" + month + "-" + year;
-      dobController.text = response_date;
+      dobController.text = response_date.toString();
+      print(dobController.text.toString());
+      print("####################");
     }
+
+    dobController.text = response_date.toString();
     firstNameController.text = widget.firstname.toString();
     lastNameController.text = widget.lastname.toString();
     profile = widget.imageProfile.toString();
@@ -430,7 +435,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               ),
 
                               controller: firstNameController,
-                              textCapitalization: TextCapitalization.sentences,
+                              textCapitalization: TextCapitalization.words,
                               keyboardType: TextInputType.text,
 
                               decoration: InputDecoration(
@@ -484,7 +489,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 fontSize: 18,
                               ),
                               controller: lastNameController,
-                              textCapitalization: TextCapitalization.sentences,
+                              textCapitalization: TextCapitalization.words,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 border: const UnderlineInputBorder(),
@@ -651,6 +656,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                                         return 'Please enter your Date of Birth';
                                                       }
                                                       return null;
+                                                    },
+                                                    onChanged: (value) {
+                                                      dob = value;
                                                     },
                                                   ),
                                                 ),
