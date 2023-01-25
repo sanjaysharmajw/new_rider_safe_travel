@@ -1,123 +1,121 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter/material.dart';
+import 'package:ride_safe_travel/Utils/constant.dart';
 
-void main(){
-  runApp(MyAppMarker());
-}
+void main() => runApp(MapMyApp());
 
-class MyAppMarker extends StatelessWidget{
+class MapMyApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Home(),
-    );
-  }
+  _MyAppState createState() => _MyAppState();
 }
 
-class Home extends StatefulWidget{
-  @override
-  _HomeState createState() => _HomeState();
-}
+// Starting point latitude
+double _originLatitude = 6.5212402;
+// Starting point longitude
+double _originLongitude = 3.3679965;
+// Destination latitude
+double _destLatitude = 6.849660;
+// Destination Longitude
+double _destLongitude = 3.648190;
+// Markers to show points on the map
+Map<MarkerId, Marker> markers = {};
 
-class _HomeState extends State<Home> {
+PolylinePoints polylinePoints = PolylinePoints();
+Map<PolylineId, Polyline> polylines = {};
 
-  GoogleMapController? mapController; //contrller for Google map
-  Set<Marker> markers = Set(); //markers for google map
-
-  LatLng loc1 = LatLng(27.6602292, 85.308027);
-
-  int numDeltas = 30; //number of delta to devide total distance
-  int delay = 30; //milliseconds of delay to pass each delta
-  var i = 0;
-  double? deltaLat;
-  double? deltaLng;
-  var position; //position variable while moving marker
+class _MyAppState extends State<MapMyApp> {
+  // Google Maps controller
+  Completer<GoogleMapController> _controller = Completer();
+  // Configure map position and zoom
+  static final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(_originLatitude, _originLongitude),
+    zoom: 9.4746,
+  );
 
   @override
   void initState() {
-    position = [loc1.latitude, loc1.longitude]; //initial position of moving marker
-    addMarkers();
+    /// add origin marker origin marker
+    _addMarker(
+      LatLng(_originLatitude, _originLongitude),
+      "origin",
+      BitmapDescriptor.defaultMarker,
+    );
+
+    // Add destination marker
+    _addMarker(
+      LatLng(_destLatitude, _destLongitude),
+      "destination",
+      BitmapDescriptor.defaultMarkerWithHue(90),
+    );
+
+    _getPolyline();
+
     super.initState();
   }
-
-  addMarkers() async {
-    markers.add(
-        Marker(
-            markerId: MarkerId(loc1.toString()),
-            position: loc1,
-            icon: BitmapDescriptor.defaultMarker
-        )
-    );
-
-    setState(() {
-      //refresh UI
-    });
-  }
-
-  transition(result){
-    i = 0;
-    deltaLat = (result[0] - position[0])/numDeltas;
-    deltaLng = (result[1] - position[1])/numDeltas;
-    moveMarker();
-  }
-
-  moveMarker(){
-    position[0] += deltaLat;
-    position[1] += deltaLng;
-    var latlng = LatLng(position[0], position[1]);
-
-    markers = {
-      Marker(
-        markerId: MarkerId("movingmarker"),
-        position: latlng,
-        icon: BitmapDescriptor.defaultMarker,
-      )
-    };
-
-    setState(() {
-      //refresh UI
-    });
-
-
-    if(i!=numDeltas){
-      i++;
-      Future.delayed(Duration(milliseconds: delay), (){
-        moveMarker();
-      });
-    }
-  }
-
-
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return MaterialApp(
+      title: 'Welcome to Flutter',
+      home: Scaffold(
         appBar: AppBar(
-          title: Text("Move Marker Position on Google Map"),
-          backgroundColor: Colors.deepPurpleAccent,
+          title: Text('Welcome to Flutter'),
         ),
-        floatingActionButton: FloatingActionButton(
-          child: Text("Move"),
-          onPressed: (){
-            var result = [27.661838, 85.308543];
-            //latitude and longitude of new position
-            transition(result);
-            //start moving marker
+        body: GoogleMap(
+          mapType: MapType.normal,
+          initialCameraPosition: _kGooglePlex,
+          myLocationEnabled: true,
+          tiltGesturesEnabled: true,
+          compassEnabled: true,
+          scrollGesturesEnabled: true,
+          zoomGesturesEnabled: true,
+          polylines: Set<Polyline>.of(polylines.values),
+          markers: Set<Marker>.of(markers.values),
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
           },
         ),
-        body: GoogleMap( //Map widget from google_maps_flutter package
-          zoomGesturesEnabled: true, //enable Zoom in, out on map
-          initialCameraPosition: CameraPosition( //innital position in map
-            target: loc1, //initial position
-            zoom: 20.0, //initial zoom level
-          ),
-          markers: markers, //markers to show on map
-          mapType: MapType.normal, //map type
-          onMapCreated: (controller) { //method called when map is created
-            setState(() {
-              mapController = controller;
-            });
-          },
-        )
+      ),
     );
+  }
+
+  // This method will add markers to the map based on the LatLng position
+  _addMarker(LatLng position, String id, BitmapDescriptor descriptor) {
+    MarkerId markerId = MarkerId(id);
+    Marker marker =
+    Marker(markerId: markerId, icon: descriptor, position: position);
+    markers[markerId] = marker;
+  }
+
+  _addPolyLine(List<LatLng> polylineCoordinates) {
+    PolylineId id = PolylineId("poly");
+    Polyline polyline = Polyline(
+      polylineId: id,
+      points: polylineCoordinates,
+      width: 8,
+    );
+    polylines[id] = polyline;
+    setState(() {});
+  }
+
+  void _getPolyline() async {
+    List<LatLng> polylineCoordinates = [];
+
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      googleMapKey,
+      PointLatLng(_originLatitude, _originLongitude),
+      PointLatLng(_destLatitude, _destLongitude),
+      travelMode: TravelMode.driving,
+    );
+    if (result.points.isNotEmpty) {
+      result.points.forEach((PointLatLng point) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      });
+    } else {
+      print(result.errorMessage);
+    }
+    _addPolyLine(polylineCoordinates);
   }
 }
