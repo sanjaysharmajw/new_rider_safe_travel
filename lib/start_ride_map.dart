@@ -322,6 +322,7 @@ class _SignUpState extends State<StartRide> {
                                                         fieldTextEditingController,
                                                         FocusNode fieldFocusNode,
                                                         VoidCallback onFieldSubmitted) {
+                                                      OverlayLoadingProgress.start(context);
                                                       return Card(
                                                         child: ListTile(
                                                           //leading: Icon(Icons.search),
@@ -357,6 +358,7 @@ class _SignUpState extends State<StartRide> {
                                                         AutocompleteOnSelected<Result>
                                                         onSelected,
                                                         Iterable<Result> options) {
+                                                      OverlayLoadingProgress();
                                                       return Align(
                                                         alignment: Alignment.topLeft,
                                                         child: Material(

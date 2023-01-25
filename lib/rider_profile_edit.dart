@@ -640,7 +640,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                                             color:
                                                             Colors.amberAccent),
                                                       ),
-                                                      // hintText: 'YYYY/MM/DD',
+                                                        // hintText: 'YYYY/MM/DD',
                                                       hintStyle: TextStyle(
                                                           fontFamily: 'transport',
                                                           fontSize: 15),
