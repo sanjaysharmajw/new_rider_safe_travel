@@ -60,6 +60,7 @@ class _RiderMapState extends State<RiderMap> {
   String date = '';
   bool visibility = false;
   late Map<MarkerId, Marker> _markers;
+  List<LatLng>polylineCoordinates=[];
   Completer<GoogleMapController> _completer = Completer();
   static const CameraPosition _cameraPosition = CameraPosition(
     target: LatLng(19.0654285394954, 73.00269069070602),
@@ -144,6 +145,14 @@ final ScrollController scrollController = ScrollController();
                 compassEnabled: true,
                 zoomControlsEnabled: true,
                 myLocationButtonEnabled: true,
+                polylines: {
+                  Polyline(
+                      polylineId: PolylineId("route"),
+                      points: polylineCoordinates,
+                      color: Colors.red,
+                      width: 4
+                  )
+                },
                 onMapCreated: (GoogleMapController controller) {
                   _completer.complete(controller);
                 },
@@ -469,6 +478,7 @@ final ScrollController scrollController = ScrollController();
         var lat = jsonDecode(data)['lat'];
         var lng = jsonDecode(data)['lng'];
         print('Received lat: $lat + $lng');
+        polylineCoordinates.add(LatLng(lat, lng));
         final GoogleMapController controller = await _completer.future;
         controller.animateCamera(CameraUpdate.newCameraPosition(
             CameraPosition(target: LatLng(lat, lng), zoom: 19)));
