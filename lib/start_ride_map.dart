@@ -28,14 +28,14 @@ import 'Utils/map_matrix_widgets.dart';
 class StartRide extends StatefulWidget {
   const StartRide(
       {Key? key,
-      required this.riderId,
-      required this.socketToken,
-      required this.dName,
-      required this.dMobile,
-      required this.dPhoto,
-      required this.model,
-      required this.vOwnerName,
-      required this.vRegNo})
+        required this.riderId,
+        required this.socketToken,
+        required this.dName,
+        required this.dMobile,
+        required this.dPhoto,
+        required this.model,
+        required this.vOwnerName,
+        required this.vRegNo})
       : super(key: key);
 
   @override
@@ -72,9 +72,10 @@ class _SignUpState extends State<StartRide> {
   BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
   static const LatLng destinationLocation =
-      LatLng(19.067949048869405, 73.0039520555996);
+  LatLng(19.067949048869405, 73.0039520555996);
   List<LatLng> polylineCoordinates = [];
   List<LatLng> live_polylineCoordinates = [];
+  late LatLng center;
   static const CameraPosition _cameraPosition = CameraPosition(
     target: destinationLocation,
     zoom: 14,
@@ -91,6 +92,7 @@ class _SignUpState extends State<StartRide> {
   void initState() {
     super.initState();
     _initUser();
+
     setCustomMarkerIcon();
     sharePre();
     setState(() {});
@@ -108,13 +110,13 @@ class _SignUpState extends State<StartRide> {
 
   void setCustomMarkerIcon() {
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration.empty, 'assets/driver_map_min.png')
+        ImageConfiguration.empty, 'assets/driver_map_min.png')
         .then((icon) {
       sourceIcon = icon;
     });
 
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration.empty, 'assets/to_map_pin.png')
+        ImageConfiguration.empty, 'assets/to_map_pin.png')
         .then((icon) {
       destinationIcon = icon;
     });
@@ -129,6 +131,7 @@ class _SignUpState extends State<StartRide> {
         title: 'Nirbhaya app is running');
     location.onLocationChanged.listen((LocationData cLoc) async {
       currentLocation = cLoc;
+      center=LatLng(currentLocation!.latitude!, currentLocation!.longitude!);
       setState(() {});
       print('LatLng${currentLocation!.longitude!}');
       print('latiiii' + destinationMarkerLat.toString());
@@ -160,10 +163,11 @@ class _SignUpState extends State<StartRide> {
 
   final TextEditingController destinationController = TextEditingController();
   final TextEditingController fieldTextEditingController =
-      TextEditingController();
+  TextEditingController();
   final ScrollController scrollController = ScrollController();
   List<Result> locationData = [];
   String searchString = "";
+
 
   @override
   Widget build(BuildContext context) {
@@ -171,10 +175,10 @@ class _SignUpState extends State<StartRide> {
     return WillPopScope(
       onWillPop: () =>
           showExitPopup(context, "Do you want to stop ride?", () async {
-        OverlayLoadingProgress.start(context);
-        Navigator.pop(context, true);
-        await endRide();
-      }),
+            OverlayLoadingProgress.start(context);
+            Navigator.pop(context, true);
+            await endRide();
+          }),
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -208,54 +212,55 @@ class _SignUpState extends State<StartRide> {
         body: Stack(children: [
           LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
-            return SizedBox(
-                height: constraints.maxHeight / 1.3,
-                child: currentLocation == null
-                    ? const Center(child: Text("Loading Map..."))
-                    : GoogleMap(
-                        initialCameraPosition: _cameraPosition,
-                        mapType: MapType.normal,
-                        myLocationEnabled: true,
-                        compassEnabled: true,
-                        padding: const EdgeInsets.all(10.0),
-                        zoomControlsEnabled: true,
-                        mapToolbarEnabled: true,
-                        zoomGesturesEnabled: true,
-                        myLocationButtonEnabled: true,
-                        polylines: {
-                          Polyline(
-                              polylineId: PolylineId("live_polyline"),
-                              points: live_polylineCoordinates,
-                              color: Colors.blueAccent,
-                              width: 4),
-                          Polyline(
-                              polylineId: PolylineId("route"),
-                              points: polylineCoordinates,
-                              color: Colors.blueAccent,
-                              width: 4)
-                        },
-                        onMapCreated: (GoogleMapController controller) {
-                          _completer.complete(controller);
-                        },
-                        markers: {
-                          Marker(
-                            markerId: const MarkerId("source"),
-                            position: LatLng(currentLocation!.latitude!,
-                                currentLocation!.longitude!),
-                            icon: sourceIcon,
+                return SizedBox(
+                    height: constraints.maxHeight / 1.3,
+                    child: currentLocation == null
+                        ? const Center(child: Text("Loading Map..."))
+                        : GoogleMap(
+                      initialCameraPosition: _cameraPosition,
+                      mapType: MapType.normal,
+                      myLocationEnabled: true,
+                      compassEnabled: true,
+                      padding: const EdgeInsets.all(10.0),
+                      zoomControlsEnabled: true,
+                      mapToolbarEnabled: true,
+                      zoomGesturesEnabled: true,
+                      onCameraMove: (position) => center = position.target,
+                      myLocationButtonEnabled: true,
+                      polylines: {
+                        Polyline(
+                            polylineId: PolylineId("live_polyline"),
+                            points: live_polylineCoordinates,
+                            color: Colors.blueAccent,
+                            width: 4),
+                        Polyline(
+                            polylineId: PolylineId("route"),
+                            points: polylineCoordinates,
+                            color: Colors.blueAccent,
+                            width: 4)
+                      },
+                      onMapCreated: (GoogleMapController controller) {
+                        _completer.complete(controller);
+                      },
+                      markers: {
+                        Marker(
+                          markerId: const MarkerId("source"),
+                          position: LatLng(currentLocation!.latitude!,
+                              currentLocation!.longitude!),
+                          icon: sourceIcon,
 
-                          ),
-                          Marker(
-                            markerId: const MarkerId("destination"),
-                            position: LatLng(
-                                destinationMarkerLat, destinationMarkerLng),
-                            icon: destinationIcon,
-                          )
-                        },
+                        ),
+                        Marker(
+                          markerId: const MarkerId("destination"),
+                          position: LatLng(
+                              destinationMarkerLat, destinationMarkerLng),
+                          icon: destinationIcon,
+                        )
+                      },
 
-                        // markers: Set<Marker>.of(_markers.values),
-                      ));
-          }),
+                      // markers: Set<Marker>.of(_markers.values),
+                    ));
+              }),
           DraggableScrollableSheet(
               initialChildSize: 0.25,
               minChildSize: 0.10,
@@ -298,7 +303,7 @@ class _SignUpState extends State<StartRide> {
                                             ),
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                              MainAxisAlignment.center,
                                               children: <Widget>[
                                                 Container(
                                                   width: 30,
@@ -306,10 +311,10 @@ class _SignUpState extends State<StartRide> {
                                                   decoration: BoxDecoration(
                                                       color: Colors.grey[300],
                                                       borderRadius:
-                                                          const BorderRadius
-                                                                  .all(
-                                                              Radius.circular(
-                                                                  12.0))),
+                                                      const BorderRadius
+                                                          .all(
+                                                          Radius.circular(
+                                                              12.0))),
                                                 ),
                                               ],
                                             ),
@@ -318,13 +323,13 @@ class _SignUpState extends State<StartRide> {
                                             ),
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
+                                              MainAxisAlignment.spaceEvenly,
                                               children: const <Widget>[
                                                 Text(
                                                   "Select a location",
                                                   style: TextStyle(
                                                     fontWeight:
-                                                        FontWeight.normal,
+                                                    FontWeight.normal,
                                                     fontSize: 20.0,
                                                   ),
                                                 ),
@@ -338,22 +343,22 @@ class _SignUpState extends State<StartRide> {
                                                 child: Autocomplete<Result>(
                                                     optionsBuilder:
                                                         (TextEditingValue
-                                                            textEditingValue) {
+                                                    textEditingValue) {
                                                       return getSuggestions(
                                                           textEditingValue);
                                                     },
                                                     displayStringForOption:
                                                         (Result option) =>
-                                                            option.text
-                                                                .toString(),
+                                                        option.text
+                                                            .toString(),
                                                     fieldViewBuilder: (BuildContext
-                                                            context,
+                                                    context,
                                                         TextEditingController
-                                                            fieldTextEditingController,
+                                                        fieldTextEditingController,
                                                         FocusNode
-                                                            fieldFocusNode,
+                                                        fieldFocusNode,
                                                         VoidCallback
-                                                            onFieldSubmitted) {
+                                                        onFieldSubmitted) {
                                                       return Card(
                                                         child: ListTile(
                                                           //leading: Icon(Icons.search),
@@ -365,26 +370,26 @@ class _SignUpState extends State<StartRide> {
                                                               });
                                                             },
                                                             controller:
-                                                                fieldTextEditingController,
+                                                            fieldTextEditingController,
                                                             focusNode:
-                                                                fieldFocusNode,
+                                                            fieldFocusNode,
                                                             decoration:
-                                                                InputDecoration(
-                                                                    hintText:
-                                                                        "Search",
-                                                                    border:
-                                                                        InputBorder
-                                                                            .none,
-                                                                    prefixIcon:
-                                                                        IconButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              // searchMemberApi(mobileController.text,widget.userId);
-                                                                            },
-                                                                            icon:
-                                                                                Icon(
-                                                                              Icons.search,
-                                                                            ))),
+                                                            InputDecoration(
+                                                                hintText:
+                                                                "Search",
+                                                                border:
+                                                                InputBorder
+                                                                    .none,
+                                                                prefixIcon:
+                                                                IconButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      // searchMemberApi(mobileController.text,widget.userId);
+                                                                    },
+                                                                    icon:
+                                                                    Icon(
+                                                                      Icons.search,
+                                                                    ))),
                                                           ),
                                                           trailing: IconButton(
                                                               onPressed: () {
@@ -401,20 +406,20 @@ class _SignUpState extends State<StartRide> {
                                                       print(
                                                           'Selected: ${selection.text}');
                                                       fieldTextEditingController
-                                                              .text =
+                                                          .text =
                                                           selection.text
                                                               .toString();
                                                     },
                                                     optionsViewBuilder:
                                                         (BuildContext context,
-                                                            AutocompleteOnSelected<
-                                                                    Result>
-                                                                onSelected,
-                                                            Iterable<Result>
-                                                                options) {
+                                                        AutocompleteOnSelected<
+                                                            Result>
+                                                        onSelected,
+                                                        Iterable<Result>
+                                                        options) {
                                                       return Align(
                                                         alignment:
-                                                            Alignment.topLeft,
+                                                        Alignment.topLeft,
                                                         child: Material(
                                                           child: Container(
                                                             width: 365,
@@ -422,19 +427,19 @@ class _SignUpState extends State<StartRide> {
                                                             child: ListView
                                                                 .builder(
                                                               padding:
-                                                                  EdgeInsets
-                                                                      .all(
-                                                                          10.0),
+                                                              EdgeInsets
+                                                                  .all(
+                                                                  10.0),
                                                               itemCount: options
                                                                   .length,
                                                               itemBuilder:
                                                                   (BuildContext
-                                                                          context,
-                                                                      int index) {
+                                                              context,
+                                                                  int index) {
                                                                 final Result
-                                                                    option =
-                                                                    options.elementAt(
-                                                                        index);
+                                                                option =
+                                                                options.elementAt(
+                                                                    index);
 
                                                                 return GestureDetector(
                                                                   onTap:
@@ -442,27 +447,27 @@ class _SignUpState extends State<StartRide> {
                                                                     onSelected(
                                                                         option);
                                                                     destinationController
-                                                                            .text =
+                                                                        .text =
                                                                         option
                                                                             .text
                                                                             .toString();
                                                                     OverlayLoadingProgress
                                                                         .start(
-                                                                            context);
+                                                                        context);
                                                                     await getDestination(
                                                                         option
                                                                             .placeId);
-                                                                   // Navigator.pop(context);
+                                                                    // Navigator.pop(context);
                                                                   },
                                                                   child: Card(
                                                                     elevation:
-                                                                        1,
+                                                                    1,
                                                                     margin: const EdgeInsets
                                                                         .symmetric(
-                                                                            vertical:
-                                                                                2),
+                                                                        vertical:
+                                                                        2),
                                                                     child:
-                                                                        ListTile(
+                                                                    ListTile(
                                                                       leading:
                                                                       const Icon(
                                                                         Icons
@@ -475,7 +480,7 @@ class _SignUpState extends State<StartRide> {
                                                                               .text
                                                                               .toString(),
                                                                           style:
-                                                                              const TextStyle(color: Colors.black)),
+                                                                          const TextStyle(color: Colors.black)),
                                                                     ),
                                                                   ),
                                                                 );
@@ -504,11 +509,11 @@ class _SignUpState extends State<StartRide> {
                                     onTap: () {
                                       showExitPopup(
                                           context, "Do you want to stop ride?",
-                                          () async {
-                                        OverlayLoadingProgress.start(context);
-                                        Navigator.pop(context, true);
-                                        await endRide();
-                                      });
+                                              () async {
+                                            OverlayLoadingProgress.start(context);
+                                            Navigator.pop(context, true);
+                                            await endRide();
+                                          });
                                       //showAlertDialog(context);
                                     },
                                     child: Column(
@@ -590,7 +595,7 @@ class _SignUpState extends State<StartRide> {
             child: Padding(
               padding: const EdgeInsets.only(left: 50,right: 50,top: 8),
               child: Container(
-                 height: 47,
+                  height: 47,
                   width: double.infinity,
                   child: CardMatrix(timeValue: durationMin.toString(), kilometerValue: distanceKilometer.toString())),
             ),
@@ -734,8 +739,8 @@ class _SignUpState extends State<StartRide> {
     RenderBox box = context.findRenderObject() as RenderBox;
     Share.share(
         "Hi! Nirbhaya...Welcome to the new way to easily share your real-time location with your friends, family, co-workers, customers, suppliers, and more.\n\n"
-        "Driver Name: $dName, Driver Mobile Number : $dMobile, Model : $model, Owner Name: $ownlerName, Registration Number: $regNo, "
-        "Hey check out my app at: https://play.google.com/store/apps/details?id=com.rider_safe_travel.ride_safe_travel",
+            "Driver Name: $dName, Driver Mobile Number : $dMobile, Model : $model, Owner Name: $ownlerName, Registration Number: $regNo, "
+            "Hey check out my app at: https://play.google.com/store/apps/details?id=com.rider_safe_travel.ride_safe_travel",
         subject: "Description",
         sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
   }
@@ -752,8 +757,8 @@ class _SignUpState extends State<StartRide> {
             <String, String>{"search": textEditingValue.text.toString()}),
       );
       print('getSuggestions:${jsonEncode(<String, String>{
-            "search": textEditingValue.text.toString()
-          })}');
+        "search": textEditingValue.text.toString()
+      })}');
       if (response.statusCode == 200) {
         OverlayLoadingProgress.stop();
         print("getData" + response.body);
@@ -781,8 +786,8 @@ class _SignUpState extends State<StartRide> {
       body: jsonEncode(<String, String>{"PlaceId": placeId.toString()}),
     );
     print('getDestination:${jsonEncode(<String, String>{
-          "PlaceId": placeId.toString()
-        })}');
+      "PlaceId": placeId.toString()
+    })}');
 
     if (response.statusCode == 200) {
       print("getDetails" + response.body);
@@ -825,15 +830,15 @@ class _SignUpState extends State<StartRide> {
       );
       if (result.points.isNotEmpty) {
         result.points.forEach(
-          (PointLatLng point) =>
+              (PointLatLng point) =>
               polylineCoordinates.add(LatLng(point.latitude, point.longitude)),
         );
         setState(() {});
       }
       distanceKilometer = jsonDecode(response.body)['rows'][0]['elements'][0]
-          ['distance']['text'];
+      ['distance']['text'];
       durationMin = jsonDecode(response.body)['rows'][0]['elements'][0]
-          ['duration']['text'];
+      ['duration']['text'];
       if(distanceKilometer==null){
         matrixVisibility=false;
       }else{
@@ -850,3 +855,4 @@ class _SignUpState extends State<StartRide> {
     }
   }
 }
+
