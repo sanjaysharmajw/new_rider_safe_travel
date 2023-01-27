@@ -11,6 +11,8 @@ class CustomColor {
   static const items = Color(0x91AFAFAF);
   static const buttonColor = Color(0xFFEFEFEF);
   static const lightYellow = Color(0x80FFD91D);
+  static const shadow = Color(0x80D2D2D2);
+  static const transparent = Color(0xECFFFFFF);
 
   static const listColor = Color(0xFFEFEFEF);
 }

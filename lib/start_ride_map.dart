@@ -14,6 +14,7 @@ import 'package:ride_safe_travel/LoginModule/Map/Drawer.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/MapAddFamily.dart';
+import 'package:ride_safe_travel/Models/matrixModels.dart';
 import 'package:ride_safe_travel/Utils/constant.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:share_plus/share_plus.dart';
@@ -22,18 +23,19 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'BottomSheet/GeocodeResultModel.dart';
 import 'LoginModule/Error.dart';
 import 'Utils/exit_alert_dialog.dart';
+import 'Utils/map_matrix_widgets.dart';
 
 class StartRide extends StatefulWidget {
   const StartRide(
       {Key? key,
-        required this.riderId,
-        required this.socketToken,
-        required this.dName,
-        required this.dMobile,
-        required this.dPhoto,
-        required this.model,
-        required this.vOwnerName,
-        required this.vRegNo})
+      required this.riderId,
+      required this.socketToken,
+      required this.dName,
+      required this.dMobile,
+      required this.dPhoto,
+      required this.model,
+      required this.vOwnerName,
+      required this.vRegNo})
       : super(key: key);
 
   @override
@@ -60,13 +62,17 @@ class _SignUpState extends State<StartRide> {
   String socketToken = '';
   bool visibility = false;
 
+  String? distanceKilometer;
+  String? durationMin;
+  bool matrixVisibility=false;
+
   late double destinationMarkerLat = 0.0;
   late double destinationMarkerLng = 0.0;
   Completer<GoogleMapController> _completer = Completer();
   BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
   static const LatLng destinationLocation =
-  LatLng(19.067949048869405, 73.0039520555996);
+      LatLng(19.067949048869405, 73.0039520555996);
   List<LatLng> polylineCoordinates = [];
   List<LatLng> live_polylineCoordinates = [];
   static const CameraPosition _cameraPosition = CameraPosition(
@@ -90,6 +96,7 @@ class _SignUpState extends State<StartRide> {
     setState(() {});
     OverlayLoadingProgress;
     ToastMessage.toast(widget.riderId);
+
   }
 
   void sharePre() async {
@@ -101,13 +108,13 @@ class _SignUpState extends State<StartRide> {
 
   void setCustomMarkerIcon() {
     BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, 'assets/driver_map_min.png')
+            ImageConfiguration.empty, 'assets/driver_map_min.png')
         .then((icon) {
       sourceIcon = icon;
     });
 
     BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, 'assets/to_map_pin.png')
+            ImageConfiguration.empty, 'assets/to_map_pin.png')
         .then((icon) {
       destinationIcon = icon;
     });
@@ -126,7 +133,8 @@ class _SignUpState extends State<StartRide> {
       print('LatLng${currentLocation!.longitude!}');
       print('latiiii' + destinationMarkerLat.toString());
       if (destinationMarkerLat == 0.0) {
-        live_polylineCoordinates.add(LatLng(currentLocation!.latitude!, currentLocation!.longitude!));
+        live_polylineCoordinates.add(
+            LatLng(currentLocation!.latitude!, currentLocation!.longitude!));
       }
       await Preferences.setPreferences();
       Preferences.setStartLat(cLoc.latitude!.toString());
@@ -152,7 +160,7 @@ class _SignUpState extends State<StartRide> {
 
   final TextEditingController destinationController = TextEditingController();
   final TextEditingController fieldTextEditingController =
-  TextEditingController();
+      TextEditingController();
   final ScrollController scrollController = ScrollController();
   List<Result> locationData = [];
   String searchString = "";
@@ -163,10 +171,10 @@ class _SignUpState extends State<StartRide> {
     return WillPopScope(
       onWillPop: () =>
           showExitPopup(context, "Do you want to stop ride?", () async {
-            OverlayLoadingProgress.start(context);
-            Navigator.pop(context, true);
-            await endRide();
-          }),
+        OverlayLoadingProgress.start(context);
+        Navigator.pop(context, true);
+        await endRide();
+      }),
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -200,53 +208,54 @@ class _SignUpState extends State<StartRide> {
         body: Stack(children: [
           LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
-                return SizedBox(
-                    height: constraints.maxHeight / 1.2,
-                    child: currentLocation==null
-                  ?const Center(child: Text("Loading Map...")):
-                    GoogleMap(
-                      initialCameraPosition: _cameraPosition,
-                      mapType: MapType.normal,
-                      myLocationEnabled: true,
-                      padding: const EdgeInsets.only(bottom: 60),
-                      compassEnabled: true,
-                      zoomControlsEnabled: true,
-                      mapToolbarEnabled: true,
-                      zoomGesturesEnabled: true,
-                      myLocationButtonEnabled: true,
-                      polylines: {
-                        Polyline(
-                            polylineId: PolylineId("live_polyline"),
-                            points: live_polylineCoordinates,
-                            color: Colors.blueAccent,
-                            width: 4),
-                        Polyline(
-                            polylineId: PolylineId("route"),
-                            points: polylineCoordinates,
-                            color: Colors.blueAccent,
-                            width: 4)
-                      },
-                      onMapCreated: (GoogleMapController controller) {
-                        _completer.complete(controller);
-                      },
-                      markers: {
-                        Marker(
-                          markerId: const MarkerId("source"),
-                          position: LatLng(currentLocation!.latitude!,
-                              currentLocation!.longitude!),
-                          icon: sourceIcon,
-                        ),
-                        Marker(
-                          markerId: const MarkerId("destination"),
-                          position:
-                          LatLng(destinationMarkerLat, destinationMarkerLng),
-                          icon: destinationIcon,
-                        )
-                      },
+            return SizedBox(
+                height: constraints.maxHeight / 1.3,
+                child: currentLocation == null
+                    ? const Center(child: Text("Loading Map..."))
+                    : GoogleMap(
+                        initialCameraPosition: _cameraPosition,
+                        mapType: MapType.normal,
+                        myLocationEnabled: true,
+                        compassEnabled: true,
+                        padding: const EdgeInsets.all(10.0),
+                        zoomControlsEnabled: true,
+                        mapToolbarEnabled: true,
+                        zoomGesturesEnabled: true,
+                        myLocationButtonEnabled: true,
+                        polylines: {
+                          Polyline(
+                              polylineId: PolylineId("live_polyline"),
+                              points: live_polylineCoordinates,
+                              color: Colors.blueAccent,
+                              width: 4),
+                          Polyline(
+                              polylineId: PolylineId("route"),
+                              points: polylineCoordinates,
+                              color: Colors.blueAccent,
+                              width: 4)
+                        },
+                        onMapCreated: (GoogleMapController controller) {
+                          _completer.complete(controller);
+                        },
+                        markers: {
+                          Marker(
+                            markerId: const MarkerId("source"),
+                            position: LatLng(currentLocation!.latitude!,
+                                currentLocation!.longitude!),
+                            icon: sourceIcon,
 
-                      // markers: Set<Marker>.of(_markers.values),
-                    ));
-              }),
+                          ),
+                          Marker(
+                            markerId: const MarkerId("destination"),
+                            position: LatLng(
+                                destinationMarkerLat, destinationMarkerLng),
+                            icon: destinationIcon,
+                          )
+                        },
+
+                        // markers: Set<Marker>.of(_markers.values),
+                      ));
+          }),
           DraggableScrollableSheet(
               initialChildSize: 0.25,
               minChildSize: 0.10,
@@ -289,7 +298,7 @@ class _SignUpState extends State<StartRide> {
                                             ),
                                             Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                                  MainAxisAlignment.center,
                                               children: <Widget>[
                                                 Container(
                                                   width: 30,
@@ -297,10 +306,10 @@ class _SignUpState extends State<StartRide> {
                                                   decoration: BoxDecoration(
                                                       color: Colors.grey[300],
                                                       borderRadius:
-                                                      const BorderRadius
-                                                          .all(
-                                                          Radius.circular(
-                                                              12.0))),
+                                                          const BorderRadius
+                                                                  .all(
+                                                              Radius.circular(
+                                                                  12.0))),
                                                 ),
                                               ],
                                             ),
@@ -309,13 +318,13 @@ class _SignUpState extends State<StartRide> {
                                             ),
                                             Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                                  MainAxisAlignment.spaceEvenly,
                                               children: const <Widget>[
                                                 Text(
                                                   "Select a location",
                                                   style: TextStyle(
                                                     fontWeight:
-                                                    FontWeight.normal,
+                                                        FontWeight.normal,
                                                     fontSize: 20.0,
                                                   ),
                                                 ),
@@ -329,22 +338,22 @@ class _SignUpState extends State<StartRide> {
                                                 child: Autocomplete<Result>(
                                                     optionsBuilder:
                                                         (TextEditingValue
-                                                    textEditingValue) {
+                                                            textEditingValue) {
                                                       return getSuggestions(
                                                           textEditingValue);
                                                     },
                                                     displayStringForOption:
                                                         (Result option) =>
-                                                        option.text
-                                                            .toString(),
+                                                            option.text
+                                                                .toString(),
                                                     fieldViewBuilder: (BuildContext
-                                                    context,
+                                                            context,
                                                         TextEditingController
-                                                        fieldTextEditingController,
+                                                            fieldTextEditingController,
                                                         FocusNode
-                                                        fieldFocusNode,
+                                                            fieldFocusNode,
                                                         VoidCallback
-                                                        onFieldSubmitted) {
+                                                            onFieldSubmitted) {
                                                       return Card(
                                                         child: ListTile(
                                                           //leading: Icon(Icons.search),
@@ -356,26 +365,26 @@ class _SignUpState extends State<StartRide> {
                                                               });
                                                             },
                                                             controller:
-                                                            fieldTextEditingController,
+                                                                fieldTextEditingController,
                                                             focusNode:
-                                                            fieldFocusNode,
+                                                                fieldFocusNode,
                                                             decoration:
-                                                            InputDecoration(
-                                                                hintText:
-                                                                "Search",
-                                                                border:
-                                                                InputBorder
-                                                                    .none,
-                                                                prefixIcon:
-                                                                IconButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      // searchMemberApi(mobileController.text,widget.userId);
-                                                                    },
-                                                                    icon:
-                                                                    Icon(
-                                                                      Icons.search,
-                                                                    ))),
+                                                                InputDecoration(
+                                                                    hintText:
+                                                                        "Search",
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    prefixIcon:
+                                                                        IconButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              // searchMemberApi(mobileController.text,widget.userId);
+                                                                            },
+                                                                            icon:
+                                                                                Icon(
+                                                                              Icons.search,
+                                                                            ))),
                                                           ),
                                                           trailing: IconButton(
                                                               onPressed: () {
@@ -392,20 +401,20 @@ class _SignUpState extends State<StartRide> {
                                                       print(
                                                           'Selected: ${selection.text}');
                                                       fieldTextEditingController
-                                                          .text =
+                                                              .text =
                                                           selection.text
                                                               .toString();
                                                     },
                                                     optionsViewBuilder:
                                                         (BuildContext context,
-                                                        AutocompleteOnSelected<
-                                                            Result>
-                                                        onSelected,
-                                                        Iterable<Result>
-                                                        options) {
+                                                            AutocompleteOnSelected<
+                                                                    Result>
+                                                                onSelected,
+                                                            Iterable<Result>
+                                                                options) {
                                                       return Align(
                                                         alignment:
-                                                        Alignment.topLeft,
+                                                            Alignment.topLeft,
                                                         child: Material(
                                                           child: Container(
                                                             width: 365,
@@ -413,19 +422,19 @@ class _SignUpState extends State<StartRide> {
                                                             child: ListView
                                                                 .builder(
                                                               padding:
-                                                              EdgeInsets
-                                                                  .all(
-                                                                  10.0),
+                                                                  EdgeInsets
+                                                                      .all(
+                                                                          10.0),
                                                               itemCount: options
                                                                   .length,
                                                               itemBuilder:
                                                                   (BuildContext
-                                                              context,
-                                                                  int index) {
+                                                                          context,
+                                                                      int index) {
                                                                 final Result
-                                                                option =
-                                                                options.elementAt(
-                                                                    index);
+                                                                    option =
+                                                                    options.elementAt(
+                                                                        index);
 
                                                                 return GestureDetector(
                                                                   onTap:
@@ -433,31 +442,29 @@ class _SignUpState extends State<StartRide> {
                                                                     onSelected(
                                                                         option);
                                                                     destinationController
-                                                                        .text =
+                                                                            .text =
                                                                         option
                                                                             .text
                                                                             .toString();
                                                                     OverlayLoadingProgress
                                                                         .start(
-                                                                        context);
+                                                                            context);
                                                                     await getDestination(
                                                                         option
                                                                             .placeId);
-
-                                                                    Navigator.pop(
-                                                                        context);
+                                                                   // Navigator.pop(context);
                                                                   },
                                                                   child: Card(
                                                                     elevation:
-                                                                    1,
-                                                                    margin: EdgeInsets
+                                                                        1,
+                                                                    margin: const EdgeInsets
                                                                         .symmetric(
-                                                                        vertical:
-                                                                        2),
+                                                                            vertical:
+                                                                                2),
                                                                     child:
-                                                                    ListTile(
+                                                                        ListTile(
                                                                       leading:
-                                                                      Icon(
+                                                                      const Icon(
                                                                         Icons
                                                                             .location_on_rounded,
                                                                         color: Colors
@@ -468,7 +475,7 @@ class _SignUpState extends State<StartRide> {
                                                                               .text
                                                                               .toString(),
                                                                           style:
-                                                                          const TextStyle(color: Colors.black)),
+                                                                              const TextStyle(color: Colors.black)),
                                                                     ),
                                                                   ),
                                                                 );
@@ -497,11 +504,11 @@ class _SignUpState extends State<StartRide> {
                                     onTap: () {
                                       showExitPopup(
                                           context, "Do you want to stop ride?",
-                                              () async {
-                                            OverlayLoadingProgress.start(context);
-                                            Navigator.pop(context, true);
-                                            await endRide();
-                                          });
+                                          () async {
+                                        OverlayLoadingProgress.start(context);
+                                        Navigator.pop(context, true);
+                                        await endRide();
+                                      });
                                       //showAlertDialog(context);
                                     },
                                     child: Column(
@@ -577,6 +584,17 @@ class _SignUpState extends State<StartRide> {
                   ),
                 );
               }),
+
+          Visibility(
+            visible: matrixVisibility,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 50,right: 50,top: 8),
+              child: Container(
+                 height: 47,
+                  width: double.infinity,
+                  child: CardMatrix(timeValue: durationMin.toString(), kilometerValue: distanceKilometer.toString())),
+            ),
+          ),
         ]),
       ),
     );
@@ -716,8 +734,8 @@ class _SignUpState extends State<StartRide> {
     RenderBox box = context.findRenderObject() as RenderBox;
     Share.share(
         "Hi! Nirbhaya...Welcome to the new way to easily share your real-time location with your friends, family, co-workers, customers, suppliers, and more.\n\n"
-            "Driver Name: $dName, Driver Mobile Number : $dMobile, Model : $model, Owner Name: $ownlerName, Registration Number: $regNo, "
-            "Hey check out my app at: https://play.google.com/store/apps/details?id=com.rider_safe_travel.ride_safe_travel",
+        "Driver Name: $dName, Driver Mobile Number : $dMobile, Model : $model, Owner Name: $ownlerName, Registration Number: $regNo, "
+        "Hey check out my app at: https://play.google.com/store/apps/details?id=com.rider_safe_travel.ride_safe_travel",
         subject: "Description",
         sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
   }
@@ -734,8 +752,8 @@ class _SignUpState extends State<StartRide> {
             <String, String>{"search": textEditingValue.text.toString()}),
       );
       print('getSuggestions:${jsonEncode(<String, String>{
-        "search": textEditingValue.text.toString()
-      })}');
+            "search": textEditingValue.text.toString()
+          })}');
       if (response.statusCode == 200) {
         OverlayLoadingProgress.stop();
         print("getData" + response.body);
@@ -763,33 +781,17 @@ class _SignUpState extends State<StartRide> {
       body: jsonEncode(<String, String>{"PlaceId": placeId.toString()}),
     );
     print('getDestination:${jsonEncode(<String, String>{
-      "PlaceId": placeId.toString()
-    })}');
+          "PlaceId": placeId.toString()
+        })}');
 
     if (response.statusCode == 200) {
-      OverlayLoadingProgress.stop();
       print("getDetails" + response.body);
       double destinationLat = jsonDecode(response.body)['result'][0]['lat'];
       double destinationLng = jsonDecode(response.body)['result'][0]['lng'];
       destinationMarkerLat = destinationLat;
       destinationMarkerLng = destinationLng;
-      polylineCoordinates.clear();
-      PolylinePoints polylinePoints = PolylinePoints();
-      PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        googleMapKey,
-        travelMode: TravelMode.transit,
-        PointLatLng(currentLocation!.latitude!, currentLocation!.longitude!),
-        PointLatLng(destinationLat, destinationLng),
-      );
-      if (result.points.isNotEmpty) {
-        result.points.forEach(
-              (PointLatLng point) =>
-              polylineCoordinates.add(LatLng(point.latitude, point.longitude)),
-        );
-        setState(() {});
-      }
-     //await getDistance(currentLocation!.latitude!,currentLocation!.longitude!,destinationMarkerLat,destinationMarkerLng);
-      Navigator.pop(context);
+      await getDistance(currentLocation!.latitude!, currentLocation!.longitude!,
+          destinationMarkerLat, destinationMarkerLng);
       var locationDetails = jsonDecode(response.body)['result']
           .map<Result>((data) => Result.fromJson(data))
           .toList();
@@ -798,21 +800,53 @@ class _SignUpState extends State<StartRide> {
       throw Exception('Failed to load');
     }
   }
-   Future<dynamic> getDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) async {
-    String Url = 'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${startLatitude},${startLongitude}&origins=${endLatitude},${endLongitude}&key=AIzaSyBu3-_hcaqdnAYTFEMIKbyNtoOJWPBaKmc';
-    try {
-      var response = await http.get(
-        Uri.parse(Url),);
-      if (response.statusCode == 200) {
-        print('distance: $response');
-        return jsonDecode(response.body);
-      } else
-        return null;
-    }
-    catch (e) {
-      print(e);
-      return null;
+
+  Future<Rows> getDistance(double startLatitude, double startLongitude,
+      double endLatitude, double endLongitude) async {
+    String Url =
+        'https://maps.googleapis.com/maps/api/distancematrix/json?destinations='
+        '$startLatitude,$startLongitude&origins=$endLatitude,$endLongitude'
+        '&key=AIzaSyBu3-_hcaqdnAYTFEMIKbyNtoOJWPBaKmc';
+    final response = await http.post(Uri.parse(Url), headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    if (response.statusCode == 200) {
+
+      var matrixData = jsonDecode(response.body)['rows']
+          .map<Rows>((data) => Rows.fromJson(data))
+          .toList();
+      polylineCoordinates.clear();
+      PolylinePoints polylinePoints = PolylinePoints();
+      PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+        googleMapKey,
+        travelMode: TravelMode.driving,
+        PointLatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+        PointLatLng(endLatitude, endLongitude),
+      );
+      if (result.points.isNotEmpty) {
+        result.points.forEach(
+          (PointLatLng point) =>
+              polylineCoordinates.add(LatLng(point.latitude, point.longitude)),
+        );
+        setState(() {});
+      }
+      distanceKilometer = jsonDecode(response.body)['rows'][0]['elements'][0]
+          ['distance']['text'];
+      durationMin = jsonDecode(response.body)['rows'][0]['elements'][0]
+          ['duration']['text'];
+      if(distanceKilometer==null){
+        matrixVisibility=false;
+      }else{
+        matrixVisibility=true;
+      }
+      setState(() {
+
+      });
+      OverlayLoadingProgress.stop();
+      Navigator.pop(context);
+      return matrixData;
+    } else {
+      throw Exception('Failed to load');
     }
   }
 }
-
