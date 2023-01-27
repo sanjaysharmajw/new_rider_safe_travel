@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:majascan/majascan.dart';
+import 'package:location/location.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/LoginModule/Map/RiderFamilyList.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
@@ -46,6 +47,7 @@ class _MainPageState extends State<MainPage> {
   String profileLastName = "";
   String profileEmailId = "";
   late int countNitification=0;
+
   // bool refreshValue=false;
   // void refreshData(){
   //   setState(() {
@@ -93,9 +95,22 @@ class _MainPageState extends State<MainPage> {
       });
     }
   }
+  Future getLocation() async {
+    bool? _serviceEnabled;
+    Location location =  Location();
+    var _permissionGranted = await location.hasPermission();
+    _serviceEnabled = await location.serviceEnabled();
+    if (_permissionGranted != PermissionStatus.granted || !_serviceEnabled) {
+      _permissionGranted = await location.requestPermission();
+      _serviceEnabled = await location.requestService();
+      ToastMessage.toast("Access Granted");
+    }
+  }
+
 
   @override
   void initState() {
+    getLocation();
     super.initState();
     sharePreferences();
     print(image);
