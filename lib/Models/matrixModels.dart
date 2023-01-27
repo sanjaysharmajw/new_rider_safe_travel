@@ -96,7 +96,7 @@ Rows copyWith({  List<Elements>? elements,
 class Elements {
   Elements({
       Distance? distance, 
-      Duration? duration, 
+      DurationMat? duration,
       String? status,}){
     _distance = distance;
     _duration = duration;
@@ -105,21 +105,21 @@ class Elements {
 
   Elements.fromJson(dynamic json) {
     _distance = json['distance'] != null ? Distance.fromJson(json['distance']) : null;
-    _duration = json['duration'] != null ? Duration.fromJson(json['duration']) : null;
+    _duration = json['duration'] != null ? DurationMat.fromJson(json['duration']) : null;
     _status = json['status'];
   }
   Distance? _distance;
-  Duration? _duration;
+  DurationMat? _duration;
   String? _status;
 Elements copyWith({  Distance? distance,
-  Duration? duration,
+  DurationMat? duration,
   String? status,
 }) => Elements(  distance: distance ?? _distance,
   duration: duration ?? _duration,
   status: status ?? _status,
 );
   Distance? get distance => _distance;
-  Duration? get duration => _duration;
+  DurationMat? get duration => _duration;
   String? get status => _status;
 
   Map<String, dynamic> toJson() {
@@ -139,23 +139,23 @@ Elements copyWith({  Distance? distance,
 /// text : "30 mins"
 /// value : 1817
 
-class Duration {
-  Duration({
+class DurationMat {
+  DurationMatrix({
       String? text, 
       num? value,}){
     _text = text;
     _value = value;
 }
 
-  Duration.fromJson(dynamic json) {
+  DurationMat.fromJson(dynamic json) {
     _text = json['text'];
     _value = json['value'];
   }
   String? _text;
   num? _value;
-Duration copyWith({  String? text,
+  DurationMat copyWith({  String? text,
   num? value,
-}) => Duration(  text: text ?? _text,
+}) => DurationMatrix(  text: text ?? _text,
   value: value ?? _value,
 );
   String? get text => _text;
