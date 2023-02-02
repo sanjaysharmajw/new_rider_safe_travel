@@ -45,6 +45,10 @@ class _MyRidesPageState extends State<MyRidesPage> {
         body: FutureBuilder<List<RideDataModel>>(
           future: getData(),
           builder: (context, snapshot) {
+            if(!snapshot.hasData)
+              {
+                return Text("Data not found");
+              }else
             if (snapshot.hasData) {
               return ListView.builder(
                 itemCount: snapshot.data?.length,
@@ -119,8 +123,8 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                                       null)
                                                   ? Image.network(
                                                       snapshot
-                                                          .data![index].driverPhoto
-                                                          .toString(),
+                                                          .data![index].driverPhoto == null ? " " : snapshot
+                                                          .data![index].driverPhoto.toString(),
                                                       width: 50.w,
                                                       height: 60.h,
                                                       fit: BoxFit.cover,
@@ -143,6 +147,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                                 Text("Driver Name: "),
                                                 Text(
                                                     snapshot.data![index].driverName
+                                                        .toString() == "null" ? " " :  snapshot.data![index].driverName
                                                         .toString(),
                                                     style: TextStyle(
                                                         fontFamily: 'transport',
@@ -153,6 +158,8 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                                 Text("Driver Mobile Number: "),
                                                 Text(
                                                     snapshot.data![index]
+                                                        .driverMobileNumber
+                                                        .toString() == "null" ? " " : snapshot.data![index]
                                                         .driverMobileNumber
                                                         .toString(),
                                                     style: TextStyle(
@@ -176,6 +183,8 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                                 Text(
                                                     snapshot.data![index]
                                                         .vehicleRegistrationNumber
+                                                        .toString() == "null" ? " " : snapshot.data![index]
+                                                        .vehicleRegistrationNumber
                                                         .toString(),
                                                     style: TextStyle(
                                                         fontFamily: 'transport',
@@ -186,6 +195,8 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                                 Text("Veicle Model Name:"),
                                                 Text(
                                                     snapshot
+                                                        .data![index].vehicleModel
+                                                        .toString() == "null" ? " " : snapshot
                                                         .data![index].vehicleModel
                                                         .toString(),
                                                     style: TextStyle(

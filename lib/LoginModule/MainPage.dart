@@ -111,23 +111,30 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     getLocation();
-    super.initState();
-    sharePreferences();
+
+    setState(() {
+      sharePreferences();
+    });
+
     print(image);
     print("mainpageUserId:"+userId);
   }
 
   void sharePreferences() async {
+    setState(() {
+
+    });
     await Preferences.setPreferences();
     image = Preferences.getProfileImage().toString();
-    profileName = Preferences.getFirstName(Preferences.firstname).toString();
-    profileLastName = Preferences.getLastName(Preferences.lastname).toString();
+   // profileName = Preferences.getFirstName(Preferences.firstname).toString();
+    //profileLastName = Preferences.getLastName(Preferences.lastname).toString();
+    profileName = Preferences.getFirstName(Preferences.firstname).toString() + " " + Preferences.getLastName(Preferences.lastname).toString();
     userId = Preferences.getId(Preferences.id).toString();
     await countNotification();
     profileMobile =
         Preferences.getMobileNumber(Preferences.mobileNumber).toString();
     profileEmailId = Preferences.getEmailId(Preferences.emailId).toString();
-    setState(() {});
+
     //OverlayLoadingProgress.stop();
   }
 
@@ -191,7 +198,7 @@ class _MainPageState extends State<MainPage> {
             children: [
               DashboardProfileWidgets(
                   image: image,
-                  profileName: profileName + " " + profileLastName,
+                  profileName: profileName,
                   profileMobile: profileMobile,
                   emailId: profileEmailId),
               Row(

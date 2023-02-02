@@ -149,8 +149,9 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                           const SizedBox(
                             height: 40,
                           ),
-                          ProfileWidget(profileName:"${snapshot.data![index].firstName.toString()} ${snapshot.data![index].lastName.toString()}",
-                              profileMobile:  '${snapshot.data![index].mobileNumber.toString()}',
+                          ProfileWidget(profileName:"${snapshot.data![index].firstName.toString()} ${snapshot.data![index].lastName.toString()}"  == "null" ? " " :
+                          "${snapshot.data![index].firstName.toString()} ${snapshot.data![index].lastName.toString()}",
+                              profileMobile:  '${snapshot.data![index].mobileNumber.toString()}' == "null" ? " " : '${snapshot.data![index].mobileNumber.toString()}',
                               onPress: () async {
                                 OverlayLoadingProgress.start(context);
                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>

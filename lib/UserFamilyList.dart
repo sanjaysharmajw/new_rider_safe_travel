@@ -109,6 +109,16 @@ class _UserFamilyListState extends State<UserFamilyList> {
         body: FutureBuilder<List<FamilyMembersData>>(
           future: _future,
           builder: (context, snapshot) {
+            if(!snapshot.hasData){
+              return Center(child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text("Data not found"),
+                CircularProgressIndicator()
+                ],
+              ));
+            }else
             if (snapshot.hasData) {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
@@ -192,6 +202,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                               fontFamily: "transport"),
                                               ),
                                               Text(
+                                                "${snapshot.data![index].memberFName.toString()}" == "null" ? "Data not available" :
                                                 "${snapshot.data![index].memberFName.toString()}",
                                                 style: TextStyle(
                                                     fontSize: 16,
@@ -207,6 +218,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                                   fontFamily: "transport"),
                                               ),
                                               Text(
+                                                "${snapshot.data![index].memberLName.toString()}" == "null" ? "Data not available" :
                                                 "${snapshot.data![index].memberLName.toString()}",style: TextStyle(
                                                   fontSize: 16,
 
@@ -247,6 +259,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                           fontFamily: "transport"),
                                       ),
                                       Text(
+                                        "${snapshot.data![index].memberMobileNumber.toString()}" == "null" ? "Data not available" :
                                         "${snapshot.data![index].memberMobileNumber.toString()}",style: TextStyle(
                                         fontSize: 16,
 
@@ -264,7 +277,9 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                           fontFamily: "transport"),
                                       ),
                                       Text(
-                                        "${snapshot.data![index].memberEmailId.toString()}",style: TextStyle(
+                                        "${snapshot.data![index].memberEmailId.toString()}"  == "null" ? "Data not available" :
+                                        "${snapshot.data![index].memberEmailId.toString()}",
+                                        style: TextStyle(
                                         fontSize: 16,
 
                                       ),
@@ -281,7 +296,9 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                           fontFamily: "transport"),
                                       ),
                                       Text(
-                                        "${snapshot.data![index].relation.toString()}",style: TextStyle(
+                                        "${snapshot.data![index].relation.toString()}" == "null" ? "Data not available" :
+                                        "${snapshot.data![index].relation.toString()}",
+                                        style: TextStyle(
                                         fontSize: 16,
 
                                       ),

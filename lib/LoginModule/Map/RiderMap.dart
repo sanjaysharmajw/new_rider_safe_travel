@@ -120,7 +120,7 @@ final ScrollController scrollController = ScrollController();
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          widget.memberName.toString(),
+          widget.memberName.toString() == "null" ? "Data Not Available" : widget.memberName.toString(),
           style: const TextStyle(color: CustomColor.black, fontFamily: 'transport'),
         ),
         elevation: 0,
@@ -420,14 +420,14 @@ final ScrollController scrollController = ScrollController();
         context: context,
         builder: (BuildContext context) {
           return DrawerInfo(
-            dInfoImage: widget.dImage,
-            dInfoName: widget.dName,
-            dInfoMobile: widget.dMobile,
+            dInfoImage: widget.dImage == "null" ? "Data Not Available" : widget.dImage,
+            dInfoName: widget.dName == "null" ? "Data Not Available" : widget.dName,
+            dInfoMobile: widget.dMobile == "null" ? "Data Not Available" : widget.dMobile,
             vInfoImage: 'images/bottom_drawer_comp.png',
-            vInfoModel: widget.vModel,
-            vInfoOwnerName: widget.vOwnerName,
-            vInfoRegNo: widget.vRegistration,
-            dInfoLicense: widget.dLicenseNo,
+            vInfoModel: widget.vModel == "null" ? "Data Not Available" : widget.vModel,
+            vInfoOwnerName: widget.vOwnerName == "null" ? "Data Not Available" : widget.vOwnerName,
+            vInfoRegNo: widget.vRegistration == "null" ? "Data Not Available" : widget.vRegistration,
+            dInfoLicense: widget.dLicenseNo == "null" ? "Data Not Available" : widget.dLicenseNo,
             press: () {
               Navigator.of(context).pop();
             },

@@ -43,6 +43,9 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
         body: FutureBuilder<List<Familymodel>>(
           future: _future,
           builder: (context, snapshot) {
+            if(!snapshot.hasData){
+              return Center(child: Text("Data not found"));
+            }else
             if (snapshot.hasData) {
               return ListView.builder(
                 itemCount: snapshot.data?.length,
@@ -55,24 +58,32 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                           Get.to(RiderMap(
                             riderId: snapshot.data![index].id.toString(),
                             dName:
-                                snapshot.data![index].driverName.toString(),
+                                snapshot.data![index].driverName.toString() == "null" ? "Data Not Available" : snapshot.data![index].driverName.toString(),
                             dLicenseNo: snapshot
+                                .data![index].drivingLicenceNumber
+                                .toString() == "null" ? "Data Not Available" :  snapshot
                                 .data![index].drivingLicenceNumber
                                 .toString(),
                             vModel: snapshot.data![index].vehicleModel
+                                .toString() == "null" ? "Data Not Available" : snapshot.data![index].vehicleModel
                                 .toString(),
                             vOwnerName:
-                                snapshot.data![index].ownerName.toString(),
+                                snapshot.data![index].ownerName.toString() == "null" ? "Data Not Available" : snapshot.data![index].ownerName.toString(),
                             vRegistration: snapshot
+                                .data![index].vehicleRegistrationNumber
+                                .toString() == "null" ? "Data Not Available" : snapshot
                                 .data![index].vehicleRegistrationNumber
                                 .toString(),
                             dMobile: snapshot
                                 .data![index].driverMobileNumber
+                                .toString() == "null" ? "Data Not Available" : snapshot
+                                .data![index].driverMobileNumber
                                 .toString(),
                             dImage: snapshot.data![index].driverPhoto
+                                .toString() == "null" ? "Data Not Available" : snapshot.data![index].driverPhoto
                                 .toString(),
                             memberName:
-                                snapshot.data![index].memberName??"N/A",
+                                snapshot.data![index].memberName.toString() == "null" ? "Data Not Available" : snapshot.data![index].memberName.toString(),
                           ));
                         } else {
                           const Center(child: CircularProgressIndicator());
@@ -164,8 +175,10 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                                           snapshot
                                                                   .data![
                                                                       index]
-                                                                  .memberName ??
-                                                              "N/A",
+                                                                  .memberName.toString() == "null" ? "Data Not Available" : snapshot
+                                                              .data![
+                                                          index]
+                                                              .memberName.toString(),
                                                           style: const TextStyle(
                                                               fontFamily:
                                                                   'transport',
@@ -191,6 +204,8 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                           Text(
                                               snapshot
                                                   .data![index].driverName
+                                                  .toString() == "null" ? "Data Not Available" : snapshot
+                                                  .data![index].driverName
                                                   .toString(),
                                               style: const TextStyle(
                                                   fontFamily: 'transport',
@@ -209,6 +224,8 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                           Text(
                                               snapshot.data![index]
                                                   .driverMobileNumber
+                                                  .toString() == "null" ? "Data Not Available" :  snapshot.data![index]
+                                                  .driverMobileNumber
                                                   .toString(),
                                               style: const TextStyle(
                                                   fontFamily: 'transport',
@@ -226,6 +243,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                                   fontSize: 16,fontWeight: FontWeight.w800)),
                                           Text(
                                               snapshot.data![index].id
+                                                  .toString() == "null" ? "Data Not Available" :  snapshot.data![index].id
                                                   .toString(),
                                               style: const TextStyle(
                                                   fontFamily: 'transport',

@@ -1405,8 +1405,16 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     if (imageFilePath.toString() != "") {
       uploadedImage = imageFilePath.toString();
 
-      // Get.snackbar("change image", uploadedImage);
+
     }
+
+    email = emailController.text.toString();
+    //Get.snackbar("image", email);
+    if (emailController.text.toString() != "") {
+      email = emailController.text.toString();
+    }
+
+
 
 
 

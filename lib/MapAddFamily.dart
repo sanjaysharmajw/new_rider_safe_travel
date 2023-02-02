@@ -141,7 +141,6 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
                           controllerRelation.text.toString(),
                           controllerMobile.text.toString());
 
-
                     }
 
                   },
@@ -174,6 +173,7 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
       if (status == true) {
         OverlayLoadingProgress.stop();
         ToastMessage.toast(msg);
+        Get.back();
         Navigator.pop(context);
         print(userId + msg);
       } else {

@@ -92,17 +92,17 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
       body: Column(
         children: [
           UserVehiclesInfo(
-            dInfoName: widget.driverName.toString(),
-            dInfoMobile: widget.driverMob.toString(),
-            dInfoImage: widget.dPhoto.toString(),
-            vInfoImage: widget.vPhoto.toString(),
-            vInfoModel: widget.vModel.toString(),
-            vInfoOwnerName: widget.vOwnerName.toString(),
-            vInfoRegNo: widget.vRegNumber.toString(),
-            vInfoPuc: formatDate(widget.vPucvalidity.toString()),
-            vInfoFitness: formatDate(widget.vFitnessValidity.toString()),
-            vInfoInsurance: formatDate(widget.vInsurance.toString()),
-            dInfoLicense: widget.driverLicense.toString(),
+            dInfoName: widget.driverName.toString() == 'null' ? "Data not available" : widget.driverName.toString(),
+            dInfoMobile: widget.driverMob.toString() == 'null' ? "Data not available" : widget.driverMob.toString(),
+            dInfoImage: widget.dPhoto.toString() == 'null' ? "Data not available" : widget.dPhoto.toString(),
+            vInfoImage: widget.vPhoto.toString() == 'null' ? "Data not available" : widget.vPhoto.toString(),
+            vInfoModel: widget.vModel.toString() == 'null' ? "Data not available" : widget.vModel.toString(),
+            vInfoOwnerName: widget.vOwnerName.toString() == 'null' ? "Data not available" : widget.vOwnerName.toString(),
+            vInfoRegNo: widget.vRegNumber.toString() == 'null' ? "Data not available" : widget.vRegNumber.toString(),
+            vInfoPuc: formatDate(widget.vPucvalidity.toString()) == 'null' ? "Data not available" : formatDate(widget.vPucvalidity.toString()),
+            vInfoFitness: formatDate(widget.vFitnessValidity.toString()) == 'null' ? "Data not available" : formatDate(widget.vFitnessValidity.toString()),
+            vInfoInsurance: formatDate(widget.vInsurance.toString()) == 'null' ? "Data not available" : formatDate(widget.vInsurance.toString()),
+            dInfoLicense: widget.driverLicense.toString() == 'null' ? "Data not available" : widget.driverLicense.toString(),
             press: () {
               Get.to(MainPage());
             },
@@ -142,27 +142,27 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
         Get.to(
             StartRide(
             riderId: rideId.toString(),
-            dName: widget.driverName.toString(),
-            dMobile: widget.driverMob.toString(),
-            dPhoto: widget.dPhoto.toString(),
-            model: widget.vModel.toString(),
-            vOwnerName: widget.vOwnerName.toString(),
-            vRegNo: widget.vRegNumber.toString(),
+            dName: widget.driverName.toString() == 'null' ? "Data not available" : widget.driverName.toString(),
+            dMobile: widget.driverMob.toString() == 'null' ? "Data not available" : widget.driverMob.toString(),
+            dPhoto: widget.dPhoto.toString() == 'null' ? "Data not available" :  widget.dPhoto.toString(),
+            model: widget.vModel.toString() == 'null' ? "Data not available" : widget.vModel.toString(),
+            vOwnerName: widget.vOwnerName.toString() == 'null' ? "Data not available" : widget.vOwnerName.toString(),
+            vRegNo: widget.vRegNumber.toString() == 'null' ? "Data not available" : widget.vRegNumber.toString(),
             socketToken: socketToken)
         );
         OverlayLoadingProgress.stop();
         print("Userinformation" + widget.driverId + widget.vehicleId);
       } else {
         Get.to(FamilyMemberAddScreen(
-            driverId: widget.driverId,
-            vehicleId: widget.vehicleId,
+            driverId: widget.driverId == 'null' ? "Data not available" : widget.driverId,
+            vehicleId: widget.vehicleId == 'null' ? "Data not available" :  widget.vehicleId,
             riderId: rideId.toString(),
-            dName: widget.driverName.toString(),
-            dMobile: widget.driverMob.toString(),
-            dPhoto: widget.dPhoto.toString(),
-            model: widget.vModel.toString(),
-            vOwnerName: widget.vOwnerName.toString(),
-            vRegNo: widget.vRegNumber.toString(),
+            dName: widget.driverName.toString() == 'null' ? "Data not available" : widget.driverName.toString(),
+            dMobile: widget.driverMob.toString() == 'null' ? "Data not available" : widget.driverMob.toString(),
+            dPhoto: widget.dPhoto.toString() == 'null' ? "Data not available" : widget.dPhoto.toString(),
+            model: widget.vModel.toString() == 'null' ? "Data not available" : widget.vModel.toString(),
+            vOwnerName: widget.vOwnerName.toString() == 'null' ? "Data not available" : widget.vOwnerName.toString(),
+            vRegNo: widget.vRegNumber.toString() == 'null' ? "Data not available" : widget.vRegNumber.toString(),
             socketToken: socketToken));
         OverlayLoadingProgress.stop();
       }

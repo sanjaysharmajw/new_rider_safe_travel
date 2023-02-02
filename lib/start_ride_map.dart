@@ -695,14 +695,14 @@ class _SignUpState extends State<StartRide> {
         context: context,
         builder: (BuildContext context) {
           return DrawerInfo(
-            dInfoImage: widget.dPhoto.toString(),
-            dInfoName: widget.dName.toString(),
-            dInfoMobile: widget.dMobile.toString(),
+            dInfoImage: widget.dPhoto.toString() =="null" ? " " : widget.dPhoto.toString(),
+            dInfoName: widget.dName.toString() =="null" ? " " : widget.dName.toString(),
+            dInfoMobile: widget.dMobile.toString() =="null" ? " " : widget.dMobile.toString() ,
             vInfoImage: 'assets/car.png',
-            vInfoModel: widget.model.toString(),
-            vInfoOwnerName: widget.vOwnerName.toString(),
-            vInfoRegNo: widget.vRegNo.toString(),
-            dInfoLicense: widget.vRegNo.toString(),
+            vInfoModel: widget.model.toString() =="null" ? " " : widget.model.toString(),
+            vInfoOwnerName: widget.vOwnerName.toString() =="null" ? " " :  widget.vOwnerName.toString(),
+            vInfoRegNo: widget.vRegNo.toString() =="null" ? " " : widget.vRegNo.toString(),
+            dInfoLicense: widget.vRegNo.toString() =="null" ? " " : widget.vRegNo.toString(),
             press: () {
               Navigator.of(context).pop();
             },
