@@ -43,11 +43,10 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
         body: FutureBuilder<List<Familymodel>>(
           future: _future,
           builder: (context, snapshot) {
-            if(!snapshot.hasData){
-              return Center(child: Text("Data not found"));
-            }else
+
             if (snapshot.hasData) {
-              return ListView.builder(
+              return snapshot.data!.isEmpty ? Center(child: Text('Data not found',style: TextStyle(fontSize: 20,color: Colors.black12),)) :
+                ListView.builder(
                 itemCount: snapshot.data?.length,
                 itemBuilder: (context, index) {
                   return InkWell(

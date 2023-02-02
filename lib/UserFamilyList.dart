@@ -109,18 +109,9 @@ class _UserFamilyListState extends State<UserFamilyList> {
         body: FutureBuilder<List<FamilyMembersData>>(
           future: _future,
           builder: (context, snapshot) {
-            if(!snapshot.hasData){
-              return Center(child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text("Data not found"),
-                CircularProgressIndicator()
-                ],
-              ));
-            }else
             if (snapshot.hasData) {
-              return ListView.builder(
+              return snapshot.data!.isEmpty ? Center(child: Text('Data not found',style: TextStyle(fontSize: 20,color: Colors.black12),)) :
+                ListView.builder(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                  image= "${snapshot.data![index].memberProfileImage.toString()}";
