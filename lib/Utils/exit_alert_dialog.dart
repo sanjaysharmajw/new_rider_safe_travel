@@ -13,7 +13,7 @@ Future<bool> showExitPopup(context, String title, VoidCallback press) async {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title),
-                SizedBox(height: 20),
+                SizedBox(height: 15),
                 Row(
                   children: [
                     Expanded(

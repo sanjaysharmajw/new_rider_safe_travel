@@ -22,4 +22,6 @@ class ApiUrl {
   static var checkActiveUserRide = '${baseUrl}userRide/checkActiveUserRide';
   static var geolocatelist = '${baseUrl}user/geocodelats';
   static var geolocationDetails = '${baseUrl}user/geocodelocationdetails';
+  static var sosReason = '${baseUrl}user/sosReasonMaster';
+
 }

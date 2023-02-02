@@ -8,6 +8,7 @@ import 'package:location/location.dart';
 import 'package:ride_safe_travel/LoginModule/MainPage.dart';
 import 'package:ride_safe_travel/LoginModule/RiderLoginPage.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
+import 'package:ride_safe_travel/start_ride_map.dart';
 
 
 
@@ -59,7 +60,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:   MyHomePage(),
+      home:  MyHomePage(),
       debugShowCheckedModeBanner: false,
     );
   }

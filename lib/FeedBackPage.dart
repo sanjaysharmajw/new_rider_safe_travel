@@ -237,7 +237,7 @@ class _FeedBackScreenPageState extends State<FeedBackScreenPage> {
                                                           const Center(
                                                               child: Text(
                                                                 "Say Something About Your Experience ",
-                                                                style: TextStyle(fontWeight: FontWeight.w900, color: CustomColor.black
+                                                                style: TextStyle(fontWeight: FontWeight.w700, color: CustomColor.black
                                                                 ),)
                                                           ),
                                                           const SizedBox(height: 22,),
@@ -274,16 +274,17 @@ class _FeedBackScreenPageState extends State<FeedBackScreenPage> {
                                                               ),
                                                             ),
                                                           ),
+                                                          SizedBox(height: 10,),
                                                           RatingBar.builder(
                                                             initialRating: 3,
                                                             minRating: 1,
                                                             direction: Axis.horizontal,
                                                             allowHalfRating: true,
                                                             itemCount: 5,
-                                                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                                           // itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
                                                             itemBuilder: (context, _) => Icon(
                                                               Icons.star,
-                                                              color: Colors.amber,
+                                                              color: Colors.amber,size: 5,
                                                             ),
                                                             onRatingUpdate: (rating) {
                                                               print(rating);

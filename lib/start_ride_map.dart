@@ -21,6 +21,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'BottomSheet/GeocodeResultModel.dart';
 import 'LoginModule/Error.dart';
+import 'Models/sosReasonModel.dart';
 import 'Utils/exit_alert_dialog.dart';
 
 class StartRide extends StatefulWidget {
@@ -60,6 +61,10 @@ class _SignUpState extends State<StartRide> {
   String socketToken = '';
   bool visibility = false;
 
+  List mySelection = [];
+ // List<SosReasonModel> reasonmodel = [] ;
+  var myreason;
+
   late double destinationMarkerLat = 0.0;
   late double destinationMarkerLng = 0.0;
   Completer<GoogleMapController> _completer = Completer();
@@ -84,6 +89,7 @@ class _SignUpState extends State<StartRide> {
   @override
   void initState() {
     super.initState();
+    getSosReason();
     _initUser();
     setCustomMarkerIcon();
     sharePre();
@@ -156,6 +162,16 @@ class _SignUpState extends State<StartRide> {
   final ScrollController scrollController = ScrollController();
   List<Result> locationData = [];
   String searchString = "";
+
+
+
+  var selectedReason = [];
+
+  var reason;
+
+  bool isSelected = false;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -554,11 +570,103 @@ class _SignUpState extends State<StartRide> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      showExitPopup(
-                                          context, "Are you in trouble?", () {
-                                        OverlayLoadingProgress.start(context);
-                                        SOSNotification();
-                                      });
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return StatefulBuilder(
+                                              builder: (BuildContext context, StateSetter setState) {
+                                                return AlertDialog(
+                                                  content: Container(
+                                                    height: 190,
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text("Are you in trouble? Please select your reason : "),
+                                                        SizedBox(height: 15),
+
+                                                        Column(
+
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: <Widget>[
+
+                                                            SizedBox(
+                                                              height: 65,
+                                                              child: Card(
+                                                                color: Colors.white,
+                                                                shape: UnderlineInputBorder(
+                                                                    borderRadius: BorderRadius.circular(10),
+                                                                    borderSide:
+                                                                    BorderSide(color: Colors.yellow)),
+                                                                child: Padding(
+                                                                  padding: EdgeInsets.all(15),
+                                                                  child: DropdownButton(
+                                                                    underline: Container(),
+                                                                    // hint: Text("Select State"),
+                                                                    icon: Icon(Icons.keyboard_arrow_down),
+                                                                    isDense: true,
+                                                                    isExpanded: true,
+
+                                                                    items: selectedReason.map((e) {
+                                                                      return DropdownMenuItem(
+                                                                        value: e["_id"].toString(),
+                                                                        child: Text(e['name'].toString()),
+                                                                      );
+                                                                    }).toList(),
+                                                                    value: reason,
+                                                                    onChanged: (value) {
+                                                                      setState(() {
+
+                                                                        reason = value;
+                                                                        isSelected = true;
+
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 20,),
+                                                        Row(
+                                                          children: [
+                                                            Expanded(
+                                                              child: ElevatedButton(onPressed: () {
+                                                                OverlayLoadingProgress.start(context);
+                                                                 SOSNotification();
+                                                              },
+                                                                child: Text("Yes"),
+                                                                style: ElevatedButton.styleFrom(
+                                                                    primary: CustomColor.yellow),
+                                                              ),
+                                                            ),
+                                                            SizedBox(width: 15),
+                                                            Expanded(
+                                                                child: ElevatedButton(
+                                                                  onPressed: () {
+                                                                    print('no selected');
+                                                                    Navigator.of(context).pop();
+                                                                  },
+                                                                  child: Text("No", style: TextStyle(color: Colors.black)),
+                                                                  style: ElevatedButton.styleFrom(
+                                                                    primary: Colors.white,
+                                                                  ),
+                                                                ))
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                            );
+                                          });
+                                      //showExitPopup(
+                                          //context, "Are you in trouble?", "Reason" , () {
+                                        //OverlayLoadingProgress.start(context);
+                                      //  SOSNotification();
+                                    //  });
                                     },
                                     child: Column(
                                       children: [
@@ -679,6 +787,7 @@ class _SignUpState extends State<StartRide> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: json.encode({
+          'reason' : reason.toString(),
           'user_id': userId.toString(),
           'ride_id': widget.riderId,
           "lat": currentLocation!.latitude.toString(),
@@ -686,8 +795,12 @@ class _SignUpState extends State<StartRide> {
           "timestamp": DateTime.now().millisecondsSinceEpoch.toString()
         }));
     print(json.encode({
+      'reason' : reason.toString(),
       'user_id': userId.toString(),
       'ride_id': widget.riderId,
+      "lat": currentLocation!.latitude.toString(),
+      "lng": currentLocation!.longitude.toString(),
+      "timestamp": DateTime.now().millisecondsSinceEpoch.toString()
     }));
 
     if (response.statusCode == 200) {
@@ -814,5 +927,35 @@ class _SignUpState extends State<StartRide> {
       return null;
     }
   }
+
+  Future<SosReasonModel> getSosReason() async {
+    final response = await http.post(
+      Uri.parse("https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/sosReasonMaster"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body)['data'];
+      bool status = jsonDecode(response.body)[ErrorMessage.status];
+      var msg = jsonDecode(response.body)[ErrorMessage.message];
+      if (status == true) {
+        setState(() {
+          selectedReason = jsonResponse;
+        });
+        print(selectedReason.toString());
+      }
+      return SosReasonModel.fromJson(jsonDecode(response.body));
+    } else {
+      print("----------------------------");
+      print(response.statusCode);
+      print("----------------------------");
+
+      throw Exception('Unexpected error occured!');
+    }
+  }
+
+
 }
 
