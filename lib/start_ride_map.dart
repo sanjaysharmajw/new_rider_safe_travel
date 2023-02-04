@@ -128,7 +128,7 @@ class _SignUpState extends State<StartRide> {
         title: 'Nirbhaya app is running');
     location.onLocationChanged.listen((LocationData cLoc) async {
       currentLocation = cLoc;
-      setState(() {});
+      //setState(() {});
       print('LatLng${currentLocation!.longitude!}');
       print('latiiii' + destinationMarkerLat.toString());
       if (destinationMarkerLat == 0.0) {

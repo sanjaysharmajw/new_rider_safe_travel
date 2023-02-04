@@ -37,13 +37,13 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       appBar: AppBar(
-        leading:  IconButton(icon: Icon(Icons.keyboard_backspace_sharp), onPressed: () {
+        leading:  IconButton(icon: Icon(Icons.keyboard_backspace_sharp,color: CustomColor.black,), onPressed: () {
           Get.back();
         },),
         centerTitle: true,
         backgroundColor: CustomColor.yellow,
         title: const Text("Add Family Member",
-            style: TextStyle(fontFamily: 'transport', fontSize: 18)),
+            style: TextStyle(fontFamily: 'transport', fontSize: 18,color: CustomColor.black)),
       ),
       body: SingleChildScrollView(
         child: Form(

@@ -12,6 +12,7 @@ import 'package:ride_safe_travel/Models/Familymodel.dart';
 
 import '../../FamilyMemberAddOtherTrack.dart';
 import '../../FamilyMemberAddScreen.dart';
+import '../../Models/MemberBlockDeleteModel.dart';
 
 class FamilyMemberListScreen extends StatefulWidget {
   const FamilyMemberListScreen({Key? key}) : super(key: key);
@@ -186,6 +187,103 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                                     ],
                                                   ),
                                                 ),
+                                                SizedBox(width: 150,),
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.all(8.0),
+                                                    child: ElevatedButton(
+                                                        onPressed: () {
+                                                          showDialog(
+                                                              context: context,
+                                                              builder: (BuildContext
+                                                              context) {
+                                                                return StatefulBuilder(
+                                                                    builder: (BuildContext
+                                                                    context,
+                                                                        StateSetter
+                                                                        setState) {
+                                                                      return AlertDialog(
+                                                                        content:
+                                                                        Container(
+                                                                          height: 100,
+                                                                          child: Column(
+                                                                            crossAxisAlignment:
+                                                                            CrossAxisAlignment
+                                                                                .center,
+                                                                            children: [
+                                                                              SizedBox(
+                                                                                height:
+                                                                                10,
+                                                                              ),
+                                                                              Text(
+                                                                                  "Do you really want to delete data ?"),
+                                                                              SizedBox(
+                                                                                  height:
+                                                                                  15),
+                                                                              Row(
+                                                                                children: [
+                                                                                  Expanded(
+                                                                                    child:
+                                                                                    ElevatedButton(
+                                                                                      onPressed:
+                                                                                          () {
+                                                                                        // OverlayLoadingProgress.start(context);
+
+                                                                                        setState(() {
+                                                                                          Get.back();
+                                                                                          snapshot.data!.removeAt(index);
+                                                                                        });
+                                                                                      },
+                                                                                      child:
+                                                                                      Text("Yes"),
+                                                                                      style:
+                                                                                      ElevatedButton.styleFrom(primary: CustomColor.yellow),
+                                                                                    ),
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                      width:
+                                                                                      15),
+                                                                                  Expanded(
+                                                                                      child:
+                                                                                      ElevatedButton(
+                                                                                        onPressed:
+                                                                                            () {
+                                                                                          print('no selected');
+                                                                                          Navigator.of(context).pop();
+                                                                                        },
+                                                                                        child: Text(
+                                                                                            "No",
+                                                                                            style: TextStyle(color: Colors.black)),
+                                                                                        style:
+                                                                                        ElevatedButton.styleFrom(
+                                                                                          primary:
+                                                                                          Colors.white,
+                                                                                        ),
+                                                                                      ))
+                                                                                ],
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    });
+                                                              });
+                                                          //getMembersStatus( "Deleted");
+                                                          //snapshot.data!.removeAt(index);
+                                                        },
+                                                      child: Text('Delete'),
+                                                      style: ElevatedButton.styleFrom(
+                                                          backgroundColor: Colors.red,
+                                                          foregroundColor: Colors.white,
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(32.0),
+                                                        ),
+                                                          side: BorderSide(color: Colors.black),
+                                                          elevation: 10
+                                                      ),),
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -305,4 +403,6 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
     //Get.snackbar("Hit with time", userId);
     setState(() {});
   }
+
+
 }
