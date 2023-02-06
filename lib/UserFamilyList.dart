@@ -2,11 +2,16 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
+
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
+import 'package:ride_safe_travel/switchbutton.dart';
 
 import 'DriverVehicleList.dart';
 import 'Error.dart';
@@ -16,6 +21,7 @@ import 'FamilyMemberDataModel.dart';
 import 'LoginModule/custom_color.dart';
 import 'LoginModule/preferences.dart';
 import 'Models/MemberBlockDeleteModel.dart';
+import 'UserFamilyListData.dart';
 
 
 class UserFamilyList extends StatefulWidget {
@@ -29,6 +35,8 @@ class _UserFamilyListState extends State<UserFamilyList> {
   var _future;
 
   Future<List<FamilyMemberDataModel>> getUserFamilyList() async {
+    setState(() {
+  });
     await Preferences.setPreferences();
     String userId = Preferences.getId(Preferences.id).toString();
     print(userId);
@@ -55,6 +63,9 @@ class _UserFamilyListState extends State<UserFamilyList> {
   @override
   void initState() {
     super.initState();
+    setState((){
+
+    });
     _future = getUserFamilyList();
    // updateStatus();
   }
@@ -62,8 +73,17 @@ class _UserFamilyListState extends State<UserFamilyList> {
   var image;
   var memberId;
   String? statusType;
-  bool blockbuttonVisibility = false;
+  bool isblocked = false;
   bool unblockbuttonVisibility = false;
+  var memberStatus;
+  var memberName;
+
+
+
+
+
+  bool isSwitched = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -137,17 +157,14 @@ class _UserFamilyListState extends State<UserFamilyList> {
                         image =
                             "${snapshot.data![index].memberProfileImage.toString()}";
                         memberId = snapshot.data![index].memberId.toString();
+                        memberStatus = snapshot.data![index].memberStatus.toString();
+                        memberName= "${snapshot.data![index].memberFName.toString()}"+" "+"${snapshot.data![index].memberLName.toString()}";
                         print(snapshot.data!.length);
                         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         return InkWell(
                           onTap: () {
                             setState(() {
-                              // Get.to(FamilyMemberViewRiderMap(
-                              //   rideId: snapshot.data![index].id.toString(), driverName: snapshot.data![index].driverName.toString(), driverImage: snapshot.data![index].driverPhoto.toString(),
-                              // driverLicenseNo: snapshot.data![index].drivingLicenceNumber.toString(), driverMobile:
-                              // snapshot.data![index].driverMobileNumber.toString(),
-                              //vRegistration: snapshot.data![index].vehicleRegistrationNumber.toString(),
-                              // vModel:  snapshot.data![index].vehicleModel.toString(), vOwner: snapshot.data![index].ownerName.toString()));
+
                             });
                           },
                           child: Padding(
@@ -158,6 +175,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
+
                               color: CustomColor.yellow,
                               child: Column(
                                 //mainAxisSize: MainAxisSize.min,
@@ -174,174 +192,227 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                       child: Container(
                                         decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(15),
+                                          BorderRadius.circular(15),
                                           color: CustomColor.yellow,
                                         ),
                                         child: Column(
                                           children: [
-                                            Column(
+                                           /* Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.end,
+                                              MainAxisAlignment.end,
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
+                                              CrossAxisAlignment.end,
                                               children: [
-                                                Text(
-                                                    "Status:  " + snapshot.data![index].memberStatus.toString(),
-                                                    style: TextStyle(
-                                                        fontFamily: 'transport',
-                                                        fontSize: 15.sp)),
+                                           IconButton(
+                                               onPressed: (){
+                                                 setState((){
+                                                   print("Deleted");
+                                                   showDialog(
+                                                       context: context,
+                                                       builder: (BuildContext
+                                                       context) {
+                                                         return StatefulBuilder(
+                                                             builder: (BuildContext
+                                                             context,
+                                                                 StateSetter
+                                                                 setState) {
+                                                               return AlertDialog(
+                                                                 content:
+                                                                 Container(
+                                                                   height: 120,
+                                                                   child: Column(
+                                                                     crossAxisAlignment:
+                                                                     CrossAxisAlignment
+                                                                         .center,
+                                                                     children: [
+                                                                       SizedBox(
+                                                                         height:
+                                                                         10,
+                                                                       ),
+                                                                       Text(
+                                                                           "Do you really want to delete"+" "+snapshot.data![index].memberMobileNumber.toString()
+                                                                               +" "+"?"),
+                                                                       SizedBox(
+                                                                           height:
+                                                                           15),
+                                                                       Row(
+                                                                         children: [
+                                                                           Expanded(
+                                                                             child:
+                                                                             ElevatedButton(
+                                                                               onPressed:
+                                                                                   () {
+                                                                                 // OverlayLoadingProgress.start(context);
+                                                                                 getMembersStatus("Deleted");
+                                                                                 setState(() {
+                                                                                 });
+                                                                                 Get.back();
+                                                                                 snapshot.data!.removeAt(index);
+                                                                                 //getUserFamilyList();
+                                                                               },
+                                                                               child:
+                                                                               Text("Yes"),
+                                                                               style:
+                                                                               ElevatedButton.styleFrom(primary: CustomColor.yellow),
+                                                                             ),
+                                                                           ),
+                                                                           SizedBox(
+                                                                               width:
+                                                                               15),
+                                                                           Expanded(
+                                                                               child:
+                                                                               ElevatedButton(
+                                                                                 onPressed:
+                                                                                     () {
+                                                                                   print('no selected');
+                                                                                   Navigator.of(context).pop();
+                                                                                 },
+                                                                                 child: Text(
+                                                                                     "No",
+                                                                                     style: TextStyle(color: Colors.black)),
+                                                                                 style:
+                                                                                 ElevatedButton.styleFrom(
+                                                                                   primary:
+                                                                                   Colors.white,
+                                                                                 ),
+                                                                               ))
+                                                                         ],
+                                                                       )
+                                                                     ],
+                                                                   ),
+                                                                 ),
+                                                               );
+                                                             });
+                                                       });
+                                                 });
+
+                                               },
+                                               icon: Icon(Icons.delete_outline_outlined,color: CustomColor.red,size: 30,))
                                               ],
-                                            ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
+                                            ), */
+                                            SizedBox(height: 20,),
+
                                             Row(
                                               children: [
                                                 SizedBox(
-                                                  width: 10.w,
-                                                  height: 20.w,
+                                                  width: 10,
+                                                  height: 20,
                                                 ),
                                                 Expanded(
                                                   flex: 2,
                                                   child: ClipOval(
-                                                    child: (snapshot.data![index]
-                                                                .memberProfileImage !=
-                                                            null)
+                                                    child: (snapshot.data![index].memberProfileImage.toString()!=
+                                                        null)
                                                         ? Image.network(
-                                                      snapshot.data![index]
-                                                                        .memberProfileImage ==
-                                                                    null
-                                                                ? " "
-                                                                : snapshot.data![index]
-                                                                    .memberProfileImage.toString()
-                                                                    ,
-                                                            width: 50.w,
-                                                            height: 60.h,
-                                                            fit: BoxFit.cover,
-                                                          )
+                                                      snapshot.data![index].memberProfileImage.toString() ==
+                                                          null
+                                                          ? " "
+                                                          : snapshot.data![index].memberProfileImage.toString()
+                                                      ,
+                                                      width: 50,
+                                                      height: 60,
+                                                      fit: BoxFit.cover,
+                                                    )
                                                         : Image.asset(
-                                                            'assets/user_avatar.png'),
+                                                        'assets/user_avatar.png'),
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  width: 20.w,
+                                                  width: 20,
                                                 ),
                                                 Expanded(
                                                   flex: 4,
                                                   child: Column(
                                                     mainAxisSize:
-                                                        MainAxisSize.min,
+                                                    MainAxisSize.min,
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    CrossAxisAlignment
+                                                        .start,
                                                     children: [
                                                       Text("Name: ",
                                                           style: TextStyle(
                                                               fontFamily:
-                                                                  'transport',
-                                                              fontSize: 15.sp)),
+                                                              'transport',
+                                                              fontSize: 15)),
                                                       Text(
-                                                          snapshot.data![index]
-                                                                          .memberFName
-                                                                          .toString() +
-                                                                      " " +
-                                                              snapshot.data![index]
-                                                                          .memberLName
-                                                                          .toString() ==
-                                                                  "null"
+                                                          memberName.toString()
+                                                              ==
+                                                              "null"
                                                               ? " "
-                                                              :  snapshot.data![index]
-                                                                      .memberFName
-                                                                      .toString() +
-                                                                  " " +
-                                                              snapshot.data![index]
-                                                                      .memberLName
-                                                                      .toString(),
+                                                              :  memberName.toString(),
                                                           style: TextStyle(
                                                               fontFamily:
-                                                                  'transport',
-                                                              fontSize: 13.sp)),
+                                                              'transport',
+                                                              fontSize: 13)),
                                                       SizedBox(
-                                                        height: 20.h,
+                                                        height: 20,
                                                       ),
                                                       Text("Email Id:",
                                                           style: TextStyle(
                                                               fontFamily:
-                                                                  'transport',
-                                                              fontSize: 15.sp)),
+                                                              'transport',
+                                                              fontSize: 15)),
                                                       Text(
-                                                          snapshot.data![index]
-                                                                      .memberEmailId
-                                                                      .toString() ==
-                                                                  "null"
+                                                          snapshot.data![index].memberEmailId.toString() ==
+                                                              "null"
                                                               ? " "
-                                                              :  snapshot.data![index]
-                                                                  .memberEmailId
-                                                                  .toString(),
+                                                              :  snapshot.data![index].memberEmailId.toString(),
                                                           style: TextStyle(
                                                               fontFamily:
-                                                                  'transport',
-                                                              fontSize: 13.sp)),
+                                                              'transport',
+                                                              fontSize: 13)),
                                                       SizedBox(
-                                                        height: 20.h,
+                                                        height: 20,
                                                       ),
                                                     ],
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  width: 10.w,
+                                                  width: 10,
                                                 ),
                                                 Expanded(
                                                   flex: 4,
                                                   child: Column(
                                                     mainAxisSize:
-                                                        MainAxisSize.min,
+                                                    MainAxisSize.min,
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    CrossAxisAlignment
+                                                        .start,
                                                     children: [
                                                       Text("Mobile Number: ",
                                                           style: TextStyle(
                                                               fontFamily:
-                                                                  'transport',
-                                                              fontSize: 15.sp)),
+                                                              'transport',
+                                                              fontSize: 15)),
                                                       Text(
-                                                          snapshot.data![index]
-                                                                      .memberMobileNumber
-                                                                      .toString() ==
-                                                                  "null"
+                                                          snapshot.data![index].memberMobileNumber.toString() ==
+                                                              "null"
                                                               ? " "
-                                                              :  snapshot.data![index]
-                                                                  .memberMobileNumber
-                                                                  .toString(),
+                                                              :  snapshot.data![index].memberMobileNumber.toString(),
                                                           style: TextStyle(
                                                             fontFamily:
-                                                                'transport',
-                                                            fontSize: 13.sp,
+                                                            'transport',
+                                                            fontSize: 13,
                                                           )),
                                                       SizedBox(
-                                                        height: 20.h,
+                                                        height: 20,
                                                       ),
                                                       Text("Relation:",
                                                           style: TextStyle(
                                                               fontFamily:
-                                                                  'transport',
-                                                              fontSize: 15.sp)),
+                                                              'transport',
+                                                              fontSize: 15)),
                                                       Text(
-                                                          snapshot.data![index]
-                                                                      .relation
-                                                                      .toString() ==
-                                                                  "null"
+                                                          snapshot.data![index].relation.toString().toString()==
+                                                              "null"
                                                               ? " "
-                                                              :  snapshot.data![index]
-                                                                  .relation
-                                                                  .toString(),
+                                                              : snapshot.data![index].relation.toString().toString(),
                                                           style: TextStyle(
                                                               fontFamily:
-                                                                  'transport',
-                                                              fontSize: 13.sp)),
+                                                              'transport',
+                                                              fontSize: 13)),
                                                       SizedBox(
-                                                        height: 20.h,
+                                                        height: 20,
                                                       ),
                                                     ],
                                                   ),
@@ -353,253 +424,254 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                             ),
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                              MainAxisAlignment.center,
                                               children: [
-                                                // Visibility(
-                                                //     visible:
-                                                //         blockbuttonVisibility,
-                                                //     child: Row(
-                                                //       children: [
-                                                //         ElevatedButton(onPressed: (){
-                                                //           getMembersStatus("Blocked");
-                                                //
-                                                //         }, child: Text('Block'),
-                                                //           style: ElevatedButton.styleFrom(
-                                                //               backgroundColor: Colors.red,
-                                                //               foregroundColor: Colors.white,
-                                                //               shape: RoundedRectangleBorder(
-                                                //                 borderRadius: BorderRadius.circular(32.0),
-                                                //               ),
-                                                //
-                                                //               side: BorderSide(color: Colors.black),
-                                                //               elevation: 10
-                                                //
-                                                //           ),),
-                                                //       ],
-                                                //     )),
-                                                // Visibility(
-                                                //     visible:
-                                                //     unblockbuttonVisibility,
-                                                //     child: Row(
-                                                //       children: [
-                                                //         ElevatedButton(onPressed: (){
-                                                //           getMembersStatus("Unblocked");
-                                                //
-                                                //         }, child: Text('UnBlock'),
-                                                //           style: ElevatedButton.styleFrom(
-                                                //               backgroundColor: Colors.red,
-                                                //               foregroundColor: Colors.white,
-                                                //               shape: RoundedRectangleBorder(
-                                                //                 borderRadius: BorderRadius.circular(32.0),
-                                                //               ),
-                                                //
-                                                //               side: BorderSide(color: Colors.black),
-                                                //               elevation: 10
-                                                //
-                                                //           ),),
-                                                //       ],
-                                                //     )),
-                                                ElevatedButton(
-                                                  onPressed: () {
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                        context) {
-                                                          return StatefulBuilder(
-                                                              builder: (BuildContext
-                                                              context,
-                                                                  StateSetter
-                                                                  setState) {
-                                                                return AlertDialog(
-                                                                  content:
-                                                                  Container(
-                                                                    height: 100,
-                                                                    child: Column(
-                                                                      crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                      children: [
-                                                                        SizedBox(
+
+                                                ToggleSwitchButton(mstatus: memberStatus.toString(),
+                                                  memberId: snapshot.data![index].memberId.toString(),),
+                                              /*  FlutterSwitch(
+                                                  activeText: "Block",
+                                                  inactiveText: "Unblock",
+                                                  value: (snapshot.data![index].memberStatus.toString()=='Blocked'?true:false),
+
+                                                  activeTextColor: Colors.black54,
+                                                  inactiveTextColor: Colors.black54,
+                                                  activeColor: Colors.red,
+                                                  inactiveColor: Colors.green,
+                                                  valueFontSize: 14.0,
+                                                  width: 90,
+                                                  borderRadius: 32.0,
+                                                  //switchBorder: Border.all(
+                                                  //color: Colors.black,
+                                                  //width: 1.0,
+                                                  //),
+
+                                                  showOnOff: true,
+                                                  toggleSize: 15,
+                                                  toggleColor: Colors.black54,
+
+                                                  onToggle: (val) {
+                                                    setState(() {
+                                                      showDialog(context: context, builder: (BuildContext
+                                                      context) {
+                                                        return StatefulBuilder(
+                                                            builder: (BuildContext
+                                                            context,
+                                                                StateSetter
+                                                                setState) {
+                                                              return AlertDialog(
+                                                                content:
+                                                                Container(
+                                                                  height: 120,
+                                                                  child: Column(
+                                                                    crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                    children: [
+                                                                      SizedBox(
+                                                                        height:
+                                                                        10,
+                                                                      ),
+                                                                      Text(snapshot.data![index].memberStatus.toString()=="Blocked"?"Do you really want to Unblock this family member ?":"Do you really want to Block this family member  ?"),
+                                                                      SizedBox(
                                                                           height:
-                                                                          10,
-                                                                        ),
-                                                                        Text(
-                                                                            "Do you really want to"+" "+snapshot.data![index].memberStatus.toString() +" " +  snapshot.data![index]
-                                                                                .memberFName
-                                                                                .toString()+" "+"?"),
-                                                                        SizedBox(
-                                                                            height:
-                                                                            15),
-                                                                        Row(
-                                                                          children: [
-                                                                            Expanded(
+                                                                          15),
+                                                                      Row(
+                                                                        children: [
+                                                                          Expanded(
+                                                                            child:
+                                                                            ElevatedButton(
+                                                                              onPressed:
+                                                                                  () {
+                                                                                setState((){
+                                                                                  if(val==true) {
+                                                                                    memberStatus = "Blocked";
+                                                                                    getMembersStatus(memberStatus);
+                                                                                    Navigator.pop(context);
+                                                                                  }
+                                                                                  else {
+                                                                                    memberStatus = "Active";
+                                                                                    getMembersStatus(memberStatus);
+                                                                                    Navigator.pop(context);
+                                                                                  }
+
+                                                                                });
+
+
+
+
+                                                                              },
+                                                                              child:
+                                                                              Text("Yes"),
+                                                                              style:
+                                                                              ElevatedButton.styleFrom(primary: CustomColor.yellow),
+                                                                            ),
+                                                                          ),
+                                                                          SizedBox(
+                                                                              width:
+                                                                              15),
+                                                                          Expanded(
                                                                               child:
                                                                               ElevatedButton(
                                                                                 onPressed:
                                                                                     () {
-                                                                                  // OverlayLoadingProgress.start(context);
-
-                                                                                      getMembersStatus("Blocked");
+                                                                                  print('no selected');
+                                                                                  Navigator.of(context).pop();
                                                                                 },
-                                                                                child:
-                                                                                Text("Yes"),
+                                                                                child: Text(
+                                                                                    "No",
+                                                                                    style: TextStyle(color: Colors.black)),
                                                                                 style:
-                                                                                ElevatedButton.styleFrom(primary: CustomColor.yellow),
-                                                                              ),
-                                                                            ),
-                                                                            SizedBox(
-                                                                                width:
-                                                                                15),
-                                                                            Expanded(
-                                                                                child:
-                                                                                ElevatedButton(
-                                                                                  onPressed:
-                                                                                      () {
-                                                                                    print('no selected');
-                                                                                    Navigator.of(context).pop();
-                                                                                  },
-                                                                                  child: Text(
-                                                                                      "No",
-                                                                                      style: TextStyle(color: Colors.black)),
-                                                                                  style:
-                                                                                  ElevatedButton.styleFrom(
-                                                                                    primary:
-                                                                                    Colors.white,
-                                                                                  ),
-                                                                                ))
-                                                                          ],
-                                                                        )
-                                                                      ]
-                                                                    ),
+                                                                                ElevatedButton.styleFrom(
+                                                                                  primary:
+                                                                                  Colors.white,
+                                                                                ),
+                                                                              ))
+                                                                        ],
+                                                                      )
+                                                                    ],
                                                                   ),
-                                                                );
-                                                              });
-                                                        });
-                                                    //getMembersStatus( "Deleted");
-                                                    //snapshot.data!.removeAt(index);
+                                                                ),
+                                                              );
+                                                            });
+                                                      });
+                                                    });
+
+                                                    /*  setState(() {
+
+                                      if(val==true) {
+                                        widget.mstatus = "Blocked";
+                                        getMembersStatus(widget.mstatus);
+                                      }
+                                      else {
+                                        widget.mstatus = "Active";
+                                        getMembersStatus(widget.mstatus);
+                                      }
+
+                                    }); */
+
                                                   },
-                                                  child: Text(  snapshot.data![index].memberStatus.toString() == "blocked" ? "Unblock"  : "Block"),
-                                                  style:
-                                                  ElevatedButton.styleFrom(
-                                                      backgroundColor:
-                                                      Colors.red,
-                                                      foregroundColor:
-                                                      Colors.white,
-                                                      shape:
-                                                      RoundedRectangleBorder(
-                                                        borderRadius:
-                                                        BorderRadius
-                                                            .circular(
-                                                            32.0),
-                                                      ),
-                                                      side: BorderSide(
-                                                          color:
-                                                          Colors.black),
-                                                      elevation: 10),
+                                                ), */
+
+
+
+
+
+
+
+
+                                                SizedBox(
+                                                  width: 20,
+
                                                 ),
 
                                                 SizedBox(
-                                                  width: 30,
-                                                ),
-                                                ElevatedButton(
-                                                  onPressed: () {
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext
+                                                  height: 55,
+                                                  width: 110,
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      setState((){
+                                                        print("Deleted");
+                                                        showDialog(
+                                                            context: context,
+                                                            builder: (BuildContext
                                                             context) {
-                                                          return StatefulBuilder(
-                                                              builder: (BuildContext
-                                                                      context,
-                                                                  StateSetter
+                                                              return StatefulBuilder(
+                                                                  builder: (BuildContext
+                                                                  context,
+                                                                      StateSetter
                                                                       setState) {
-                                                            return AlertDialog(
-                                                              content:
-                                                                  Container(
-                                                                height: 100,
-                                                                child: Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    SizedBox(
-                                                                      height:
-                                                                          10,
-                                                                    ),
-                                                                    Text(
-                                                                        "Do you really want to delete data ?"),
-                                                                    SizedBox(
-                                                                        height:
-                                                                            15),
-                                                                    Row(
-                                                                      children: [
-                                                                        Expanded(
-                                                                          child:
-                                                                              ElevatedButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              // OverlayLoadingProgress.start(context);
-                                                                              getMembersStatus("Deleted");
-                                                                              setState(() {
-                                                                                Get.back();
-                                                                                snapshot.data!.removeAt(index);
-                                                                              });
-                                                                            },
-                                                                            child:
-                                                                                Text("Yes"),
-                                                                            style:
-                                                                                ElevatedButton.styleFrom(primary: CustomColor.yellow),
-                                                                          ),
-                                                                        ),
-                                                                        SizedBox(
-                                                                            width:
+                                                                    return AlertDialog(
+                                                                      content:
+                                                                      Container(
+                                                                        height: 120,
+                                                                        child: Column(
+                                                                          crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                          children: [
+                                                                            SizedBox(
+                                                                              height:
+                                                                              10,
+                                                                            ),
+                                                                            Text(
+                                                                                "Do you really want to delete"+" "+snapshot.data![index].memberMobileNumber.toString()
+                                                                                    +" "+"?"),
+                                                                            SizedBox(
+                                                                                height:
                                                                                 15),
-                                                                        Expanded(
-                                                                            child:
-                                                                                ElevatedButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            print('no selected');
-                                                                            Navigator.of(context).pop();
-                                                                          },
-                                                                          child: Text(
-                                                                              "No",
-                                                                              style: TextStyle(color: Colors.black)),
-                                                                          style:
-                                                                              ElevatedButton.styleFrom(
-                                                                            primary:
-                                                                                Colors.white,
-                                                                          ),
-                                                                        ))
-                                                                      ],
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            );
-                                                          });
-                                                        });
-                                                    //getMembersStatus( "Deleted");
-                                                    //snapshot.data!.removeAt(index);
-                                                  },
-                                                  child: Text('Delete'),
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                          backgroundColor:
-                                                              Colors.green,
-                                                          foregroundColor:
-                                                              Colors.white,
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        32.0),
-                                                          ),
-                                                          side: BorderSide(
-                                                              color:
-                                                                  Colors.black),
-                                                          elevation: 10),
-                                                )
+                                                                            Row(
+                                                                              children: [
+                                                                                Expanded(
+                                                                                  child:
+                                                                                  ElevatedButton(
+                                                                                    onPressed:
+                                                                                        () {
+                                                                                      // OverlayLoadingProgress.start(context);
+                                                                                      getMembersStatus("Deleted");
+                                                                                      setState(() {
+                                                                                      });
+                                                                                      Get.back();
+                                                                                      snapshot.data!.removeAt(index);
+                                                                                      //getUserFamilyList();
+                                                                                    },
+                                                                                    child:
+                                                                                    Text("Yes"),
+                                                                                    style:
+                                                                                    ElevatedButton.styleFrom(primary: CustomColor.yellow),
+                                                                                  ),
+                                                                                ),
+                                                                                SizedBox(
+                                                                                    width:
+                                                                                    15),
+                                                                                Expanded(
+                                                                                    child:
+                                                                                    ElevatedButton(
+                                                                                      onPressed:
+                                                                                          () {
+                                                                                        print('no selected');
+                                                                                        Navigator.of(context).pop();
+                                                                                      },
+                                                                                      child: Text(
+                                                                                          "No",
+                                                                                          style: TextStyle(color: Colors.black)),
+                                                                                      style:
+                                                                                      ElevatedButton.styleFrom(
+                                                                                        primary:
+                                                                                        Colors.white,
+                                                                                      ),
+                                                                                    ))
+                                                                              ],
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  });
+                                                            });
+                                                      });
+
+                                                    },
+                                                    child: Card(
+                                                      color: Colors.green,
+                                                      shape:  RoundedRectangleBorder(
+                                                        borderRadius: const BorderRadius.all(
+                                                          Radius.circular(32.0),
+
+                                                        ),
+                                                      ),
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: <Widget>[
+                                                          Icon(Icons.delete_outline_outlined,color: Colors.black54,),
+                                                          SizedBox(width: 5,),// <-- Icon
+                                                          Text("Delete",style: TextStyle(color: Colors.black54,fontSize: 16.0,fontWeight: FontWeight.bold),), // <-- Text
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+
                                               ],
                                             )
                                           ],
@@ -611,7 +683,18 @@ class _UserFamilyListState extends State<UserFamilyList> {
                               ),
                             ),
                           ),
+
                         );
+
+                         /*ListViewItem( relation: snapshot.data![index].relation.toString(),
+                          name: snapshot.data![index].memberFName.toString()+" "+snapshot.data![index].memberLName.toString(),
+                          mobileNumber: snapshot.data![index].memberMobileNumber.toString(),
+                          email: snapshot.data![index].memberEmailId.toString(),
+                          mstatus: snapshot.data![index].memberStatus.toString(),
+                          image: snapshot.data![index].memberProfileImage.toString(), memberId: memberId,); */
+
+
+
                       },
                     );
             } else if (snapshot.hasError) {
@@ -623,19 +706,32 @@ class _UserFamilyListState extends State<UserFamilyList> {
   }
 
   Future<MemberBlockDeleteModel> getMembersStatus(String status) async {
+    setState(() {
+
+    });
+
     if (status.toLowerCase().toString() == "Deleted") {
       Get.snackbar("Hello!", "Family member is deleted",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.green,
           colorText: CustomColor.black);
-    } if (status.toLowerCase().toString() == "Blocked") {
+      setState(() {
+        getUserFamilyList();
+      });
+
+    }else if (status.toLowerCase().toString() == "Blocked") {
       Get.snackbar("Hello!", "Family member is blocked",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.green,
           colorText: CustomColor.black);
       //updateStatus();
-    }
-       statusType = status.toLowerCase().toString();
+    }/*else if (status.toLowerCase().toString() == "Active") {
+      Get.snackbar("Hello!", "Family member is blocked",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: CustomColor.black);
+      //updateStatus();
+    }*/
     await Preferences.setPreferences();
     String userId = Preferences.getId(Preferences.id).toString();
     final response = await http.post(
@@ -647,22 +743,31 @@ class _UserFamilyListState extends State<UserFamilyList> {
       body: jsonEncode(<String, String>{
         "user_id": userId,
         "member_id": memberId,
-        "status": statusType.toString()
+        "status": status.toString()
       }),
     );
-    print("FamilyMemberStatus" +
+    print("FamilyMemberStatusData" +
         jsonEncode(<String, String>{
           "user_id": userId,
           "member_id": memberId,
-          "status": statusType.toString()
+          "status": status.toString()
         }));
     if (response.statusCode == 200) {
+      setState(() {
+
+      });
+      getUserFamilyList();
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       print("Body: " + response.body);
       if (status == true) {
-        Navigator.pop(context);
-       // updateStatus();
+
+        setState(() {
+          // getUserFamilyList();
+        });
+        getUserFamilyList();
+        // Navigator.pop(context);
+        // updateStatus();
         Get.snackbar("Hello!", msg.toString(),
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
