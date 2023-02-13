@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:badges/badges.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
+import 'package:badges/badges.dart' as badges;
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -173,14 +173,14 @@ var userId;
                 await countNotification();
               }
             },
-            child: Badge(
-              padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 8),
-              badgeContent:  Text(
-                countNitification.toString(),
-                style: const TextStyle(color: CustomColor.black,fontSize: 15, fontFamily: 'transport',),
+            child: Center(
+              child: badges.Badge(
+                badgeContent:  Text(
+                  countNitification.toString(),
+                  style: const TextStyle(color: CustomColor.black,fontSize: 15, fontFamily: 'transport',),
+                ),
+                child: const Icon(Icons.notifications_outlined, size: 30,color: CustomColor.black,),
               ),
-              badgeColor: Colors.green,
-              child: const Icon(Icons.notifications_outlined, size: 30,color: CustomColor.black,),
             ),
           ),
           const SizedBox(width: 10),
