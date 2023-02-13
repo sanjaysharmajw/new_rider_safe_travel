@@ -387,7 +387,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                                         });
                                                   });
                                                 },
-                                                icon: Icon(
+                                                icon: const Icon(
                                                   Icons.delete_rounded,
                                                   size: 40,
                                                   color: CustomColor.red,

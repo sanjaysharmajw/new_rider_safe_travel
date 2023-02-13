@@ -113,9 +113,13 @@ class _MainPageState extends State<MainPage> {
       _serviceEnabled = await location.requestService();
       ToastMessage.toast("Access Granted");
     }
+    setState(() {
+
+    });
   }
 var userId;
   void sharePre() async {
+    await getLocation();
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
     setState(() {});
@@ -123,7 +127,7 @@ var userId;
   @override
   void initState() {
     sharePre();
-    getLocation();
+
 
     setState(() {
       sharePreferences();
@@ -424,8 +428,4 @@ var userId;
       throw Exception('Failed to create.');
     }
   }
-
-
-
-
 }

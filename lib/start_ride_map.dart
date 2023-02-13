@@ -19,6 +19,7 @@ import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'BottomSheet/GeocodeResultModel.dart';
 import 'LoginModule/Error.dart';
 import 'Models/sosReasonModel.dart';
@@ -76,7 +77,7 @@ class _SignUpState extends State<StartRide> {
   List<LatLng> live_polylineCoordinates = [];
   static const CameraPosition _cameraPosition = CameraPosition(
     target: destinationLocation,
-    zoom: 14,
+    zoom: 10,
   );
 
   // void getCurrentLocation()async{
@@ -88,6 +89,7 @@ class _SignUpState extends State<StartRide> {
 
   @override
   void initState() {
+
     super.initState();
     getSosReason();
     _initUser();
@@ -97,11 +99,25 @@ class _SignUpState extends State<StartRide> {
     OverlayLoadingProgress;
     ToastMessage.toast(widget.riderId);
   }
+  Future getLocation() async {
+    bool? _serviceEnabled;
+    Location location =  Location();
+    var _permissionGranted = await location.hasPermission();
+    _serviceEnabled = await location.serviceEnabled();
+    if (_permissionGranted != PermissionStatus.granted || !_serviceEnabled) {
+      _permissionGranted = await location.requestPermission();
+      _serviceEnabled = await location.requestService();
+      ToastMessage.toast("Access Granted");
+    }
+  }
 
   void sharePre() async {
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
     await socketConnect(widget.socketToken);
+    setState(() async {
+      await getLocation();
+    });
     // Get.snackbar("title", widget.socketToken);
   }
 
@@ -131,9 +147,20 @@ class _SignUpState extends State<StartRide> {
       //setState(() {});
       print('LatLng${currentLocation!.longitude!}');
       print('latiiii' + destinationMarkerLat.toString());
+      setState(() {
+        
+      });
+      final GoogleMapController controller = await _completer.future;
       if (destinationMarkerLat == 0.0) {
         live_polylineCoordinates.add(LatLng(currentLocation!.latitude!, currentLocation!.longitude!));
+        controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+            target: LatLng(cLoc.latitude!, cLoc.longitude!), zoom: 19)));
+      }else{
+        controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+            target: LatLng(cLoc.latitude!, cLoc.longitude!), zoom: 11)));
       }
+
+
       await Preferences.setPreferences();
       Preferences.setStartLat(cLoc.latitude!.toString());
       Preferences.setStartLng(cLoc.longitude!.toString());
@@ -145,9 +172,8 @@ class _SignUpState extends State<StartRide> {
         },
         "roomName": widget.riderId,
       });
-      final GoogleMapController controller = await _completer.future;
-      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target: LatLng(cLoc.latitude!, cLoc.longitude!), zoom: 19)));
+
+
     });
   }
 
@@ -163,17 +189,10 @@ class _SignUpState extends State<StartRide> {
   final ScrollController scrollController = ScrollController();
   List<Result> locationData = [];
   String searchString = "";
-
-
-
   var selectedReason = [];
-
   var reason;
-
   bool isSelected = false;
-
-
-
+  
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
@@ -262,7 +281,8 @@ class _SignUpState extends State<StartRide> {
                       },
 
                       // markers: Set<Marker>.of(_markers.values),
-                    ));
+                    ),
+                );
               }),
           DraggableScrollableSheet(
               initialChildSize: 0.25,
@@ -529,7 +549,7 @@ class _SignUpState extends State<StartRide> {
                                         Text("End Ride",
                                             style: TextStyle(
                                                 fontFamily: 'transport',
-                                                fontSize: 14.sp)),
+                                                fontSize: 12.sp)),
                                       ],
                                     ),
                                   ),
@@ -547,7 +567,7 @@ class _SignUpState extends State<StartRide> {
                                     Text("Ride Details",
                                         style: TextStyle(
                                             fontFamily: 'transport',
-                                            fontSize: 14.sp)),
+                                            fontSize: 12.sp)),
                                   ],
                                 ),
                               ),
@@ -563,9 +583,34 @@ class _SignUpState extends State<StartRide> {
                                     Text("Add Family",
                                         style: TextStyle(
                                             fontFamily: 'transport',
-                                            fontSize: 14.sp)),
+                                            fontSize: 12.sp)),
                                   ],
                                 ),
+                              ),
+                              Column(
+                                children: [
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.circle, color: CustomColor.yellow),
+                                    child: Center(
+                                      child: IconButton(
+                                        icon: const Icon(
+                                          Icons.navigation_outlined,
+                                          color: Colors.black,
+                                        ),
+                                        onPressed: () async {
+                                          await launchUrl(Uri.parse(
+                                              'google.navigation:q=$destinationMarkerLat, $destinationMarkerLng&key=AIzaSyAmOl-QJnc2Spwuh8GAoqx9Z3Wz-ez73V8'));
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10.h),
+                                  Text("Navigate",
+                                      style: TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 12.sp)),
+                                ],
                               ),
                               Column(
                                 children: [
@@ -575,99 +620,99 @@ class _SignUpState extends State<StartRide> {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return StatefulBuilder(
-                                              builder: (BuildContext context, StateSetter setState) {
-                                                return AlertDialog(
-                                                  content: Container(
-                                                    height: 190,
-                                                    child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Text("Are you in trouble? Please select your reason : "),
-                                                        SizedBox(height: 15),
+                                                builder: (BuildContext context, StateSetter setState) {
+                                                  return AlertDialog(
+                                                    content: Container(
+                                                      height: 190,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Text("Are you in trouble? Please select your reason : "),
+                                                          SizedBox(height: 15),
 
-                                                        Column(
+                                                          Column(
 
-                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                                          children: <Widget>[
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: <Widget>[
 
-                                                            SizedBox(
-                                                              height: 65,
-                                                              child: Card(
-                                                                color: Colors.white,
-                                                                shape: UnderlineInputBorder(
-                                                                    borderRadius: BorderRadius.circular(10),
-                                                                    borderSide:
-                                                                    BorderSide(color: Colors.yellow)),
-                                                                child: Padding(
-                                                                  padding: EdgeInsets.all(15),
-                                                                  child: DropdownButton(
-                                                                    underline: Container(),
-                                                                    // hint: Text("Select State"),
-                                                                    icon: Icon(Icons.keyboard_arrow_down),
-                                                                    isDense: true,
-                                                                    isExpanded: true,
+                                                              SizedBox(
+                                                                height: 65,
+                                                                child: Card(
+                                                                  color: Colors.white,
+                                                                  shape: UnderlineInputBorder(
+                                                                      borderRadius: BorderRadius.circular(10),
+                                                                      borderSide:
+                                                                      BorderSide(color: Colors.yellow)),
+                                                                  child: Padding(
+                                                                    padding: EdgeInsets.all(15),
+                                                                    child: DropdownButton(
+                                                                      underline: Container(),
+                                                                      // hint: Text("Select State"),
+                                                                      icon: Icon(Icons.keyboard_arrow_down),
+                                                                      isDense: true,
+                                                                      isExpanded: true,
 
-                                                                    items: selectedReason.map((e) {
-                                                                      return DropdownMenuItem(
-                                                                        value: e["_id"].toString(),
-                                                                        child: Text(e['name'].toString()),
-                                                                      );
-                                                                    }).toList(),
-                                                                    value: reason,
-                                                                    onChanged: (value) {
-                                                                      setState(() {
+                                                                      items: selectedReason.map((e) {
+                                                                        return DropdownMenuItem(
+                                                                          value: e["_id"].toString(),
+                                                                          child: Text(e['name'].toString()),
+                                                                        );
+                                                                      }).toList(),
+                                                                      value: reason,
+                                                                      onChanged: (value) {
+                                                                        setState(() {
 
-                                                                        reason = value;
-                                                                        isSelected = true;
+                                                                          reason = value;
+                                                                          isSelected = true;
 
-                                                                      });
-                                                                    },
+                                                                        });
+                                                                      },
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        SizedBox(height: 20,),
-                                                        Row(
-                                                          children: [
-                                                            Expanded(
-                                                              child: ElevatedButton(onPressed: () {
-                                                                OverlayLoadingProgress.start(context);
-                                                                 SOSNotification();
-                                                              },
-                                                                child: Text("Yes"),
-                                                                style: ElevatedButton.styleFrom(
-                                                                    primary: CustomColor.yellow),
-                                                              ),
-                                                            ),
-                                                            SizedBox(width: 15),
-                                                            Expanded(
-                                                                child: ElevatedButton(
-                                                                  onPressed: () {
-                                                                    print('no selected');
-                                                                    Navigator.of(context).pop();
-                                                                  },
-                                                                  child: Text("No", style: TextStyle(color: Colors.black)),
+                                                            ],
+                                                          ),
+                                                          SizedBox(height: 20,),
+                                                          Row(
+                                                            children: [
+                                                              Expanded(
+                                                                child: ElevatedButton(onPressed: () {
+                                                                  OverlayLoadingProgress.start(context);
+                                                                  SOSNotification();
+                                                                },
+                                                                  child: Text("Yes"),
                                                                   style: ElevatedButton.styleFrom(
-                                                                    primary: Colors.white,
-                                                                  ),
-                                                                ))
-                                                          ],
-                                                        )
-                                                      ],
+                                                                      primary: CustomColor.yellow),
+                                                                ),
+                                                              ),
+                                                              SizedBox(width: 15),
+                                                              Expanded(
+                                                                  child: ElevatedButton(
+                                                                    onPressed: () {
+                                                                      print('no selected');
+                                                                      Navigator.of(context).pop();
+                                                                    },
+                                                                    child: Text("No", style: TextStyle(color: Colors.black)),
+                                                                    style: ElevatedButton.styleFrom(
+                                                                      primary: Colors.white,
+                                                                    ),
+                                                                  ))
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
-                                              }
+                                                  );
+                                                }
                                             );
                                           });
                                       //showExitPopup(
-                                          //context, "Are you in trouble?", "Reason" , () {
-                                        //OverlayLoadingProgress.start(context);
+                                      //context, "Are you in trouble?", "Reason" , () {
+                                      //OverlayLoadingProgress.start(context);
                                       //  SOSNotification();
-                                    //  });
+                                      //  });
                                     },
                                     child: Column(
                                       children: [
@@ -678,6 +723,8 @@ class _SignUpState extends State<StartRide> {
                                   ),
                                 ],
                               ),
+
+
                             ],
                           ),
                         ],
@@ -686,6 +733,7 @@ class _SignUpState extends State<StartRide> {
                   ),
                 );
               }),
+
         ]),
       ),
     );
@@ -887,13 +935,18 @@ class _SignUpState extends State<StartRide> {
       double destinationLng = jsonDecode(response.body)['result'][0]['lng'];
       destinationMarkerLat = destinationLat;
       destinationMarkerLng = destinationLng;
+      String wayPoints="$destinationLat,$destinationLng";
+      print('wayPoints $wayPoints');
       polylineCoordinates.clear();
       PolylinePoints polylinePoints = PolylinePoints();
       PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
         googleMapKey,
-        travelMode: TravelMode.transit,
+        travelMode: TravelMode.driving,
         PointLatLng(currentLocation!.latitude!, currentLocation!.longitude!),
         PointLatLng(destinationLat, destinationLng),
+        wayPoints: [PolylineWayPoint(location: wayPoints,stopOver: false)],
+
+
       );
       if (result.points.isNotEmpty) {
         result.points.forEach(

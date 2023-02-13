@@ -14,6 +14,7 @@ import 'package:ride_safe_travel/start_ride_map.dart';
 
 import 'LoginModule/Map/RiderMap.dart';
 import 'Utils/demod.dart';
+import 'Utils/toast.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
@@ -79,7 +80,7 @@ class MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-
+    getLocation();
     //FCM Push Notification
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
@@ -125,6 +126,17 @@ class MyHomePageState extends State<MyHomePage> {
     startTimer();
   }
 
+  Future getLocation() async {
+    bool? _serviceEnabled;
+    Location location =  Location();
+    var _permissionGranted = await location.hasPermission();
+    _serviceEnabled = await location.serviceEnabled();
+    if (_permissionGranted != PermissionStatus.granted || !_serviceEnabled) {
+      _permissionGranted = await location.requestPermission();
+      _serviceEnabled = await location.requestService();
+      ToastMessage.toast("Access Granted");
+    }
+  }
 
   void _initUser() async {
     location = Location();
