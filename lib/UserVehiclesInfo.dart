@@ -54,85 +54,86 @@ class UserVehiclesInfo extends StatelessWidget {
           const Text("Driver Information",
               style: TextStyle(fontFamily: 'transport', fontSize: 18)),
           const SizedBox(height: 10),
-          Container(
-            decoration: BoxDecoration(
-                color: CustomColor.listColor,
-                borderRadius: BorderRadius.circular(5.0)),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: CustomColor.yellow,
-                        radius: 30,
-                        child: CircleAvatar(
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: CustomColor.listColor,
+                  borderRadius: BorderRadius.circular(5.0)),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: CustomColor.yellow,
                           radius: 30,
-                          backgroundColor: Colors.white,
-                          child: ClipOval(
-                            child: (dInfoImage != null)
-                                ? Image.network(
-                              dInfoImage,
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.cover,
-                            )
-                                : Image.asset('assets/user_avatar.png'),
+                          child: CircleAvatar(
+                            radius: 30,
+                            backgroundColor: Colors.white,
+                            child: ClipOval(
+                              child: (dInfoImage != null)
+                                  ? Image.network(
+                                dInfoImage,
+                                width: 80,
+                                height: 80,
+                                fit: BoxFit.cover,
+                              )
+                                  : Image.asset('assets/user_avatar.png'),
+                            ),
+
+
                           ),
-
-
                         ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(dInfoName,
+                              style: const TextStyle(
+                                  fontFamily: 'transport', fontSize: 16)),
+                          // Text(dInfoMobile,
+                          //     style: const TextStyle(
+                          //         fontFamily: 'transport', fontSize: 16)),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+
+                          Text(dInfoMobile,
+                              style: const TextStyle(
+                                  fontFamily: 'transport', fontSize: 16)),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          const Text("Driving License No: ",
+                              style: TextStyle(
+                                  fontFamily: 'transport', fontSize: 16)),
+                          Text(dInfoLicense,
+                              style: const TextStyle(
+                                  fontFamily: 'transport', fontSize: 16)),
+                        ],
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(dInfoName,
-                            style: const TextStyle(
-                                fontFamily: 'transport', fontSize: 16)),
-                        // Text(dInfoMobile,
-                        //     style: const TextStyle(
-                        //         fontFamily: 'transport', fontSize: 16)),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        const Text("Mobile No: ",
-                            style: TextStyle(
-                                fontFamily: 'transport', fontSize: 16)),
-                        Text(dInfoMobile,
-                            style: const TextStyle(
-                                fontFamily: 'transport', fontSize: 16)),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        const Text("Driving License No: ",
-                            style: TextStyle(
-                                fontFamily: 'transport', fontSize: 16)),
-                        Text(dInfoLicense,
-                            style: const TextStyle(
-                                fontFamily: 'transport', fontSize: 16)),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 40),

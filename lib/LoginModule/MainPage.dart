@@ -41,7 +41,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   String result = "";
   String image = "";
-  String userId = "";
+
   String profileName = "";
   String profileMobile = "";
   String profileLastName = "";
@@ -55,43 +55,51 @@ class _MainPageState extends State<MainPage> {
   //   });
   // }
   Future _scanQR() async {
+    print("_scanQR");
     try {
       String? qrResult = await MajaScan.startScan(
         barColor: CustomColor.yellow,
-
           title: "QR Code scanner",
           titleColor: CustomColor.black,
           qRCornerColor: Colors.orange,
           qRScannerColor: Colors.orange);
       setState(() async {
+        print("qrResult"+qrResult.toString());
         result = qrResult ?? 'null string';
+        print("ScanQRCode:"+result);
         if (result != "") {
+
           if(result.length==24){
-            ToastMessage.toast(result);
+           print("ScanQR:"+result);
             driverVehicleListApi(result);
           }else{
-            ToastMessage.toast("Invalid QR");
+            print("Invalid QR Code");
           }
         }
       });
     } on PlatformException catch (ex) {
       if (ex.code == MajaScan.CameraAccessDenied) {
         setState(() {
+          print("Something went wrong");
           Get.to(MainPage());
           //result = "Camera permission was denied";
         });
       } else {
         setState(() {
-          // result = "Unknown Error $ex";
+          result = "Unknown Error $ex";
+          print(result);
         });
       }
     } on FormatException {
       setState(() {
-        // result = "You pressed the back button before scanning anything";
+        result = "You pressed the back button before scanning anything";
+
+        print(result);
       });
     } catch (ex) {
       setState(() {
-        //result = "Unknown Error $ex";
+        result = "Unknown Error$ex ";
+        print(result);
       });
     }
   }
@@ -106,18 +114,23 @@ class _MainPageState extends State<MainPage> {
       ToastMessage.toast("Access Granted");
     }
   }
-
-
+var userId;
+  void sharePre() async {
+    await Preferences.setPreferences();
+    userId = Preferences.getId(Preferences.id).toString();
+    setState(() {});
+  }
   @override
   void initState() {
+    sharePre();
     getLocation();
 
     setState(() {
       sharePreferences();
     });
 
-    print(image);
-    print("mainpageUserId:"+userId);
+
+
   }
 
   void sharePreferences() async {
@@ -129,7 +142,7 @@ class _MainPageState extends State<MainPage> {
    // profileName = Preferences.getFirstName(Preferences.firstname).toString();
     //profileLastName = Preferences.getLastName(Preferences.lastname).toString();
     profileName = Preferences.getFirstName(Preferences.firstname).toString() + " " + Preferences.getLastName(Preferences.lastname).toString();
-    userId = Preferences.getId(Preferences.id).toString();
+   // userId = Preferences.getId(Preferences.id).toString();
     await countNotification();
     profileMobile =
         Preferences.getMobileNumber(Preferences.mobileNumber).toString();
@@ -278,7 +291,11 @@ class _MainPageState extends State<MainPage> {
     )
     );
   }
-  Future<Data> checkActiveUser() async {
+  Future<String> checkActiveUser() async {
+    print( "USER"+jsonEncode(<String, String>{
+      'user_id': userId,
+    }),);
+
     final response = await http.post(
       Uri.parse(ApiUrl.checkActiveUserRide),
       headers: <String, String>{
@@ -294,6 +311,7 @@ class _MainPageState extends State<MainPage> {
       if (socketToken !="") {
         OverlayLoadingProgress.stop();
         List<Data> userCheck = jsonDecode(response.body)['data'].map<Data>((data) => Data.fromJson(data)).toList();
+        print("UserCheck"+userCheck.toString());
         var id=userCheck[0].id.toString();
         Get.to(StartRide(
             riderId: id.toString(),
@@ -315,11 +333,14 @@ class _MainPageState extends State<MainPage> {
         print(socketToken.toString());
         setState(() {});
       } else if (socketToken =="") {
-        _scanQR();
+
         OverlayLoadingProgress.stop();
         print("Print False........");
+        _scanQR();
       }
-      return Data.fromJson(response.body.toString());
+      var userData = jsonDecode(response.body);
+      print("userData:"+userData.toString());
+      return userData.toString();
     } else {
       throw Exception('Failed to create.');
     }
@@ -358,12 +379,12 @@ class _MainPageState extends State<MainPage> {
       },
       body: jsonEncode(<String, String>{
         'driver_id': result.toString(),
-        'status': "Active",
+
       }),
     );
     print(jsonEncode(<String, String>{
       'driver_id': result.toString(),
-      'status': "Active",
+
     }));
 
     if (response.statusCode == 200) {
@@ -403,4 +424,8 @@ class _MainPageState extends State<MainPage> {
       throw Exception('Failed to create.');
     }
   }
+
+
+
+
 }

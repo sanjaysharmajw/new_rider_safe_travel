@@ -140,7 +140,8 @@ class _SignUpState extends State<StartRide> {
       socket.emit("message", {
         "message": {
           'lat': currentLocation!.latitude!,
-          'lng': currentLocation!.longitude!
+          'lng': currentLocation!.longitude!,
+          'timestamp': DateTime.now().millisecondsSinceEpoch.toString()
         },
         "roomName": widget.riderId,
       });
@@ -765,7 +766,7 @@ class _SignUpState extends State<StartRide> {
     if (response.statusCode == 200) {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
-      print("End Res: $response");
+      print("$response");
       if (status == true) {
         OverlayLoadingProgress.stop();
         ToastMessage.toast(msg);

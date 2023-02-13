@@ -24,118 +24,125 @@ class ToggleSwitchButton extends StatefulWidget {
 class _ToggleSwitchButtonState extends State<ToggleSwitchButton> {
   @override
   Widget build(BuildContext context) {
-    return   FlutterSwitch(
-      activeText: "Block",
-      inactiveText: "Unblock",
-      value: (widget.mstatus.toString()=='Blocked'?true:false),
+    return   Container(
+      child: Column(
+        children: [
+         // Text("Status:"+widget.mstatus.toString()),
+          FlutterSwitch(
+            activeText: "Block",
+            inactiveText: "Unblock",
+            value: (widget.mstatus.toString()=='Blocked'?true:false),
 
-      activeTextColor: Colors.black54,
-      inactiveTextColor: Colors.black54,
-      activeColor: Colors.red,
-      inactiveColor: Colors.green,
-      valueFontSize: 15.0,
-      width: 100,
-      height: 45,
-      borderRadius: 32.0,
-      //switchBorder: Border.all(
-      //color: Colors.black,
-      //width: 1.0,
-      //),
+            activeTextColor: Colors.black54,
+            inactiveTextColor: Colors.black54,
+            activeColor: Colors.red,
+            inactiveColor: Colors.green,
+            valueFontSize: 15.0,
+            width: 100,
+            height: 40,
+            borderRadius: 32.0,
+            //switchBorder: Border.all(
+            //color: Colors.black,
+            //width: 1.0,
+            //),
 
-      showOnOff: true,
-      toggleSize: 20,
-      toggleColor: Colors.black54,
+            showOnOff: true,
+            toggleSize: 20,
+            toggleColor: Colors.black54,
 
-      onToggle: (val) {
-        setState(() {
-          showDialog(context: context, builder: (BuildContext
-          context) {
-            return StatefulBuilder(
-    builder: (BuildContext
-    context,
-        StateSetter
-        setState) {
-      return AlertDialog(
-        content:
-        Container(
-          height: 120,
-          child: Column(
-            crossAxisAlignment:
-            CrossAxisAlignment
-                .center,
-            children: [
-              SizedBox(
-                height:
-                10,
-              ),
-              Text(widget.mstatus=="Blocked"?"Do you really want to Unblock this family member ?":"Do you really want to Block this family member  ?"),
-              SizedBox(
-                  height:
-                  15),
-              Row(
-                children: [
-                  Expanded(
-                    child:
-                    ElevatedButton(
-                      onPressed:
-                          () {
-                        setState((){
-                          if(val==true) {
-                            widget.mstatus = "Blocked";
-                            getMembersStatus(widget.mstatus);
-                            Navigator.pop(context);
-                          }
-                          else {
-                            widget.mstatus = "Active";
-                            getMembersStatus(widget.mstatus);
-                            Navigator.pop(context);
-                          }
-
-                        });
-
-
-
-
-                      },
-                      child:
-                      Text("Yes"),
-                      style:
-                      ElevatedButton.styleFrom(primary: CustomColor.yellow),
+            onToggle: (val) {
+              setState(() {
+                showDialog(context: context, builder: (BuildContext
+                context) {
+                  return StatefulBuilder(
+          builder: (BuildContext
+          context,
+              StateSetter
+              setState) {
+            return AlertDialog(
+              content:
+              Container(
+                height: 120,
+                child: Column(
+                  crossAxisAlignment:
+                  CrossAxisAlignment
+                      .center,
+                  children: [
+                    SizedBox(
+                      height:
+                      10,
                     ),
-                  ),
-                  SizedBox(
-                      width:
-                      15),
-                  Expanded(
-                      child:
-                      ElevatedButton(
-                        onPressed:
-                            () {
-                          print('no selected');
-                          Navigator.of(context).pop();
-                        },
-                        child: Text(
-                            "No",
-                            style: TextStyle(color: Colors.black)),
-                        style:
-                        ElevatedButton.styleFrom(
-                          primary:
-                          Colors.white,
+                    Text(widget.mstatus=="Blocked"?"Do you really want to Unblock this family member ?":"Do you really want to Block this family member  ?"),
+                    SizedBox(
+                        height:
+                        15),
+                    Row(
+                      children: [
+                        Expanded(
+                          child:
+                          ElevatedButton(
+                            onPressed:
+                                () {
+                              setState((){
+                                if(val==true) {
+                                  widget.mstatus = "Blocked";
+                                  getMembersStatus(widget.mstatus);
+                                  Navigator.pop(context);
+                                }
+                                else {
+                                  widget.mstatus = "Active";
+                                  getMembersStatus(widget.mstatus);
+                                  Navigator.pop(context);
+                                }
+
+                              });
+
+
+
+
+                            },
+                            child:
+                            Text("Yes"),
+                            style:
+                            ElevatedButton.styleFrom(primary: CustomColor.yellow),
+                          ),
                         ),
-                      ))
-                ],
-              )
-            ],
-          ),
-        ),
-      );
-    });
+                        SizedBox(
+                            width:
+                            15),
+                        Expanded(
+                            child:
+                            ElevatedButton(
+                              onPressed:
+                                  () {
+                                print('no selected');
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                  "No",
+                                  style: TextStyle(color: Colors.black)),
+                              style:
+                              ElevatedButton.styleFrom(
+                                primary:
+                                Colors.white,
+                              ),
+                            ))
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
           });
-        });
+                });
+              });
 
 
-      },
+            },
 
+          ),
+        ],
+      ),
     );
   }
 
