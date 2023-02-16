@@ -356,7 +356,13 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         'mobile_number': mobileNumber.toString(),
         'fcmtoken': fcmToken.toString(),
       }),
+
+
     );
+    print(jsonEncode(<String, String>{
+      'mobile_number': mobileNumber.toString(),
+      'fcmtoken': fcmToken.toString(),
+    }),);
     if (response.statusCode == 200) {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       //var msg = jsonDecode(response.body)[ErrorMessage.message];

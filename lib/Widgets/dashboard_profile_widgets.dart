@@ -49,15 +49,15 @@ class DashboardProfileWidgets extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(profileName,
+                Text(profileName.toString() == "null" ? " " : profileName.toString(),
                     style: TextStyle(
                         fontFamily: 'transport',
                         fontWeight: FontWeight.w600,
                         fontSize: 18.sp)),
-                Text(emailId,
+                Text(emailId.toString() == "null" ? " " : emailId.toString(),
                     style: TextStyle(fontFamily: 'transport', fontSize: 14.sp)),
                 SizedBox(height: 5.h),
-                Text(profileMobile,
+                Text(profileMobile.toString() == "null" ? " " : profileMobile.toString(),
                     style: TextStyle(fontFamily: 'transport', fontSize: 13.sp))
               ],
             )

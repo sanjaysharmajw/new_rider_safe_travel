@@ -86,12 +86,12 @@ class _ToggleSwitchButtonState extends State<ToggleSwitchButton> {
                               setState((){
                                 if(val==true) {
                                   widget.mstatus = "Blocked";
-                                  getMembersStatus(widget.mstatus);
+                                  getMembersStatus();
                                   Navigator.pop(context);
                                 }
                                 else {
                                   widget.mstatus = "Active";
-                                  getMembersStatus(widget.mstatus);
+                                  getMembersStatus();
                                   Navigator.pop(context);
                                 }
 
@@ -146,33 +146,12 @@ class _ToggleSwitchButtonState extends State<ToggleSwitchButton> {
     );
   }
 
-  Future<MemberBlockDeleteModel> getMembersStatus(String status) async {
+  Future<MemberBlockDeleteModel> getMembersStatus() async {
     setState(() {
 
     });
 
-    if (status.toLowerCase().toString() == "Deleted") {
-      Get.snackbar("Hello!", "Family member is deleted",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
-          colorText: CustomColor.black);
-      setState(() {
-       // getUserFamilyList();
-      });
 
-    }else if (status.toLowerCase().toString() == "Blocked") {
-      Get.snackbar("Hello!", "Family member is blocked",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
-          colorText: CustomColor.black);
-      //updateStatus();
-    }/*else if (status.toLowerCase().toString() == "Active") {
-      Get.snackbar("Hello!", "Family member is blocked",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
-          colorText: CustomColor.black);
-      //updateStatus();
-    }*/
     await Preferences.setPreferences();
     String userId = Preferences.getId(Preferences.id).toString();
     final response = await http.post(
@@ -184,14 +163,14 @@ class _ToggleSwitchButtonState extends State<ToggleSwitchButton> {
       body: jsonEncode(<String, String>{
         "user_id": userId,
         "member_id": widget.memberId,
-        "status": status.toString()
+        "status": widget.mstatus.toString()
       }),
     );
     print("FamilyMemberStatusData" +
         jsonEncode(<String, String>{
           "user_id": userId,
           "member_id": widget.memberId,
-          "status": status.toString()
+          "status": widget.mstatus.toString()
         }));
     if (response.statusCode == 200) {
       setState(() {

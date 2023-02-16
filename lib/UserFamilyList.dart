@@ -227,6 +227,17 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                           ),
                                         ),
                                         Positioned(
+                                          top: 30,
+                                          left: 40,
+                                          child: Text(
+                                              memberStatus.toString() == "null"
+                                                  ? " "
+                                                  : memberStatus.toString(),
+                                              style: TextStyle(
+                                                  fontFamily: 'transport',
+                                                  fontSize: 16)),
+                                        ),
+                                        Positioned(
                                           top: 50,
                                           left: 40,
                                           child: Text(

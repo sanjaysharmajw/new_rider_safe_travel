@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:majascan/majascan.dart';
 import 'package:location/location.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
@@ -259,9 +260,10 @@ var userId;
             children: [
               DashboardProfileWidgets(
                   image: image,
-                  profileName: profileName,
-                  profileMobile: profileMobile,
-                  emailId: profileEmailId),
+                  profileName: profileName.toString() == "null" ? " " : profileName.toString(),
+                  profileMobile: profileMobile.toString() == "null" ? " " : profileMobile.toString(),
+                  emailId: profileEmailId.toString() == "null" ? " " : profileEmailId.toString(),
+              ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -448,6 +450,8 @@ var userId;
         var driverLicense = driverDetails[0].drivingLicenceNumber.toString()??"";
         var vOwnerName = driverDetails[0].ownerName.toString();
         var vRegNumber = driverDetails[0].vehicledetails![0].registrationNumber.toString();
+
+
         var vPucvalidity = driverDetails[0].vehicledetails![0].pucValidity.toString();
         var  vFitnessValidity = driverDetails[0].vehicledetails![0].fitnessValidity.toString();
         var vInsurance = driverDetails[0].vehicledetails![0].insuranceValidity.toString();
@@ -456,13 +460,16 @@ var userId;
         var vPhoto = driverDetails[0].ownerPhoto.toString();
         var vehicleIds = driverDetails[0].vehicledetails![0].id.toString();
         var driverIds = driverDetails[0].driverId.toString();
+       // print("PUCValidityDate:"+DateFormat('dd-MM-yyyy').format(DateTime.parse(vPucvalidity)) );
         print(response.body);
+
+
         Get.to(UserDriverInformation(
             vehicleId: vehicleIds.toString(), driverId: driverIds.toString(), driverName: driverName.toString(),
           driverMob: driverMob.toString(),
           driverLicense: driverLicense.toString(), vOwnerName: vOwnerName.toString(), vRegNumber: vRegNumber.toString(),
-          vPucvalidity: vPucvalidity.toString(), vFitnessValidity: vFitnessValidity.toString(),
-          vInsurance: vInsurance.toString(), vModel: vModel.toString(), dPhoto: dPhoto.toString(), vPhoto: vPhoto.toString()));
+          vPucvalidity:DateFormat('dd-MM-yyyy').format(DateTime.parse(vPucvalidity)), vFitnessValidity: DateFormat('dd-MM-yyyy').format(DateTime.parse(vFitnessValidity )),
+          vInsurance: DateFormat('dd-MM-yyyy').format(DateTime.parse(vInsurance)), vModel: vModel.toString(), dPhoto: dPhoto.toString(), vPhoto: vPhoto.toString()));
         setState(() {});
       } else if (status == false) {
         OverlayLoadingProgress.stop();
