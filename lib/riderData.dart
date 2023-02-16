@@ -46,6 +46,7 @@ class RiderData {
     this.profileImage,
     this.dldetails,
     this.address,
+    this.emergencyContact,
   });
 
   RiderData.fromJson(dynamic json) {
@@ -62,6 +63,7 @@ class RiderData {
     panNumber = json['pan_number'];
     dlNumber = json['dl_number'];
     shiftType = json['shift_type'];
+    emergencyContact = json['emergency_contact_no'];
 
     accidentalHistory = json['accidental_history'];
     accidentalDiscription = json['accidental_discription'];
@@ -128,6 +130,7 @@ class RiderData {
   String? profileImage;
   Dldetails? dldetails;
   String? address;
+  String? emergencyContact;
   RiderData copyWith({
     String? id,
     String? firstName,
@@ -165,6 +168,7 @@ class RiderData {
     String? profileImage,
     Dldetails? dldetails,
     String? address,
+    String? emergencyContact,
   }) =>
       RiderData(
         id: id ?? this.id,
@@ -204,6 +208,7 @@ class RiderData {
         profileImage: profileImage ?? this.profileImage,
         dldetails: dldetails ?? this.dldetails,
         address: address ?? this.address,
+          emergencyContact: emergencyContact ?? this.emergencyContact,
       );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -251,6 +256,7 @@ class RiderData {
       map['dldetails'] = dldetails?.toJson();
     }
     map['address'] = address;
+    map['emergency_contact_no'] = emergencyContact;
     return map;
   }
 }

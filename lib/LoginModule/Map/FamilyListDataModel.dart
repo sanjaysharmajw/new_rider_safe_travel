@@ -1,11 +1,9 @@
 import 'dart:convert';
 
-Familymodel familymodelFromJson(String str) =>
-    Familymodel.fromJson(json.decode(str));
-String familymodelToJson(Familymodel data) => json.encode(data.toJson());
-
-class Familymodel {
-  Familymodel({
+FamilyListDataModel dataFromJson(String str) => FamilyListDataModel.fromJson(json.decode(str));
+String dataToJson(FamilyListDataModel data) => json.encode(data.toJson());
+class FamilyListDataModel {
+  FamilyListDataModel({
     this.id,
     this.userId,
     this.driverId,
@@ -14,11 +12,15 @@ class Familymodel {
     this.toDestination,
     this.distance,
     this.totalTime,
+    this.rideId,
     this.vehicleId,
     this.memberName,
     this.drivingLicenceNumber,
-    this.vehicleRegistrationNumber,
-    this.member_photo,
+    this.memberRelation,
+    this.memberMobileNumber,
+    this.memberEmailId,
+    this.memberPhoto,
+    this.memberStatus,
     this.driverName,
     this.ownerName,
     this.driverMobileNumber,
@@ -27,6 +29,8 @@ class Familymodel {
     this.ownerMobileNumber,
     this.ownerEmailId,
     this.ownerPhoto,
+    this.vehicleRegistrationNumber,
+    this.vehicleRcNumber,
     this.vehicleMake,
     this.vehicleModel,
     this.vehicleFuelType,
@@ -34,10 +38,9 @@ class Familymodel {
     this.vehicleFitnessValidity,
     this.vehiclePucValidity,
     this.vehicleInsuranceValidity,
-    this.vehiclePhoto,
-  });
+    this.vehiclePhoto,});
 
-  Familymodel.fromJson(dynamic json) {
+  FamilyListDataModel.fromJson(dynamic json) {
     id = json['_id'];
     userId = json['user_id'];
     driverId = json['driver_id'];
@@ -46,11 +49,15 @@ class Familymodel {
     toDestination = json['to_destination'];
     distance = json['distance'];
     totalTime = json['total_time'];
+    rideId = json['ride_id'];
     vehicleId = json['vehicle_id'];
     memberName = json['member_name'];
     drivingLicenceNumber = json['driving_licence_number'];
-    vehicleRegistrationNumber = json['vehicle_registrationNumber'];
-    member_photo = json['member_photo'];
+    memberRelation = json['member_relation'];
+    memberMobileNumber = json['member_mobile_number'];
+    memberEmailId = json['member_email_id'];
+    memberPhoto = json['member_photo'];
+    memberStatus = json['member_status'];
     driverName = json['driver_name'];
     ownerName = json['owner_name'];
     driverMobileNumber = json['driver_mobile_number'];
@@ -59,6 +66,8 @@ class Familymodel {
     ownerMobileNumber = json['owner_mobile_number'];
     ownerEmailId = json['owner_email_id'];
     ownerPhoto = json['owner_photo'];
+    vehicleRegistrationNumber = json['vehicle_registrationNumber'];
+    vehicleRcNumber = json['vehicle_rcNumber'];
     vehicleMake = json['vehicle_make'];
     vehicleModel = json['vehicle_model'];
     vehicleFuelType = json['vehicle_fuelType'];
@@ -72,15 +81,19 @@ class Familymodel {
   String? userId;
   String? driverId;
   String? date;
-  String? fromDestination;
-  String? toDestination;
-  String? distance;
-  String? totalTime;
+  dynamic fromDestination;
+  dynamic toDestination;
+  dynamic distance;
+  dynamic totalTime;
+  String? rideId;
   String? vehicleId;
   String? memberName;
   String? drivingLicenceNumber;
-  String? vehicleRegistrationNumber;
-  String? member_photo;
+  String? memberRelation;
+  String? memberMobileNumber;
+  String? memberEmailId;
+  String? memberPhoto;
+  String? memberStatus;
   String? driverName;
   String? ownerName;
   String? driverMobileNumber;
@@ -89,6 +102,8 @@ class Familymodel {
   String? ownerMobileNumber;
   String? ownerEmailId;
   String? ownerPhoto;
+  String? vehicleRegistrationNumber;
+  String? vehicleRcNumber;
   String? vehicleMake;
   String? vehicleModel;
   String? vehicleFuelType;
@@ -96,19 +111,24 @@ class Familymodel {
   String? vehicleFitnessValidity;
   String? vehiclePucValidity;
   String? vehicleInsuranceValidity;
-  String? vehiclePhoto;
-  Familymodel copyWith({
-    String? id,
+  dynamic vehiclePhoto;
+  FamilyListDataModel copyWith({  String? id,
     String? userId,
     String? driverId,
     String? date,
-    String? fromDestination,
-    String? toDestination,
-    String? distance,
-    String? totalTime,
+    dynamic fromDestination,
+    dynamic toDestination,
+    dynamic distance,
+    dynamic totalTime,
+    String? rideId,
     String? vehicleId,
     String? memberName,
     String? drivingLicenceNumber,
+    String? memberRelation,
+    String? memberMobileNumber,
+    String? memberEmailId,
+    String? memberPhoto,
+    String? memberStatus,
     String? driverName,
     String? ownerName,
     String? driverMobileNumber,
@@ -117,6 +137,8 @@ class Familymodel {
     String? ownerMobileNumber,
     String? ownerEmailId,
     String? ownerPhoto,
+    String? vehicleRegistrationNumber,
+    String? vehicleRcNumber,
     String? vehicleMake,
     String? vehicleModel,
     String? vehicleFuelType,
@@ -124,42 +146,43 @@ class Familymodel {
     String? vehicleFitnessValidity,
     String? vehiclePucValidity,
     String? vehicleInsuranceValidity,
-    String? vehiclePhoto,
-  }) =>
-      Familymodel(
-        id: id ?? this.id,
-        userId: userId ?? this.userId,
-        driverId: driverId ?? this.driverId,
-        date: date ?? this.date,
-        fromDestination: fromDestination ?? this.fromDestination,
-        toDestination: toDestination ?? this.toDestination,
-        distance: distance ?? this.distance,
-        totalTime: totalTime ?? this.totalTime,
-        vehicleId: vehicleId ?? this.vehicleId,
-        memberName: memberName ?? this.memberName,
-        drivingLicenceNumber: drivingLicenceNumber ?? this.drivingLicenceNumber,
-        vehicleRegistrationNumber:
-            vehicleRegistrationNumber ?? this.vehicleRegistrationNumber,
-        member_photo: member_photo ?? this.member_photo,
-        driverName: driverName ?? this.driverName,
-        ownerName: ownerName ?? this.ownerName,
-        driverMobileNumber: driverMobileNumber ?? this.driverMobileNumber,
-        driverEmailId: driverEmailId ?? this.driverEmailId,
-        driverPhoto: driverPhoto ?? this.driverPhoto,
-        ownerMobileNumber: ownerMobileNumber ?? this.ownerMobileNumber,
-        ownerEmailId: ownerEmailId ?? this.ownerEmailId,
-        ownerPhoto: ownerPhoto ?? this.ownerPhoto,
-        vehicleMake: vehicleMake ?? this.vehicleMake,
-        vehicleModel: vehicleModel ?? this.vehicleModel,
-        vehicleFuelType: vehicleFuelType ?? this.vehicleFuelType,
-        vehicleMakeYear: vehicleMakeYear ?? this.vehicleMakeYear,
-        vehicleFitnessValidity:
-            vehicleFitnessValidity ?? this.vehicleFitnessValidity,
-        vehiclePucValidity: vehiclePucValidity ?? this.vehiclePucValidity,
-        vehicleInsuranceValidity:
-            vehicleInsuranceValidity ?? this.vehicleInsuranceValidity,
-        vehiclePhoto: vehiclePhoto ?? this.vehiclePhoto,
-      );
+    dynamic vehiclePhoto,
+  }) => FamilyListDataModel(  id: id ?? this.id,
+    userId: userId ?? this.userId,
+    driverId: driverId ?? this.driverId,
+    date: date ?? this.date,
+    fromDestination: fromDestination ?? this.fromDestination,
+    toDestination: toDestination ?? this.toDestination,
+    distance: distance ?? this.distance,
+    totalTime: totalTime ?? this.totalTime,
+    rideId: rideId ?? this.rideId,
+    vehicleId: vehicleId ?? this.vehicleId,
+    memberName: memberName ?? this.memberName,
+    drivingLicenceNumber: drivingLicenceNumber ?? this.drivingLicenceNumber,
+    memberRelation: memberRelation ?? this.memberRelation,
+    memberMobileNumber: memberMobileNumber ?? this.memberMobileNumber,
+    memberEmailId: memberEmailId ?? this.memberEmailId,
+    memberPhoto: memberPhoto ?? this.memberPhoto,
+    memberStatus: memberStatus ?? this.memberStatus,
+    driverName: driverName ?? this.driverName,
+    ownerName: ownerName ?? this.ownerName,
+    driverMobileNumber: driverMobileNumber ?? this.driverMobileNumber,
+    driverEmailId: driverEmailId ?? this.driverEmailId,
+    driverPhoto: driverPhoto ?? this.driverPhoto,
+    ownerMobileNumber: ownerMobileNumber ?? this.ownerMobileNumber,
+    ownerEmailId: ownerEmailId ?? this.ownerEmailId,
+    ownerPhoto: ownerPhoto ?? this.ownerPhoto,
+    vehicleRegistrationNumber: vehicleRegistrationNumber ?? this.vehicleRegistrationNumber,
+    vehicleRcNumber: vehicleRcNumber ?? this.vehicleRcNumber,
+    vehicleMake: vehicleMake ?? this.vehicleMake,
+    vehicleModel: vehicleModel ?? this.vehicleModel,
+    vehicleFuelType: vehicleFuelType ?? this.vehicleFuelType,
+    vehicleMakeYear: vehicleMakeYear ?? this.vehicleMakeYear,
+    vehicleFitnessValidity: vehicleFitnessValidity ?? this.vehicleFitnessValidity,
+    vehiclePucValidity: vehiclePucValidity ?? this.vehiclePucValidity,
+    vehicleInsuranceValidity: vehicleInsuranceValidity ?? this.vehicleInsuranceValidity,
+    vehiclePhoto: vehiclePhoto ?? this.vehiclePhoto,
+  );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = id;
@@ -170,11 +193,15 @@ class Familymodel {
     map['to_destination'] = toDestination;
     map['distance'] = distance;
     map['total_time'] = totalTime;
+    map['ride_id'] = rideId;
     map['vehicle_id'] = vehicleId;
     map['member_name'] = memberName;
     map['driving_licence_number'] = drivingLicenceNumber;
-    map['vehicleRegistrationNumber'] = vehicleRegistrationNumber;
-    map['member_photo'] = member_photo;
+    map['member_relation'] = memberRelation;
+    map['member_mobile_number'] = memberMobileNumber;
+    map['member_email_id'] = memberEmailId;
+    map['member_photo'] = memberPhoto;
+    map['member_status'] = memberStatus;
     map['driver_name'] = driverName;
     map['owner_name'] = ownerName;
     map['driver_mobile_number'] = driverMobileNumber;
@@ -183,6 +210,8 @@ class Familymodel {
     map['owner_mobile_number'] = ownerMobileNumber;
     map['owner_email_id'] = ownerEmailId;
     map['owner_photo'] = ownerPhoto;
+    map['vehicle_registrationNumber'] = vehicleRegistrationNumber;
+    map['vehicle_rcNumber'] = vehicleRcNumber;
     map['vehicle_make'] = vehicleMake;
     map['vehicle_model'] = vehicleModel;
     map['vehicle_fuelType'] = vehicleFuelType;
@@ -193,4 +222,5 @@ class Familymodel {
     map['vehicle_photo'] = vehiclePhoto;
     return map;
   }
+
 }

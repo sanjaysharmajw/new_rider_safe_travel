@@ -14,7 +14,10 @@ import '../../Error.dart';
 import '../../FamilyMemberAddOtherTrack.dart';
 import '../../FamilyMemberAddScreen.dart';
 import '../../Models/MemberBlockDeleteModel.dart';
+import '../../ToggleSwitch.dart';
+import '../../familydatamodel.dart';
 import '../../switchbutton.dart';
+import 'FamilyListDataModel.dart';
 
 class FamilyMemberListScreen extends StatefulWidget {
   const FamilyMemberListScreen({Key? key}) : super(key: key);
@@ -25,6 +28,53 @@ class FamilyMemberListScreen extends StatefulWidget {
 
 class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
   var _future;
+  var status;
+  var memberId;
+
+
+  Future<List<FamilyListDataModel>> getFamilyList() async {
+    setState(() {});
+    await Preferences.setPreferences();
+    String userId = Preferences.getId(Preferences.id).toString();
+    print(userId);
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    final response = await http.post(
+      (Uri.parse(
+          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/familymemberRideList')),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{"user_id": userId}),
+    );
+    if (response.statusCode == 200) {
+      print('RES:${response.body}');
+      List<FamilyListDataModel> loginData = jsonDecode(response.body)['data']
+          .map<FamilyListDataModel>(
+              (data) => FamilyListDataModel.fromJson(data))
+          .toList();
+      return loginData;
+    } else {
+      throw Exception('Failed to load');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {});
+    _future = getFamilyList();
+  }
+
+  var image;
+
+  String? statusType;
+  bool isblocked = false;
+  bool unblockbuttonVisibility = false;
+  var memberStatus;
+  var driverName;
+  var memberName;
+
+  bool isSwitched = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +93,300 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
             icon: const Icon(Icons.arrow_back_outlined),
           ),
         ),
-        body: FutureBuilder<List<Familymodel>>(
+        body: FutureBuilder<List<FamilyListDataModel>>(
+          future: _future,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return snapshot.data!.isEmpty
+                  ? Center(
+                  child: Text(
+                    'Data not found',
+                    style: TextStyle(fontSize: 20, color: Colors.black12),
+                  ))
+                  : ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  // var item = snapshot.data![index].data?[index];
+                  image =
+                  "${snapshot.data![index].driverPhoto.toString()}";
+                  memberId = snapshot.data![index].userId.toString();
+                  memberStatus =
+                      snapshot.data![index].memberStatus.toString();
+                  memberName =
+                      "${snapshot.data![index].memberName.toString()}";
+                  print(snapshot.data!.length);
+                  print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                  return InkWell(
+                    onTap: () {
+                      setState(() {});
+                    },
+                    child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                              height: 210,
+                              width: 370,
+                              child: Stack(
+                                children: [
+                                  Center(
+                                    child: Container(
+                                      height: 170,
+                                      width: 350,
+                                      decoration: BoxDecoration(
+                                          color: CustomColor.yellow,
+                                          borderRadius:
+                                          BorderRadius.circular(
+                                              18.0)),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 10,
+                                    right: 20,
+                                    child: Container(
+                                      height: 100,
+                                      width: 100,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: CustomColor.white,
+                                      ),
+                                      child: CircleAvatar(
+                                        radius: 90,
+                                        backgroundColor: Colors.black,
+                                        child: CircleAvatar(
+                                          radius: 90,
+                                          backgroundColor: Colors.white,
+                                          child: ClipOval(
+                                            child: (snapshot.data![index]
+                                                .driverPhoto
+                                                .toString() !=
+                                                null)
+                                                ? Image.network(
+                                              snapshot.data![index]
+                                                  .driverPhoto
+                                                  .toString() ==
+                                                  null
+                                                  ? " "
+                                                  : snapshot
+                                                  .data![index]
+                                                  .driverPhoto
+                                                  .toString(),
+                                              width: 100,
+                                              height: 100,
+                                              fit: BoxFit.cover,
+                                            )
+                                                : Image.asset(
+                                                'assets/user_avatar.png'),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 30,
+                                    left: 40,
+                                    child: Text(
+                                        memberStatus.toString() == "null"
+                                            ? " "
+                                            : memberStatus.toString(),
+                                        style: TextStyle(
+                                            fontFamily: 'transport',
+                                            fontSize: 16)),
+                                  ),
+                                  Positioned(
+                                    top: 50,
+                                    left: 40,
+                                    child: Text(
+                                        memberName.toString() == "null"
+                                            ? " "
+                                            : memberName.toString(),
+                                        style: TextStyle(
+                                            fontFamily: 'transport',
+                                            fontSize: 16)),
+                                  ),
+                                  Positioned(
+                                    top: 70,
+                                    left: 40,
+                                    child: Text(
+                                        snapshot.data![index]
+                                            .driverName
+                                            .toString() ==
+                                            "null"
+                                            ? " "
+                                            : snapshot.data![index]
+                                            .driverName
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontFamily: 'transport',
+                                            fontSize: 16)),
+                                  ),
+                                  Positioned(
+                                    top: 90,
+                                    left: 40,
+                                    child: Text(
+                                        snapshot.data![index]
+                                            .driverMobileNumber
+                                            .toString() ==
+                                            "null"
+                                            ? " "
+                                            : snapshot.data![index]
+                                            .driverMobileNumber
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontFamily: 'transport',
+                                            fontSize: 16)),
+                                  ),
+                                  Positioned(
+                                    top: 110,
+                                    left: 40,
+                                    child: Text(
+                                        snapshot.data![index]
+                                            .drivingLicenceNumber
+                                            .toString() ==
+                                            "null"
+                                            ? " "
+                                            : snapshot.data![index]
+                                            .drivingLicenceNumber
+                                            .toString(),
+                                        style: TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 16,
+                                        )),
+                                  ),
+
+                                  Positioned(
+                                    top: 140,
+                                    left: 40,
+                                    child: ToggleSwitch(
+                                      mstatus: memberStatus.toString(),
+                                      memberId: snapshot
+                                          .data![index].userId
+                                          .toString(),
+                                    ),
+                                  ),
+                                  Positioned(
+                                      top: 135,
+                                      right: 20,
+                                      child: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              print("Deleted");
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext
+                                                  context) {
+                                                    return StatefulBuilder(
+                                                        builder: (BuildContext
+                                                        context,
+                                                            StateSetter
+                                                            setState) {
+                                                          return AlertDialog(
+                                                            content:
+                                                            Container(
+                                                              height: 120,
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                                children: [
+                                                                  SizedBox(
+                                                                    height:
+                                                                    10,
+                                                                  ),
+                                                                  Text("Do you really want to delete" +
+                                                                      " " +
+                                                                      snapshot
+                                                                          .data![index]
+                                                                          .memberMobileNumber
+                                                                          .toString() +
+                                                                      " " +
+                                                                      "?"),
+                                                                  SizedBox(
+                                                                      height:
+                                                                      15),
+                                                                  Row(
+                                                                    children: [
+                                                                      Expanded(
+                                                                        child:
+                                                                        ElevatedButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            // OverlayLoadingProgress.start(context);
+                                                                            getMembersStatus("Deleted");
+                                                                            setState(() {});
+                                                                            Get.back();
+                                                                            snapshot.data!.removeAt(index);
+                                                                            //getUserFamilyList();
+                                                                          },
+                                                                          child:
+                                                                          Text("Yes"),
+                                                                          style:
+                                                                          ElevatedButton.styleFrom(primary: CustomColor.yellow),
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                          width:
+                                                                          15),
+                                                                      Expanded(
+                                                                          child:
+                                                                          ElevatedButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              print('no selected');
+                                                                              Navigator.of(context).pop();
+                                                                            },
+                                                                            child: Text(
+                                                                                "No",
+                                                                                style: TextStyle(color: Colors.black)),
+                                                                            style:
+                                                                            ElevatedButton.styleFrom(
+                                                                              primary:
+                                                                              Colors.white,
+                                                                            ),
+                                                                          ))
+                                                                    ],
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          );
+                                                        });
+                                                  });
+                                            });
+                                          },
+                                          icon: Icon(
+                                            Icons.delete_rounded,
+                                            size: 40,
+                                            color: CustomColor.red,
+                                          )))
+                                ],
+                              )),
+                        ],
+                      ),
+                    ),
+                  );
+
+                  /*ListViewItem( relation: snapshot.data![index].relation.toString(),
+                          name: snapshot.data![index].memberFName.toString()+" "+snapshot.data![index].memberLName.toString(),
+                          mobileNumber: snapshot.data![index].memberMobileNumber.toString(),
+                          email: snapshot.data![index].memberEmailId.toString(),
+                          mstatus: snapshot.data![index].memberStatus.toString(),
+                          image: snapshot.data![index].memberProfileImage.toString(), memberId: memberId,); */
+                },
+              );
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            }
+            return Center(child: CircularProgressIndicator());
+          },
+        ));
+
+
+    /*FutureBuilder<List<FamilyListDataModel>>(
           future: _future,
           builder: (context, snapshot) {
 
@@ -56,6 +399,8 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                     onTap: () {
                       setState(() {
                         if (snapshot.hasData) {
+                          status = snapshot.data![index].memberStatus.toString();
+                          memberId = snapshot.data![index].userId.toString();
                           OverlayLoadingProgress.start(context);
                           Get.to(RiderMap(
                             riderId: snapshot.data![index].id.toString(),
@@ -159,6 +504,34 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                     ),
                                   ),
                                   Positioned(
+                                    top: 50,
+                                    left: 40,
+                                    child: Row(
+                                      children: [
+                                        Text("MemberStatus:  "),
+                                        Text(
+                                            snapshot.data![index].memberStatus.toString() == "null" ? "Data Not Available" : snapshot.data![index].memberStatus.toString(),
+                                            style: TextStyle(
+                                                fontFamily: 'transport',
+                                                fontSize: 14)),
+                                      ],
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 70,
+                                    left: 40,
+                                    child: Row(
+                                      children: [
+                                        Text("MemberName:  "),
+                                        Text(
+                                            snapshot.data![index].memberName.toString() == "null" ? "Data Not Available" : snapshot.data![index].memberName.toString(),
+                                            style: TextStyle(
+                                                fontFamily: 'transport',
+                                                fontSize: 14)),
+                                      ],
+                                    ),
+                                  ),
+                                  Positioned(
                                     top: 90,
                                     left: 40,
                                     child: Row(
@@ -217,14 +590,14 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                             fontFamily: 'transport',
                                             fontSize: 14)),
                                   ),
-                                 /* Positioned(
+                                  Positioned(
                                     top: 160,
                                     left: 40,
                                     child: ToggleSwitchButton(
-                                      mstatus: snapshot.data![index].,
-                                      memberId: "",
+                                      mstatus: status.toString(),
+                                      memberId: snapshot.data![index].userId.toString()
                                     ),
-                                  ),*/
+                                  ),
                                   Positioned(
                                       top: 150,
                                       right: 20,
@@ -331,30 +704,9 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
             // By default, show a loading spinner.
             return Center(child: const CircularProgressIndicator());
           },
-        ));
+        )); */
   }
 
-  Future<List<Familymodel>> getData(String userId) async {
-    final response = await http.post(
-      Uri.parse(ApiUrl.familyMember),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'user_id': userId,
-      }),
-    );
-    print('User Id:${userId.toString()}');
-
-    if (response.statusCode == 200) {
-      List<Familymodel> familyData = jsonDecode(response.body)['data']
-          .map<Familymodel>((data) => Familymodel.fromJson(data))
-          .toList();
-      return familyData;
-    } else {
-      throw Exception('Failed to load');
-    }
-  }
 
   Future<MemberBlockDeleteModel> getMembersStatus(String status) async {
     setState(() {});
@@ -365,7 +717,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
           backgroundColor: Colors.green,
           colorText: CustomColor.black);
       setState(() {
-        //getData();
+        getFamilyList();
       });
     } else if (status.toLowerCase().toString() == "Blocked") {
       Get.snackbar("Hello!", "Family member is blocked",
@@ -390,27 +742,27 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
       },
       body: jsonEncode(<String, String>{
         "user_id": userId,
-        "member_id": "memberId",
+        "member_id": memberId.toString(),
         "status": status.toString()
       }),
     );
     print("FamilyMemberStatusData" +
         jsonEncode(<String, String>{
           "user_id": userId,
-          "member_id": "memberId",
+          "member_id": memberId.toString(),
           "status": status.toString()
         }));
     if (response.statusCode == 200) {
       setState(() {});
-    //  getUserFamilyList();
+      getFamilyList();
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       print("Body: " + response.body);
       if (status == true) {
         setState(() {
-          // getUserFamilyList();
+          getFamilyList();
         });
-        //getUserFamilyList();
+        getFamilyList();
         // Navigator.pop(context);
         // updateStatus();
         Get.snackbar("Hello!", msg.toString(),
@@ -430,19 +782,9 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    sharePre();
-  }
 
-  void sharePre() async {
-    await Preferences.setPreferences();
-    String userId = Preferences.getId(Preferences.id).toString();
-    _future = getData(userId);
-    //Get.snackbar("Hit with time", userId);
-    setState(() {});
-  }
+
+
 
 
 }

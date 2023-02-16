@@ -90,6 +90,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
   final TextEditingController stateController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController expiryDateController = TextEditingController();
+  final TextEditingController emergencyContactController = TextEditingController();
 
 
   late Future<List<RiderUserListData>> futurePost;
@@ -165,7 +166,8 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                        firstname: '${snapshot.data![index].firstName.toString()}' == "null" ? " " : '${snapshot.data![index].firstName.toString()}',
                                        mobileNumber: '${snapshot.data![index].mobileNumber.toString()}' == "null" ? " " : '${snapshot.data![index].mobileNumber.toString()}',
                                        imageProfile: profileImage,
-                                       gender: '${snapshot.data![index].gender.toString()}' == "null" ? " " : '${snapshot.data![index].gender.toString()}',)
+                                       gender: '${snapshot.data![index].gender.toString()}' == "null" ? " " : '${snapshot.data![index].gender.toString()}',
+                                       emergencyContact:  '${snapshot.data![index].emergencyContact.toString()}' == "null" ? " " : '${snapshot.data![index].emergencyContact.toString()}', )
                                  ))
                                      .then((value) {
 
@@ -619,7 +621,8 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                       style: const TextStyle(
                                           fontFamily: 'transport', fontSize: 16),
                                       maxLines: 1,
-                                      controller: addressController,
+                                      controller:
+                                      addressController,
                                       decoration:  InputDecoration(
                                         hintText: '${snapshot.data![index].presentAddress?.address.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.address.toString()}',
                                         hintStyle: TextStyle(
@@ -641,6 +644,61 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                         }
                                         return null;
                                       },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(
+                            height: 20,
+                          ),
+
+                          Row(
+                            children: [
+                              Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 15, top: 0, bottom: 0),
+                                  child:  Icon(Icons.phone_outlined)
+                              ),
+                              const Text(
+                                "Emergency Contact Number",
+                                style:
+                                TextStyle(fontFamily: 'transport', fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15, left: 15),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 2,
+                                  child: SizedBox(
+                                    height: 45,
+                                    child: TextFormField(
+
+                                      style: const TextStyle(
+                                          fontFamily: 'transport', fontSize: 16),
+                                      maxLines: 1,
+                                      controller: emergencyContactController,
+                                      decoration:  InputDecoration(
+                                        hintText: '${snapshot.data![index].emergencyContact.toString()}' == "null" ? " " : '${snapshot.data![index].emergencyContact.toString()}',
+                                        hintStyle: TextStyle(
+                                            fontFamily: 'transport',
+                                            fontSize: 15,color: Colors.black54),
+                                        enabled: false,
+                                        border: UnderlineInputBorder(),
+                                        enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 1, color: CustomColor.yellow)),
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 1, color: Colors.amberAccent),
+                                        ),
+                                      ),
+
                                     ),
                                   ),
                                 ),
