@@ -16,6 +16,7 @@ import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/MapAddFamily.dart';
 import 'package:ride_safe_travel/Utils/constant.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
+import 'package:ride_safe_travel/Widgets/round_text_widgets.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -24,6 +25,7 @@ import 'BottomSheet/GeocodeResultModel.dart';
 import 'LoginModule/Error.dart';
 import 'Models/sosReasonModel.dart';
 import 'Utils/exit_alert_dialog.dart';
+import 'chat_bot/ChatScreen.dart';
 
 class StartRide extends StatefulWidget {
   const StartRide(
@@ -35,7 +37,7 @@ class StartRide extends StatefulWidget {
         required this.dPhoto,
         required this.model,
         required this.vOwnerName,
-        required this.vRegNo})
+        required this.vRegNo, required this.driverLicense})
       : super(key: key);
 
   @override
@@ -48,6 +50,7 @@ class StartRide extends StatefulWidget {
   final String model;
   final String vOwnerName;
   final String vRegNo;
+  final String driverLicense;
 }
 
 class _SignUpState extends State<StartRide> {
@@ -55,10 +58,13 @@ class _SignUpState extends State<StartRide> {
   late IO.Socket socket;
   late Location location;
   LocationData? currentLocation;
+  double speed=0.0;
   // late double lat;
   // late double lng;
   String id = '';
   var userId = '';
+  var gender = '';
+  var Sos_status = 'Ok';
   String socketToken = '';
   bool visibility = false;
 
@@ -114,6 +120,7 @@ class _SignUpState extends State<StartRide> {
   void sharePre() async {
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
+    gender = Preferences.getgender().toString();
     await socketConnect(widget.socketToken);
     setState(() async {
       await getLocation();
@@ -144,11 +151,12 @@ class _SignUpState extends State<StartRide> {
         title: 'Nirbhaya app is running');
     location.onLocationChanged.listen((LocationData cLoc) async {
       currentLocation = cLoc;
+      speed=cLoc.speed!;
       //setState(() {});
       print('LatLng${currentLocation!.longitude!}');
-      print('latiiii' + destinationMarkerLat.toString());
+      //print('Satellite${cLoc.satelliteNumber}');
+      print('latiiii$destinationMarkerLat');
       setState(() {
-        
       });
       final GoogleMapController controller = await _completer.future;
       if (destinationMarkerLat == 0.0) {
@@ -160,7 +168,6 @@ class _SignUpState extends State<StartRide> {
             target: LatLng(cLoc.latitude!, cLoc.longitude!), zoom: 11)));
       }
 
-
       await Preferences.setPreferences();
       Preferences.setStartLat(cLoc.latitude!.toString());
       Preferences.setStartLng(cLoc.longitude!.toString());
@@ -168,12 +175,32 @@ class _SignUpState extends State<StartRide> {
         "message": {
           'lat': currentLocation!.latitude!,
           'lng': currentLocation!.longitude!,
-          'timestamp': DateTime.now().millisecondsSinceEpoch.toString()
+          'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
+           //'status':"Ok/sos/resolved/responded/escalated",
+
+           'status':Sos_status.toString(),
+           'sub_status':reason.toString(),
+           'vehicle_type':widget.model.toString(),
+           'gender':gender.toString(),
+           'driver_license':widget.driverLicense.toString(),
+           'vehicle_no':widget.vRegNo.toString(),
+           'altitude':currentLocation!.altitude.toString(),
+           'speed':currentLocation!.speed.toString(),
+           'speedAccuracy':currentLocation!.speedAccuracy.toString(),
+           'elapsedRealtimeNanos':currentLocation!.elapsedRealtimeNanos.toString(),
+           'elapsedRealtimeUncertaintyNanos':currentLocation!.elapsedRealtimeUncertaintyNanos.toString(),
+           'accuracy':currentLocation!.accuracy.toString(),
+           'heading':currentLocation!.heading.toString(),
+           'headingAccuracy':currentLocation!.headingAccuracy.toString(),
+           'provider':currentLocation!.provider.toString(),
+           'satelliteNumber':currentLocation!.satelliteNumber.toString(), //satellite no 0 check it
+           'verticalAccuracy':currentLocation!.verticalAccuracy.toString(),
+           'h_dop':currentLocation!.accuracy!/5,
+           'v_dop':currentLocation!.accuracy!/currentLocation!.verticalAccuracy!,
+           'time':currentLocation!.time.toString()
         },
         "roomName": widget.riderId,
       });
-
-
     });
   }
 
@@ -192,7 +219,7 @@ class _SignUpState extends State<StartRide> {
   var selectedReason = [];
   var reason;
   bool isSelected = false;
-  
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
@@ -223,6 +250,14 @@ class _SignUpState extends State<StartRide> {
             icon: Image.asset('assets/map_back.png'),
           ),
           actions: <Widget>[
+
+            IconButton(
+                icon: const Icon(Icons.chat),
+                color: CustomColor.black,
+                onPressed: () {
+                  Get.to(const ChatScreen());
+                }),
+
             IconButton(
                 icon: const Icon(
                   Icons.share,
@@ -662,7 +697,7 @@ class _SignUpState extends State<StartRide> {
                                                                       value: reason,
                                                                       onChanged: (value) {
                                                                         setState(() {
-
+                                                                          Sos_status="SOS";
                                                                           reason = value;
                                                                           isSelected = true;
 
@@ -733,6 +768,11 @@ class _SignUpState extends State<StartRide> {
                   ),
                 );
               }),
+
+          roundTextWidget(textValue:
+          speed.toStringAsFixed(1)
+
+          )
 
         ]),
       ),

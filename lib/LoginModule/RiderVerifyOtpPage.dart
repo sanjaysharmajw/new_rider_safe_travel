@@ -372,6 +372,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         var mobileNumber = loginData[0].mobileNumber;
         var profileImage = loginData[0].profileImage;
         var userType = loginData[0].userType;
+        var gender = loginData[0].gender;
 
         print("UserId"+id! +
             firstname.toString()+
@@ -387,6 +388,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         Preferences.setMobileNumber(Preferences.mobileNumber, mobileNumber.toString());
         Preferences.setUserType(Preferences.userType, userType.toString());
         Preferences.setProfileImage(profileImage.toString());
+        Preferences.setGender(gender.toString());
         Get.to(const MainPage());
         ToastMessage.toast("Successful");
       } else {

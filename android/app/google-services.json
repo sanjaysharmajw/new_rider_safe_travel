@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "621805870576",
+    "firebase_url": "https://nirbhaya-rider-default-rtdb.firebaseio.com",
     "project_id": "nirbhaya-rider",
     "storage_bucket": "nirbhaya-rider.appspot.com"
   },
@@ -29,6 +30,49 @@
             {
               "client_id": "621805870576-6bmdbi8dto9569n5e9nll3533jjlqgad.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "621805870576-7vc3j3vunvr7selbiuacmheqem21ci0i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ridersafetravel.rideSafeTravel"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621805870576:android:5609c5d20546985c679135",
+        "android_client_info": {
+          "package_name": "com.safe_travel.safe_travel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "621805870576-6bmdbi8dto9569n5e9nll3533jjlqgad.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfn1tLkA7-hWaenJ5XXxxJTC8qL7F95Og"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "621805870576-6bmdbi8dto9569n5e9nll3533jjlqgad.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "621805870576-7vc3j3vunvr7selbiuacmheqem21ci0i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ridersafetravel.rideSafeTravel"
+              }
             }
           ]
         }

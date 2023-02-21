@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:badges/badges.dart' as badges;
@@ -10,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:majascan/majascan.dart';
 import 'package:location/location.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:ride_safe_travel/LoginModule/Map/RiderFamilyList.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
@@ -26,10 +30,12 @@ import '../Notification/NotificationScreen.dart';
 import '../UserFamilyList.dart';
 import '../Utils/logout_dialog_box.dart';
 import '../Widgets/dashboard_profile_widgets.dart';
+import '../chat_bot/ChatScreen.dart';
 import '../rider_profile_view.dart';
 import '../start_ride_map.dart';
 import 'Api_Url.dart';
 import 'Error.dart';
+
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -119,6 +125,8 @@ class _MainPageState extends State<MainPage> {
   }
 var userId;
   void sharePre() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
     await getLocation();
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
@@ -126,21 +134,48 @@ var userId;
   }
   @override
   void initState() {
+    super.initState();
+    init();
     sharePre();
 
 
     setState(() {
       sharePreferences();
     });
+  }
+  init() async {
 
 
-
+    // listen for user to click on notification
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage remoteMessage) {
+      String? title = remoteMessage.notification!.title;
+      String? description = remoteMessage.notification!.body;
+      print(remoteMessage.toString());
+      //im gonna have an alertdialog when clicking from push notification
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: title, // title from push notification data
+        desc: description, // description from push notifcation data
+        buttons: [
+          DialogButton(
+            child: Text(
+              "COOL",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => Navigator.pop(context),
+            width: 120,
+          )
+        ],
+      ).show();
+    });
   }
 
   void sharePreferences() async {
     setState(() {
 
     });
+   // String? instaid=FirebaseInstallations.instance.getId() as String?;
     await Preferences.setPreferences();
     image = Preferences.getProfileImage().toString();
    // profileName = Preferences.getFirstName(Preferences.firstname).toString();
@@ -194,6 +229,14 @@ var userId;
               onPressed: () {
                 Get.to(const FeedBackScreenPage());
               }),
+
+
+          IconButton(
+              icon: const Icon(Icons.chat),
+              color: CustomColor.black,
+              onPressed: () {
+                Get.to(const ChatScreen());
+              }),
           IconButton(
               icon: const Icon(Icons.logout),
               color: CustomColor.black,
@@ -202,9 +245,10 @@ var userId;
               }),
 
 
+
         ],
         elevation: 15,
-        centerTitle: true,
+        centerTitle: false,
         backgroundColor: CustomColor.yellow,
         title:const Text("Dashboard",
           style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',),),
@@ -325,7 +369,7 @@ var userId;
             model: userCheck[0].vehicleModel.toString(),
             vOwnerName: userCheck[0].ownerName.toString(),
             vRegNo: userCheck[0].vehicleRegistrationNumber.toString(),
-            socketToken: socketToken.toString()));
+            socketToken: socketToken.toString(), driverLicense: userCheck[0].drivingLicenceNumber.toString()));
         var ids=userCheck[0].id.toString();
         print('IDssss: $ids');
         print(userCheck[0].driverName.toString());

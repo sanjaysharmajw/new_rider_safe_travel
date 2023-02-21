@@ -24,6 +24,7 @@ class Preferences {
   static const String startLat = 'startLat';
   static const String startLng = 'startLng';
   static const String ageCalculate = "ageCalculate";
+  static const String gender = "GENDER";
 
   static Future<void> setPreferences() async {
     instance = await SharedPreferences.getInstance();
@@ -35,6 +36,14 @@ class Preferences {
 
   static Future<bool> setStartLat(String value) {
     return Preferences.instance!.setString(startLat, value);
+  }
+
+  static Future<bool> setGender(String value) {
+    return Preferences.instance!.setString(gender, value);
+  }
+
+  static dynamic getgender() {
+    return Preferences.instance!.get(gender);
   }
 
   static dynamic getStartLat() {

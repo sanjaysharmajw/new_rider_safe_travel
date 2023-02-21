@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "nirbhayabot-9uyh",
+  "private_key_id": "bdd88450f2fd3dac1d7feb6909fac71bed688b3b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDKD3pPpEyazDTI\nClbC/dbTIANLuUvBuPS1KJ4OlfIxWFGyPAfWMa7ZWF6hBdSh8vdpdC+8EV40w1f5\nDpwetCMZ0mkSa6gxCzBjUygMH4juu6UhDQD1HjjzNaLUmS/wtOC5VDLhD7+6tB74\nGLE9nj5F5V+k5//MZPRiEE/fLQFdsNIwXO0/DQKbmEIpC9R11B+XRSTHtaDv24+b\n/YI05ZPjP91sVJK5NZwwDEq/r1cUJLC5dLqm5SBmWZId7ppi2CKsist3FlceGv+d\nd968r0zSKhnlsZ8Nu7WhG6ovIIkosoAmQmHT529vfH7Z8sdNWdC3+RIxFmHK0vcp\nhsgD3/iXAgMBAAECggEASJYs0yVrm4RWRbJpHp0/qhJq/K3xCAOgbN/Nf+Hf4lge\n6Q9lpU2tyUhUnjXQ/+ifdpOVflMi64NtO/xCm0kM/v62XjascgnZ9SRvU4OUlmZ0\nWJ4qROP5g202NHdfYHIp9InJyU32C2UfZvK/4SnSpxtSM5RgMRXnML85YivxvKzg\nPIgGDk15WYfFn0AlyDydVy2YbYf5a5XvTXsMHzGA+6mUy4KuyHAnWYtc5eYKXGEF\nomZe0aRqZVXMYAvDIlblid8O7v0ZiovWMRBXqYKZzQ5DarzXoqWwa32j2hZYpvvM\noX2zXirE85Y3gxIawAWRmzd/D/7lmLYQmz/9E00gYQKBgQDkKaAhx2dzu5aWg80D\nD1qWqF2Ol0ocoluuJh0I+n985jxwXbVO8PqyNef3NUUaVrpXOPshpYYLb4iGjlFG\noby+/M8dA9mIb9mk5ix73BBzeqQREBr7fj9rEBCZKz9xyNLPWnPSTIcfnbd7g4Va\npzWHU++mx7RVR2878XoVjd49hwKBgQDitpWfC2/CO0d6Ze4ida7JwPP3GvCk8IZ+\nPn5Ba+v52xeUtmuRYva/uaGY/8leXiWHmhJZbTQbyN99FZaSl6q6ZWINLnX8ifzB\nQZo2e0vbfNz8jAkoKQIPHjSI/OVsAEcrS9oqGaXkNY5OaBn1raFZcVWQsTniwy2y\nRDX4YDawcQKBgFd1ATWRer0o/asKMG5o1z+CoAIFSdo5/cx+PYjwhCe7FRW5RcNR\nqbbf5N+kYq2a6uh+Jf0atovxn7J8IPljC7dlrnofvKWIwjNsK0b67q9lJjiIJN+b\n3/FJAiPEKRiTcwMaV+UXgoAC8477tgUurN0HtogGasB5llCy2ioi7DpHAoGBANei\n8PdAyoEFHzyFPRabtq+BjssHXcKUYGgtiqsxOlcBlBFH3VKAvc+ogdLj4CWZCLtM\nyY0zeG/BBQmVgg1WovX9vmBpQ6H7oWQzwLl3VrSitBKmI4OGVcYJZdCyMokiTo8Y\n655FnOtOIVfkXmS2TJSlXsxsNXHBUXKQvIDNCteRAoGAeFqjr1ha2nXvG9tfcn+9\nNuvOPQ1gXxPiFNVvcfMr4s02gBdMqh6TIfhpnHuFC7EM01mpQLKGlpq1O/hCz1x3\n+NEnOs2T/UtZwMIsNHFIB1m07FbUnDEuyXjBHAvOpgUOWa9wmcsRUVGHwvGNj6iS\najbG9hXapEpjJmL7Epqdge0=\n-----END PRIVATE KEY-----\n",
+  "client_email": "nirbhaya-chat-bot@nirbhayabot-9uyh.iam.gserviceaccount.com",
+  "client_id": "117400444723292773173",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/nirbhaya-chat-bot%40nirbhayabot-9uyh.iam.gserviceaccount.com"
+}

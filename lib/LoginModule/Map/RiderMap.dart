@@ -15,13 +15,15 @@ import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
 import 'package:ride_safe_travel/LoginModule/Map/Drawer.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
+import 'package:ride_safe_travel/Utils/SpeedAlert.dart';
 import 'package:ride_safe_travel/Utils/make_a_call.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-
 import '../../Utils/exit_alert_dialog.dart';
+import '../../Widgets/round_text_widgets.dart';
+import '../../chat_bot/ChatScreen.dart';
 
 class RiderMap extends StatefulWidget {
   RiderMap({
@@ -59,8 +61,9 @@ class _RiderMapState extends State<RiderMap> {
   var vehicleId = '', driverId = '', userId = '', riderId = '';
   String date = '';
   bool visibility = false;
+  var getSpeed;
   late Map<MarkerId, Marker> _markers;
-  List<LatLng>polylineCoordinates=[];
+  List<LatLng> polylineCoordinates = [];
   late LatLng center;
   Completer<GoogleMapController> _completer = Completer();
   static const CameraPosition _cameraPosition = CameraPosition(
@@ -69,8 +72,9 @@ class _RiderMapState extends State<RiderMap> {
   );
 
   final TextEditingController destinationController = TextEditingController();
-  final TextEditingController fieldTextEditingController = TextEditingController();
-final ScrollController scrollController = ScrollController();
+  final TextEditingController fieldTextEditingController =
+      TextEditingController();
+  final ScrollController scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
@@ -98,33 +102,38 @@ final ScrollController scrollController = ScrollController();
     OverlayLoadingProgress.stop();
     getSocketToken();
   }
+
   final double _initFabHeight = 120.0;
   double _fabHeight = 0;
   double _panelHeightOpen = 0;
   double _panelHeightClosed = 95.0;
 
-
-
-
   String searchString = "";
-
 
   @override
   Widget build(BuildContext context) {
-    _panelHeightOpen = MediaQuery
-        .of(context)
-        .size
-        .height * .80;
+    _panelHeightOpen = MediaQuery.of(context).size.height * .80;
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          widget.memberName.toString() == "null" ? "Data Not Available" : widget.memberName.toString(),
-          style: const TextStyle(color: CustomColor.black, fontFamily: 'transport'),
+          widget.memberName.toString() == "null"
+              ? "Data Not Available"
+              : widget.memberName.toString(),
+          style: const TextStyle(
+              color: CustomColor.black, fontFamily: 'transport'),
         ),
         elevation: 0,
         backgroundColor: CustomColor.lightYellow,
+        actions: [
+          IconButton(
+              icon: const Icon(Icons.chat),
+              color: CustomColor.black,
+              onPressed: () {
+                Get.to(const ChatScreen());
+              }),
+        ],
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context, true);
@@ -133,43 +142,41 @@ final ScrollController scrollController = ScrollController();
         ),
       ),
       body: Stack(children: [
-
-          LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-            return SizedBox(
-              height: constraints.maxHeight / 1.1,
-              child: GoogleMap(
-                initialCameraPosition: _cameraPosition,
-                mapType: MapType.normal,
-                myLocationEnabled: true,
-                padding: const EdgeInsets.symmetric(vertical: 50),
-                compassEnabled: true,
-                zoomControlsEnabled: true,
-                myLocationButtonEnabled: true,
-                onCameraMove: (position) => center = position.target,
-                polylines: {
-                  Polyline(
-                      polylineId: PolylineId("route"),
-                      points: polylineCoordinates,
-                      color: Colors.red,
-                      width: 4
-                  )
-                },
-                onMapCreated: (GoogleMapController controller) {
-                  _completer.complete(controller);
-                },
-                markers: Set<Marker>.of(_markers.values),
-              ),
-            );
-          }),
-          DraggableScrollableSheet(
-              initialChildSize: 0.15,
-              minChildSize: 0.10,
-              maxChildSize: 1,
-              snapSizes: [0.5, 1],
-              snap: true,
-              builder: (BuildContext context, scrollSheetController) {
-                return Container(
+        LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+          return SizedBox(
+            height: constraints.maxHeight / 1.1,
+            child: GoogleMap(
+              initialCameraPosition: _cameraPosition,
+              mapType: MapType.normal,
+              myLocationEnabled: true,
+              padding: const EdgeInsets.symmetric(vertical: 50),
+              compassEnabled: true,
+              zoomControlsEnabled: true,
+              myLocationButtonEnabled: true,
+              onCameraMove: (position) => center = position.target,
+              polylines: {
+                Polyline(
+                    polylineId: PolylineId("route"),
+                    points: polylineCoordinates,
+                    color: Colors.red,
+                    width: 4)
+              },
+              onMapCreated: (GoogleMapController controller) {
+                _completer.complete(controller);
+              },
+              markers: Set<Marker>.of(_markers.values),
+            ),
+          );
+        }),
+        DraggableScrollableSheet(
+            initialChildSize: 0.15,
+            minChildSize: 0.10,
+            maxChildSize: 1,
+            snapSizes: [0.5, 1],
+            snap: true,
+            builder: (BuildContext context, scrollSheetController) {
+              return Container(
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
@@ -177,11 +184,10 @@ final ScrollController scrollController = ScrollController();
                     borderRadius: BorderRadius.circular(15.h),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 20.0.w),
-                    child: Column(
-                      children: [
-                  /*  Card(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0.w),
+                      child: Column(
+                        children: [
+                          /*  Card(
                     child: ListTile(
                       title: TextFormField(
                         controller: destinationController,
@@ -348,70 +354,75 @@ final ScrollController scrollController = ScrollController();
                 ),
                 ),*/
 
-             SizedBox(height: 15,),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Make_a_call.makePhoneCall(widget.dMobile);
-                              },
-                              child:   Column(
-                                children: [
-                                  Image.asset("images/contact_driver.png",
-                                      width: 50.w, height: 50.h),
-                                  SizedBox(height: 10.h),
-                                  Text("Contact Driver",
-                                      style: TextStyle(
-                                          fontFamily: 'transport',
-                                          fontSize: 16.sp)),
-                                ],
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Make_a_call.makePhoneCall(widget.dMobile);
+                                },
+                                child: Column(
+                                  children: [
+                                    Image.asset("images/contact_driver.png",
+                                        width: 50.w, height: 50.h),
+                                    SizedBox(height: 10.h),
+                                    Text("Contact Driver",
+                                        style: TextStyle(
+                                            fontFamily: 'transport',
+                                            fontSize: 16.sp)),
+                                  ],
+                                ),
                               ),
-                            ),
-
-                            InkWell(
-                              onTap: () {
-                                showMenu();
-                              },
-                              child: Column(
-                                children: [
-                                  Image.asset("images/Ride_Details.png",
-                                      width: 50.w, height: 50.h),
-                                  SizedBox(height: 10.h),
-                                  Text("Ride Details",
-                                      style: TextStyle(
-                                          fontFamily: 'transport',
-                                          fontSize: 16.sp)),
-                                ],
+                              InkWell(
+                                onTap: () {
+                                  showMenu();
+                                },
+                                child: Column(
+                                  children: [
+                                    Image.asset("images/Ride_Details.png",
+                                        width: 50.w, height: 50.h),
+                                    SizedBox(height: 10.h),
+                                    Text("Ride Details",
+                                        style: TextStyle(
+                                            fontFamily: 'transport',
+                                            fontSize: 16.sp)),
+                                  ],
+                                ),
                               ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                showExitPopup(context,"Do you really want to call on 100 ?",(){
-                                  Make_a_call.makePhoneCall("100");
-                                  Navigator.pop(context, true);
-                                });
-                              },
-                              child: Column(
-                                children: [
-                                  Image.asset("images/hundred_number.png",
-                                      width: 50.w, height: 50.h),
-                                  SizedBox(height: 10.h),
-                                  const Text("100",
-                                      style: TextStyle(
-                                          fontFamily: 'transport',
-                                          fontSize: 16)),
-                                ],
+                              InkWell(
+                                onTap: () {
+                                  showExitPopup(context,
+                                      "Do you really want to call on 100 ?",
+                                      () {
+                                    Make_a_call.makePhoneCall("100");
+                                    Navigator.pop(context, true);
+                                  });
+                                },
+                                child: Column(
+                                  children: [
+                                    Image.asset("images/hundred_number.png",
+                                        width: 50.w, height: 50.h),
+                                    SizedBox(height: 10.h),
+                                    const Text("100",
+                                        style: TextStyle(
+                                            fontFamily: 'transport',
+                                            fontSize: 16)),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                )));
+                            ],
+                          ),
+                        ],
+                      )));
             }),
-      ]
-      ),
+        // roundTextWidget(textValue:
+        // getSpeed.toStringAsFixed(1)
+        //
+        // )
+      ]),
     );
   }
 
@@ -420,14 +431,25 @@ final ScrollController scrollController = ScrollController();
         context: context,
         builder: (BuildContext context) {
           return DrawerInfo(
-            dInfoImage: widget.dImage == "null" ? "Data Not Available" : widget.dImage,
-            dInfoName: widget.dName == "null" ? "Data Not Available" : widget.dName,
-            dInfoMobile: widget.dMobile == "null" ? "Data Not Available" : widget.dMobile,
+            dInfoImage:
+                widget.dImage == "null" ? "Data Not Available" : widget.dImage,
+            dInfoName:
+                widget.dName == "null" ? "Data Not Available" : widget.dName,
+            dInfoMobile: widget.dMobile == "null"
+                ? "Data Not Available"
+                : widget.dMobile,
             vInfoImage: 'images/bottom_drawer_comp.png',
-            vInfoModel: widget.vModel == "null" ? "Data Not Available" : widget.vModel,
-            vInfoOwnerName: widget.vOwnerName == "null" ? "Data Not Available" : widget.vOwnerName,
-            vInfoRegNo: widget.vRegistration == "null" ? "Data Not Available" : widget.vRegistration,
-            dInfoLicense: widget.dLicenseNo == "null" ? "Data Not Available" : widget.dLicenseNo,
+            vInfoModel:
+                widget.vModel == "null" ? "Data Not Available" : widget.vModel,
+            vInfoOwnerName: widget.vOwnerName == "null"
+                ? "Data Not Available"
+                : widget.vOwnerName,
+            vInfoRegNo: widget.vRegistration == "null"
+                ? "Data Not Available"
+                : widget.vRegistration,
+            dInfoLicense: widget.dLicenseNo == "null"
+                ? "Data Not Available"
+                : widget.dLicenseNo,
             press: () {
               Navigator.of(context).pop();
             },
@@ -479,8 +501,11 @@ final ScrollController scrollController = ScrollController();
         print('Received event: $data');
         var lat = jsonDecode(data)['lat'];
         var lng = jsonDecode(data)['lng'];
+        getSpeed = jsonDecode(data)['speed'];
         print('Received lat: $lat + $lng');
-        center=LatLng(lat, lng);
+        print('Speed: $getSpeed');
+
+        center = LatLng(lat, lng);
         polylineCoordinates.add(LatLng(lat, lng));
         final GoogleMapController controller = await _completer.future;
         controller.animateCamera(CameraUpdate.newCameraPosition(
@@ -492,6 +517,11 @@ final ScrollController scrollController = ScrollController();
         setState(() {
           _markers[MarkerId('ID')] = marker;
         });
+
+        if (getSpeed.toString().length > 80) {
+          speedAlertDialogBoc();
+        }
+
       });
 
       socket.on('error', (error) {
@@ -500,5 +530,31 @@ final ScrollController scrollController = ScrollController();
     } catch (e) {
       print(e.toString());
     }
+  }
+  Future<void> speedAlertDialogBoc() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Alert'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Speed is too much. Please Go slow'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

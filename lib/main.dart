@@ -1,14 +1,21 @@
 import 'dart:async';
+import 'package:http/http.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:ride_safe_travel/LoginModule/MainPage.dart';
 import 'package:ride_safe_travel/LoginModule/RiderLoginPage.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/start_ride_map.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 
 
@@ -35,6 +42,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+
+
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   await flutterLocalNotificationsPlugin
@@ -77,11 +87,33 @@ class MyHomePageState extends State<MyHomePage> {
   late Location location;
 
 
+
+
+  void _instanceId() async {
+    await Firebase.initializeApp();
+    FirebaseMessaging.instance.getInitialMessage();
+    FirebaseMessaging.instance.sendMessage();
+    var token = await FirebaseMessaging.instance.getToken();
+    print("Print Instance Token ID: " + token!);
+  }
+
+
+
   @override
   void initState() {
     super.initState();
+    _instanceId();
     getLocation();
     //FCM Push Notification
+    FirebaseInAppMessaging.instance.triggerEvent("");
+    FirebaseMessaging.instance.getInitialMessage();
+
+
+    // Crashlytics
+    FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled;
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
@@ -152,7 +184,6 @@ class MyHomePageState extends State<MyHomePage> {
       //ToastMessage.toast(lng.toString());
       print("lat: $lng, $lat");
     });
-
   }
 
   void startTimer() {
@@ -184,7 +215,5 @@ class MyHomePageState extends State<MyHomePage> {
       ],
     );
   }
-
-
 }
 

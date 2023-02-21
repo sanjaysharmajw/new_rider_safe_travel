@@ -148,7 +148,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
             model: widget.vModel.toString() == 'null' ? "Data not available" : widget.vModel.toString(),
             vOwnerName: widget.vOwnerName.toString() == 'null' ? "Data not available" : widget.vOwnerName.toString(),
             vRegNo: widget.vRegNumber.toString() == 'null' ? "Data not available" : widget.vRegNumber.toString(),
-            socketToken: socketToken)
+            socketToken: socketToken, driverLicense: widget.driverLicense.toString())
         );
         OverlayLoadingProgress.stop();
         print("Userinformation" + widget.driverId + widget.vehicleId);
@@ -163,7 +163,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
             model: widget.vModel.toString() == 'null' ? "Data not available" : widget.vModel.toString(),
             vOwnerName: widget.vOwnerName.toString() == 'null' ? "Data not available" : widget.vOwnerName.toString(),
             vRegNo: widget.vRegNumber.toString() == 'null' ? "Data not available" : widget.vRegNumber.toString(),
-            socketToken: socketToken));
+            socketToken: socketToken, driverLicense: widget.driverLicense.toString(),));
         OverlayLoadingProgress.stop();
       }
       return null;
