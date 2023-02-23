@@ -30,14 +30,15 @@ import 'chat_bot/ChatScreen.dart';
 class StartRide extends StatefulWidget {
   const StartRide(
       {Key? key,
-        required this.riderId,
-        required this.socketToken,
-        required this.dName,
-        required this.dMobile,
-        required this.dPhoto,
-        required this.model,
-        required this.vOwnerName,
-        required this.vRegNo, required this.driverLicense})
+      required this.riderId,
+      required this.socketToken,
+      required this.dName,
+      required this.dMobile,
+      required this.dPhoto,
+      required this.model,
+      required this.vOwnerName,
+      required this.vRegNo,
+      required this.driverLicense})
       : super(key: key);
 
   @override
@@ -58,7 +59,7 @@ class _SignUpState extends State<StartRide> {
   late IO.Socket socket;
   late Location location;
   LocationData? currentLocation;
-  double speed=0.0;
+  double speed = 0.0;
   // late double lat;
   // late double lng;
   String id = '';
@@ -69,7 +70,7 @@ class _SignUpState extends State<StartRide> {
   bool visibility = false;
 
   List mySelection = [];
- // List<SosReasonModel> reasonmodel = [] ;
+  // List<SosReasonModel> reasonmodel = [] ;
   var myreason;
 
   late double destinationMarkerLat = 0.0;
@@ -78,7 +79,7 @@ class _SignUpState extends State<StartRide> {
   BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
   static const LatLng destinationLocation =
-  LatLng(19.067949048869405, 73.0039520555996);
+      LatLng(19.067949048869405, 73.0039520555996);
   List<LatLng> polylineCoordinates = [];
   List<LatLng> live_polylineCoordinates = [];
   static const CameraPosition _cameraPosition = CameraPosition(
@@ -95,7 +96,6 @@ class _SignUpState extends State<StartRide> {
 
   @override
   void initState() {
-
     super.initState();
     getSosReason();
     _initUser();
@@ -105,9 +105,10 @@ class _SignUpState extends State<StartRide> {
     OverlayLoadingProgress;
     ToastMessage.toast(widget.riderId);
   }
+
   Future getLocation() async {
     bool? _serviceEnabled;
-    Location location =  Location();
+    Location location = Location();
     var _permissionGranted = await location.hasPermission();
     _serviceEnabled = await location.serviceEnabled();
     if (_permissionGranted != PermissionStatus.granted || !_serviceEnabled) {
@@ -130,13 +131,13 @@ class _SignUpState extends State<StartRide> {
 
   void setCustomMarkerIcon() {
     BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, 'assets/driver_map_min.png')
+            ImageConfiguration.empty, 'assets/driver_map_min.png')
         .then((icon) {
       sourceIcon = icon;
     });
 
     BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, 'assets/to_map_pin.png')
+            ImageConfiguration.empty, 'assets/to_map_pin.png')
         .then((icon) {
       destinationIcon = icon;
     });
@@ -151,19 +152,31 @@ class _SignUpState extends State<StartRide> {
         title: 'Nirbhaya app is running');
     location.onLocationChanged.listen((LocationData cLoc) async {
       currentLocation = cLoc;
-      speed=cLoc.speed!;
+      speed = cLoc.speed!;
       //setState(() {});
-      print('LatLng${currentLocation!.longitude!}');
-      //print('Satellite${cLoc.satelliteNumber}');
-      print('latiiii$destinationMarkerLat');
-      setState(() {
-      });
+      if (cLoc.speed.toString().length > 5) {
+        stopAlertTimer();
+      }
+      print('altitude${cLoc.satelliteNumber}');
+      print('speed${cLoc.speed}');
+      print('speedAccuracy${cLoc.speedAccuracy}');
+      print('elapsedRealtimeNanos${cLoc.elapsedRealtimeNanos}');
+      print(
+          'elapsedRealtimeUncertaintyNanos${cLoc.elapsedRealtimeUncertaintyNanos}');
+      print('accuracy${cLoc.accuracy}');
+      print('heading${cLoc.heading}');
+      print('headingAccuracy${cLoc.headingAccuracy}');
+      print('provider${cLoc.provider}');
+      print('satelliteNumber${cLoc.satelliteNumber}');
+      print('verticalAccuracy${cLoc.verticalAccuracy}');
+      setState(() {});
       final GoogleMapController controller = await _completer.future;
       if (destinationMarkerLat == 0.0) {
-        live_polylineCoordinates.add(LatLng(currentLocation!.latitude!, currentLocation!.longitude!));
+        live_polylineCoordinates.add(
+            LatLng(currentLocation!.latitude!, currentLocation!.longitude!));
         controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
             target: LatLng(cLoc.latitude!, cLoc.longitude!), zoom: 19)));
-      }else{
+      } else {
         controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
             target: LatLng(cLoc.latitude!, cLoc.longitude!), zoom: 11)));
       }
@@ -176,28 +189,32 @@ class _SignUpState extends State<StartRide> {
           'lat': currentLocation!.latitude!,
           'lng': currentLocation!.longitude!,
           'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
-           //'status':"Ok/sos/resolved/responded/escalated",
+          //'status':"Ok/sos/resolved/responded/escalated",
 
-           'status':Sos_status.toString(),
-           'sub_status':reason.toString(),
-           'vehicle_type':widget.model.toString(),
-           'gender':gender.toString(),
-           'driver_license':widget.driverLicense.toString(),
-           'vehicle_no':widget.vRegNo.toString(),
-           'altitude':currentLocation!.altitude.toString(),
-           'speed':currentLocation!.speed.toString(),
-           'speedAccuracy':currentLocation!.speedAccuracy.toString(),
-           'elapsedRealtimeNanos':currentLocation!.elapsedRealtimeNanos.toString(),
-           'elapsedRealtimeUncertaintyNanos':currentLocation!.elapsedRealtimeUncertaintyNanos.toString(),
-           'accuracy':currentLocation!.accuracy.toString(),
-           'heading':currentLocation!.heading.toString(),
-           'headingAccuracy':currentLocation!.headingAccuracy.toString(),
-           'provider':currentLocation!.provider.toString(),
-           'satelliteNumber':currentLocation!.satelliteNumber.toString(), //satellite no 0 check it
-           'verticalAccuracy':currentLocation!.verticalAccuracy.toString(),
-           'h_dop':currentLocation!.accuracy!/5,
-           'v_dop':currentLocation!.accuracy!/currentLocation!.verticalAccuracy!,
-           'time':currentLocation!.time.toString()
+          'status': Sos_status.toString(),
+          'sub_status': reason.toString(),
+          'vehicle_type': widget.model.toString(),
+          'gender': gender.toString(),
+          'driver_license': widget.driverLicense.toString(),
+          'vehicle_no': widget.vRegNo.toString(),
+          'altitude': currentLocation!.altitude,
+          'speed': currentLocation!.speed.toString(),
+          'speedAccuracy': currentLocation!.speedAccuracy.toString(),
+          'elapsedRealtimeNanos':
+              currentLocation!.elapsedRealtimeNanos.toString(),
+          'elapsedRealtimeUncertaintyNanos':
+              currentLocation!.elapsedRealtimeUncertaintyNanos.toString(),
+          'accuracy': currentLocation!.accuracy.toString(),
+          'heading': currentLocation!.heading.toString(),
+          'headingAccuracy': currentLocation!.headingAccuracy.toString(),
+          'provider': currentLocation!.provider.toString(),
+          'satelliteNumber': currentLocation!.satelliteNumber
+              .toString(), //satellite no 0 check it
+          'verticalAccuracy': currentLocation!.verticalAccuracy.toString(),
+          'h_dop': currentLocation!.accuracy! / 5,
+          'v_dop':
+              currentLocation!.accuracy! / currentLocation!.verticalAccuracy!,
+          'time': currentLocation!.time.toString()
         },
         "roomName": widget.riderId,
       });
@@ -212,7 +229,7 @@ class _SignUpState extends State<StartRide> {
 
   final TextEditingController destinationController = TextEditingController();
   final TextEditingController fieldTextEditingController =
-  TextEditingController();
+      TextEditingController();
   final ScrollController scrollController = ScrollController();
   List<Result> locationData = [];
   String searchString = "";
@@ -226,10 +243,10 @@ class _SignUpState extends State<StartRide> {
     return WillPopScope(
       onWillPop: () =>
           showExitPopup(context, "Do you want to stop ride?", () async {
-            OverlayLoadingProgress.start(context);
-            Navigator.pop(context, true);
-            await endRide();
-          }),
+        OverlayLoadingProgress.start(context);
+        Navigator.pop(context, true);
+        await endRide();
+      }),
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -250,14 +267,12 @@ class _SignUpState extends State<StartRide> {
             icon: Image.asset('assets/map_back.png'),
           ),
           actions: <Widget>[
-
             IconButton(
                 icon: const Icon(Icons.chat),
                 color: CustomColor.black,
                 onPressed: () {
                   Get.to(const ChatScreen());
                 }),
-
             IconButton(
                 icon: const Icon(
                   Icons.share,
@@ -271,11 +286,11 @@ class _SignUpState extends State<StartRide> {
         body: Stack(children: [
           LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
-                return SizedBox(
-                    height: constraints.maxHeight / 1.2,
-                    child: currentLocation==null
-                  ?const Center(child: Text("Loading Map...")):
-                    GoogleMap(
+            return SizedBox(
+              height: constraints.maxHeight / 1.2,
+              child: currentLocation == null
+                  ? const Center(child: Text("Loading Map..."))
+                  : GoogleMap(
                       initialCameraPosition: _cameraPosition,
                       mapType: MapType.normal,
                       myLocationEnabled: true,
@@ -309,16 +324,16 @@ class _SignUpState extends State<StartRide> {
                         ),
                         Marker(
                           markerId: const MarkerId("destination"),
-                          position:
-                          LatLng(destinationMarkerLat, destinationMarkerLng),
+                          position: LatLng(
+                              destinationMarkerLat, destinationMarkerLng),
                           icon: destinationIcon,
                         )
                       },
 
                       // markers: Set<Marker>.of(_markers.values),
                     ),
-                );
-              }),
+            );
+          }),
           DraggableScrollableSheet(
               initialChildSize: 0.25,
               minChildSize: 0.10,
@@ -361,7 +376,7 @@ class _SignUpState extends State<StartRide> {
                                             ),
                                             Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                                  MainAxisAlignment.center,
                                               children: <Widget>[
                                                 Container(
                                                   width: 30,
@@ -369,10 +384,10 @@ class _SignUpState extends State<StartRide> {
                                                   decoration: BoxDecoration(
                                                       color: Colors.grey[300],
                                                       borderRadius:
-                                                      const BorderRadius
-                                                          .all(
-                                                          Radius.circular(
-                                                              12.0))),
+                                                          const BorderRadius
+                                                                  .all(
+                                                              Radius.circular(
+                                                                  12.0))),
                                                 ),
                                               ],
                                             ),
@@ -381,13 +396,13 @@ class _SignUpState extends State<StartRide> {
                                             ),
                                             Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                                  MainAxisAlignment.spaceEvenly,
                                               children: const <Widget>[
                                                 Text(
                                                   "Select a location",
                                                   style: TextStyle(
                                                     fontWeight:
-                                                    FontWeight.normal,
+                                                        FontWeight.normal,
                                                     fontSize: 20.0,
                                                   ),
                                                 ),
@@ -401,22 +416,22 @@ class _SignUpState extends State<StartRide> {
                                                 child: Autocomplete<Result>(
                                                     optionsBuilder:
                                                         (TextEditingValue
-                                                    textEditingValue) {
+                                                            textEditingValue) {
                                                       return getSuggestions(
                                                           textEditingValue);
                                                     },
                                                     displayStringForOption:
                                                         (Result option) =>
-                                                        option.text
-                                                            .toString(),
+                                                            option.text
+                                                                .toString(),
                                                     fieldViewBuilder: (BuildContext
-                                                    context,
+                                                            context,
                                                         TextEditingController
-                                                        fieldTextEditingController,
+                                                            fieldTextEditingController,
                                                         FocusNode
-                                                        fieldFocusNode,
+                                                            fieldFocusNode,
                                                         VoidCallback
-                                                        onFieldSubmitted) {
+                                                            onFieldSubmitted) {
                                                       return Card(
                                                         child: ListTile(
                                                           //leading: Icon(Icons.search),
@@ -428,26 +443,26 @@ class _SignUpState extends State<StartRide> {
                                                               });
                                                             },
                                                             controller:
-                                                            fieldTextEditingController,
+                                                                fieldTextEditingController,
                                                             focusNode:
-                                                            fieldFocusNode,
+                                                                fieldFocusNode,
                                                             decoration:
-                                                            InputDecoration(
-                                                                hintText:
-                                                                "Search",
-                                                                border:
-                                                                InputBorder
-                                                                    .none,
-                                                                prefixIcon:
-                                                                IconButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      // searchMemberApi(mobileController.text,widget.userId);
-                                                                    },
-                                                                    icon:
-                                                                    Icon(
-                                                                      Icons.search,
-                                                                    ))),
+                                                                InputDecoration(
+                                                                    hintText:
+                                                                        "Search",
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    prefixIcon:
+                                                                        IconButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              // searchMemberApi(mobileController.text,widget.userId);
+                                                                            },
+                                                                            icon:
+                                                                                Icon(
+                                                                              Icons.search,
+                                                                            ))),
                                                           ),
                                                           trailing: IconButton(
                                                               onPressed: () {
@@ -464,20 +479,20 @@ class _SignUpState extends State<StartRide> {
                                                       print(
                                                           'Selected: ${selection.text}');
                                                       fieldTextEditingController
-                                                          .text =
+                                                              .text =
                                                           selection.text
                                                               .toString();
                                                     },
                                                     optionsViewBuilder:
                                                         (BuildContext context,
-                                                        AutocompleteOnSelected<
-                                                            Result>
-                                                        onSelected,
-                                                        Iterable<Result>
-                                                        options) {
+                                                            AutocompleteOnSelected<
+                                                                    Result>
+                                                                onSelected,
+                                                            Iterable<Result>
+                                                                options) {
                                                       return Align(
                                                         alignment:
-                                                        Alignment.topLeft,
+                                                            Alignment.topLeft,
                                                         child: Material(
                                                           child: Container(
                                                             width: 365,
@@ -485,19 +500,19 @@ class _SignUpState extends State<StartRide> {
                                                             child: ListView
                                                                 .builder(
                                                               padding:
-                                                              EdgeInsets
-                                                                  .all(
-                                                                  10.0),
+                                                                  EdgeInsets
+                                                                      .all(
+                                                                          10.0),
                                                               itemCount: options
                                                                   .length,
                                                               itemBuilder:
                                                                   (BuildContext
-                                                              context,
-                                                                  int index) {
+                                                                          context,
+                                                                      int index) {
                                                                 final Result
-                                                                option =
-                                                                options.elementAt(
-                                                                    index);
+                                                                    option =
+                                                                    options.elementAt(
+                                                                        index);
 
                                                                 return GestureDetector(
                                                                   onTap:
@@ -505,13 +520,13 @@ class _SignUpState extends State<StartRide> {
                                                                     onSelected(
                                                                         option);
                                                                     destinationController
-                                                                        .text =
+                                                                            .text =
                                                                         option
                                                                             .text
                                                                             .toString();
                                                                     OverlayLoadingProgress
                                                                         .start(
-                                                                        context);
+                                                                            context);
                                                                     await getDestination(
                                                                         option
                                                                             .placeId);
@@ -521,15 +536,15 @@ class _SignUpState extends State<StartRide> {
                                                                   },
                                                                   child: Card(
                                                                     elevation:
-                                                                    1,
+                                                                        1,
                                                                     margin: EdgeInsets
                                                                         .symmetric(
-                                                                        vertical:
-                                                                        2),
+                                                                            vertical:
+                                                                                2),
                                                                     child:
-                                                                    ListTile(
+                                                                        ListTile(
                                                                       leading:
-                                                                      Icon(
+                                                                          Icon(
                                                                         Icons
                                                                             .location_on_rounded,
                                                                         color: Colors
@@ -540,7 +555,7 @@ class _SignUpState extends State<StartRide> {
                                                                               .text
                                                                               .toString(),
                                                                           style:
-                                                                          const TextStyle(color: Colors.black)),
+                                                                              const TextStyle(color: Colors.black)),
                                                                     ),
                                                                   ),
                                                                 );
@@ -569,11 +584,11 @@ class _SignUpState extends State<StartRide> {
                                     onTap: () {
                                       showExitPopup(
                                           context, "Do you want to stop ride?",
-                                              () async {
-                                            OverlayLoadingProgress.start(context);
-                                            Navigator.pop(context, true);
-                                            await endRide();
-                                          });
+                                          () async {
+                                        OverlayLoadingProgress.start(context);
+                                        Navigator.pop(context, true);
+                                        await endRide();
+                                      });
                                       //showAlertDialog(context);
                                     },
                                     child: Column(
@@ -626,7 +641,8 @@ class _SignUpState extends State<StartRide> {
                                 children: [
                                   Container(
                                     decoration: const BoxDecoration(
-                                        shape: BoxShape.circle, color: CustomColor.yellow),
+                                        shape: BoxShape.circle,
+                                        color: CustomColor.yellow),
                                     child: Center(
                                       child: IconButton(
                                         icon: const Icon(
@@ -654,94 +670,140 @@ class _SignUpState extends State<StartRide> {
                                       showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
-                                            return StatefulBuilder(
-                                                builder: (BuildContext context, StateSetter setState) {
-                                                  return AlertDialog(
-                                                    content: Container(
-                                                      height: 190,
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          Text("Are you in trouble? Please select your reason : "),
-                                                          SizedBox(height: 15),
+                                            return StatefulBuilder(builder:
+                                                (BuildContext context,
+                                                    StateSetter setState) {
+                                              return AlertDialog(
+                                                content: Container(
+                                                  height: 190,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                          "Are you in trouble? Please select your reason : "),
+                                                      SizedBox(height: 15),
+                                                      Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: <Widget>[
+                                                          SizedBox(
+                                                            height: 65,
+                                                            child: Card(
+                                                              color:
+                                                                  Colors.white,
+                                                              shape: UnderlineInputBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                  borderSide:
+                                                                      BorderSide(
+                                                                          color:
+                                                                              Colors.yellow)),
+                                                              child: Padding(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            15),
+                                                                child:
+                                                                    DropdownButton(
+                                                                  underline:
+                                                                      Container(),
+                                                                  // hint: Text("Select State"),
+                                                                  icon: Icon(Icons
+                                                                      .keyboard_arrow_down),
+                                                                  isDense: true,
+                                                                  isExpanded:
+                                                                      true,
 
-                                                          Column(
-
-                                                            mainAxisAlignment: MainAxisAlignment.center,
-                                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                                            children: <Widget>[
-
-                                                              SizedBox(
-                                                                height: 65,
-                                                                child: Card(
-                                                                  color: Colors.white,
-                                                                  shape: UnderlineInputBorder(
-                                                                      borderRadius: BorderRadius.circular(10),
-                                                                      borderSide:
-                                                                      BorderSide(color: Colors.yellow)),
-                                                                  child: Padding(
-                                                                    padding: EdgeInsets.all(15),
-                                                                    child: DropdownButton(
-                                                                      underline: Container(),
-                                                                      // hint: Text("Select State"),
-                                                                      icon: Icon(Icons.keyboard_arrow_down),
-                                                                      isDense: true,
-                                                                      isExpanded: true,
-
-                                                                      items: selectedReason.map((e) {
-                                                                        return DropdownMenuItem(
-                                                                          value: e["_id"].toString(),
-                                                                          child: Text(e['name'].toString()),
-                                                                        );
-                                                                      }).toList(),
-                                                                      value: reason,
-                                                                      onChanged: (value) {
-                                                                        setState(() {
-                                                                          Sos_status="SOS";
-                                                                          reason = value;
-                                                                          isSelected = true;
-
-                                                                        });
-                                                                      },
-                                                                    ),
-                                                                  ),
+                                                                  items: selectedReason
+                                                                      .map((e) {
+                                                                    return DropdownMenuItem(
+                                                                      value: e[
+                                                                              "_id"]
+                                                                          .toString(),
+                                                                      child: Text(
+                                                                          e['name']
+                                                                              .toString()),
+                                                                    );
+                                                                  }).toList(),
+                                                                  value: reason,
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    setState(
+                                                                        () {
+                                                                      Sos_status =
+                                                                          "SOS";
+                                                                      reason =
+                                                                          value;
+                                                                      isSelected =
+                                                                          true;
+                                                                    });
+                                                                  },
                                                                 ),
                                                               ),
-                                                            ],
+                                                            ),
                                                           ),
-                                                          SizedBox(height: 20,),
-                                                          Row(
-                                                            children: [
-                                                              Expanded(
-                                                                child: ElevatedButton(onPressed: () {
-                                                                  OverlayLoadingProgress.start(context);
-                                                                  SOSNotification();
-                                                                },
-                                                                  child: Text("Yes"),
-                                                                  style: ElevatedButton.styleFrom(
-                                                                      primary: CustomColor.yellow),
-                                                                ),
-                                                              ),
-                                                              SizedBox(width: 15),
-                                                              Expanded(
-                                                                  child: ElevatedButton(
-                                                                    onPressed: () {
-                                                                      print('no selected');
-                                                                      Navigator.of(context).pop();
-                                                                    },
-                                                                    child: Text("No", style: TextStyle(color: Colors.black)),
-                                                                    style: ElevatedButton.styleFrom(
-                                                                      primary: Colors.white,
-                                                                    ),
-                                                                  ))
-                                                            ],
-                                                          )
                                                         ],
                                                       ),
-                                                    ),
-                                                  );
-                                                }
-                                            );
+                                                      SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child:
+                                                                ElevatedButton(
+                                                              onPressed: () {
+                                                                OverlayLoadingProgress
+                                                                    .start(
+                                                                        context);
+                                                                SOSNotification();
+                                                              },
+                                                              child:
+                                                                  Text("Yes"),
+                                                              style: ElevatedButton
+                                                                  .styleFrom(
+                                                                      primary:
+                                                                          CustomColor
+                                                                              .yellow),
+                                                            ),
+                                                          ),
+                                                          SizedBox(width: 15),
+                                                          Expanded(
+                                                              child:
+                                                                  ElevatedButton(
+                                                            onPressed: () {
+                                                              print(
+                                                                  'no selected');
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                            child: Text("No",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black)),
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              primary:
+                                                                  Colors.white,
+                                                            ),
+                                                          ))
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            });
                                           });
                                       //showExitPopup(
                                       //context, "Are you in trouble?", "Reason" , () {
@@ -758,8 +820,6 @@ class _SignUpState extends State<StartRide> {
                                   ),
                                 ],
                               ),
-
-
                             ],
                           ),
                         ],
@@ -768,12 +828,7 @@ class _SignUpState extends State<StartRide> {
                   ),
                 );
               }),
-
-          roundTextWidget(textValue:
-          speed.toStringAsFixed(1)
-
-          )
-
+          roundTextWidget(textValue: speed.toStringAsFixed(1))
         ]),
       ),
     );
@@ -784,14 +839,28 @@ class _SignUpState extends State<StartRide> {
         context: context,
         builder: (BuildContext context) {
           return DrawerInfo(
-            dInfoImage: widget.dPhoto.toString() =="null" ? " " : widget.dPhoto.toString(),
-            dInfoName: widget.dName.toString() =="null" ? " " : widget.dName.toString(),
-            dInfoMobile: widget.dMobile.toString() =="null" ? " " : widget.dMobile.toString() ,
+            dInfoImage: widget.dPhoto.toString() == "null"
+                ? " "
+                : widget.dPhoto.toString(),
+            dInfoName: widget.dName.toString() == "null"
+                ? " "
+                : widget.dName.toString(),
+            dInfoMobile: widget.dMobile.toString() == "null"
+                ? " "
+                : widget.dMobile.toString(),
             vInfoImage: 'assets/car.png',
-            vInfoModel: widget.model.toString() =="null" ? " " : widget.model.toString(),
-            vInfoOwnerName: widget.vOwnerName.toString() =="null" ? " " :  widget.vOwnerName.toString(),
-            vInfoRegNo: widget.vRegNo.toString() =="null" ? " " : widget.vRegNo.toString(),
-            dInfoLicense: widget.vRegNo.toString() =="null" ? " " : widget.vRegNo.toString(),
+            vInfoModel: widget.model.toString() == "null"
+                ? " "
+                : widget.model.toString(),
+            vInfoOwnerName: widget.vOwnerName.toString() == "null"
+                ? " "
+                : widget.vOwnerName.toString(),
+            vInfoRegNo: widget.vRegNo.toString() == "null"
+                ? " "
+                : widget.vRegNo.toString(),
+            dInfoLicense: widget.vRegNo.toString() == "null"
+                ? " "
+                : widget.vRegNo.toString(),
             press: () {
               Navigator.of(context).pop();
             },
@@ -876,7 +945,7 @@ class _SignUpState extends State<StartRide> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: json.encode({
-          'reason' : reason.toString(),
+          'reason': reason.toString(),
           'user_id': userId.toString(),
           'ride_id': widget.riderId,
           "lat": currentLocation!.latitude.toString(),
@@ -884,7 +953,7 @@ class _SignUpState extends State<StartRide> {
           "timestamp": DateTime.now().millisecondsSinceEpoch.toString()
         }));
     print(json.encode({
-      'reason' : reason.toString(),
+      'reason': reason ?? "Ok",
       'user_id': userId.toString(),
       'ride_id': widget.riderId,
       "lat": currentLocation!.latitude.toString(),
@@ -918,8 +987,8 @@ class _SignUpState extends State<StartRide> {
     RenderBox box = context.findRenderObject() as RenderBox;
     Share.share(
         "Hi! Nirbhaya...Welcome to the new way to easily share your real-time location with your friends, family, co-workers, customers, suppliers, and more.\n\n"
-            "Driver Name: $dName, Driver Mobile Number : $dMobile, Model : $model, Owner Name: $ownlerName, Registration Number: $regNo, "
-            "Hey check out my app at: https://play.google.com/store/apps/details?id=com.rider_safe_travel.ride_safe_travel",
+        "Driver Name: $dName, Driver Mobile Number : $dMobile, Model : $model, Owner Name: $ownlerName, Registration Number: $regNo, "
+        "Hey check out my app at: https://play.google.com/store/apps/details?id=com.rider_safe_travel.ride_safe_travel",
         subject: "Description",
         sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
   }
@@ -936,8 +1005,8 @@ class _SignUpState extends State<StartRide> {
             <String, String>{"search": textEditingValue.text.toString()}),
       );
       print('getSuggestions:${jsonEncode(<String, String>{
-        "search": textEditingValue.text.toString()
-      })}');
+            "search": textEditingValue.text.toString()
+          })}');
       if (response.statusCode == 200) {
         OverlayLoadingProgress.stop();
         print("getData" + response.body);
@@ -965,8 +1034,8 @@ class _SignUpState extends State<StartRide> {
       body: jsonEncode(<String, String>{"PlaceId": placeId.toString()}),
     );
     print('getDestination:${jsonEncode(<String, String>{
-      "PlaceId": placeId.toString()
-    })}');
+          "PlaceId": placeId.toString()
+        })}');
 
     if (response.statusCode == 200) {
       OverlayLoadingProgress.stop();
@@ -975,7 +1044,7 @@ class _SignUpState extends State<StartRide> {
       double destinationLng = jsonDecode(response.body)['result'][0]['lng'];
       destinationMarkerLat = destinationLat;
       destinationMarkerLng = destinationLng;
-      String wayPoints="$destinationLat,$destinationLng";
+      String wayPoints = "$destinationLat,$destinationLng";
       print('wayPoints $wayPoints');
       polylineCoordinates.clear();
       PolylinePoints polylinePoints = PolylinePoints();
@@ -984,18 +1053,16 @@ class _SignUpState extends State<StartRide> {
         travelMode: TravelMode.driving,
         PointLatLng(currentLocation!.latitude!, currentLocation!.longitude!),
         PointLatLng(destinationLat, destinationLng),
-        wayPoints: [PolylineWayPoint(location: wayPoints,stopOver: false)],
-
-
+        wayPoints: [PolylineWayPoint(location: wayPoints, stopOver: false)],
       );
       if (result.points.isNotEmpty) {
         result.points.forEach(
-              (PointLatLng point) =>
+          (PointLatLng point) =>
               polylineCoordinates.add(LatLng(point.latitude, point.longitude)),
         );
         setState(() {});
       }
-     //await getDistance(currentLocation!.latitude!,currentLocation!.longitude!,destinationMarkerLat,destinationMarkerLng);
+      //await getDistance(currentLocation!.latitude!,currentLocation!.longitude!,destinationMarkerLat,destinationMarkerLng);
       Navigator.pop(context);
       var locationDetails = jsonDecode(response.body)['result']
           .map<Result>((data) => Result.fromJson(data))
@@ -1005,18 +1072,21 @@ class _SignUpState extends State<StartRide> {
       throw Exception('Failed to load');
     }
   }
-   Future<dynamic> getDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) async {
-    String Url = 'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${startLatitude},${startLongitude}&origins=${endLatitude},${endLongitude}&key=AIzaSyBu3-_hcaqdnAYTFEMIKbyNtoOJWPBaKmc';
+
+  Future<dynamic> getDistance(double startLatitude, double startLongitude,
+      double endLatitude, double endLongitude) async {
+    String Url =
+        'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${startLatitude},${startLongitude}&origins=${endLatitude},${endLongitude}&key=AIzaSyBu3-_hcaqdnAYTFEMIKbyNtoOJWPBaKmc';
     try {
       var response = await http.get(
-        Uri.parse(Url),);
+        Uri.parse(Url),
+      );
       if (response.statusCode == 200) {
         print('distance: $response');
         return jsonDecode(response.body);
       } else
         return null;
-    }
-    catch (e) {
+    } catch (e) {
       print(e);
       return null;
     }
@@ -1024,7 +1094,8 @@ class _SignUpState extends State<StartRide> {
 
   Future<SosReasonModel> getSosReason() async {
     final response = await http.post(
-      Uri.parse("https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/sosReasonMaster"),
+      Uri.parse(
+          "https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/sosReasonMaster"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -1050,6 +1121,46 @@ class _SignUpState extends State<StartRide> {
     }
   }
 
+  void stopAlertTimer() {
+    Timer(const Duration(minutes: 2), () {
+      stopAlert();
+    });
+  }
 
+  Future<void> stopAlert() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Alert'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Dou you want to stop?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+            ),
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.pop(context, true);
+                showExitPopup(context, "Do you want to stop ride?", () async {
+                  OverlayLoadingProgress.start(context);
+                  await endRide();
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
-
