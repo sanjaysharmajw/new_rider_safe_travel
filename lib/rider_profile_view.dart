@@ -175,9 +175,9 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                   });
                                   return value;
                                 });
-
                                 },
                               assetsPath: profileImage,
+                            progressIndicator: snapshot.data![index].profile_percentage!, progressValue: snapshot.data![index].profile_percentage.toString(),
 
                           ),
                           // const Padding(
