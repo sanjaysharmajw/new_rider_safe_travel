@@ -502,6 +502,7 @@ class _RiderMapState extends State<RiderMap> {
         var lat = jsonDecode(data)['lat'];
         var lng = jsonDecode(data)['lng'];
         getSpeed = jsonDecode(data)['speed'];
+        var sosStatus = jsonDecode(data)['status'];
         print('Received lat: $lat + $lng');
         print('Speed: $getSpeed');
 
@@ -557,4 +558,5 @@ class _RiderMapState extends State<RiderMap> {
       },
     );
   }
+
 }
