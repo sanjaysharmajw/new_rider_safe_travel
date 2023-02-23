@@ -62,6 +62,7 @@ class _SignUpState extends State<StartRide> {
   double speed = 0.0;
   // late double lat;
   // late double lng;
+  late Timer timers;
   String id = '';
   var userId = '';
   var gender = '';
@@ -154,9 +155,9 @@ class _SignUpState extends State<StartRide> {
       currentLocation = cLoc;
       speed = cLoc.speed!;
       //setState(() {});
-      if (cLoc.speed.toString().length > 5) {
-        stopAlertTimer();
-      }
+     // if (cLoc.speed.toString().length > 5) {
+        //stopAlertTimer();
+    //  }
       print('altitude${cLoc.satelliteNumber}');
       print('speed${cLoc.speed}');
       print('speedAccuracy${cLoc.speedAccuracy}');
@@ -667,144 +668,7 @@ class _SignUpState extends State<StartRide> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return StatefulBuilder(builder:
-                                                (BuildContext context,
-                                                    StateSetter setState) {
-                                              return AlertDialog(
-                                                content: Container(
-                                                  height: 190,
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                          "Are you in trouble? Please select your reason : "),
-                                                      SizedBox(height: 15),
-                                                      Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: <Widget>[
-                                                          SizedBox(
-                                                            height: 65,
-                                                            child: Card(
-                                                              color:
-                                                                  Colors.white,
-                                                              shape: UnderlineInputBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              10),
-                                                                  borderSide:
-                                                                      BorderSide(
-                                                                          color:
-                                                                              Colors.yellow)),
-                                                              child: Padding(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .all(
-                                                                            15),
-                                                                child:
-                                                                    DropdownButton(
-                                                                  underline:
-                                                                      Container(),
-                                                                  // hint: Text("Select State"),
-                                                                  icon: Icon(Icons
-                                                                      .keyboard_arrow_down),
-                                                                  isDense: true,
-                                                                  isExpanded:
-                                                                      true,
-
-                                                                  items: selectedReason
-                                                                      .map((e) {
-                                                                    return DropdownMenuItem(
-                                                                      value: e[
-                                                                              "_id"]
-                                                                          .toString(),
-                                                                      child: Text(
-                                                                          e['name']
-                                                                              .toString()),
-                                                                    );
-                                                                  }).toList(),
-                                                                  value: reason,
-                                                                  onChanged:
-                                                                      (value) {
-                                                                    setState(
-                                                                        () {
-                                                                      Sos_status =
-                                                                          "SOS";
-                                                                      reason =
-                                                                          value;
-                                                                      isSelected =
-                                                                          true;
-                                                                    });
-                                                                  },
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height: 20,
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Expanded(
-                                                            child:
-                                                                ElevatedButton(
-                                                              onPressed: () {
-                                                                OverlayLoadingProgress
-                                                                    .start(
-                                                                        context);
-                                                                SOSNotification();
-                                                              },
-                                                              child:
-                                                                  Text("Yes"),
-                                                              style: ElevatedButton
-                                                                  .styleFrom(
-                                                                      primary:
-                                                                          CustomColor
-                                                                              .yellow),
-                                                            ),
-                                                          ),
-                                                          SizedBox(width: 15),
-                                                          Expanded(
-                                                              child:
-                                                                  ElevatedButton(
-                                                            onPressed: () {
-                                                              print(
-                                                                  'no selected');
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
-                                                            },
-                                                            child: Text("No",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black)),
-                                                            style:
-                                                                ElevatedButton
-                                                                    .styleFrom(
-                                                              primary:
-                                                                  Colors.white,
-                                                            ),
-                                                          ))
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            });
-                                          });
+                                      sos();
                                       //showExitPopup(
                                       //context, "Are you in trouble?", "Reason" , () {
                                       //OverlayLoadingProgress.start(context);
@@ -968,6 +832,10 @@ class _SignUpState extends State<StartRide> {
         OverlayLoadingProgress.stop();
         ToastMessage.toast(msg.toString());
         Navigator.of(context).pop();
+        setState(() {
+          sosStatus();
+        });
+
       } else {
         OverlayLoadingProgress.stop();
         ToastMessage.toast(msg.toString());
@@ -1122,8 +990,20 @@ class _SignUpState extends State<StartRide> {
   }
 
   void stopAlertTimer() {
-    Timer(const Duration(minutes: 2), () {
+    Timer(const Duration(seconds: 2), () {
       stopAlert();
+    });
+  }
+
+  void sosStatus() {
+    Timer.periodic(const Duration(seconds: 5), (timers) {
+      if(Sos_status=="Yes") {
+        setState(() {
+          timers.cancel();
+        });
+      }else{
+        sosHelpAlert();
+      }
     });
   }
 
@@ -1137,7 +1017,7 @@ class _SignUpState extends State<StartRide> {
           content: SingleChildScrollView(
             child: ListBody(
               children: const <Widget>[
-                Text('Dou you want to stop?'),
+                Text('Do you want to stop?'),
               ],
             ),
           ),
@@ -1149,12 +1029,195 @@ class _SignUpState extends State<StartRide> {
               },
             ),
             TextButton(
-              child: const Text('Ok'),
+              child: const Text('End Rider'),
+              onPressed: () {
+                showExitPopup(context, "Do you want to stop ride?", () async {
+                   OverlayLoadingProgress.start(context);
+                  //Navigator.pop(context, true);
+                  await endRide();
+                });
+              },
+            ),
+            TextButton(
+              child: const Text('SOS'),
+              onPressed: () {
+                sos();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void sos(){
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder:
+              (BuildContext context,
+              StateSetter setState) {
+            return AlertDialog(
+              content: Container(
+                height: 190,
+                child: Column(
+                  crossAxisAlignment:
+                  CrossAxisAlignment
+                      .start,
+                  children: [
+                    Text(
+                        "Are you in trouble? Please select your reason : "),
+                    SizedBox(height: 15),
+                    Column(
+                      mainAxisAlignment:
+                      MainAxisAlignment
+                          .center,
+                      crossAxisAlignment:
+                      CrossAxisAlignment
+                          .center,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 65,
+                          child: Card(
+                            color:
+                            Colors.white,
+                            shape: UnderlineInputBorder(
+                                borderRadius:
+                                BorderRadius
+                                    .circular(
+                                    10),
+                                borderSide:
+                                BorderSide(
+                                    color:
+                                    Colors.yellow)),
+                            child: Padding(
+                              padding:
+                              EdgeInsets
+                                  .all(
+                                  15),
+                              child:
+                              DropdownButton(
+                                underline:
+                                Container(),
+                                // hint: Text("Select State"),
+                                icon: Icon(Icons
+                                    .keyboard_arrow_down),
+                                isDense: true,
+                                isExpanded:
+                                true,
+
+                                items: selectedReason
+                                    .map((e) {
+                                  return DropdownMenuItem(
+                                    value: e[
+                                    "_id"]
+                                        .toString(),
+                                    child: Text(
+                                        e['name']
+                                            .toString()),
+                                  );
+                                }).toList(),
+                                value: reason,
+                                onChanged:
+                                    (value) {
+                                  setState(
+                                          () {
+                                        Sos_status =
+                                        "SOS";
+                                        reason =
+                                            value;
+                                        isSelected =
+                                        true;
+                                      });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child:
+                          ElevatedButton(
+                            onPressed: () {
+                              OverlayLoadingProgress
+                                  .start(
+                                  context);
+                              SOSNotification();
+                            },
+                            child:
+                            Text("Yes"),
+                            style: ElevatedButton
+                                .styleFrom(
+                                primary:
+                                CustomColor
+                                    .yellow),
+                          ),
+                        ),
+                        SizedBox(width: 15),
+                        Expanded(
+                            child:
+                            ElevatedButton(
+                              onPressed: () {
+                                print(
+                                    'no selected');
+                                Navigator.of(
+                                    context)
+                                    .pop();
+                              },
+                              child: Text("No",
+                                  style: TextStyle(
+                                      color: Colors
+                                          .black)),
+                              style:
+                              ElevatedButton
+                                  .styleFrom(
+                                primary:
+                                Colors.white,
+                              ),
+                            ))
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
+          });
+        });
+  }
+  Future<void> sosHelpAlert() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Alert'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Do you received help?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('No'),
               onPressed: () {
                 Navigator.pop(context, true);
-                showExitPopup(context, "Do you want to stop ride?", () async {
-                  OverlayLoadingProgress.start(context);
-                  await endRide();
+                Sos_status="No";
+              },
+            ),
+            TextButton(
+              child: const Text('Yes'),
+              onPressed: () {
+                Navigator.pop(context, true);
+                Sos_status="Yes";
+                setState(() {
+                  timers.cancel();
                 });
               },
             ),
