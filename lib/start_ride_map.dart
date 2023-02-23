@@ -67,6 +67,7 @@ class _SignUpState extends State<StartRide> {
   var userId = '';
   var gender = '';
   var Sos_status = 'Ok';
+  var stopAlertValue = 'No';
   String socketToken = '';
   bool visibility = false;
 
@@ -155,9 +156,9 @@ class _SignUpState extends State<StartRide> {
       currentLocation = cLoc;
       speed = cLoc.speed!;
       //setState(() {});
-     // if (cLoc.speed.toString().length > 5) {
-        //stopAlertTimer();
-    //  }
+     if (cLoc.speed.toString().length > 5) {
+        stopAlertTimer();
+     }
       print('altitude${cLoc.satelliteNumber}');
       print('speed${cLoc.speed}');
       print('speedAccuracy${cLoc.speedAccuracy}');
@@ -792,6 +793,7 @@ class _SignUpState extends State<StartRide> {
         OverlayLoadingProgress.stop();
         ToastMessage.toast(msg);
         socket.disconnect();
+        stopAlertValue="Yes";
         Get.to(const MainPage());
       } else {
         OverlayLoadingProgress.stop();
@@ -832,6 +834,7 @@ class _SignUpState extends State<StartRide> {
         OverlayLoadingProgress.stop();
         ToastMessage.toast(msg.toString());
         Navigator.of(context).pop();
+        stopAlertValue="Yes";
         setState(() {
           sosStatus();
         });
@@ -988,15 +991,26 @@ class _SignUpState extends State<StartRide> {
       throw Exception('Unexpected error occured!');
     }
   }
-
+//stopAlert
   void stopAlertTimer() {
-    Timer(const Duration(seconds: 2), () {
-      stopAlert();
+
+    Timer.periodic(const Duration(minutes: 10), (timers) {
+      if(stopAlertValue=="Yes") {
+        setState(() {
+          timers.cancel();
+        });
+      }else{
+        stopAlert();
+      }
     });
+
+    // Timer(const Duration(minutes: 10), () {
+    //   stopAlert();
+    // });
   }
 
   void sosStatus() {
-    Timer.periodic(const Duration(seconds: 5), (timers) {
+    Timer.periodic(const Duration(minutes: 10), (timers) {
       if(Sos_status=="Yes") {
         setState(() {
           timers.cancel();
