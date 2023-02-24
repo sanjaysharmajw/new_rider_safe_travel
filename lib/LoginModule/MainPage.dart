@@ -127,12 +127,14 @@ class _MainPageState extends State<MainPage> {
     });
   }
 var userId;
+var riderOtp="";
   void sharePre() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
     await getLocation();
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
+    riderOtp = Preferences.getRideOtp();
     setState(() {});
   }
   @override
@@ -429,6 +431,8 @@ var userId;
     );
     if (response.statusCode == 200) {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
+     // var otpRide=jsonDecode(response.body)['data'][0]['ride_start_otp'];
+
       String socketToken = jsonDecode(response.body)['token'];
       if (socketToken !="") {
         OverlayLoadingProgress.stop();
@@ -443,7 +447,7 @@ var userId;
             model: userCheck[0].vehicleModel.toString(),
             vOwnerName: userCheck[0].ownerName.toString(),
             vRegNo: userCheck[0].vehicleRegistrationNumber.toString(),
-            socketToken: socketToken.toString(), driverLicense: userCheck[0].drivingLicenceNumber.toString()));
+            socketToken: socketToken.toString(), driverLicense: userCheck[0].drivingLicenceNumber.toString(), otpRide: riderOtp.toString()));
         var ids=userCheck[0].id.toString();
         print('IDssss: $ids');
         print(userCheck[0].driverName.toString());
@@ -467,6 +471,7 @@ var userId;
       throw Exception('Failed to create.');
     }
   }
+
   Future<http.Response> countNotification() async {
     final response = await http.post(Uri.parse(ApiUrl.countNotification),
         headers: <String, String>{

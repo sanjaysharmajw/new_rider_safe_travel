@@ -25,6 +25,7 @@ import 'BottomSheet/GeocodeResultModel.dart';
 import 'LoginModule/Error.dart';
 import 'Models/sosReasonModel.dart';
 import 'Utils/exit_alert_dialog.dart';
+import 'Utils/rider_otp.dart';
 import 'chat_bot/ChatScreen.dart';
 
 class StartRide extends StatefulWidget {
@@ -38,7 +39,10 @@ class StartRide extends StatefulWidget {
       required this.model,
       required this.vOwnerName,
       required this.vRegNo,
-      required this.driverLicense})
+      required this.driverLicense,
+      required this.otpRide
+
+      })
       : super(key: key);
 
   @override
@@ -52,6 +56,7 @@ class StartRide extends StatefulWidget {
   final String vOwnerName;
   final String vRegNo;
   final String driverLicense;
+  final String otpRide;
 }
 
 class _SignUpState extends State<StartRide> {
@@ -105,7 +110,7 @@ class _SignUpState extends State<StartRide> {
     sharePre();
     setState(() {});
     OverlayLoadingProgress;
-    ToastMessage.toast(widget.riderId);
+    //ToastMessage.toast(widget.riderId);
   }
 
   Future getLocation() async {
@@ -298,9 +303,7 @@ class _SignUpState extends State<StartRide> {
                       myLocationEnabled: true,
                       padding: const EdgeInsets.only(bottom: 60),
                       compassEnabled: true,
-                      zoomControlsEnabled: true,
                       mapToolbarEnabled: true,
-                      zoomGesturesEnabled: true,
                       myLocationButtonEnabled: true,
                       polylines: {
                         Polyline(
@@ -337,7 +340,7 @@ class _SignUpState extends State<StartRide> {
             );
           }),
           DraggableScrollableSheet(
-              initialChildSize: 0.25,
+              initialChildSize: 0.30,
               minChildSize: 0.10,
               maxChildSize: 1,
               snapSizes: [0.5, 1],
@@ -354,6 +357,12 @@ class _SignUpState extends State<StartRide> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
+                          Text('OTP: ${widget.otpRide.toString()}',style: const TextStyle(
+                            fontWeight: FontWeight.w600
+                          )),
+                         const SizedBox(
+                            height: 10,
+                          ),
                           Card(
                             child: ListTile(
                               title: TextFormField(
@@ -693,7 +702,7 @@ class _SignUpState extends State<StartRide> {
                   ),
                 );
               }),
-          roundTextWidget(textValue: speed.toStringAsFixed(1))
+          roundTextWidget(textValue: speed.toStringAsFixed(1)),
         ]),
       ),
     );
@@ -794,6 +803,7 @@ class _SignUpState extends State<StartRide> {
         ToastMessage.toast(msg);
         socket.disconnect();
         stopAlertValue="Yes";
+        Preferences.setRideOtp('');
         Get.to(const MainPage());
       } else {
         OverlayLoadingProgress.stop();

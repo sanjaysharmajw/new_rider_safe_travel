@@ -535,7 +535,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
   }
 
   Future<http.Response?> userFamilyList(
-      String userId, rideId, socketToken) async {
+      String userId, rideId, socketToken, rideOtp) async {
     final response = await http.post(
       Uri.parse('https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userFamilyList'),
       headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8',},
@@ -557,7 +557,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
             model: widget.vModel.toString() == 'null' ? "Data not available" : widget.vModel.toString(),
             vOwnerName: widget.vOwnerName.toString() == 'null' ? "Data not available" : widget.vOwnerName.toString(),
             vRegNo: widget.vRegNumber.toString() == 'null' ? "Data not available" : widget.vRegNumber.toString(),
-            socketToken: socketToken, driverLicense: widget.driverLicense.toString())
+            socketToken: socketToken, driverLicense: widget.driverLicense.toString(),otpRide: rideOtp.toString())
         );
         OverlayLoadingProgress.stop();
         print("Userinformation" + widget.driverId + widget.vehicleId);
@@ -572,7 +572,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
             model: widget.vModel.toString() == 'null' ? "Data not available" : widget.vModel.toString(),
             vOwnerName: widget.vOwnerName.toString() == 'null' ? "Data not available" : widget.vOwnerName.toString(),
             vRegNo: widget.vRegNumber.toString() == 'null' ? "Data not available" : widget.vRegNumber.toString(),
-            socketToken: socketToken, driverLicense: widget.driverLicense.toString(),));
+            socketToken: socketToken, driverLicense: widget.driverLicense.toString(),otpRide: rideOtp.toString()));
         OverlayLoadingProgress.stop();
       }
       return null;
@@ -621,7 +621,9 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
         if (jsonDecode(response.body)['data'] != null) {
           var rideId = jsonDecode(response.body)['data'];
           var socketToken = jsonDecode(response.body)['sockettoken'];
-          await userFamilyList(userId, rideId, socketToken);
+          var rideOtp = jsonDecode(response.body)['ride_start_otp'];
+          Preferences.setRideOtp(rideOtp.toString());
+          await userFamilyList(userId, rideId, socketToken,rideOtp);
         }
       } else if (status == false) {
         // Get.snackbar(response.body, 'Failed');
