@@ -22,6 +22,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'LoginModule/Map/RiderMap.dart';
 import 'Utils/demod.dart';
 import 'Utils/toast.dart';
+import 'Widgets/otp_dialog.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
@@ -199,6 +200,7 @@ class MyHomePageState extends State<MyHomePage> {
       Get.to( RiderLoginPage());
     } else {
       Get.to(const MainPage());
+
     }
   }
 

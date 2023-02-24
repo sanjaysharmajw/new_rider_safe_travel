@@ -28,7 +28,9 @@ class FamilyMemberAddScreen extends StatefulWidget {
       required this.dPhoto,
       required this.model,
       required this.vOwnerName,
-      required this.vRegNo, required this.driverLicense})
+      required this.vRegNo,
+        required this.driverLicense,
+        required this.otpRide})
       : super(key: key);
 
   @override
@@ -46,6 +48,7 @@ class FamilyMemberAddScreen extends StatefulWidget {
   final String vOwnerName;
   final String vRegNo;
   final String driverLicense;
+  final String otpRide;
 }
 
 class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
@@ -194,7 +197,7 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
             model: widget.model.toString(),
             vOwnerName: widget.vOwnerName.toString(),
             vRegNo: widget.vRegNo.toString(),
-            socketToken: widget.socketToken, driverLicense: widget.driverLicense.toString(),));
+            socketToken: widget.socketToken, driverLicense: widget.driverLicense.toString(), otpRide: widget.otpRide.toString()));
         ToastMessage.toast(msg);
       } else {
         OverlayLoadingProgress;
