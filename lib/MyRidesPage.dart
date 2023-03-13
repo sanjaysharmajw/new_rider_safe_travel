@@ -21,7 +21,7 @@ class MyRidesPage extends StatefulWidget {
 }
 
 class _MyRidesPageState extends State<MyRidesPage> {
-  var _future;
+  var image;
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +51,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
                 ListView.builder(
                 itemCount: snapshot.data?.length,
                 itemBuilder: (context, index) {
-                  print(
-                    snapshot.data?.length,
-                  );
-                  print("______________________________________");
+                  image = snapshot.data![index].driverPhoto;
                   return InkWell(
                     onTap: () {
                       setState(() {
@@ -67,6 +64,283 @@ class _MyRidesPageState extends State<MyRidesPage> {
                       });
                     },
                     child: Padding(
+                      padding:
+                      const EdgeInsets.only(left: 10, right: 10, top: 10),
+                      child: Card(
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          color: CustomColor.yellow,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15,top: 15),
+                                child: Text("Driver Details",style: const TextStyle(
+                                    fontFamily: 'transport',
+                                    fontSize: 16,
+                                    color: CustomColor.black)),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text("Ride Date : ",style: const TextStyle(
+                                        fontSize: 16,
+                                        color: CustomColor.black,fontWeight: FontWeight.bold)),
+                                    Text(snapshot.data![index].date.toString() == "null" ? "Data Not Available" :
+                                    snapshot.data![index].date.toString(),style: const TextStyle(
+                                        fontSize: 16,
+                                        color: CustomColor.black)),
+                                  ],
+                                ),
+                              ),
+                              ExpansionTile(
+
+                                iconColor: Colors.black,
+
+                                leading:    CircleAvatar(
+                                  backgroundColor:
+                                  CustomColor.yellow,
+                                  radius: 27.0,
+                                  child: CircleAvatar(
+                                    radius: 25.0,
+                                    backgroundColor:
+                                    Colors.white,
+                                    child: AspectRatio(
+                                      aspectRatio: 1,
+                                      child: ClipOval(
+                                        //""
+                                        child:(image != null)
+                                            ? Image.network(
+                                          image!,
+                                          width: 100,
+                                          height: 100,
+                                          fit: BoxFit.cover,
+                                        )
+                                            : Image.asset(
+                                            'assets/user_avatar.png'),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                title: Column(
+
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text("Name: ", style: const TextStyle(
+                                            fontFamily: 'transport',
+                                            fontSize: 16,
+                                            color: CustomColor.black)),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                              snapshot.data![index].driverName
+                                                  .toString() !=
+                                                  "null"
+                                                  ? snapshot.data![index].driverName
+                                                  .toString()
+                                                  : " ",
+                                              style: const TextStyle(
+
+                                                  fontSize: 15,
+                                                  color: Colors.black87, fontStyle: FontStyle.normal)),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                subtitle: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text("Mobile Number : ",style: const TextStyle(
+                                            fontFamily: 'transport',
+                                            fontSize: 16,
+                                            color: CustomColor.black)),
+                                        Text(
+                                            snapshot.data![index].driverMobileNumber
+                                                .toString() ==
+                                                "null"
+                                                ? "Data Not Available"
+                                                : snapshot
+                                                .data![index].driverMobileNumber
+                                                .toString(),
+                                            style: const TextStyle(
+
+                                                fontSize: 15,
+                                                color: Colors.black87, fontStyle: FontStyle.normal)),
+                                      ],
+                                    ),
+
+                                  ],
+                                ),
+                                children: [
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets.only(left: 15, right: 15),
+                                    child: Divider(
+                                      thickness: 3,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 15, right: 10, bottom: 10, top: 10),
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(8),
+                                            border:
+                                            Border.all(color: Colors.black45),
+                                            color: Colors.transparent),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10, top: 10),
+                                              child: Text(
+                                                "Vehicle Details",
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 20, right: 25),
+                                                  child: Text("Model Name",
+                                                      style: const TextStyle(
+                                                          fontFamily: 'transport',
+                                                          fontSize: 15,
+                                                          color:
+                                                          CustomColor.black)),
+                                                ),
+                                                Container(
+                                                    width: 20,
+                                                    height: 40,
+                                                    child: VerticalDivider(
+                                                      thickness: 3,
+                                                    )),
+                                                Expanded(
+                                                    child: Center(
+                                                        child: Padding(
+                                                          padding:
+                                                          const EdgeInsets.all(10.0),
+                                                          child: TextField(
+                                                            decoration: InputDecoration(
+                                                              border: InputBorder.none,
+                                                              hintText:  snapshot.data![index].vehicleModel != "null" ?
+                                                              snapshot.data![index].vehicleModel : " ",
+                                                            ),
+                                                            readOnly: true,
+                                                          ),
+                                                        ))),
+                                              ],
+                                            ),
+                                            Divider(
+                                              color: CustomColor.text,
+                                              height: 0,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 20, right: 5),
+                                                  child: Text("Registration No",
+                                                      style: const TextStyle(
+                                                          fontFamily: 'transport',
+                                                          fontSize: 15,
+                                                          color:
+                                                          CustomColor.black)),
+                                                ),
+                                                Container(
+                                                    width: 20,
+                                                    height: 40,
+                                                    child: VerticalDivider(
+                                                      thickness: 3,
+                                                    )),
+                                                Expanded(
+                                                    child: Center(
+                                                      child: Padding(
+                                                        padding:
+                                                        const EdgeInsets.all(10.0),
+                                                        child: TextField(
+                                                          decoration: InputDecoration(
+                                                            border: InputBorder.none,
+                                                            hintText:  snapshot.data![index].vehicleRegistrationNumber != "null" ?
+                                                            snapshot.data![index].vehicleRegistrationNumber : " ",
+                                                          ),
+                                                          readOnly: true,
+                                                        ),
+                                                      ),
+                                                    )),
+                                              ],
+                                            ),
+                                            Divider(
+                                              color: CustomColor.text,
+                                              height: 0,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 20, right: 30),
+                                                  child: Text("RC Number",
+                                                      style: const TextStyle(
+                                                          fontFamily: 'transport',
+                                                          fontSize: 15,
+                                                          color:
+                                                          CustomColor.black)),
+                                                ),
+                                                Container(
+                                                    width: 20,
+                                                    height: 40,
+                                                    child: VerticalDivider(
+                                                      thickness: 3,
+                                                    )),
+                                                Expanded(
+                                                    child: Center(
+                                                      child: Padding(
+                                                        padding:
+                                                        const EdgeInsets.all(10.0),
+                                                        child: TextField(
+                                                          decoration: InputDecoration(
+                                                            border: InputBorder.none,
+                                                            hintText: snapshot.data![index].vehicleRcNumber.toString() != "null" ?
+                                                            snapshot.data![index].vehicleRcNumber.toString() : " ",
+                                                          ),
+                                                          readOnly: true,
+                                                        ),
+                                                      ),
+                                                    )),
+                                              ],
+                                            ),
+                                          ],
+                                        )),
+                                  ),
+
+                                ],
+                              ),
+                            ],
+                          )
+
+
+                      ),
+                    ),
+
+                    /* Padding(
                       padding: const EdgeInsets.only(
                           left: 10, right: 10, top: 20),
                       child: Card(
@@ -213,7 +487,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
                           ],
                         ),
                       ),
-                    ),
+                    ),  */
                   );
                 },
               );

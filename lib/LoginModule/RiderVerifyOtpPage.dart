@@ -291,6 +291,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/verifyOtp'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+
       },
       body: jsonEncode(
           <String, String>{'mobile_number': mobileNumber, "otp": otp}),

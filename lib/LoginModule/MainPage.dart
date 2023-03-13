@@ -28,6 +28,8 @@ import '../MainPageWidgets/main_page_btn.dart';
 import '../Models/CheckActiveUserRide.dart';
 import '../MyRidesPage.dart';
 import '../Notification/NotificationScreen.dart';
+import '../ServiceListPage.dart';
+import '../ServicesPage.dart';
 import '../UserFamilyList.dart';
 import '../Utils/logout_dialog_box.dart';
 import '../Widgets/dashboard_profile_widgets.dart';
@@ -189,6 +191,7 @@ var userId;
     profileEmailId = Preferences.getEmailId(Preferences.emailId).toString();
 
     //OverlayLoadingProgress.stop();
+    print("Profile Details"+" "+profileMobile+" "+profileName+" "+profileEmailId);
   }
 
   @override
@@ -256,6 +259,7 @@ var userId;
       ),
       body: SingleChildScrollView(
         child: SizedBox(
+          //height: 400,
           child: Column(
             children: [
               DashboardProfileWidgets(
@@ -333,7 +337,75 @@ var userId;
                       Get.to(const UserFamilyList());
                     }),
               ),
-              SizedBox(height: 15.h),
+              SizedBox(height: 8.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.0.w),
+                child: InkWell(
+                  onTap: (){
+                    Get.to(const ServicesScreenPage());
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                            Radius.circular(8)),
+                        border: Border.all(
+                            color: Colors.black38,
+                            width: 1.5)),
+                    child: Container(
+                      height: 60.h,
+                      decoration: BoxDecoration(
+                        color: CustomColor.lightYellow,
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.miscellaneous_services_rounded),
+                          SizedBox(width: 10.w),
+                          Text("Services",
+                              style: const TextStyle(
+                                  fontFamily: 'transport', fontWeight: FontWeight.w500))
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ),
+              SizedBox(height: 8.h),
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12.0.w),
+                  child: InkWell(
+                    onTap: (){
+                      Get.to(const ServiceListScreenPage());
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.all(
+                              Radius.circular(8)),
+                          border: Border.all(
+                              color: Colors.black38,
+                              width: 1.5)),
+                      child: Container(
+                        height: 60.h,
+                        decoration: BoxDecoration(
+                          color: CustomColor.lightYellow,
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.miscellaneous_services_rounded),
+                            SizedBox(width: 10.w),
+                            Text("Service List",
+                                style: const TextStyle(
+                                    fontFamily: 'transport', fontWeight: FontWeight.w500))
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+              ),
+              SizedBox(height: 25.h),
             ]
         ),
       ),

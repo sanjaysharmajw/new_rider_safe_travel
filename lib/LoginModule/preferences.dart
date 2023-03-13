@@ -25,6 +25,7 @@ class Preferences {
   static const String startLng = 'startLng';
   static const String ageCalculate = "ageCalculate";
   static const String gender = "GENDER";
+  static const String loginToken = 'token';
 
   static Future<void> setPreferences() async {
     instance = await SharedPreferences.getInstance();
@@ -52,6 +53,10 @@ class Preferences {
 
   static Future<bool> setStartLng(String value) {
     return Preferences.instance!.setString(startLng, value);
+  }
+
+  static Future<bool> setLoginToken(String key, String value) {
+    return Preferences.instance!.setString(key, value);
   }
 
   static dynamic getStartLng() {
@@ -153,6 +158,13 @@ class Preferences {
   static Future<bool> setPinCode(String key, String value) {
     return Preferences.instance!.setString(key, value);
   }
+
+  static dynamic getLoginToken(String key) {
+    return Preferences.instance!.get(key);
+  }
+
+
+
 
   static dynamic getId(String key) {
     return Preferences.instance!.get(key);
