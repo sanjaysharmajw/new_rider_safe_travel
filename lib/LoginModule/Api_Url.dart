@@ -1,5 +1,8 @@
 class ApiUrl {
   static var baseUrl = 'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/';
+  static var awsImagePathUrl = 'https://travelsafe-docs.s3.ap-south-1.amazonaws.com/';
+
+
   static var login = '${baseUrl}user/userlogin';
   static var resetPassword = '${baseUrl}user/resetPassword';
   static var verifyOtp = '${baseUrl}user/verifyOtp';
