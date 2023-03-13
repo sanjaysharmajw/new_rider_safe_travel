@@ -17,6 +17,7 @@ import 'package:ride_safe_travel/LoginModule/riderNewRegisterLoginModel.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../bottom_nav/custom_bottom_navi.dart';
 import 'RiderLoginPage.dart';
 
 class RiderVerifyOtpPage extends StatefulWidget {
@@ -396,7 +397,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         Preferences.setUserType(Preferences.userType, userType.toString());
         Preferences.setProfileImage(profileImage.toString());
         Preferences.setGender(gender.toString());
-        Get.to(const MainPage());
+        Get.to(const CustomBottomNav());
         ToastMessage.toast("Successful");
       } else {
         OverlayLoadingProgress.stop();
