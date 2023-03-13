@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'AcceptedServiceList.dart';
 import 'LoginModule/custom_color.dart';
+import 'MyText.dart';
 import 'RejectedServiceList.dart';
 
 class ServiceListScreenPage extends StatefulWidget {
@@ -35,37 +36,20 @@ class _ServiceListScreenPageState extends State<ServiceListScreenPage> {
                     size: 30,
                   )),
             ),
-            title: Text("Service List",
+            title: const Text("Service List",
                 style: TextStyle(
                     fontSize: 18,
                     fontFamily: 'transport',
                     fontWeight: FontWeight.bold, color: CustomColor.black)),
           ),
           body: Column(
-            children: [
-              TabBar(
-                indicatorColor: CustomColor.yellow,
-                  labelColor: CustomColor.yellow, //<-- selected text color
-                  unselectedLabelColor: Colors.black,
-                  tabs: [
-                  Tab(
-                  child: Text('Rejected', style: TextStyle(fontSize: 18),),
-                  ),
-                Tab(
-                 child: Text('Accepted', style: TextStyle(fontSize: 18),),
-                )
-              ]),
-              Expanded(
-                child: TabBarView(children: [
-                  Container(
-
-                      child: RejectedServiceList()
-                  ), 
-                  Container(
-                    child: AcceptedServiceListPage(),
-                  )
-                ]),
-              )
+            children: const[
+               Padding(
+                padding:  EdgeInsets.only(left: 10,right: 10),
+                child:  MyText(text: 'Profile', fontFamily: 'transport', color: Colors.black, fontSize: 22),
+              ),
+               SizedBox(height: 30),
+              RejectedServiceList(),
             ],
           ),
 

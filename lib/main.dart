@@ -12,6 +12,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:ride_safe_travel/LoginModule/MainPage.dart';
 import 'package:ride_safe_travel/LoginModule/RiderLoginPage.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
+import 'package:ride_safe_travel/bottom_nav/custom_bottom_navi.dart';
 import 'package:ride_safe_travel/start_ride_map.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -199,7 +200,7 @@ class MyHomePageState extends State<MyHomePage> {
     if (userId == null) {
       Get.to( RiderLoginPage());
     } else {
-      Get.to(const MainPage());
+      Get.to(const CustomBottomNav());  //MainPage //CustomBottomNav
 
     }
   }

@@ -43,7 +43,7 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
         },),
         centerTitle: true,
         backgroundColor: CustomColor.yellow,
-        title: const Text("Add Family Member",
+        title: const Text("Add Tracking Member",
             style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',)),
       ),
       body: SingleChildScrollView(
@@ -129,7 +129,7 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Enter Mobile',
-                    hintText: 'Enter Your Mobile Number',
+                    hintText: 'Enter Mobile Number',
                   ),
                   validator: (value) {
                     if (value == null ||

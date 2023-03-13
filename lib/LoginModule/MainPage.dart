@@ -112,6 +112,7 @@ class _MainPageState extends State<MainPage> {
       });
     }
   }
+
   Future getLocation() async {
     bool? _serviceEnabled;
     Location location =  Location();
@@ -126,6 +127,7 @@ class _MainPageState extends State<MainPage> {
 
     });
   }
+
 var userId;
 var riderOtp="";
   void sharePre() async {

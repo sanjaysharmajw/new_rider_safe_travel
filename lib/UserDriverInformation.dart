@@ -12,6 +12,7 @@ import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/DriverVehicleList.dart';
 import 'package:ride_safe_travel/FamilyMemberAddScreen.dart';
 import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
+import 'package:ride_safe_travel/bottom_nav/custom_bottom_navi.dart';
 import 'package:ride_safe_travel/start_ride_map.dart';
 
 import 'Error.dart';
@@ -422,7 +423,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(onPressed: () async{
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>MainPage()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>const CustomBottomNav())); //MainPage
                               setState(() {});
                             }, child: Text("Cancel Ride", style: const TextStyle(
 
