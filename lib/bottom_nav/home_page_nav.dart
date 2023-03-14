@@ -30,12 +30,14 @@ import '../LoginModule/MainPage.dart';
 
 import '../MyRidesPage.dart';
 import '../MyText.dart';
+import '../Notification/NotificationScreen.dart';
 import '../UserDriverInformation.dart';
 import '../UserFamilyList.dart';
 import '../Utils/exit_alert_dialog.dart';
 import '../Utils/profile_horizontal_view.dart';
 import '../Utils/toast.dart';
 import '../controller/end_ride_controller.dart';
+import '../controller/get_count_notification_controller.dart';
 import '../rider_profile_view.dart';
 import '../start_ride_map.dart';
 import 'EmptyScreen.dart';
@@ -55,8 +57,13 @@ class _HomePageState extends State<HomePageNav> {
   String image = "";
   final listController = Get.put(MyRiderController());
   final checkUserController = Get.put(CheckUserController());
+  final getCountController = Get.put(GetNotificationController());
   LocationData? locationData;
   late Location location;
+
+  var myRiderCount="";
+  var peopleTrackingMe="";
+  var trackFamily="";
 
   String profileName = "";
   String profileMobile = "";
@@ -81,6 +88,7 @@ class _HomePageState extends State<HomePageNav> {
 
   @override
   void initState() {
+    getCount();
     super.initState();
     init();
     sharePre();
@@ -161,11 +169,35 @@ class _HomePageState extends State<HomePageNav> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const SizedBox(height: 10),
-                            const MyText(
-                                text: 'Nirbhaya Rider',
-                                fontFamily: 'transport',
-                                color: Colors.black,
-                                fontSize: 22),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const MyText(
+                                    text: 'Nirbhaya Rider',
+                                    fontFamily: 'transport',
+                                    color: Colors.black,
+                                    fontSize: 22),
+                                InkWell(
+                                  onTap: () async {
+                                    Get.to(const NotificationScreen());
+                                    String refresh= await Navigator.push(context,
+                                        MaterialPageRoute(builder: (context)=>const NotificationScreen()));
+                                    if(refresh=='refresh'){
+                                      await countNotification();
+                                    }
+                                  },
+                                  child: Center(
+                                    child: badges.Badge(
+                                      badgeContent:  Text(
+                                        countNitification.toString(),
+                                        style: const TextStyle(color: CustomColor.black,fontSize: 15, fontFamily: 'transport',),
+                                      ),
+                                      child: const Icon(Icons.notifications_outlined, size: 30,color: CustomColor.black,),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                             const SizedBox(height: 30),
                             Padding(
                               padding: const EdgeInsets.only(right: 5, left: 5),
@@ -206,33 +238,33 @@ class _HomePageState extends State<HomePageNav> {
                               onTap: () {
                                 Get.to(const MyRidesPage());
                               },
-                              child: const HomePageItems(
+                              child:  HomePageItems(
                                 completed: 58,
                                 backgroundColor: Colors.blue,
                                 title: 'My Rides',
-                                subtitle: '10',
+                                subtitle: myRiderCount!.toString(),
                               ),
                             ),
                             InkWell(
                               onTap: () {
                                 Get.to(const UserFamilyList());
                               },
-                              child: const HomePageItems(
+                              child:  HomePageItems(
                                 completed: 58,
                                 backgroundColor: Colors.red,
                                 title: 'People Tracking Me',
-                                subtitle: '10',
+                                subtitle: peopleTrackingMe!.toString(),
                               ),
                             ),
                             InkWell(
                               onTap: () {
                                 Get.to(const FamilyMemberListScreen());
                               },
-                              child: const HomePageItems(
+                              child:  HomePageItems(
                                 completed: 45,
                                 backgroundColor: Colors.green,
                                 title: 'Track Family & Friends',
-                                subtitle: '05',
+                                subtitle: trackFamily!.toString(),
                               ),
                             ),
                             InkWell(
@@ -562,6 +594,21 @@ class _HomePageState extends State<HomePageNav> {
           String riderId = value.data![0].id.toString();
           await endRide(riderId, locationData!.latitude.toString(),
               locationData!.longitude.toString(), index);
+        }
+      }
+    });
+  }
+  void getCount()async{
+    await getCountController.getCount().then((value) async {
+      if (value != null) {
+        if (value.status == true) {
+          myRiderCount=value.count.totalRides.toString();
+          trackFamily=value.count.trackingmembers.toString();
+          peopleTrackingMe=value.count.familymemberrides.toString();
+          countNitification=value.data.length;
+          setState(() {
+
+          });
         }
       }
     });
