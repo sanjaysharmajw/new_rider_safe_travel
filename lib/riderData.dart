@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:ride_safe_travel/permanentAddress.dart';
 import 'package:ride_safe_travel/presentAddress.dart';
 
-import 'DriverVehicleList.dart';
 
 RiderData dataFromJson(String str) => RiderData.fromJson(json.decode(str));
 String dataToJson(RiderData data) => json.encode(data.toJson());
@@ -43,6 +42,7 @@ class RiderData {
     this.createdBy,
     this.updatedBy,
     this.dob,
+
     this.profileImage,
     this.dldetails,
     this.address,
@@ -93,6 +93,7 @@ class RiderData {
     createdBy = json['created_by'];
     updatedBy = json['updated_by'];
     dob = json['dob'];
+    profile_percentage = json['profile_percentage'];
     profileImage = json['profile_image'];
     dldetails = json['dldetails'] != null
         ? Dldetails.fromJson(json['dldetails'])
@@ -139,15 +140,15 @@ class RiderData {
   String? createdBy;
   String? updatedBy;
   String? dob;
+  int? profile_percentage;
   String? profileImage;
   Dldetails? dldetails;
   String? address;
   String? emergencyContact;
   String? personName;
-      String? emergencyNumber1;
+  String? emergencyNumber1;
   String? personName1;
-      String? bloodGroup;
-  int? profile_percentage;
+  String? bloodGroup;
   RiderData copyWith({
     String? id,
     String? firstName,
@@ -182,6 +183,7 @@ class RiderData {
     String? createdBy,
     String? updatedBy,
     String? dob,
+    int? profile_percentage,
     String? profileImage,
     Dldetails? dldetails,
     String? address,
@@ -190,52 +192,51 @@ class RiderData {
     String? emergencyNumber1,
     String? personName1,
     String? bloodGroup,
-    int? profile_percentage,
   }) =>
       RiderData(
-        id: id ?? this.id,
-        firstName: firstName ?? this.firstName,
-        lastName: lastName ?? this.lastName,
-        emailId: emailId ?? this.emailId,
-        mobileNumber: mobileNumber ?? this.mobileNumber,
-        gender: gender ?? this.gender,
-        password: password ?? this.password,
-        alternateContactNo: alternateContactNo ?? this.alternateContactNo,
-        userType: userType ?? this.userType,
-        aadharNumber: aadharNumber ?? this.aadharNumber,
-        panNumber: panNumber ?? this.panNumber,
-        dlNumber: dlNumber ?? this.dlNumber,
-        shiftType: shiftType ?? this.shiftType,
-        documents: documents ?? this.documents,
-        accidentalHistory: accidentalHistory ?? this.accidentalHistory,
-        accidentalDiscription:
-            accidentalDiscription ?? this.accidentalDiscription,
-        maritalStatus: maritalStatus ?? this.maritalStatus,
-        citizenship: citizenship ?? this.citizenship,
-        failAttempt: failAttempt ?? this.failAttempt,
-        isLock: isLock ?? this.isLock,
-        resetPassword: resetPassword ?? this.resetPassword,
-        status: status ?? this.status,
-        city: city ?? this.city,
-        state: state ?? this.state,
-        permanentAddress: permanentAddress ?? this.permanentAddress,
-        presentAddress: presentAddress ?? this.presentAddress,
-        sameAddress: sameAddress ?? this.sameAddress,
-        pincode: pincode ?? this.pincode,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        createdBy: createdBy ?? this.createdBy,
-        updatedBy: updatedBy ?? this.updatedBy,
-        dob: dob ?? this.dob,
-        profileImage: profileImage ?? this.profileImage,
-        dldetails: dldetails ?? this.dldetails,
-        address: address ?? this.address,
+          id: id ?? this.id,
+          firstName: firstName ?? this.firstName,
+          lastName: lastName ?? this.lastName,
+          emailId: emailId ?? this.emailId,
+          mobileNumber: mobileNumber ?? this.mobileNumber,
+          gender: gender ?? this.gender,
+          password: password ?? this.password,
+          alternateContactNo: alternateContactNo ?? this.alternateContactNo,
+          userType: userType ?? this.userType,
+          aadharNumber: aadharNumber ?? this.aadharNumber,
+          panNumber: panNumber ?? this.panNumber,
+          dlNumber: dlNumber ?? this.dlNumber,
+          shiftType: shiftType ?? this.shiftType,
+          documents: documents ?? this.documents,
+          accidentalHistory: accidentalHistory ?? this.accidentalHistory,
+          accidentalDiscription:
+          accidentalDiscription ?? this.accidentalDiscription,
+          maritalStatus: maritalStatus ?? this.maritalStatus,
+          citizenship: citizenship ?? this.citizenship,
+          failAttempt: failAttempt ?? this.failAttempt,
+          isLock: isLock ?? this.isLock,
+          resetPassword: resetPassword ?? this.resetPassword,
+          status: status ?? this.status,
+          city: city ?? this.city,
+          state: state ?? this.state,
+          permanentAddress: permanentAddress ?? this.permanentAddress,
+          presentAddress: presentAddress ?? this.presentAddress,
+          sameAddress: sameAddress ?? this.sameAddress,
+          pincode: pincode ?? this.pincode,
+          createdAt: createdAt ?? this.createdAt,
+          updatedAt: updatedAt ?? this.updatedAt,
+          createdBy: createdBy ?? this.createdBy,
+          updatedBy: updatedBy ?? this.updatedBy,
+          dob: dob ?? this.dob,
+          profile_percentage: profile_percentage ?? this.profile_percentage,
+          profileImage: profileImage ?? this.profileImage,
+          dldetails: dldetails ?? this.dldetails,
+          address: address ?? this.address,
           emergencyContact: emergencyContact ?? this.emergencyContact,
           emergencyNumber1: emergencyNumber1 ?? emergencyNumber1,
           personName: personName ?? personName,
           personName1: personName1 ?? personName1,
           bloodGroup: bloodGroup ?? bloodGroup
-        profile_percentage: profile_percentage ?? this.profile_percentage,
       );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -278,6 +279,7 @@ class RiderData {
     map['created_by'] = createdBy;
     map['updated_by'] = updatedBy;
     map['dob'] = dob;
+    map['profile_percentage'] = profile_percentage;
     map['profile_image'] = profileImage;
     if (dldetails != null) {
       map['dldetails'] = dldetails?.toJson();
@@ -347,7 +349,7 @@ class Dldetails {
         dlMobileNumber: dlMobileNumber ?? this.dlMobileNumber,
         accidentalHistory: accidentalHistory ?? this.accidentalHistory,
         accidentalDiscription:
-            accidentalDiscription ?? this.accidentalDiscription,
+        accidentalDiscription ?? this.accidentalDiscription,
         available24by7: available24by7 ?? this.available24by7,
         shiftTimeFrom: shiftTimeFrom ?? this.shiftTimeFrom,
         shiftTimeTo: shiftTimeTo ?? this.shiftTimeTo,

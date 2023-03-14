@@ -872,10 +872,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
     String mobileNumber = Preferences.getMobileNumber(Preferences.mobileNumber).toString();
     final response = await http.post(
       (Uri.parse('https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userList')),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': loginToken
-      },
+      headers: ApiUrl.headerToken,
       body: jsonEncode(<String, String>{
         'mobile_number': mobileNumber,
       }),

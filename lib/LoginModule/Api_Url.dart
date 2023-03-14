@@ -1,7 +1,15 @@
+import 'dart:io';
+
+import 'package:ride_safe_travel/LoginModule/preferences.dart';
+
 class ApiUrl {
   static var baseUrl = 'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/';
   static var awsImagePathUrl = 'https://travelsafe-docs.s3.ap-south-1.amazonaws.com/';
 
+  static Map<String, String> headerToken = {
+    HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
+    'Authorization': Preferences.getLoginToken(Preferences.loginToken),
+  };
 
   static var login = '${baseUrl}user/userlogin';
   static var resetPassword = '${baseUrl}user/resetPassword';
