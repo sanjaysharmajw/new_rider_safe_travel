@@ -459,10 +459,13 @@ class _RiderMapState extends State<RiderMap> {
   }
 
   Future<http.Response> getSocketToken() async {
+
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
       Uri.parse(ApiUrl.socketUrl),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': loginToken
       },
       body: jsonEncode(<String, String>{
         'userName': userId.toString(),

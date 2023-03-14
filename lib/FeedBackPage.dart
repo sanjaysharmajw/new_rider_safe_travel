@@ -452,6 +452,8 @@ class _FeedBackScreenPageState extends State<FeedBackScreenPage> {
   }
 
   Future<List<TripDataModel>> getData() async {
+
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     await Preferences.setPreferences();
     String userId = Preferences.getId(Preferences.id).toString();
     userFeedbackId = userId ;
@@ -459,6 +461,7 @@ class _FeedBackScreenPageState extends State<FeedBackScreenPage> {
       Uri.parse(ApiUrl.getMyTripApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': loginToken
       },
       body: jsonEncode(<String, String>{
         'user_id': userId,
@@ -490,11 +493,12 @@ class _FeedBackScreenPageState extends State<FeedBackScreenPage> {
       "feedback": reviewController.text.toString(),
       "rating": starRating.toString()
     }),);
-
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(Uri.parse(
         'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/saveRideFeedback'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': loginToken
       },
       body: jsonEncode(<String, String>{
         "ride_id": riderUserId,
@@ -605,11 +609,12 @@ class _FeedBackScreenPageState extends State<FeedBackScreenPage> {
       "type": type ,
       "comment": userReviewController.text.toString(),
     }),);
-
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(Uri.parse(
         'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/saveUserFeedback'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': loginToken
       },
       body: jsonEncode(<String, String>{
         "user_id": userFeedbackId.toString(),
