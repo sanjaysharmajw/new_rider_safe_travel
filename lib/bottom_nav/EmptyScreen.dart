@@ -13,7 +13,7 @@ class EmptyScreen extends StatelessWidget {
         children: [
           Image.asset('images/no_data.png',width: 100,height: 100,fit: BoxFit.fill),
           const SizedBox(height: 10),
-          const MyText(text: 'Page Not Found', fontFamily: 'transport', color: Colors.black, fontSize: 14)
+          const MyText(text: 'Rider Not Found', fontFamily: 'transport', color: Colors.black, fontSize: 14)
         ],
       ),
     );
