@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
@@ -70,6 +71,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     //  ScreenUtil.init(context, designSize: const Size(375, 812));
     return GetMaterialApp(
+      builder: EasyLoading.init(),
       title: 'Rider Safe Travel',
       theme: ThemeData(
         primarySwatch: Colors.blue,

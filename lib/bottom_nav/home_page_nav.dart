@@ -22,7 +22,8 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 
-import 'package:ride_safe_travel/bottom_nav/service_request_list.dart';import '../DriverVehicleList.dart';
+import 'package:ride_safe_travel/bottom_nav/service_request_list.dart';
+import '../DriverVehicleList.dart';
 import '../Error.dart';
 import '../LoginModule/Api_Url.dart';
 import '../LoginModule/MainPage.dart';
@@ -31,15 +32,16 @@ import '../MyRidesPage.dart';
 import '../MyText.dart';
 import '../UserDriverInformation.dart';
 import '../UserFamilyList.dart';
+import '../Utils/exit_alert_dialog.dart';
 import '../Utils/profile_horizontal_view.dart';
 import '../Utils/toast.dart';
+import '../controller/end_ride_controller.dart';
 import '../rider_profile_view.dart';
 import '../start_ride_map.dart';
 import 'EmptyScreen.dart';
 import 'home_page_items.dart';
 import 'my_ride_item_list.dart';
 import 'my_rider_controller.dart';
-
 
 class HomePageNav extends StatefulWidget {
   const HomePageNav({Key? key}) : super(key: key);
@@ -51,16 +53,20 @@ class HomePageNav extends StatefulWidget {
 class _HomePageState extends State<HomePageNav> {
   String result = "";
   String image = "";
-  final listController=Get.put(MyRiderController());
+  final listController = Get.put(MyRiderController());
+  final checkUserController = Get.put(CheckUserController());
+  LocationData? locationData;
+  late Location location;
 
   String profileName = "";
   String profileMobile = "";
   String profileLastName = "";
   String profileEmailId = "";
-  late int countNitification=0;
+  String? riderIdFromStartRider;
+  late int countNitification = 0;
 
   var userId;
-  var riderOtp="";
+  var riderOtp = "";
   void sharePre() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
@@ -69,7 +75,10 @@ class _HomePageState extends State<HomePageNav> {
     userId = Preferences.getId(Preferences.id).toString();
     riderOtp = Preferences.getRideOtp();
     setState(() {});
+    location = Location();
+    locationData = await location.getLocation();
   }
+
   @override
   void initState() {
     super.initState();
@@ -106,24 +115,30 @@ class _HomePageState extends State<HomePageNav> {
   }
 
   void sharePreferences() async {
-    setState(() {
-
-    });
+    setState(() {});
     await Preferences.setPreferences();
     image = Preferences.getProfileImage().toString();
-    profileName = Preferences.getFirstName(Preferences.firstname).toString() + " " + Preferences.getLastName(Preferences.lastname).toString();
+    profileName = Preferences.getFirstName(Preferences.firstname).toString() +
+        " " +
+        Preferences.getLastName(Preferences.lastname).toString();
     await countNotification();
     profileMobile =
         Preferences.getMobileNumber(Preferences.mobileNumber).toString();
     profileEmailId = Preferences.getEmailId(Preferences.emailId).toString();
+    riderIdFromStartRider = Preferences.getNewRiderId().toString();
 
     //OverlayLoadingProgress.stop();
-    print("Profile Details"+" "+profileMobile+" "+profileName+" "+profileEmailId);
+    print("Profile Details" +
+        " " +
+        profileMobile +
+        " " +
+        profileName +
+        " " +
+        profileEmailId);
   }
 
   @override
   Widget build(BuildContext context) {
-
     return GetX<MyRiderController>(
         init: MyRiderController(),
         builder: (controller) {
@@ -132,105 +147,146 @@ class _HomePageState extends State<HomePageNav> {
               backgroundColor: Colors.white,
               body: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment:  CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment:  CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         width: double.infinity,
-                        margin: const EdgeInsets.only(right: 15,left: 15,top: 15),
+                        margin:
+                            const EdgeInsets.only(right: 15, left: 15, top: 15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const SizedBox(height: 10),
-                            const MyText(text: 'Nirbhaya Rider', fontFamily: 'transport', color: Colors.black, fontSize: 22),
+                            const MyText(
+                                text: 'Nirbhaya Rider',
+                                fontFamily: 'transport',
+                                color: Colors.black,
+                                fontSize: 22),
                             const SizedBox(height: 30),
                             Padding(
-                              padding: const EdgeInsets.only(right: 5,left: 5),
-                              child: ProfileHozontalView(profileName: profileName,
-                                  profileMobile: Preferences.getMobileNumber(Preferences.mobileNumber).toString(), click: () {
-                                Get.to(const RiderProfileView());
-                              }, imageLink: Preferences.getProfileImage().toString()),
+                              padding: const EdgeInsets.only(right: 5, left: 5),
+                              child: ProfileHozontalView(
+                                  profileName: profileName,
+                                  profileMobile: Preferences.getMobileNumber(
+                                          Preferences.mobileNumber)
+                                      .toString(),
+                                  click: () {
+                                    Get.to(const RiderProfileView());
+                                  },
+                                  imageLink:
+                                      Preferences.getProfileImage().toString()),
                             ),
                           ],
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(left: 20,right: 20,top: 30),
-                        child:
-                        const MyText(text: 'Progress', fontFamily: 'transport', color: Colors.black, fontSize: 14),
+                        margin:
+                            const EdgeInsets.only(left: 20, right: 20, top: 30),
+                        child: const MyText(
+                            text: 'Progress',
+                            fontFamily: 'transport',
+                            color: Colors.black,
+                            fontSize: 14),
                       ),
                       GridView.count(
                           shrinkWrap: true,
                           physics: const ClampingScrollPhysics(),
                           crossAxisCount: 2,
-                          padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, top: 10),
                           mainAxisSpacing: 20,
                           childAspectRatio: 3 / 2,
                           crossAxisSpacing: 20,
-                          children:   [
+                          children: [
                             InkWell(
-                              onTap: (){
+                              onTap: () {
                                 Get.to(const MyRidesPage());
                               },
                               child: const HomePageItems(
                                 completed: 58,
-                                backgroundColor: Colors.blue, title: 'My Rides', subtitle: '10',
+                                backgroundColor: Colors.blue,
+                                title: 'My Rides',
+                                subtitle: '10',
                               ),
                             ),
-
                             InkWell(
-                              onTap: (){
+                              onTap: () {
                                 Get.to(const UserFamilyList());
                               },
                               child: const HomePageItems(
                                 completed: 58,
-                                backgroundColor: Colors.red, title: 'People Tracking Me', subtitle: '10',
+                                backgroundColor: Colors.red,
+                                title: 'People Tracking Me',
+                                subtitle: '10',
                               ),
                             ),
-
                             InkWell(
-                              onTap: (){
-                                Get.to( const FamilyMemberListScreen());
+                              onTap: () {
+                                Get.to(const FamilyMemberListScreen());
                               },
                               child: const HomePageItems(
                                 completed: 45,
-                                backgroundColor: Colors.green, title: 'Track Family & Friends', subtitle: '05',
+                                backgroundColor: Colors.green,
+                                title: 'Track Family & Friends',
+                                subtitle: '05',
                               ),
                             ),
                             InkWell(
-                              onTap: (){
+                              onTap: () {
                                 OverlayLoadingProgress.start(context);
                                 checkActiveUser();
                               },
                               child: const HomePageItems(
                                 completed: 58,
-                                backgroundColor: Colors.orange, title: 'Start new ride', subtitle: '',
+                                backgroundColor: Colors.orange,
+                                title: 'Start new ride',
+                                subtitle: '',
                               ),
                             ),
-
                           ]),
                     ],
                   ),
                   Container(
-                    margin: const EdgeInsets.only(left: 20,right: 20,top: 30),
-                    child: const MyText(text: 'My Active Ride List', fontFamily: 'transport', color: Colors.black, fontSize: 14),
+                    margin: const EdgeInsets.only(left: 20, right: 20, top: 30),
+                    child: const MyText(
+                        text: 'My Active Ride List',
+                        fontFamily: 'transport',
+                        color: Colors.black,
+                        fontSize: 14),
                   ),
                   Container(
                     child: Center(
                       child: controller.isLoading.value
-                          ? LoaderUtils.loader()
-                          : controller.getMyRiderData.isEmpty
-                          ? const Center(
-                        child: EmptyScreen(),
-                      ) : ListView.builder(
-                          itemCount: controller.getMyRiderData.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return MyRiderItemsList(myRideList: controller.getMyRiderData[index]);
-                          }),
+                          ? LoaderUtils.loader():
+                           controller.getMyRiderData.isEmpty
+                              ? const Center(
+                                  child: EmptyScreen(),
+                                )
+                              : ListView.builder(
+                                  itemCount: controller.getMyRiderData.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return MyRiderItemsList(
+                                      myRideList:
+                                          controller.getMyRiderData[index],
+                                      pressOnView: () {
+                                        OverlayLoadingProgress.start(context);
+                                        checkActiveUser();
+                                      },
+                                      pressOnEnd: () {
+                                        showExitPopup(context,
+                                            "Do you want to stop ride?",
+                                            () async {
+                                          Navigator.pop(context, true);
+                                          checkUser(userId, index);
+                                        });
+                                      },
+                                    );
+                                  }),
                     ),
                   ),
                 ],
@@ -250,15 +306,14 @@ class _HomePageState extends State<HomePageNav> {
           qRCornerColor: Colors.orange,
           qRScannerColor: Colors.orange);
       setState(() async {
-        print("qrResult"+qrResult.toString());
+        print("qrResult" + qrResult.toString());
         result = qrResult ?? 'null string';
-        print("ScanQRCode:"+result);
+        print("ScanQRCode:" + result);
         if (result != "") {
-
-          if(result.length==24){
-            print("ScanQR:"+result);
+          if (result.length == 24) {
+            print("ScanQR:" + result);
             driverVehicleListApi(result);
-          }else{
+          } else {
             print("Invalid QR Code");
           }
         }
@@ -292,7 +347,7 @@ class _HomePageState extends State<HomePageNav> {
 
   Future getLocation() async {
     bool? _serviceEnabled;
-    Location location =  Location();
+    Location location = Location();
     var _permissionGranted = await location.hasPermission();
     _serviceEnabled = await location.serviceEnabled();
     if (_permissionGranted != PermissionStatus.granted || !_serviceEnabled) {
@@ -300,10 +355,9 @@ class _HomePageState extends State<HomePageNav> {
       _serviceEnabled = await location.requestService();
       ToastMessage.toast("Access Granted");
     }
-    setState(() {
-
-    });
+    setState(() {});
   }
+
   Future<http.Response> countNotification() async {
     final response = await http.post(Uri.parse(ApiUrl.countNotification),
         headers: <String, String>{
@@ -323,13 +377,13 @@ class _HomePageState extends State<HomePageNav> {
       //bool status = jsonDecode(response.body)[ErrorMessage.status];
       countNitification = jsonDecode(response.body)['data'];
       //ToastMessage.toast(status.toString());
-      setState(() {
-      });
+      setState(() {});
       return response;
     } else {
       throw Exception('Failed');
     }
   }
+
   Future<DriverVehicleList> driverVehicleListApi(String result) async {
     final response = await http.post(
       Uri.parse(ApiUrl.driverVehicleList),
@@ -338,12 +392,10 @@ class _HomePageState extends State<HomePageNav> {
       },
       body: jsonEncode(<String, String>{
         'driver_id': result.toString(),
-
       }),
     );
     print(jsonEncode(<String, String>{
       'driver_id': result.toString(),
-
     }));
 
     if (response.statusCode == 200) {
@@ -356,14 +408,18 @@ class _HomePageState extends State<HomePageNav> {
         print('family: $driverDetails');
         var driverName = driverDetails[0].driverName.toString();
         var driverMob = driverDetails[0].driverMobileNumber.toString();
-        var driverLicense = driverDetails[0].drivingLicenceNumber.toString()??"";
+        var driverLicense =
+            driverDetails[0].drivingLicenceNumber.toString() ?? "";
         var vOwnerName = driverDetails[0].ownerName.toString();
-        var vRegNumber = driverDetails[0].vehicledetails![0].registrationNumber.toString();
+        var vRegNumber =
+            driverDetails[0].vehicledetails![0].registrationNumber.toString();
 
-
-        var vPucvalidity = driverDetails[0].vehicledetails![0].pucValidity.toString();
-        var  vFitnessValidity = driverDetails[0].vehicledetails![0].fitnessValidity.toString();
-        var vInsurance = driverDetails[0].vehicledetails![0].insuranceValidity.toString();
+        var vPucvalidity =
+            driverDetails[0].vehicledetails![0].pucValidity.toString();
+        var vFitnessValidity =
+            driverDetails[0].vehicledetails![0].fitnessValidity.toString();
+        var vInsurance =
+            driverDetails[0].vehicledetails![0].insuranceValidity.toString();
         var vModel = driverDetails[0].vehicledetails![0].model.toString();
         var dPhoto = driverDetails[0].driverPhoto.toString();
         var vPhoto = driverDetails[0].ownerPhoto.toString();
@@ -372,13 +428,23 @@ class _HomePageState extends State<HomePageNav> {
         // print("PUCValidityDate:"+DateFormat('dd-MM-yyyy').format(DateTime.parse(vPucvalidity)) );
         print(response.body);
 
-
         Get.to(UserDriverInformation(
-            vehicleId: vehicleIds.toString(), driverId: driverIds.toString(), driverName: driverName.toString(),
+            vehicleId: vehicleIds.toString(),
+            driverId: driverIds.toString(),
+            driverName: driverName.toString(),
             driverMob: driverMob.toString(),
-            driverLicense: driverLicense.toString(), vOwnerName: vOwnerName.toString(), vRegNumber: vRegNumber.toString(),
-            vPucvalidity:DateFormat('dd-MM-yyyy').format(DateTime.parse(vPucvalidity)), vFitnessValidity: DateFormat('dd-MM-yyyy').format(DateTime.parse(vFitnessValidity )),
-            vInsurance: DateFormat('dd-MM-yyyy').format(DateTime.parse(vInsurance)), vModel: vModel.toString(), dPhoto: dPhoto.toString(), vPhoto: vPhoto.toString()));
+            driverLicense: driverLicense.toString(),
+            vOwnerName: vOwnerName.toString(),
+            vRegNumber: vRegNumber.toString(),
+            vPucvalidity:
+                DateFormat('dd-MM-yyyy').format(DateTime.parse(vPucvalidity)),
+            vFitnessValidity: DateFormat('dd-MM-yyyy')
+                .format(DateTime.parse(vFitnessValidity)),
+            vInsurance:
+                DateFormat('dd-MM-yyyy').format(DateTime.parse(vInsurance)),
+            vModel: vModel.toString(),
+            dPhoto: dPhoto.toString(),
+            vPhoto: vPhoto.toString()));
         setState(() {});
       } else if (status == false) {
         OverlayLoadingProgress.stop();
@@ -388,10 +454,14 @@ class _HomePageState extends State<HomePageNav> {
       throw Exception('Failed to create.');
     }
   }
+
   Future<String> checkActiveUser() async {
-    print( "USER"+jsonEncode(<String, String>{
-      'user_id': userId,
-    }),);
+    print(
+      "USER" +
+          jsonEncode(<String, String>{
+            'user_id': userId,
+          }),
+    );
 
     final response = await http.post(
       Uri.parse(ApiUrl.checkActiveUserRide),
@@ -407,11 +477,13 @@ class _HomePageState extends State<HomePageNav> {
       // var otpRide=jsonDecode(response.body)['data'][0]['ride_start_otp'];
 
       String socketToken = jsonDecode(response.body)['token'];
-      if (socketToken !="") {
+      if (socketToken != "") {
         OverlayLoadingProgress.stop();
-        List<Data> userCheck = jsonDecode(response.body)['data'].map<Data>((data) => Data.fromJson(data)).toList();
-        print("UserCheck"+userCheck.toString());
-        var id=userCheck[0].id.toString();
+        List<Data> userCheck = jsonDecode(response.body)['data']
+            .map<Data>((data) => Data.fromJson(data))
+            .toList();
+        print("UserCheck" + userCheck.toString());
+        var id = userCheck[0].id.toString();
         Get.to(StartRide(
             riderId: id.toString(),
             dName: userCheck[0].driverName.toString(),
@@ -420,8 +492,10 @@ class _HomePageState extends State<HomePageNav> {
             model: userCheck[0].vehicleModel.toString(),
             vOwnerName: userCheck[0].ownerName.toString(),
             vRegNo: userCheck[0].vehicleRegistrationNumber.toString(),
-            socketToken: socketToken.toString(), driverLicense: userCheck[0].drivingLicenceNumber.toString(), otpRide: riderOtp.toString()));
-        var ids=userCheck[0].id.toString();
+            socketToken: socketToken.toString(),
+            driverLicense: userCheck[0].drivingLicenceNumber.toString(),
+            otpRide: riderOtp.toString()));
+        var ids = userCheck[0].id.toString();
         print('IDssss: $ids');
         print(userCheck[0].driverName.toString());
         print(userCheck[0].driverMobileNumber.toString());
@@ -431,18 +505,65 @@ class _HomePageState extends State<HomePageNav> {
         print(userCheck[0].vehicleRegistrationNumber.toString());
         print(socketToken.toString());
         setState(() {});
-      } else if (socketToken =="") {
-
+      } else if (socketToken == "") {
         OverlayLoadingProgress.stop();
         print("Print False........");
         _scanQR();
       }
       var userData = jsonDecode(response.body);
-      print("userData:"+userData.toString());
+      print("userData:" + userData.toString());
       return userData.toString();
     } else {
       throw Exception('Failed to create.');
     }
   }
-}
 
+  Future<http.Response> endRide(
+      String riderId, String lat, String lng, int index) async {
+    final response = await http.post(
+        Uri.parse(
+            'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/endRide'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode({
+          'ride_id': riderId,
+          'end_point': {
+            'time': DateTime.now().millisecondsSinceEpoch.toString(),
+            'latitude': lat.toString(),
+            'longitude': lng.toString(),
+            'location': ""
+          }
+        }));
+    if (response.statusCode == 200) {
+      bool status = jsonDecode(response.body)[ErrorMessage.status];
+      var msg = jsonDecode(response.body)[ErrorMessage.message];
+      print("$response");
+      if (status == true) {
+        LoaderUtils.closeLoader();
+        ToastMessage.toast(msg);
+        Preferences.setRideOtp(''); //MainPage
+        listController.getServiceList(userId.toString());
+
+      } else {
+        LoaderUtils.closeLoader();
+        ToastMessage.toast(msg);
+      }
+      return response;
+    } else {
+      throw Exception('Failed');
+    }
+  }
+
+  void checkUser(String userid, int index) async {
+    await checkUserController.checkActiveUser(userid).then((value) async {
+      if (value != null) {
+        if (value.status == true) {
+          String riderId = value.data![0].id.toString();
+          await endRide(riderId, locationData!.latitude.toString(),
+              locationData!.longitude.toString(), index);
+        }
+      }
+    });
+  }
+}

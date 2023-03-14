@@ -17,6 +17,7 @@ import 'package:ride_safe_travel/MapAddFamily.dart';
 import 'package:ride_safe_travel/Utils/constant.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:ride_safe_travel/Widgets/round_text_widgets.dart';
+import 'package:ride_safe_travel/bottom_nav/custom_bottom_navi.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -103,6 +104,7 @@ class _SignUpState extends State<StartRide> {
 
   @override
   void initState() {
+    Preferences.setNewRiderId(widget.riderId.toString());
     super.initState();
     getSosReason();
     _initUser();
@@ -804,7 +806,7 @@ class _SignUpState extends State<StartRide> {
         socket.disconnect();
         stopAlertValue="Yes";
         Preferences.setRideOtp('');
-        Get.to(const MainPage());
+        Get.to(const CustomBottomNav()); //MainPage
       } else {
         OverlayLoadingProgress.stop();
         ToastMessage.toast(msg);

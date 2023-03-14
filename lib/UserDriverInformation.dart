@@ -13,6 +13,7 @@ import 'package:ride_safe_travel/DriverVehicleList.dart';
 import 'package:ride_safe_travel/FamilyMemberAddScreen.dart';
 import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
 import 'package:ride_safe_travel/bottom_nav/custom_bottom_navi.dart';
+import 'package:ride_safe_travel/new_items/tracking_me_list.dart';
 import 'package:ride_safe_travel/start_ride_map.dart';
 
 import 'Error.dart';
@@ -406,7 +407,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                               OverlayLoadingProgress.start(context);
                               await userRideAdd(userId, widget.vehicleId.toString(), widget.driverId.toString());
                               setState(() {});
-                            }, child: Text("Start Ride", style: const TextStyle(
+                            }, child: Text("Next", style: const TextStyle(
 
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16),),
@@ -425,8 +426,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                             child: ElevatedButton(onPressed: () async{
                               Navigator.push(context, MaterialPageRoute(builder: (context)=>const CustomBottomNav())); //MainPage
                               setState(() {});
-                            }, child: Text("Cancel Ride", style: const TextStyle(
-
+                            }, child: Text("Cancel Ride", style:  TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16),),
                               style: ElevatedButton.styleFrom(
@@ -436,7 +436,6 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                                   foregroundColor: CustomColor.black),),
                           ),
                         )
-                        
                       ],
                     ),
                    /* Padding(
@@ -547,19 +546,30 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
     if (response.statusCode == 200) {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       //var msg = jsonDecode(response.body)[ErrorMessage.message];
-
       if (status == true) {
         Get.to(
-            StartRide(
-            riderId: rideId.toString(),
-            dName: widget.driverName.toString() == 'null' ? "Data not available" : widget.driverName.toString(),
-            dMobile: widget.driverMob.toString() == 'null' ? "Data not available" : widget.driverMob.toString(),
-            dPhoto: widget.dPhoto.toString() == 'null' ? "Data not available" :  widget.dPhoto.toString(),
-            model: widget.vModel.toString() == 'null' ? "Data not available" : widget.vModel.toString(),
-            vOwnerName: widget.vOwnerName.toString() == 'null' ? "Data not available" : widget.vOwnerName.toString(),
-            vRegNo: widget.vRegNumber.toString() == 'null' ? "Data not available" : widget.vRegNumber.toString(),
-            socketToken: socketToken, driverLicense: widget.driverLicense.toString(),otpRide: rideOtp.toString())
+            TrackingMeList(
+                riderId: rideId.toString(),
+                dName: widget.driverName.toString() == 'null' ? "Data not available" : widget.driverName.toString(),
+                dMobile: widget.driverMob.toString() == 'null' ? "Data not available" : widget.driverMob.toString(),
+                dPhoto: widget.dPhoto.toString() == 'null' ? "Data not available" :  widget.dPhoto.toString(),
+                model: widget.vModel.toString() == 'null' ? "Data not available" : widget.vModel.toString(),
+                vOwnerName: widget.vOwnerName.toString() == 'null' ? "Data not available" : widget.vOwnerName.toString(),
+                vRegNo: widget.vRegNumber.toString() == 'null' ? "Data not available" : widget.vRegNumber.toString(),
+                socketToken: socketToken, driverLicense: widget.driverLicense.toString(),otpRide: rideOtp.toString())
         );
+
+        // Get.to(
+        //     StartRide(
+        //     riderId: rideId.toString(),
+        //     dName: widget.driverName.toString() == 'null' ? "Data not available" : widget.driverName.toString(),
+        //     dMobile: widget.driverMob.toString() == 'null' ? "Data not available" : widget.driverMob.toString(),
+        //     dPhoto: widget.dPhoto.toString() == 'null' ? "Data not available" :  widget.dPhoto.toString(),
+        //     model: widget.vModel.toString() == 'null' ? "Data not available" : widget.vModel.toString(),
+        //     vOwnerName: widget.vOwnerName.toString() == 'null' ? "Data not available" : widget.vOwnerName.toString(),
+        //     vRegNo: widget.vRegNumber.toString() == 'null' ? "Data not available" : widget.vRegNumber.toString(),
+        //     socketToken: socketToken, driverLicense: widget.driverLicense.toString(),otpRide: rideOtp.toString())
+        // );
         OverlayLoadingProgress.stop();
         print("Userinformation" + widget.driverId + widget.vehicleId);
       } else {
