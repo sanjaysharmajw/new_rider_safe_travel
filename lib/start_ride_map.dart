@@ -772,11 +772,13 @@ class _SignUpState extends State<StartRide> {
   }
 
   Future<http.Response> endRide() async {
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
         Uri.parse(
             'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/endRide'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': loginToken
         },
         body: json.encode({
           'ride_id': widget.riderId,
@@ -818,9 +820,11 @@ class _SignUpState extends State<StartRide> {
   }
 
   Future<http.Response> SOSNotification() async {
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(Uri.parse(ApiUrl.SOS_Push_Notification),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': loginToken
         },
         body: json.encode({
           'reason': reason.toString(),
@@ -877,12 +881,14 @@ class _SignUpState extends State<StartRide> {
   }
 
   Future<List<Result>> getSuggestions(TextEditingValue textEditingValue) async {
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     if (textEditingValue.text.toString().length > 3) {
       OverlayLoadingProgress.start(context);
       final response = await http.post(
         Uri.parse(ApiUrl.geolocatelist),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': loginToken
         },
         body: jsonEncode(
             <String, String>{"search": textEditingValue.text.toString()}),
@@ -909,10 +915,12 @@ class _SignUpState extends State<StartRide> {
   }
 
   Future<List<Result>> getDestination(String? placeId) async {
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
       Uri.parse(ApiUrl.geolocationDetails),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': loginToken
       },
       body: jsonEncode(<String, String>{"PlaceId": placeId.toString()}),
     );
@@ -976,11 +984,13 @@ class _SignUpState extends State<StartRide> {
   }
 
   Future<SosReasonModel> getSosReason() async {
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
       Uri.parse(
           "https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/sosReasonMaster"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': loginToken
       },
     );
 

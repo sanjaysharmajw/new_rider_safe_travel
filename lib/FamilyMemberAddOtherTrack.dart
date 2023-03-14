@@ -165,12 +165,18 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
   }
 
   Future<AffFamilyMemberNewModel> addFamilyMember(
+
+
       String name, String userId, String relation, String mobile) async {
+
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
       Uri.parse(
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/addFamilyMemberNew'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': loginToken
+
       },
       body: jsonEncode(<String, String>{
         'name': name,

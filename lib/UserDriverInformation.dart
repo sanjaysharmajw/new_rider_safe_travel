@@ -536,9 +536,10 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
 
   Future<http.Response?> userFamilyList(
       String userId, rideId, socketToken, rideOtp) async {
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
       Uri.parse('https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userFamilyList'),
-      headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8',},
+      headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8', 'Authorization': loginToken},
       body: jsonEncode(<String, String>{
         'user_id': userId,
       }),

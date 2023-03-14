@@ -25,7 +25,7 @@ class DemoController extends GetxController{
         Uri.parse("https://i981xwdx4g.execute-api.ap-south-1.amazonaws.com/dev/api/serviceProvider/searchServiceProvider"),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Nzg1MjAyNzgsImRhdGEiOnsiX2lkIjoiNjM4NmY4M2JhMmQ4MDA3NGNiY2ZiOTAzIn0sImlhdCI6MTY3ODQzMzg3OH0.FDjIHEWjhmNNbTE4B-ERGQd_xsbrMVjS7ve8eIxuGzM'
+            'Authorization': loginToken
           },
         body: jsonEncode({
           "service_id": serviceId,
