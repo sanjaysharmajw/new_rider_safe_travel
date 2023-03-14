@@ -46,6 +46,7 @@ class RiderData {
     this.profileImage,
     this.dldetails,
     this.address,
+    this.profile_percentage,
     this.emergencyContact,
     this. personName,
     this. emergencyNumber1,
@@ -97,6 +98,7 @@ class RiderData {
         ? Dldetails.fromJson(json['dldetails'])
         : null;
     address = json['address'];
+    profile_percentage = json['profile_percentage'];
     emergencyNumber1 = json['emergency_contact_no1'];
     personName = json['emergency_contact_person'];
     personName1 = json['emergency_contact_person1'];
@@ -145,6 +147,7 @@ class RiderData {
       String? emergencyNumber1;
   String? personName1;
       String? bloodGroup;
+  int? profile_percentage;
   RiderData copyWith({
     String? id,
     String? firstName,
@@ -187,6 +190,7 @@ class RiderData {
     String? emergencyNumber1,
     String? personName1,
     String? bloodGroup,
+    int? profile_percentage,
   }) =>
       RiderData(
         id: id ?? this.id,
@@ -231,6 +235,7 @@ class RiderData {
           personName: personName ?? personName,
           personName1: personName1 ?? personName1,
           bloodGroup: bloodGroup ?? bloodGroup
+        profile_percentage: profile_percentage ?? this.profile_percentage,
       );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -283,6 +288,7 @@ class RiderData {
     map['emergency_contact_no1'] = emergencyNumber1;
     map['emergency_contact_person1'] = personName1;
     map['blood_group'] = bloodGroup;
+    map['profile_percentage'] = profile_percentage;
     return map;
   }
 }

@@ -35,7 +35,6 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
   Future<List<FamilyListDataModel>> getFamilyList() async {
     setState(() {});
     await Preferences.setPreferences();
-    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     String userId = Preferences.getId(Preferences.id).toString();
     print(userId);
     print("@@@@@@@@@@@@@@@@@@@@@@@@@@@");
@@ -44,7 +43,6 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/familymemberRideList')),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': loginToken
       },
       body: jsonEncode(<String, String>{"user_id": userId}),
     );
@@ -85,7 +83,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
         appBar: AppBar(
           backgroundColor: CustomColor.yellow,
           elevation: 15,
-          title: const Text("Family Members",
+          title: const Text("Other's Live Ride",
               style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',)),
           leading: IconButton(
             color: Colors.black,
@@ -120,7 +118,37 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                   print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                   return InkWell(
                     onTap: () {
-                      //setState(() {});
+                      setState(() {});
+                      Get.to(RiderMap(
+                        riderId: snapshot.data![index].id.toString(),
+                        dName:
+                        snapshot.data![index].driverName.toString() == "null" ? "Data Not Available" : snapshot.data![index].driverName.toString(),
+                        dLicenseNo: snapshot
+                            .data![index].drivingLicenceNumber
+                            .toString() == "null" ? "Data Not Available" :  snapshot
+                            .data![index].drivingLicenceNumber
+                            .toString(),
+                        vModel: snapshot.data![index].vehicleModel
+                            .toString() == "null" ? "Data Not Available" : snapshot.data![index].vehicleModel
+                            .toString(),
+                        vOwnerName:
+                        snapshot.data![index].ownerName.toString() == "null" ? "Data Not Available" : snapshot.data![index].ownerName.toString(),
+                        vRegistration: snapshot
+                            .data![index].vehicleRegistrationNumber
+                            .toString() == "null" ? "Data Not Available" : snapshot
+                            .data![index].vehicleRegistrationNumber
+                            .toString(),
+                        dMobile: snapshot
+                            .data![index].driverMobileNumber
+                            .toString() == "null" ? "Data Not Available" : snapshot
+                            .data![index].driverMobileNumber
+                            .toString(),
+                        dImage: snapshot.data![index].driverPhoto
+                            .toString() == "null" ? "Data Not Available" : snapshot.data![index].driverPhoto
+                            .toString(),
+                        memberName:
+                        snapshot.data![index].memberName.toString() == "null" ? "Data Not Available" : snapshot.data![index].memberName.toString(),
+                      ));
                     },
                     child: Container(
                       child: Column(
@@ -735,14 +763,12 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
       //updateStatus();
     }*/
     await Preferences.setPreferences();
-    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     String userId = Preferences.getId(Preferences.id).toString();
     final response = await http.post(
       Uri.parse(
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/deleteblockFamilyMember'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': loginToken
       },
       body: jsonEncode(<String, String>{
         "user_id": userId,
