@@ -309,7 +309,9 @@ class _UserFamilyListState extends State<TrackingMeList> {
                                         mstatus: memberStatus.toString(),
                                         memberId: snapshot
                                             .data![index].memberId
-                                            .toString(),
+                                            .toString(), userId: snapshot
+                                          .data![index].userId
+                                          .toString(),
                                       ),
                                     ),
                                     Positioned(

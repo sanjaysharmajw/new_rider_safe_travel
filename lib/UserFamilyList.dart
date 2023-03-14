@@ -10,6 +10,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
+import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/switchbutton.dart';
 
 import 'DriverVehicleList.dart';
@@ -31,7 +32,6 @@ class UserFamilyList extends StatefulWidget {
 
 class _UserFamilyListState extends State<UserFamilyList> {
   var _future;
-
   Future<List<FamilyMemberDataModel>> getUserFamilyList() async {
     setState(() {});
     await Preferences.setPreferences();
@@ -70,6 +70,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
 
   var image;
   var memberId;
+  var listUserId;
   String? statusType;
   bool isblocked = false;
   bool unblockbuttonVisibility = false;
@@ -105,34 +106,34 @@ class _UserFamilyListState extends State<UserFamilyList> {
               )),
 
         ),
-        // floatingActionButton: Container(
-        //   height: 60,
-        //   width: 60,
-        //   child: Material(
-        //     type: MaterialType
-        //         .transparency,
-        //     child: Ink(
-        //       decoration: BoxDecoration(
-        //         border: Border.all(color: CustomColor.black, width: 2.0),
-        //         color: CustomColor.yellow,
-        //         shape: BoxShape.circle,
-        //       ),
-        //       child: InkWell(
-        //
-        //         borderRadius: BorderRadius.circular(
-        //             500.0),
-        //         onTap: () {
-        //           Get.to(const FamilyMemberAddOtherTrack());
-        //         },
-        //         child: Icon(
-        //           Icons.add,
-        //           color: CustomColor.black,
-        //           size: 38,
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ),
+        floatingActionButton: Container(
+          height: 60,
+          width: 60,
+          child: Material(
+            type: MaterialType
+                .transparency,
+            child: Ink(
+              decoration: BoxDecoration(
+                border: Border.all(color: CustomColor.black, width: 2.0),
+                color: CustomColor.yellow,
+                shape: BoxShape.circle,
+              ),
+              child: InkWell(
+
+                borderRadius: BorderRadius.circular(
+                    500.0),
+                onTap: () {
+                  Get.to(const FamilyMemberAddOtherTrack());
+                },
+                child: Icon(
+                  Icons.add,
+                  color: CustomColor.black,
+                  size: 38,
+                ),
+              ),
+            ),
+          ),
+        ),
 
         body: FutureBuilder<List<FamilyMemberDataModel>>(
           future: _future,
@@ -149,13 +150,12 @@ class _UserFamilyListState extends State<UserFamilyList> {
                       itemBuilder: (context, index) {
                         // var item = snapshot.data![index].data?[index];
                         image =
-                            "${snapshot.data![index].memberProfileImage.toString()}";
+                        "${snapshot.data![index].memberProfileImage.toString()}";
                         memberId = snapshot.data![index].memberId.toString();
-                        memberStatus =
-                            snapshot.data![index].memberStatus.toString();
-                        memberName =
-                            "${snapshot.data![index].memberFName.toString()} ${snapshot.data![index].memberLName.toString()}";
-                        print(snapshot.data!.length);
+                        listUserId = snapshot.data![index].userId.toString();
+                        memberStatus = snapshot.data![index].memberStatus.toString();
+                        memberName = "${snapshot.data![index].memberFName.toString()} ${snapshot.data![index].memberLName.toString()}";
+                        print(listUserId+memberId);
                         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         return InkWell(
                           onTap: () {
@@ -304,9 +304,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                           left: 40,
                                           child: ToggleSwitchButton(
                                             mstatus: memberStatus.toString(),
-                                            memberId: snapshot
-                                                .data![index].memberId
-                                                .toString(),
+                                            memberId: snapshot.data![index].memberId.toString(), userId: snapshot.data![index].userId.toString(),
                                           ),
                                         ),
                                         Positioned(
@@ -350,7 +348,8 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                                                             onPressed:
                                                                                 () {
                                                                               // OverlayLoadingProgress.start(context);
-                                                                              getMembersStatus("Deleted");
+                                                                              getMembersStatus("Deleted",snapshot.data![index].memberId.toString()
+                                                                              ,snapshot.data![index].userId.toString());
                                                                               setState(() {});
                                                                               Get.back();
                                                                               snapshot.data!.removeAt(index);
@@ -369,7 +368,8 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                                                               onPressed:
                                                                                   () {
                                                                                 Navigator.of(context).pop();
-                                                                                getMembersStatus('Blocked');
+                                                                                getMembersStatus('Blocked',snapshot.data![index].memberId.toString(),
+                                                                                    snapshot.data![index].userId.toString());
                                                                               },
                                                                               child: Text(
                                                                                   "Block",
@@ -438,7 +438,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
         ));
   }
 
-  Future<MemberBlockDeleteModel> getMembersStatus(String status) async {
+  Future<MemberBlockDeleteModel> getMembersStatus(String status, String memberIdsss, String usesssrIdList) async {
     setState(() {});
 
     if (status.toLowerCase().toString() == "Deleted") {
@@ -455,7 +455,9 @@ class _UserFamilyListState extends State<UserFamilyList> {
           backgroundColor: Colors.green,
           colorText: CustomColor.black);
       //updateStatus();
-    } /*else if (status.toLowerCase().toString() == "Active") {
+    }
+
+    /*else if (status.toLowerCase().toString() == "Active") {
       Get.snackbar("Hello!", "Family member is blocked",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.green,
@@ -464,7 +466,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
     }*/
     await Preferences.setPreferences();
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
-    String userId = Preferences.getId(Preferences.id).toString();
+  //  String userId = Preferences.getId(Preferences.id).toString();
     final response = await http.post(
       Uri.parse(
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/deleteblockFamilyMember'),
@@ -473,13 +475,13 @@ class _UserFamilyListState extends State<UserFamilyList> {
         'Authorization': loginToken
       },
       body: jsonEncode(<String, String>{
-        "user_id": userId,
-        "member_id": memberId,
+        "user_id": listUserId.toString(),
+        "member_id": memberId.toString(),
         "status": status.toString()
       }),
     );
     print("FamilyMemberStatusData${jsonEncode(<String, String>{
-          "user_id": userId,
+          "user_id": listUserId,
           "member_id": memberId,
           "status": status.toString()
         })}");

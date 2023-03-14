@@ -15,7 +15,8 @@ import 'Models/MemberBlockDeleteModel.dart';
 class ToggleSwitchButton extends StatefulWidget {
   String mstatus;
   String memberId;
-   ToggleSwitchButton({Key? key, required this.mstatus, required this.memberId}) : super(key: key);
+  String userId;
+   ToggleSwitchButton({Key? key, required this.mstatus, required this.memberId,required this.userId}) : super(key: key);
 
   @override
   State<ToggleSwitchButton> createState() => _ToggleSwitchButtonState();
@@ -159,14 +160,14 @@ class _ToggleSwitchButtonState extends State<ToggleSwitchButton> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        "user_id": userId,
+        "user_id": widget.userId,
         "member_id": widget.memberId,
         "status": widget.mstatus.toString()
       }),
     );
     print("FamilyMemberStatusData" +
         jsonEncode(<String, String>{
-          "user_id": userId,
+          "user_id": widget.userId,
           "member_id": widget.memberId,
           "status": widget.mstatus.toString()
         }));
