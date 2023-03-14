@@ -9,6 +9,7 @@ import 'package:ride_safe_travel/LoginModule/Error.dart';
 import 'package:ride_safe_travel/LoginModule/RiderVerifyOtpPage.dart';
 import 'package:ride_safe_travel/LoginModule/custom_button.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
+import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
 
 class RiderLoginPage extends StatefulWidget {
@@ -179,11 +180,13 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
   }
 
   Future<http.Response?> sendOtpApi(String mobileNumber) async {
+   // var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
       Uri.parse(
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/sendOtpNew'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        //'Authorization': loginToken
       },
       body: jsonEncode(<String, String>{
         'mobile_number': mobileNumber.toString(),

@@ -79,6 +79,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   Future<List<NotificationData>> getNotification() async {
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     await Preferences.setPreferences();
     String userId = Preferences.getId(Preferences.id).toString();
     final response = await http.post(
@@ -86,6 +87,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userNotification')), //old end url: userFamilyList
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': loginToken
       },
       body: jsonEncode(<String, String>{"user_id": userId}),
     );
@@ -103,9 +105,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   Future<http.Response> readNotification(String id) async {
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
+
     final response = await http.post(Uri.parse(ApiUrl.readNotification),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': loginToken
         },
         body: json.encode({
           'id': id.toString(),

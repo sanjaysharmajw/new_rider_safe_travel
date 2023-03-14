@@ -36,6 +36,7 @@ class _ListViewItemState extends State<ListViewItem> {
     setState(() {
     });
     await Preferences.setPreferences();
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     String userId = Preferences.getId(Preferences.id).toString();
     print(userId);
     print("@@@@@@@@@@@@@@@@@@@@@@@@@@@");
@@ -44,6 +45,7 @@ class _ListViewItemState extends State<ListViewItem> {
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/myFamilyList')), //old end url: userFamilyList
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': loginToken
       },
       body: jsonEncode(<String, String>{"user_id": userId}),
     );
@@ -540,11 +542,14 @@ class _ListViewItemState extends State<ListViewItem> {
     }*/
     await Preferences.setPreferences();
     String userId = Preferences.getId(Preferences.id).toString();
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
       Uri.parse(
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/deleteblockFamilyMember'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': loginToken
+
       },
       body: jsonEncode(<String, String>{
         "user_id": userId,
