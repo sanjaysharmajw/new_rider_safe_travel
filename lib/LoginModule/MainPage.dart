@@ -414,6 +414,7 @@ var userId;
     );
   }
   Future<String> checkActiveUser() async {
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     print( "USER"+jsonEncode(<String, String>{
       'user_id': userId,
     }),);
@@ -422,6 +423,8 @@ var userId;
       Uri.parse(ApiUrl.checkActiveUserRide),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': loginToken
+
       },
       body: jsonEncode(<String, String>{
         'user_id': userId,
@@ -468,9 +471,12 @@ var userId;
     }
   }
   Future<http.Response> countNotification() async {
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(Uri.parse(ApiUrl.countNotification),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': loginToken
+
         },
         body: json.encode({
           'user_id': userId.toString(),
@@ -494,10 +500,14 @@ var userId;
     }
   }
   Future<DriverVehicleList> driverVehicleListApi(String result) async {
+
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
+
     final response = await http.post(
       Uri.parse(ApiUrl.driverVehicleList),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': loginToken
       },
       body: jsonEncode(<String, String>{
         'driver_id': result.toString(),

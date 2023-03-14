@@ -91,12 +91,21 @@ class _RiderProfileViewState extends State<RiderProfileView> {
   final TextEditingController cityController = TextEditingController();
   final TextEditingController expiryDateController = TextEditingController();
   final TextEditingController emergencyContactController = TextEditingController();
+  final TextEditingController emergencyContact1Controller = TextEditingController();
+  final TextEditingController contactPersonController = TextEditingController();
+  final TextEditingController contactPerson1Controller = TextEditingController();
+  final TextEditingController bloodgroupController = TextEditingController();
 
 
   late Future<List<RiderUserListData>> futurePost;
 
   var _future;
 
+  String? emergencyContact1;
+  String? contactPerson;
+  String? contactPerson1;
+  String? bloodgroup;
+  String? emergencyContact;
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +176,11 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                        mobileNumber: '${snapshot.data![index].mobileNumber.toString()}' == "null" ? " " : '${snapshot.data![index].mobileNumber.toString()}',
                                        imageProfile: profileImage,
                                        gender: '${snapshot.data![index].gender.toString()}' == "null" ? " " : '${snapshot.data![index].gender.toString()}',
-                                       emergencyContact:  '${snapshot.data![index].emergencyContact.toString()}' == "null" ? " " : '${snapshot.data![index].emergencyContact.toString()}', )
+                                       emergencyContact:  '${snapshot.data![index].emergencyContact.toString()}' == "null" ? " " : '${snapshot.data![index].emergencyContact.toString()}',
+                                       bloodgroup: '${snapshot.data![index].bloodGroup.toString()}' == "null" ? " " : '${snapshot.data![index].bloodGroup.toString()}',
+                                       contactPerson: '${snapshot.data![index].personName.toString()}' == "null" ? " " : '${snapshot.data![index].personName.toString()}',
+                                       emergencyContact1: '${snapshot.data![index].emergencyNumber1.toString()}' == "null" ? " " : '${snapshot.data![index].emergencyNumber1.toString()}',
+                                       contactPerson1: '${snapshot.data![index].personName1.toString()}' == "null" ? " " : '${snapshot.data![index].personName1.toString()}', )
                                  ))
                                      .then((value) {
 
@@ -542,15 +555,14 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                             children: [
                               Row(
                                 children: [
+
                                   Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 15, right: 15, top: 0, bottom: 0),
-                                      child: Icon(Icons.location_pin)
-                                  ),
-                                  const Text(
-                                    "Gender",
-                                    style:
-                                    TextStyle(fontFamily: 'transport', fontSize: 16,),
+                                    padding: const EdgeInsets.only(left: 25),
+                                    child: const Text(
+                                      "Gender",
+                                      style:
+                                      TextStyle(fontFamily: 'transport', fontSize: 16,),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -569,6 +581,56 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     decoration:  InputDecoration(
                                       enabled: false,
                                       hintText:  '${snapshot.data![index].gender.toString()}' == "null" ? " " : '${snapshot.data![index].gender.toString()}',
+                                      hintStyle: TextStyle(
+                                          fontFamily: 'transport',
+                                          fontSize: 15,color: Colors.black54),
+                                      border: UnderlineInputBorder(),
+                                      enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 1, color: CustomColor.yellow)),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1, color: Colors.amberAccent),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 25),
+                                    child: const Text(
+                                      "Blood Group",
+                                      style:
+                                      TextStyle(fontFamily: 'transport', fontSize: 16,),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              VerticalDivider(width: 30.0),
+                              Expanded(
+                                flex: 2,
+                                child: SizedBox(
+                                  height: 45,
+                                  child: TextFormField(
+
+                                    style: const TextStyle(
+                                        fontSize: 16.0, fontFamily: "transport"),
+                                    keyboardType: TextInputType.number,
+                                    maxLines: 1,
+                                    controller: bloodgroupController,
+                                    decoration:  InputDecoration(
+                                      enabled: false,
+                                      hintText:  '${snapshot.data![index].bloodGroup.toString()}' == "null" ? " " : '${snapshot.data![index].bloodGroup.toString()}',
                                       hintStyle: TextStyle(
                                           fontFamily: 'transport',
                                           fontSize: 15,color: Colors.black54),
@@ -655,55 +717,119 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                             height: 20,
                           ),
 
-                          Row(
-                            children: [
-                              Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 15, right: 15, top: 0, bottom: 0),
-                                  child:  Icon(Icons.phone_outlined)
-                              ),
-                              const Text(
-                                "Emergency Contact Number",
-                                style:
-                                TextStyle(fontFamily: 'transport', fontSize: 16),
-                              ),
-                            ],
-                          ),
                           Padding(
-                            padding: const EdgeInsets.only(right: 15, left: 15),
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                  flex: 2,
-                                  child: SizedBox(
-                                    height: 45,
-                                    child: TextFormField(
-
-                                      style: const TextStyle(
-                                          fontFamily: 'transport', fontSize: 16),
-                                      maxLines: 1,
-                                      controller: emergencyContactController,
-                                      decoration:  InputDecoration(
-                                        hintText: '${snapshot.data![index].emergencyContact.toString()}' == "null" ? " " : '${snapshot.data![index].emergencyContact.toString()}',
-                                        hintStyle: TextStyle(
-                                            fontFamily: 'transport',
-                                            fontSize: 15,color: Colors.black54),
-                                        enabled: false,
-                                        border: UnderlineInputBorder(),
-                                        enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                width: 1, color: CustomColor.yellow)),
-                                        focusedBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 1, color: Colors.amberAccent),
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 10),
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.circular(8),
+                                    border: Border.all(
+                                        color:
+                                        const Color(0xffEFEFEF)),
+                                    color: CustomColor.buttonColor),
+                                child: Column(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.start,
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 10, top: 10),
+                                      child: Text(
+                                        "Emergency contact number's ",
+                                        style: TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-
                                     ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment
+                                          .spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 20, right: 10),
+                                          child: MyText(
+                                              text:
+                                              snapshot.data![index].personName.toString() == "null" ? " " :  snapshot.data![index].personName.toString(),
+                                              fontFamily: 'transport',
+                                              color:
+                                              Color(0xff48422B),
+                                              fontSize: 14.sp),
+                                        ),
+                                        Container(
+                                            width: 30.w,
+                                            height: 38.h,
+                                            child: VerticalDivider()),
+                                        Expanded(
+                                            child: Center(
+                                                child: TextField(
+                                                  decoration: InputDecoration(
+                                                    border: InputBorder.none,
+                                                    hintText: snapshot.data![index].emergencyContact.toString() == "null"
+                                                        ? " "
+                                                        : snapshot.data![index].emergencyContact.toString(),
+                                                  ),
+                                                  enabled: false,
+                                                  readOnly: true,
+                                                  keyboardType:
+                                                  TextInputType.number,
+                                                  inputFormatters: <
+                                                      TextInputFormatter>[
+                                                    FilteringTextInputFormatter
+                                                        .digitsOnly
+                                                  ],
+                                                ))),
+                                      ],
+                                    ),
+                                    Divider(
+                                      color: CustomColor.text,
+                                      height: 0,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 20, right: 34),
+                                          child: MyText(
+                                              text: snapshot.data![index].personName1.toString() == "null"
+                                                  ? " "
+                                                  : snapshot.data![index].personName1.toString() ,
+                                              fontFamily: 'transport',
+                                              color:
+                                              Color(0xff48422B),
+                                              fontSize: 14.sp),
+                                        ),
+                                        Container(
+                                            width: 5.w,
+                                            height: 38.h,
+                                            child: VerticalDivider()),
+                                        Expanded(
+                                            child: TextField(
+                                                decoration:
+                                                InputDecoration(
+                                                  border: InputBorder
+                                                      .none,
+                                                  hintText: snapshot.data![index].emergencyNumber1.toString() ==
+                                                      "null"
+                                                      ? " "
+                                                      : snapshot.data![index].emergencyNumber1.toString(),
+                                                ),
+                                                enabled: false,
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter
+                                                      .allow(RegExp(
+                                                      "[a-zA-Z0-9]")),
+                                                ])),
+                                      ],
+                                    ),
+
+                                  ],
+                                )),
                           ),
 
                         ],
@@ -742,11 +868,13 @@ class _RiderProfileViewState extends State<RiderProfileView> {
   Future<List<RiderData>> getRiderData() async {
    // OverlayLoadingProgress.start(context);
     await Preferences.setPreferences();
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     String mobileNumber = Preferences.getMobileNumber(Preferences.mobileNumber).toString();
     final response = await http.post(
       (Uri.parse('https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userList')),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': loginToken
       },
       body: jsonEncode(<String, String>{
         'mobile_number': mobileNumber,

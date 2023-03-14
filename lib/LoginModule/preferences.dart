@@ -165,7 +165,6 @@ class Preferences {
 
 
 
-
   static dynamic getId(String key) {
     return Preferences.instance!.get(key);
   }

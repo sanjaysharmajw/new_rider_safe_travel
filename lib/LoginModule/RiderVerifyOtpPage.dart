@@ -14,6 +14,7 @@ import 'package:ride_safe_travel/LoginModule/custom_button.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/LoginModule/riderNewRegisterLoginModel.dart';
+import 'package:ride_safe_travel/OtpModel.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -300,11 +301,14 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         <String, String>{'mobile_number': mobileNumber, "otp": otp}));
     if (response.statusCode == 200) {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
+      String token = jsonDecode(response.body)['token'];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
         OverlayLoadingProgress.stop();
         //Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
         ToastMessage.toast(msg);
+        print("verifyOTP..."+token.toString());
+        Preferences.setLoginToken(Preferences.loginToken, token);
         await regUserNew(mobileNumber.toString());
       } else {
         OverlayLoadingProgress.stop();
@@ -318,11 +322,14 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
   }
 
   Future<http.Response?> sendOtpApi(String mobileNumber) async {
+
+
     final response = await http.post(
       Uri.parse(
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/sendOtpNew'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+
       },
       body: jsonEncode(<String, String>{
         'mobile_number': mobileNumber,
@@ -335,6 +342,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         OverlayLoadingProgress.stop();
         //Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
         ToastMessage.toast(msg);
+
         Get.to(RiderVerifyOtpPage(mobileNumber: mobileNumber.toString()));
       } else {
         OverlayLoadingProgress.stop();
@@ -347,11 +355,14 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
   }
 
   Future<Data> regUserNew(String mobileNumber) async {
+
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
       Uri.parse(
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/regUserNew'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': loginToken
       },
       body: jsonEncode(<String, String>{
         'mobile_number': mobileNumber.toString(),
@@ -364,6 +375,13 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       'mobile_number': mobileNumber.toString(),
       'fcmtoken': fcmToken.toString(),
     }),);
+
+    print({
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': loginToken
+    },);
+
+
     if (response.statusCode == 200) {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       //var msg = jsonDecode(response.body)[ErrorMessage.message];
@@ -381,6 +399,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         var userType = loginData[0].userType;
         var gender = loginData[0].gender;
 
+
         print("UserId"+id! +
             firstname.toString()+
             lastname.toString() +
@@ -396,6 +415,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         Preferences.setUserType(Preferences.userType, userType.toString());
         Preferences.setProfileImage(profileImage.toString());
         Preferences.setGender(gender.toString());
+
         Get.to(const MainPage());
         ToastMessage.toast("Successful");
       } else {

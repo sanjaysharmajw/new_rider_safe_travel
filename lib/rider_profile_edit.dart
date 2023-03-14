@@ -48,6 +48,10 @@ class RiderProfileEdit extends StatefulWidget {
   String mobileNumber;
   String gender;
   String emergencyContact;
+  String emergencyContact1;
+  String contactPerson;
+  String contactPerson1;
+  String bloodgroup;
 
   RiderProfileEdit(
       {Key? key,
@@ -62,7 +66,11 @@ class RiderProfileEdit extends StatefulWidget {
         required this.mobileNumber,
         required this.imageProfile,
         required this.gender,
-      required this.emergencyContact})
+      required this.emergencyContact,
+      required this.bloodgroup,
+      required this.contactPerson,
+      required this.emergencyContact1,
+      required this.contactPerson1})
       : super(key: key);
 
   @override
@@ -85,7 +93,12 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   final TextEditingController stateController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
-  final TextEditingController emergencyContactController = TextEditingController();
+  final TextEditingController emergencyContact0Controller = TextEditingController();
+  final TextEditingController emergencyContact1Controller = TextEditingController();
+  final TextEditingController contactPersonController = TextEditingController();
+  final TextEditingController contactPerson1Controller = TextEditingController();
+  final TextEditingController bloodgroupController = TextEditingController();
+
 
   var firstname;
   var lastname;
@@ -98,7 +111,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   var mycities;
   var age;
   var gender;
-  var emergencyContact;
+
 
   final _formKey = GlobalKey<FormState>();
 
@@ -188,8 +201,12 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     pinController.text = widget.pincode.toString();
     emailController.text = widget.emailId.toString();
     mobileNumberController.text = widget.mobileNumber.toString();
-    emergencyContactController.text = widget.emergencyContact.toString();
+    emergencyContact0Controller.text = widget.emergencyContact.toString();
     radioButtonItem = widget.gender.toString();
+    emergencyContact1Controller.text = widget.emergencyContact1.toString();
+    contactPerson1Controller.text = widget.contactPerson1.toString();
+    contactPersonController.text = widget.contactPerson.toString();
+    bloodgroupController.text = widget.bloodgroup.toString();
     if(radioButtonItem=='Female')
     {
       id=1;
@@ -681,6 +698,59 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           )),
                     ],
                   ),
+                  Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child: Text(
+                          "Blood Group  -",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: CustomColor.riderprofileColor),
+                        ),
+                      ),
+                      VerticalDivider(width: 60.0),
+                      Expanded(
+                          child: Center(
+                            child: TextFormField(
+
+                              showCursor: true,
+                              cursorHeight:30,
+                              cursorWidth: 2.0,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.deny(' '),
+
+                              ],
+                              style: TextStyle(
+                                fontFamily: 'transport',
+                                fontSize: 18,
+                              ),
+                              controller: bloodgroupController,
+                              //keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                border: const UnderlineInputBorder(),
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1, color: CustomColor.yellow)),
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 2, color: CustomColor.yellow)),
+                              ),
+
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty) {
+                                  return 'Blood Group is Required !';
+                                }
+                                return null;
+                              },
+                            ),
+                          )),
+                    ],
+                  ),
+
+
                   const SizedBox(
                     height: 20,
                   ),
@@ -1027,20 +1097,42 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                   const SizedBox(
                     height: 25,
                   ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15, right: 15, top: 0, bottom: 0),
-                        child: Icon(Icons.phone_outlined),
-                         ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 15, left: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 2,
+                          child: Row(
+                            children: [
+
+                              const Text("Contact Person Name",
+                                  style: TextStyle(
+                                      color: CustomColor.black,
+                                      fontFamily: 'transport',
+                                      fontSize: 16)),
+                            ],
+                          ),
+                        ),
+                        Container(width: 15),
+                        Expanded(
+                          flex: 2,
+                          child: Row(
+                            children: [
 
 
-                      const Text(
-                        "Emergency Contact Number - ",
-                        style: TextStyle(fontFamily: 'transport', fontSize: 16),
-                      ),
-                    ],
+                              const Text("Emergency contact no.",
+                                  style: TextStyle(
+                                      color: CustomColor.black,
+                                      fontFamily: 'transport',
+                                      fontSize: 16)),
+                            ],
+                          ),
+                        ),
+
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 15, left: 15),
@@ -1051,15 +1143,62 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           child: SizedBox(
                             height: 45,
                             child: TextFormField(
-                              showCursor: true,
-                              cursorHeight:25,
-                              cursorWidth: 2.0,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp("[A-Za-z]")),
+                                //LengthLimitingTextInputFormatter(10),
+                              ],
+                              style: const TextStyle(
+                                  fontFamily: 'transport',
+                                  fontSize: 16),
+                              maxLines: 1,
+                              controller: contactPersonController,
+                              decoration:  InputDecoration(
+                                // suffixIcon:
+                                //GestureDetector(
+                                //  onTap: (){
+                                // },
+                                //child: Image(
+                                // image: AssetImage("images/circle_checked.png"),
+                                //width: 0,
+                                //height: 0,
+                                //)
+                                //),
+                                border: UnderlineInputBorder(),
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1,
+                                        color: CustomColor.yellow)),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1,
+                                      color: Colors.amberAccent),
+                                ),
+                              ),
+                              onTap: () async {
 
-                              controller: emergencyContactController,
+                              },
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty) {
+                                  return 'Please enter person name ';
+                                }
+                                return null;
+                              },
+                            ),
+
+                          ),
+                        ),
+                        Container(width: 15),
+                        Expanded(
+                          flex: 2,
+                          child: SizedBox(
+                            height: 45,
+                            child: TextFormField(
+                              controller: emergencyContact0Controller,
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
                                     RegExp("[0-9]")),
-                                FilteringTextInputFormatter.deny(RegExp(r'^0+')),
                                 LengthLimitingTextInputFormatter(10),
                               ],
                               style: const TextStyle(
@@ -1068,23 +1207,22 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 border: const UnderlineInputBorder(),
-                                enabledBorder: const UnderlineInputBorder(
+                                enabledBorder:
+                                const UnderlineInputBorder(
                                   borderSide: BorderSide(
                                       width: 1,
                                       color: CustomColor.yellow),
                                 ),
-                                focusedBorder: const UnderlineInputBorder(
+                                focusedBorder:
+                                const UnderlineInputBorder(
                                   borderSide: BorderSide(
                                       width: 1,
                                       color: Colors.amberAccent),
                                 ),
-                                prefixIcon: Image.asset(
-                                  "icons/flag.png",
-                                  width: 50,
-                                ),
+
                                 prefixText: "+91",
                                 prefixStyle: const TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 17,
                                     fontFamily: "transport",
                                     fontWeight: FontWeight.normal),
                               ),
@@ -1092,13 +1230,150 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 if (value == null ||
                                     value.isEmpty ||
                                     value.length != 10) {
-                                  return 'Please enter 10 digit number';
+                                  return 'Please enter 10 digit mobile number';
                                 }
                                 return null;
                               },
                             ),
                           ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 18.h,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 15, left: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 2,
+                          child: Row(
+                            children: [
+
+                              const Text("Contact Person Name",
+                                  style: TextStyle(
+                                      color: CustomColor.black,
+                                      fontFamily: 'transport',
+                                      fontSize: 16)),
+                            ],
+                          ),
                         ),
+                        Container(width: 15),
+                        Expanded(
+                          flex: 2,
+                          child: Row(
+                            children: [
+
+
+                              const Text("Emergency contact no.",
+                                  style: TextStyle(
+                                      color: CustomColor.black,
+                                      fontFamily: 'transport',
+                                      fontSize: 16)),
+                            ],
+                          ),
+                        ),
+
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 15, left: 15),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 2,
+                          child: SizedBox(
+                            height: 45,
+                            child: TextFormField(
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp("[A-Za-z]")),
+                                //LengthLimitingTextInputFormatter(10),
+                              ],
+                              style: const TextStyle(
+                                  fontFamily: 'transport',
+                                  fontSize: 16),
+                              maxLines: 1,
+                              controller: contactPerson1Controller,
+                              decoration:  InputDecoration(
+
+                                border: UnderlineInputBorder(),
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1,
+                                        color: CustomColor.yellow)),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1,
+                                      color: Colors.amberAccent),
+                                ),
+                              ),
+                              onTap: () async {
+
+                              },
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty) {
+                                  return 'Please enter person name';
+                                }
+                                return null;
+                              },
+                            ),
+
+                          ),
+                        ),
+                        Container(width: 15),
+                        Expanded(
+                          flex: 2,
+                          child: SizedBox(
+                            height: 45,
+                            child: TextFormField(
+                              controller: emergencyContact1Controller,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp("[0-9]")),
+                                LengthLimitingTextInputFormatter(10),
+                              ],
+                              style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontFamily: "transport"),
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                border: const UnderlineInputBorder(),
+                                enabledBorder:
+                                const UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1,
+                                      color: CustomColor.yellow),
+                                ),
+                                focusedBorder:
+                                const UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1,
+                                      color: Colors.amberAccent),
+                                ),
+
+                                prefixText: "+91",
+                                prefixStyle: const TextStyle(
+                                    fontSize: 17,
+                                    fontFamily: "transport",
+                                    fontWeight: FontWeight.normal),
+                              ),
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    value.length != 10) {
+                                  return 'Please enter 10 digit mobile number';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -1127,7 +1402,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             uploadedImage = imageFilePath.toString();
                             mystates = stateController.text.toString();
                             mycities = cityController.text.toString();
-                            emergencyContact = emergencyContactController.text.toString();
+                            emergencyContact0Controller.text.toString();
                             print(userId);
                             print(pinNumber);
                             print(uploadedImage);
@@ -1332,7 +1607,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     );
   }
   Future<List<RiderUserListData>> getRiderData() async {
+
     await Preferences.setPreferences();
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     String mobileNumber = Preferences.getMobileNumber(Preferences.mobileNumber);
     print(mobileNumber);
     print("______________________________________");
@@ -1341,6 +1618,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userList')),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': loginToken
       },
       body: jsonEncode(<String, String>{
         'mobile_number': mobileNumber,
@@ -1360,11 +1638,13 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   }
 
   Future<http.Response?> awsUpload(String imagePath) async {
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
       Uri.parse(
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/getSignedUrlsgb/getSignedURL'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': loginToken
       },
       body: jsonEncode(<String, String>{
         'contentType': 'img/jpeg',
@@ -1468,6 +1748,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   }  */
 
   Future<http.Response?> updateProfile(String userId) async {
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     //  var updatedAge= Preferences.getAge(Preferences.age);
     OverlayLoadingProgress.start(context);
     /* mystates = statename.toString();
@@ -1562,13 +1843,18 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
           "shift_time_to": "",
         },
         "address": myaddress,
-        "emergency_contact_no": emergencyContact
+        "emergency_contact_no": emergencyContact0Controller.text.toString(),
+      "emergency_contact_person":contactPersonController.text.toString(),
+      "emergency_contact_no1":emergencyContact1Controller.text.toString(),
+      "emergency_contact_person1":contactPerson1Controller.text.toString(),
+      "blood_group":bloodgroupController.text.toString()
       };
       final response = await http.post(
         Uri.parse(
             'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/updateUserProfile'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': loginToken
         },
         body: jsonEncode(data),
       );

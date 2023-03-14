@@ -47,6 +47,10 @@ class RiderData {
     this.dldetails,
     this.address,
     this.emergencyContact,
+    this. personName,
+    this. emergencyNumber1,
+    this. personName1,
+    this. bloodGroup,
   });
 
   RiderData.fromJson(dynamic json) {
@@ -93,6 +97,12 @@ class RiderData {
         ? Dldetails.fromJson(json['dldetails'])
         : null;
     address = json['address'];
+    emergencyNumber1 = json['emergency_contact_no1'];
+    personName = json['emergency_contact_person'];
+    personName1 = json['emergency_contact_person1'];
+    bloodGroup = json['blood_group'];
+
+
   }
   String? id;
   String? firstName;
@@ -131,6 +141,10 @@ class RiderData {
   Dldetails? dldetails;
   String? address;
   String? emergencyContact;
+  String? personName;
+      String? emergencyNumber1;
+  String? personName1;
+      String? bloodGroup;
   RiderData copyWith({
     String? id,
     String? firstName,
@@ -169,6 +183,10 @@ class RiderData {
     Dldetails? dldetails,
     String? address,
     String? emergencyContact,
+    String? personName,
+    String? emergencyNumber1,
+    String? personName1,
+    String? bloodGroup,
   }) =>
       RiderData(
         id: id ?? this.id,
@@ -209,6 +227,10 @@ class RiderData {
         dldetails: dldetails ?? this.dldetails,
         address: address ?? this.address,
           emergencyContact: emergencyContact ?? this.emergencyContact,
+          emergencyNumber1: emergencyNumber1 ?? emergencyNumber1,
+          personName: personName ?? personName,
+          personName1: personName1 ?? personName1,
+          bloodGroup: bloodGroup ?? bloodGroup
       );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -257,6 +279,10 @@ class RiderData {
     }
     map['address'] = address;
     map['emergency_contact_no'] = emergencyContact;
+    map['emergency_contact_person'] = personName;
+    map['emergency_contact_no1'] = emergencyNumber1;
+    map['emergency_contact_person1'] = personName1;
+    map['blood_group'] = bloodGroup;
     return map;
   }
 }

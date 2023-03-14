@@ -74,6 +74,7 @@ class Data {
     this.createdBy,
     this.updatedBy,
     this.dob,
+    this.token,
   });
 
   Data.fromJson(dynamic json) {
@@ -108,6 +109,7 @@ class Data {
     createdBy = json['created_by'];
     updatedBy = json['updated_by'];
     dob = json['dob'];
+    token = json['token'];
   }
   String? id;
   String? firstName;
@@ -138,6 +140,7 @@ class Data {
   String? createdBy;
   String? updatedBy;
   String? dob;
+  String? token;
   Data copyWith({
     String? id,
     String? firstName,
@@ -168,6 +171,7 @@ class Data {
     String? createdBy,
     String? updatedBy,
     String? dob,
+    String? token,
   }) =>
       Data(
         id: id ?? this.id,
@@ -199,6 +203,7 @@ class Data {
         createdBy: createdBy ?? this.createdBy,
         updatedBy: updatedBy ?? this.updatedBy,
         dob: dob ?? this.dob,
+        token: token ?? this.token,
       );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -233,6 +238,7 @@ class Data {
     map['created_by'] = createdBy;
     map['updated_by'] = updatedBy;
     map['dob'] = dob;
+    map['token'] = token;
     return map;
   }
 }

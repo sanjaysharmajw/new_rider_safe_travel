@@ -502,11 +502,13 @@ class _MyRidesPageState extends State<MyRidesPage> {
 
   Future<List<RideDataModel>> getData() async {
     await Preferences.setPreferences();
+    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     String userId = Preferences.getId(Preferences.id).toString();
     final response = await http.post(
       Uri.parse(ApiUrl.getMyTripApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': loginToken
       },
       body: jsonEncode(<String, String>{
         'user_id': userId,
