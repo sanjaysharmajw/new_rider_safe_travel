@@ -32,7 +32,6 @@ class _ToggleSwitchButtonState extends State<ToggleSwitchButton> {
             activeText: "Block",
             inactiveText: "Unblock",
             value: (widget.mstatus.toString()=='Blocked'?true:false),
-
             activeTextColor: Colors.black54,
             inactiveTextColor: Colors.black54,
             activeColor: Colors.red,
@@ -49,7 +48,6 @@ class _ToggleSwitchButtonState extends State<ToggleSwitchButton> {
             showOnOff: true,
             toggleSize: 20,
             toggleColor: Colors.black54,
-
             onToggle: (val) {
               setState(() {
                 showDialog(context: context, builder: (BuildContext

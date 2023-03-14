@@ -152,9 +152,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                         memberStatus =
                             snapshot.data![index].memberStatus.toString();
                         memberName =
-                            "${snapshot.data![index].memberFName.toString()}" +
-                                " " +
-                                "${snapshot.data![index].memberLName.toString()}";
+                            "${snapshot.data![index].memberFName.toString()} ${snapshot.data![index].memberLName.toString()}";
                         print(snapshot.data!.length);
                         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         return InkWell(
@@ -328,7 +326,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                                             return AlertDialog(
                                                               content:
                                                                   Container(
-                                                                height: 120,
+                                                                height: 150,
                                                                 child: Column(
                                                                   crossAxisAlignment:
                                                                       CrossAxisAlignment
@@ -338,14 +336,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                                                       height:
                                                                           10,
                                                                     ),
-                                                                    Text("Do you really want to delete" +
-                                                                        " " +
-                                                                        snapshot
-                                                                            .data![index]
-                                                                            .memberMobileNumber
-                                                                            .toString() +
-                                                                        " " +
-                                                                        "?"),
+                                                                    Text("This will remove the user permanently from the list, You can also block the user to temporarily disable the users."),
                                                                     SizedBox(
                                                                         height:
                                                                             15),
@@ -369,6 +360,24 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                                                                 ElevatedButton.styleFrom(primary: CustomColor.yellow),
                                                                           ),
                                                                         ),
+                                                                        SizedBox(width: 15),
+                                                                        Expanded(
+                                                                            child:
+                                                                            ElevatedButton(
+                                                                              onPressed:
+                                                                                  () {
+                                                                                Navigator.of(context).pop();
+                                                                                getMembersStatus('Blocked');
+                                                                              },
+                                                                              child: Text(
+                                                                                  "Block",
+                                                                                  style: TextStyle(color: Colors.black)),
+                                                                              style:
+                                                                              ElevatedButton.styleFrom(
+                                                                                primary:
+                                                                                Colors.white,
+                                                                              ),
+                                                                            )),
                                                                         SizedBox(
                                                                             width:
                                                                                 15),
@@ -465,18 +474,17 @@ class _UserFamilyListState extends State<UserFamilyList> {
         "status": status.toString()
       }),
     );
-    print("FamilyMemberStatusData" +
-        jsonEncode(<String, String>{
+    print("FamilyMemberStatusData${jsonEncode(<String, String>{
           "user_id": userId,
           "member_id": memberId,
           "status": status.toString()
-        }));
+        })}");
     if (response.statusCode == 200) {
       setState(() {});
       getUserFamilyList();
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
-      print("Body: " + response.body);
+      print("Body: ${response.body}");
       if (status == true) {
         setState(() {
           // getUserFamilyList();
@@ -488,6 +496,8 @@ class _UserFamilyListState extends State<UserFamilyList> {
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: CustomColor.black);
+        setState(() {});
+        _future = getUserFamilyList();
       } else if (status == false) {
         Get.snackbar("Ooops!", msg.toString(),
             snackPosition: SnackPosition.BOTTOM,

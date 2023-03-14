@@ -11,8 +11,10 @@ import 'new_my_rider_model.dart';
 
 class MyRiderItemsList extends StatelessWidget {
   final DataMyRider myRideList;
+  final VoidCallback pressOnView;
+  final VoidCallback pressOnEnd;
 
-  const MyRiderItemsList({Key? key, required this.myRideList})
+  const MyRiderItemsList({Key? key, required this.myRideList, required this.pressOnView, required this.pressOnEnd})
       : super(key: key);
 
   @override
@@ -76,8 +78,7 @@ class MyRiderItemsList extends StatelessWidget {
                           FeatherIcons.eye,
                           color: theme.colorScheme.error,
                         )),
-                    onTap: () {
-                    },
+                    onTap: pressOnView,
                   ),
                 ),
               ),
@@ -95,9 +96,7 @@ class MyRiderItemsList extends StatelessWidget {
                           height: 40,
                           child: Image.asset('images/End_Ride.png'),
                       ),
-                      onTap: () {
-
-                      },
+                      onTap: pressOnEnd,
                     ),
                   ),
                 ),

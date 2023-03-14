@@ -26,6 +26,7 @@ class Preferences {
   static const String ageCalculate = "ageCalculate";
   static const String gender = "GENDER";
   static const String rideOtp = "RIDEOTP";
+  static const String newRiderId = "NEWRIDERID";
   static const String loginToken = 'token';
 
   static Future<void> setPreferences() async {
@@ -46,6 +47,14 @@ class Preferences {
 
   static dynamic getRideOtp() {
     return Preferences.instance!.get(rideOtp);
+  }
+
+  static Future<bool> setNewRiderId(String value) {
+    return Preferences.instance!.setString(newRiderId, value);
+  }
+
+  static dynamic getNewRiderId() {
+    return Preferences.instance!.get(newRiderId);
   }
 
   static Future<bool> setGender(String value) {
