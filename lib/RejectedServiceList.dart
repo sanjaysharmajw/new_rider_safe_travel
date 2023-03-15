@@ -8,7 +8,8 @@ import 'MyText.dart';
 import 'ServicesPage.dart';
 
 class RejectedServiceList extends StatefulWidget {
-  const RejectedServiceList({Key? key}) : super(key: key);
+  String changeColor;
+   RejectedServiceList({Key? key, required this.changeColor}) : super(key: key);
 
   @override
   State<RejectedServiceList> createState() => _RejectedServiceListState();

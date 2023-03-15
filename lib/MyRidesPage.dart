@@ -14,7 +14,8 @@ import 'LoginModule/preferences.dart';
 import 'Models/RideDataModel.dart';
 
 class MyRidesPage extends StatefulWidget {
-  const MyRidesPage({Key? key}) : super(key: key);
+  String changeAppbar;
+   MyRidesPage({Key? key, required this.changeAppbar}) : super(key: key);
 
   @override
   State<MyRidesPage> createState() => _MyRidesPageState();
@@ -29,8 +30,8 @@ class _MyRidesPageState extends State<MyRidesPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: CustomColor.yellow,
-          elevation: 15,
+          backgroundColor: (widget.changeAppbar =='bottomNav') ? Colors.white : Colors.yellow,
+          elevation: 0,
           title: const Text("My Trips List",
               style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',)),
           leading: IconButton(

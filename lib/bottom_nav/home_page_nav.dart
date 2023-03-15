@@ -236,7 +236,7 @@ class _HomePageState extends State<HomePageNav> {
                           children: [
                             InkWell(
                               onTap: () {
-                                Get.to(const MyRidesPage());
+                                Get.to( MyRidesPage(changeAppbar: 'fromClass',));
                               },
                               child:  HomePageItems(
                                 completed: 58,
@@ -258,7 +258,7 @@ class _HomePageState extends State<HomePageNav> {
                             ),
                             InkWell(
                               onTap: () {
-                                Get.to(const FamilyMemberListScreen());
+                                Get.to(const FamilyMemberListScreen(changeUiValue: 'fromClass'));
                               },
                               child:  HomePageItems(
                                 completed: 45,
