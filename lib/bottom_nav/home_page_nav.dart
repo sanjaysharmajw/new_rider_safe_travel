@@ -245,8 +245,8 @@ class _HomePageState extends State<HomePageNav> {
                                   click: () {
                                     Get.to(const RiderProfileView());
                                   },
-                                  imageLink: image.toString()
-                                ),
+                                  imageLink:
+                                      Preferences.getProfileImage().toString()),
                             ),
                           ],
                         ),
