@@ -28,7 +28,7 @@ class HomePageItems extends StatelessWidget {
           children: [
             Text(title,style: const TextStyle(fontWeight: FontWeight.w500,fontFamily: 'transport',color: Colors.white,fontSize: 16)),
             const SizedBox(height: 5),
-            Text(subtitle,style: const TextStyle(fontWeight: FontWeight.w100,fontFamily: 'transport',color: Colors.white))
+            Text(subtitle,style: const TextStyle(fontWeight: FontWeight.w100,fontFamily: 'transport',color: Colors.white,fontSize: 16))
           ],
         ),
       ),

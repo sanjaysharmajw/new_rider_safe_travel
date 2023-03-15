@@ -1,10 +1,12 @@
 
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/bottom_nav/profile_text.dart';
 import 'package:get/get.dart';
+import '../LoginModule/custom_color.dart';
 import '../MyText.dart';
 import '../Utils/logout_dialog_box.dart';
 import '../rider_profile_view.dart';
@@ -38,7 +40,7 @@ class _ProfileNavState extends State<ProfileNav> {
                     child: Stack(
                       clipBehavior: Clip.none,
                       children:  [
-                        InkWell(
+                       /* InkWell(
                           onTap: (){
                             Get.to(const RiderProfileView());
                           },
@@ -47,25 +49,50 @@ class _ProfileNavState extends State<ProfileNav> {
                             borderRadius: BorderRadius.all(Radius.circular(60)),
                             child: Image.network(Preferences.getProfileImage().toString(),fit: BoxFit.cover,width: 100,height: 100,)
                           ),
+                        ),*/
+                        CircleAvatar(
+                          backgroundColor: CustomColor.yellow,
+                          radius: 50,
+                          child: CircleAvatar(
+                            radius: 48,
+                            backgroundColor: Colors.white,
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: ClipOval(
+                                child: CachedNetworkImage(
+                                    imageUrl:Preferences.getProfileImage().toString(),fit: BoxFit.cover,width: 100,height: 100,
+
+                                    progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                        CircularProgressIndicator(value: downloadProgress.progress),
+                                    errorWidget: (context, url, error) => Image(image: AssetImage("assets/user_avatar.png"))
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                          Positioned(
                           bottom: 0,
                           right: 0,
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            clipBehavior: Clip.none,
-                            child:  Container(
-                              height: 30,
-                              width: 30,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
+                          child: GestureDetector(
+                            onTap: (){
+                              Get.to(const RiderProfileView());
+                            },
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
                               ),
-                              child: const Icon(
-                                Icons.edit,
-                                size: 16,
-                                color: Colors.black,
+                              clipBehavior: Clip.none,
+                              child:  Container(
+                                height: 30,
+                                width: 30,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Icon(
+                                  Icons.edit,
+                                  size: 16,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ),

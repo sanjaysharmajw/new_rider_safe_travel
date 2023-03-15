@@ -90,20 +90,20 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
 
   bool isSwitched = false;
 
-  bool textVisibility = false;
-  bool visibility = false;
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: (widget.changeUiValue=='bottomNav') ? Colors.white : Colors.yellow,
+          centerTitle: (widget.changeUiValue=='bottomNav') ? true : false,
+          backgroundColor: (widget.changeUiValue=='bottomNav') ? Colors.white : CustomColor.yellow,
           elevation: 0,
           title: const Text("Other's Live Ride",
               style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',)),
           leading: IconButton(
-            color: Colors.black,
+            color: (widget.changeUiValue=='bottomNav') ? Colors.white : CustomColor.black,
             onPressed: () {
               Get.back();
             },

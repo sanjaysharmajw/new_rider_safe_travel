@@ -549,16 +549,17 @@ var riderOtp="";
         var vPhoto = driverDetails[0].ownerPhoto.toString();
         var vehicleIds = driverDetails[0].vehicledetails![0].id.toString();
         var driverIds = driverDetails[0].driverId.toString();
+
        // print("PUCValidityDate:"+DateFormat('dd-MM-yyyy').format(DateTime.parse(vPucvalidity)) );
         print(response.body);
 
 
-        Get.to(UserDriverInformation(
+       /* Get.to(UserDriverInformation(
             vehicleId: vehicleIds.toString(), driverId: driverIds.toString(), driverName: driverName.toString(),
           driverMob: driverMob.toString(),
           driverLicense: driverLicense.toString(), vOwnerName: vOwnerName.toString(), vRegNumber: vRegNumber.toString(),
           vPucvalidity:DateFormat('dd-MM-yyyy').format(DateTime.parse(vPucvalidity)), vFitnessValidity: DateFormat('dd-MM-yyyy').format(DateTime.parse(vFitnessValidity )),
-          vInsurance: DateFormat('dd-MM-yyyy').format(DateTime.parse(vInsurance)), vModel: vModel.toString(), dPhoto: dPhoto.toString(), vPhoto: vPhoto.toString()));
+          vInsurance: DateFormat('dd-MM-yyyy').format(DateTime.parse(vInsurance)), vModel: vModel.toString(), dPhoto: dPhoto.toString(), vPhoto: vPhoto.toString())); */
         setState(() {});
       } else if (status == false) {
         OverlayLoadingProgress.stop();

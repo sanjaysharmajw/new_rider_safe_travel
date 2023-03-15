@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -37,6 +39,11 @@ class UserDriverInformation extends StatefulWidget {
   String vModel = "";
   String dPhoto = "";
   String vPhoto = "";
+  String totalComment = " ";
+  num rating ;
+
+
+
 
   UserDriverInformation({Key? key,
     required this.vehicleId,required this.driverId,
@@ -45,7 +52,7 @@ class UserDriverInformation extends StatefulWidget {
     required this.vRegNumber,required this.vPucvalidity,
     required this.vFitnessValidity,required this.vInsurance,
     required this.vModel,required this.dPhoto,
-    required this.vPhoto,
+    required this.vPhoto,required this.rating, required this.totalComment
   }) : super(key: key);
 
   @override
@@ -60,7 +67,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
   late Location location;
   double? lat;
   double? lng;
-
+  double drating = 0.0;
 
   @override
   void initState() {
@@ -69,6 +76,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
     sharePre();
     final now = DateTime.now();
     date = DateFormat('yMd').format(now);
+    drating = widget.rating.toDouble();
   }
 
 
@@ -91,6 +99,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
 
         child: Scaffold(
@@ -135,74 +144,114 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                         decoration: BoxDecoration(
                             color: CustomColor.listColor,
                             borderRadius: BorderRadius.circular(5.0)),
-                        child: Row(
+                        child: Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Stack(
-                                alignment: Alignment.bottomRight,
-                                children: [
-                                  CircleAvatar(
-                                    backgroundColor: CustomColor.yellow,
-                                    radius: 30,
-                                    child: CircleAvatar(
-                                      radius: 30,
-                                      backgroundColor: Colors.white,
-                                      child: ClipOval(
-                                        child: (widget.dPhoto != null)
-                                            ? Image.network(
-                                          widget.dPhoto,
-                                          width: 80,
-                                          height: 80,
-                                          fit: BoxFit.cover,
-                                        )
-                                            : Image.asset('assets/user_avatar.png'),
+                              padding: const EdgeInsets.only(left: 250,top: 10),
+                              child: SizedBox(
+                                height: 25,
+                                width: 25,
+                                child: ClipOval(
+                                  child: Material(
+                                    color: Colors.orange, // button color
+                                    child: InkWell(
+                                     // splashColor: Colors.green, // splash color
+                                      onTap: () {}, // button pressed
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(widget.totalComment), // text
+                                        ],
                                       ),
-
-
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
                             ),
-                            const SizedBox(
-                              width: 10,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 250,top: 10),
+                              child: RatingBarIndicator(
+                                rating: drating,
+                                itemBuilder: (context, index) => Icon(Icons.star, color: Colors.amber),
+                                itemCount: 5,
+                                itemSize: 15,
+                                direction: Axis.horizontal,
+                              ),
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+
+                            Row(
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(widget.driverName,
-                                        style: const TextStyle(
-                                            fontSize: 16, fontWeight: FontWeight.w400)),
-                                    // Text(dInfoMobile,
-                                    //     style: const TextStyle(
-                                    //         fontFamily: 'transport', fontSize: 16)),
-                                  ],
+
+
+
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Stack(
+                                    alignment: Alignment.bottomRight,
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: CustomColor.yellow,
+                                        radius: 30,
+                                        child: CircleAvatar(
+                                          radius: 30,
+                                          backgroundColor: Colors.white,
+                                          child: ClipOval(
+                                            child: (widget.dPhoto != null)
+                                                ? Image.network(
+                                              widget.dPhoto,
+                                              width: 80,
+                                              height: 80,
+                                              fit: BoxFit.cover,
+                                            )
+                                                : Image.asset('assets/user_avatar.png'),
+                                          ),
+
+
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(
-                                  height: 5,
+                                  width: 10,
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Text(widget.driverName,
+                                            style: const TextStyle(
+                                                fontSize: 16, fontWeight: FontWeight.w400)),
+                                        // Text(dInfoMobile,
+                                        //     style: const TextStyle(
+                                        //         fontFamily: 'transport', fontSize: 16)),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
 
-                                    Text(widget.driverMob,
-                                        style: const TextStyle(
-                                            fontSize: 16,fontWeight: FontWeight.w400)),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    const Text("License No: ",
-                                        style: TextStyle(
-                                             fontSize: 17,fontWeight: FontWeight.bold)),
-                                    Text(widget.driverLicense,
-                                        style: const TextStyle(
-                                            fontSize: 16, fontWeight: FontWeight.w400)),
+                                        Text(widget.driverMob,
+                                            style: const TextStyle(
+                                                fontSize: 16,fontWeight: FontWeight.w400)),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        const Text("License No: ",
+                                            style: TextStyle(
+                                                 fontSize: 17,fontWeight: FontWeight.bold)),
+                                        Text(widget.driverLicense,
+                                            style: const TextStyle(
+                                                fontSize: 16, fontWeight: FontWeight.w400)),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ],

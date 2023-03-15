@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -15,6 +16,7 @@ import 'package:majascan/majascan.dart';
 import 'package:location/location.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
+import 'package:ride_safe_travel/bottom_nav/profile_nav.dart';
 import '../LoginModule/Map/RiderFamilyList.dart';
 import '../Models/CheckActiveUserRide.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -177,25 +179,59 @@ class _HomePageState extends State<HomePageNav> {
                                     fontFamily: 'transport',
                                     color: Colors.black,
                                     fontSize: 22),
-                                InkWell(
-                                  onTap: () async {
-                                    Get.to(const NotificationScreen());
-                                    String refresh= await Navigator.push(context,
-                                        MaterialPageRoute(builder: (context)=>const NotificationScreen()));
-                                    if(refresh=='refresh'){
-                                      await countNotification();
-                                    }
-                                  },
-                                  child: Center(
-                                    child: badges.Badge(
-                                      badgeContent:  Text(
-                                        countNitification.toString(),
-                                        style: const TextStyle(color: CustomColor.black,fontSize: 15, fontFamily: 'transport',),
+                                Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () async {
+                                        Get.to(const NotificationScreen());
+                                        String refresh= await Navigator.push(context,
+                                            MaterialPageRoute(builder: (context)=>const NotificationScreen()));
+                                        if(refresh=='refresh'){
+                                          await countNotification();
+                                        }
+                                      },
+                                      child: Center(
+                                        child: badges.Badge(
+                                          badgeContent:  Text(
+                                            countNitification.toString(),
+                                            style: const TextStyle(color: CustomColor.black,fontSize: 15, fontFamily: 'transport',),
+                                          ),
+                                          child: const Icon(Icons.notifications_outlined, size: 30,color: CustomColor.black,),
+                                        ),
                                       ),
-                                      child: const Icon(Icons.notifications_outlined, size: 30,color: CustomColor.black,),
                                     ),
-                                  ),
-                                ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 20),
+                                      child: GestureDetector(
+                                        onTap: (){
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileNav()));
+                                          },
+                                        child: CircleAvatar(
+                                          backgroundColor: CustomColor.yellow,
+                                          radius: 27,
+                                          child: CircleAvatar(
+                                            radius: 26,
+                                            backgroundColor: Colors.white,
+                                            child: AspectRatio(
+                                              aspectRatio: 1,
+                                              child: ClipOval(
+                                                child: CachedNetworkImage(
+                                                    imageUrl: image.toString(),
+                                                    width: 30,
+                                                    height: 20,
+                                                    progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                        CircularProgressIndicator(value: downloadProgress.progress),
+                                                    errorWidget: (context, url, error) => Image(image: AssetImage("assets/user_avatar.png"))
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+
                               ],
                             ),
                             const SizedBox(height: 30),
@@ -209,8 +245,8 @@ class _HomePageState extends State<HomePageNav> {
                                   click: () {
                                     Get.to(const RiderProfileView());
                                   },
-                                  imageLink:
-                                     image.toString()),
+                                  imageLink: image.toString()
+                                ),
                             ),
                           ],
                         ),
@@ -424,21 +460,24 @@ class _HomePageState extends State<HomePageNav> {
       },
       body: jsonEncode(<String, String>{
         'driver_id': result.toString(),
+        "status": "Active"
       }),
     );
     print(jsonEncode(<String, String>{
       'driver_id': result.toString(),
+      "status": "Active"
     }));
 
     if (response.statusCode == 200) {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
+
       if (status == true) {
         OverlayLoadingProgress.stop();
         List<VehicleListData> driverDetails = jsonDecode(response.body)['data']
             .map<VehicleListData>((data) => VehicleListData.fromJson(data))
             .toList();
         print('family: $driverDetails');
-        var driverName = driverDetails[0].driverName.toString();
+        var driverName = driverDetails[0].driverName;
         var driverMob = driverDetails[0].driverMobileNumber.toString();
         var driverLicense =
             driverDetails[0].drivingLicenceNumber.toString() ?? "";
@@ -457,6 +496,10 @@ class _HomePageState extends State<HomePageNav> {
         var vPhoto = driverDetails[0].ownerPhoto.toString();
         var vehicleIds = driverDetails[0].vehicledetails![0].id.toString();
         var driverIds = driverDetails[0].driverId.toString();
+        var rating = driverDetails[0].otherInfo?.rating?.toDouble();
+        var comment = driverDetails[0].otherInfo?.totalComments.toString();
+        print("Rating.."+rating.toString());
+
         // print("PUCValidityDate:"+DateFormat('dd-MM-yyyy').format(DateTime.parse(vPucvalidity)) );
         print(response.body);
 
@@ -476,7 +519,10 @@ class _HomePageState extends State<HomePageNav> {
                 DateFormat('dd-MM-yyyy').format(DateTime.parse(vInsurance)),
             vModel: vModel.toString(),
             dPhoto: dPhoto.toString(),
-            vPhoto: vPhoto.toString()));
+            vPhoto: vPhoto.toString(),
+          rating: rating!,
+          totalComment: comment.toString(),
+        ));
         setState(() {});
       } else if (status == false) {
         OverlayLoadingProgress.stop();
@@ -603,8 +649,8 @@ class _HomePageState extends State<HomePageNav> {
       if (value != null) {
         if (value.status == true) {
           myRiderCount=value.count.totalRides.toString();
-          trackFamily=value.count.trackingmembers.toString();
-          peopleTrackingMe=value.count.familymemberrides.toString();
+          trackFamily=value.count.familymemberrides.toString();
+          peopleTrackingMe=value.count.trackingmembers.toString();
           countNitification=value.data.length;
           setState(() {
 

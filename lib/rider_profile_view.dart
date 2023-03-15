@@ -190,7 +190,8 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                 });
                                 },
                               assetsPath: profileImage,
-                            progressIndicator: snapshot.data![index].profile_percentage!, progressValue: snapshot.data![index].profile_percentage.toString(),
+                            progressIndicator: snapshot.data![index].profile_percentage ?? 100,
+                            progressValue: snapshot.data![index].profile_percentage.toString() == "null" ? "100" :  snapshot.data![index].profile_percentage.toString(),
 
                           ),
                           // const Padding(
