@@ -43,13 +43,13 @@ class _ServiceListScreenPageState extends State<ServiceListScreenPage> {
                     fontWeight: FontWeight.bold, color: CustomColor.black)),
           ),
           body: Column(
-            children: const[
+            children: [
                Padding(
                 padding:  EdgeInsets.only(left: 10,right: 10),
                 child:  MyText(text: 'Profile', fontFamily: 'transport', color: Colors.black, fontSize: 22),
               ),
                SizedBox(height: 30),
-              RejectedServiceList(),
+              RejectedServiceList(changeColor: 'bottomNav',),
             ],
           ),
 

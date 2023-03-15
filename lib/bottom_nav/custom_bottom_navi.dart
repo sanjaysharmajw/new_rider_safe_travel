@@ -27,9 +27,9 @@ class UserDashBoardScreenState extends State<CustomBottomNav> {
 
   List<Widget> page = [
     const HomePageNav(),
-    const FamilyMemberListScreen(),
-    const MyRidesPage(),
-    const RejectedServiceList(),
+    const FamilyMemberListScreen(changeUiValue: 'bottomNav'),
+     MyRidesPage(changeAppbar: 'bottomNav',),
+     RejectedServiceList(changeColor: 'bottomNav',),
     const ProfileNav(),
   ];
 

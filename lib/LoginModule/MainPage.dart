@@ -291,7 +291,7 @@ var riderOtp="";
                     icons: 'images/my_rides.png',
                     text: 'My Rides',
                     press: () {
-                      Get.to(const MyRidesPage());
+                     // Get.to(const MyRidesPage());
                     },
                     width: 165.w,
                     height: 165.h,
@@ -320,7 +320,7 @@ var riderOtp="";
                     icons: 'images/track_me.png',
                     text: 'Track Others',
                     press: () {
-                     Get.to( FamilyMemberListScreen());
+                     //Get.to( FamilyMemberListScreen());
                       //Navigator.push(context, MaterialPageRoute(builder:
                       //(context)=>FamilyMemberListScreen(userId: userId.toString(),)));
                     },
