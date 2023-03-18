@@ -28,6 +28,7 @@ import 'Models/sosReasonModel.dart';
 import 'Utils/exit_alert_dialog.dart';
 import 'Utils/rider_otp.dart';
 import 'chat_bot/ChatScreen.dart';
+import 'color_constant.dart';
 
 class StartRide extends StatefulWidget {
   const StartRide(
@@ -264,7 +265,7 @@ class _SignUpState extends State<StartRide> {
             style: TextStyle(color: CustomColor.black, fontFamily: 'transport'),
           ),
           elevation: 0,
-          backgroundColor: CustomColor.lightYellow,
+          backgroundColor: appBlue,
           leading: IconButton(
             onPressed: () {
               showExitPopup(context, "Do you want to stop ride?", () async {
@@ -655,7 +656,7 @@ class _SignUpState extends State<StartRide> {
                                   Container(
                                     decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: CustomColor.yellow),
+                                        color: appBlue),
                                     child: Center(
                                       child: IconButton(
                                         icon: const Icon(
@@ -1124,7 +1125,7 @@ class _SignUpState extends State<StartRide> {
                                 borderSide:
                                 BorderSide(
                                     color:
-                                    Colors.yellow)),
+                                    appBlue)),
                             child: Padding(
                               padding:
                               EdgeInsets
@@ -1190,8 +1191,7 @@ class _SignUpState extends State<StartRide> {
                             style: ElevatedButton
                                 .styleFrom(
                                 primary:
-                                CustomColor
-                                    .yellow),
+                                appBlue),
                           ),
                         ),
                         SizedBox(width: 15),

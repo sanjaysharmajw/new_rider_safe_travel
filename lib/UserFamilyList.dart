@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
+import 'package:ride_safe_travel/color_constant.dart';
 import 'package:ride_safe_travel/switchbutton.dart';
 
 import 'DriverVehicleList.dart';
@@ -84,7 +85,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: CustomColor.yellow,
+          backgroundColor: appBlue,
           elevation: 15,
           leading: Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
@@ -102,7 +103,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
               style: TextStyle(
                 color: CustomColor.black,
                 fontSize: 20,
-                fontFamily: 'transport',
+                fontFamily: 'Gilroy',
               )),
 
         ),
@@ -115,7 +116,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
             child: Ink(
               decoration: BoxDecoration(
                 border: Border.all(color: CustomColor.black, width: 2.0),
-                color: CustomColor.yellow,
+                color: Colors.black54,
                 shape: BoxShape.circle,
               ),
               child: InkWell(
@@ -179,7 +180,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                             height: 170,
                                             width: 350,
                                             decoration: BoxDecoration(
-                                                color: CustomColor.yellow,
+                                                color: CustomColor.white,
                                                 borderRadius:
                                                     BorderRadius.circular(
                                                         18.0)),
@@ -235,7 +236,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                                   ? " "
                                                   : memberStatus.toString(),
                                               style: TextStyle(
-                                                  fontFamily: 'transport',
+                                                  fontFamily: 'Gilroy',
                                                   fontSize: 16)),
                                         ),
                                         Positioned(
@@ -246,7 +247,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                                   ? " "
                                                   : memberName.toString(),
                                               style: TextStyle(
-                                                  fontFamily: 'transport',
+                                                  fontFamily: 'Gilroy',
                                                   fontSize: 16)),
                                         ),
                                         Positioned(
@@ -262,7 +263,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                                       .memberEmailId
                                                       .toString(),
                                               style: TextStyle(
-                                                  fontFamily: 'transport',
+                                                  fontFamily: 'Gilroy',
                                                   fontSize: 16)),
                                         ),
                                         Positioned(
@@ -278,7 +279,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                                       .memberMobileNumber
                                                       .toString(),
                                               style: TextStyle(
-                                                fontFamily: 'transport',
+                                                fontFamily: 'Gilroy',
                                                 fontSize: 16,
                                               )),
                                         ),
@@ -296,7 +297,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                                       .toString()
                                                       .toString(),
                                               style: TextStyle(
-                                                  fontFamily: 'transport',
+                                                  fontFamily: 'Gilroy',
                                                   fontSize: 14)),
                                         ),
                                         Positioned(
@@ -373,7 +374,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                                                               },
                                                                               child: Text(
                                                                                   "Block",
-                                                                                  style: TextStyle(color: Colors.black)),
+                                                                                  style: TextStyle(color: Colors.black,)),
                                                                               style:
                                                                               ElevatedButton.styleFrom(
                                                                                 primary:

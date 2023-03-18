@@ -112,8 +112,8 @@ class _RiderProfileViewState extends State<RiderProfileView> {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return  Scaffold(
       appBar: AppBar(
-        backgroundColor: CustomColor.yellow,
-        elevation: 15,
+        backgroundColor: CustomColor.white,
+        elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),
           child: IconButton(
@@ -126,8 +126,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                 size: 30,
               )),
         ),
-        title: Text("Your Profile",
-            style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',)),
+
       ),
         body: FutureBuilder<List<RiderData>>(
           future: _future,
@@ -148,14 +147,17 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                         /* Padding(
-                            padding: EdgeInsets.only(left: 20.h,top: 10.h),
-                            child:  MyText(
-                                text: "Rider Profile",
-                                fontFamily: 'transport',
-                                color: CustomColor.black,
-                                fontSize: 20.sp),
-                          ),*/
+                          Padding(
+                            padding: EdgeInsets.only(left: 20.sp, top: 10.sp),
+                            child: Text(
+                              "Your profile",
+                              style: TextStyle(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Gilroy",
+                                  color: CustomColor.black),
+                            ),
+                          ),
                           const SizedBox(
                             height: 40,
                           ),
@@ -288,22 +290,27 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                   Text(
                                     "Email Id",
                                     style: TextStyle(
-                                        fontFamily: 'transport', fontSize: 16),
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
                                   ),
                                 ],
                               ),
-                              VerticalDivider(width: 33.0),
+                              VerticalDivider(width: 28.0),
                               Expanded(
                                   child: Center(
                                     child: MyTextField(
                                       textEditingController: emailController,
-                                      fontName: 'transport',
-                                      fontSize: 16,
+                                      fontName: 'Gilroy',
+                                      fontSize: 20  ,
                                       enabledBorderColor: CustomColor.buttonColor, focusedBorderColor: CustomColor.buttonColor,
                                       width: 1, broad: 4,
                                       textInputType: TextInputType.emailAddress,
                                       enable: false,
-                                      hintText:'${snapshot.data![index].emailId.toString()}' == "null" ? " " : '${snapshot.data![index].emailId.toString()}' , textColor: Colors.black54, ),
+                                      hintText:'${snapshot.data![index].emailId.toString()}' == "null" ? " " : '${snapshot.data![index].emailId.toString()}' ,
+                                      textColor: Colors.black54, ),
+
                                   )),
 
                             ],
@@ -321,11 +328,14 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                   Text(
                                     "DOB",
                                     style: TextStyle(
-                                        fontFamily: 'transport', fontSize: 16),
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
                                   ),
                                 ],
                               ),
-                              VerticalDivider(width: 56.0),
+                              VerticalDivider(width: 50.0),
                               Expanded(
                                             flex: 2,
                                             child: SizedBox(
@@ -333,13 +343,20 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                               child: TextFormField(
                                                 // keyboardType: TextInputType.number,
                                                 style: const TextStyle(
-                                                    fontFamily: 'transport',
-                                                    fontSize: 18),
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: "Gilroy",
+                                                    color: CustomColor.riderprofileColor),
                                                 maxLines: 1,
                                                 controller: _dateController,
                                                 decoration:  InputDecoration(
                                                   enabled: false,
                                                   hintText: this.formatDate('${snapshot.data![index].dob.toString()}' == "null" ? " " : '${snapshot.data![index].dob.toString()}'),
+                                                  hintStyle: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Gilroy",
+                  color: CustomColor.riderprofileColor),
                                                   border: UnderlineInputBorder(),
                                                   enabledBorder: UnderlineInputBorder(
                                                       borderSide: BorderSide(
@@ -350,10 +367,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                                         width: 1,
                                                         color: Colors.amberAccent),
                                                   ),
-                                                  // hintText: 'YYYY/MM/DD',
-                                                  hintStyle: TextStyle(
-                                                      fontFamily: 'transport',
-                                                      fontSize: 15,color: Colors.black54),
+
                                                 ),
                                                 readOnly: true,
                                                 onTap: () async {
@@ -383,7 +397,11 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                   const Text(
                                     "State",
                                     style:
-                                    TextStyle(fontFamily: 'transport', fontSize: 16),
+                                    TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
                                   ),
                                 ],
                               ),
@@ -405,7 +423,10 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                      // LengthLimitingTextInputFormatter(6),
                                     ],
                                     style: const TextStyle(
-                                        fontSize: 16.0, fontFamily: "transport"),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
                                     keyboardType: TextInputType.text,
                                     maxLines: 1,
                                     controller: stateController,
@@ -413,8 +434,10 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                       enabled: false,
                                       hintText:  '${snapshot.data![index].presentAddress?.state.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.state.toString()}',
                                       hintStyle: TextStyle(
-                                          fontFamily: 'transport',
-                                          fontSize: 15,color: Colors.black54),
+                                          fontSize: 14.sp,
+
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
                                       border: UnderlineInputBorder(),
                                       enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
@@ -442,7 +465,11 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                   const Text(
                                     "City",
                                     style:
-                                    TextStyle(fontFamily: 'transport', fontSize: 16),
+                                    TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
                                   ),
                                 ],
                               ),
@@ -464,7 +491,10 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                       //LengthLimitingTextInputFormatter(6),
                                     ],
                                     style: const TextStyle(
-                                        fontSize: 16.0, fontFamily: "transport"),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
                                     keyboardType: TextInputType.text,
                                     maxLines: 1,
                                     controller: cityController,
@@ -472,8 +502,10 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                       enabled: false,
                                       hintText:  '${snapshot.data![index].presentAddress?.city.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.city.toString()}',
                                       hintStyle: TextStyle(
-                                          fontFamily: 'transport',
-                                          fontSize: 15,color: Colors.black54),
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
                                       border: UnderlineInputBorder(),
                                       enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
@@ -501,12 +533,16 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                   const Text(
                                     "PinCode",
                                     style:
-                                    TextStyle(fontFamily: 'transport', fontSize: 16,),
+                                    TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
                                   ),
                                 ],
                               ),
                               VerticalDivider(width: 30.0),
-                              VerticalDivider(width: 30.0),
+
                               Expanded(
                                 flex: 2,
                                 child: SizedBox(
@@ -524,7 +560,10 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                       LengthLimitingTextInputFormatter(6),
                                     ],
                                     style: const TextStyle(
-                                        fontSize: 16.0, fontFamily: "transport"),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
                                     keyboardType: TextInputType.number,
                                     maxLines: 1,
                                     controller: pinController,
@@ -532,8 +571,10 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                       enabled: false,
                                       hintText:  '${snapshot.data![index].presentAddress?.pincode.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.pincode.toString()}',
                                       hintStyle: TextStyle(
-                                          fontFamily: 'transport',
-                                          fontSize: 15,color: Colors.black54),
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
                                       border: UnderlineInputBorder(),
                                       enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
@@ -549,9 +590,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                             ],
                           ),
 
-                          const SizedBox(
-                            height: 20,
-                          ),
+
                           Row(
                             children: [
                               Row(
@@ -562,12 +601,16 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     child: const Text(
                                       "Gender",
                                       style:
-                                      TextStyle(fontFamily: 'transport', fontSize: 16,),
+                                      TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
                                     ),
                                   ),
                                 ],
                               ),
-                              VerticalDivider(width: 30.0),
+                              VerticalDivider(width: 65.0),
                               Expanded(
                                 flex: 2,
                                 child: SizedBox(
@@ -575,7 +618,10 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                   child: TextFormField(
 
                                     style: const TextStyle(
-                                        fontSize: 16.0, fontFamily: "transport"),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
                                     keyboardType: TextInputType.number,
                                     maxLines: 1,
                                     controller: genderController,
@@ -583,8 +629,10 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                       enabled: false,
                                       hintText:  '${snapshot.data![index].gender.toString()}' == "null" ? " " : '${snapshot.data![index].gender.toString()}',
                                       hintStyle: TextStyle(
-                                          fontFamily: 'transport',
-                                          fontSize: 15,color: Colors.black54),
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
                                       border: UnderlineInputBorder(),
                                       enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
@@ -599,9 +647,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 20,
-                          ),
+
                           Row(
                             children: [
                               Row(
@@ -612,7 +658,11 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     child: const Text(
                                       "Blood Group",
                                       style:
-                                      TextStyle(fontFamily: 'transport', fontSize: 16,),
+                                      TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
                                     ),
                                   ),
                                 ],
@@ -625,7 +675,10 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                   child: TextFormField(
 
                                     style: const TextStyle(
-                                        fontSize: 16.0, fontFamily: "transport"),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
                                     keyboardType: TextInputType.number,
                                     maxLines: 1,
                                     controller: bloodgroupController,
@@ -633,8 +686,10 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                       enabled: false,
                                       hintText:  '${snapshot.data![index].bloodGroup.toString()}' == "null" ? " " : '${snapshot.data![index].bloodGroup.toString()}',
                                       hintStyle: TextStyle(
-                                          fontFamily: 'transport',
-                                          fontSize: 15,color: Colors.black54),
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
                                       border: UnderlineInputBorder(),
                                       enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
@@ -651,7 +706,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                           ),
 
                           const SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
 
                           Row(
@@ -664,7 +719,11 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                               const Text(
                                 "Address",
                                 style:
-                                TextStyle(fontFamily: 'transport', fontSize: 16),
+                                TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Gilroy",
+                                    color: CustomColor.riderprofileColor),
                               ),
                             ],
                           ),
@@ -682,15 +741,20 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                             RegExp("[A-Za-z0-9'\.\-\s\,\ ]")),
                                       ],
                                       style: const TextStyle(
-                                          fontFamily: 'transport', fontSize: 16),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
                                       maxLines: 1,
                                       controller:
                                       addressController,
                                       decoration:  InputDecoration(
                                         hintText: '${snapshot.data![index].presentAddress?.address.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.address.toString()}',
                                         hintStyle: TextStyle(
-                                            fontFamily: 'transport',
-                                            fontSize: 15,color: Colors.black54),
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: "Gilroy",
+                                            color: CustomColor.riderprofileColor),
                                         enabled: false,
                                         border: UnderlineInputBorder(),
                                         enabledBorder: UnderlineInputBorder(
@@ -740,10 +804,11 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                           left: 10, top: 10),
                                       child: Text(
                                         "Emergency contact number's ",
-                                        style: TextStyle(
-                                          fontSize: 13.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                        style:TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: "Gilroy",
+                                            color: CustomColor.riderprofileColor),
                                       ),
                                     ),
                                     Row(
@@ -757,10 +822,10 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                           child: MyText(
                                               text:
                                               snapshot.data![index].personName.toString() == "null" ? " " :  snapshot.data![index].personName.toString(),
-                                              fontFamily: 'transport',
+                                              fontFamily: 'Gilroy',
                                               color:
                                               Color(0xff48422B),
-                                              fontSize: 14.sp),
+                                              fontSize: 16.sp),
                                         ),
                                         Container(
                                             width: 30.w,
@@ -774,6 +839,11 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                                     hintText: snapshot.data![index].emergencyContact.toString() == "null"
                                                         ? " "
                                                         : snapshot.data![index].emergencyContact.toString(),
+                                                    hintStyle: TextStyle(
+                                                        fontSize: 16.sp,
+                                                        fontWeight: FontWeight.normal,
+                                                        fontFamily: "Gilroy",
+                                                        color: CustomColor.riderprofileColor),
                                                   ),
                                                   enabled: false,
                                                   readOnly: true,
@@ -800,13 +870,13 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                               text: snapshot.data![index].personName1.toString() == "null"
                                                   ? " "
                                                   : snapshot.data![index].personName1.toString() ,
-                                              fontFamily: 'transport',
+                                              fontFamily: 'Gilroy',
                                               color:
                                               Color(0xff48422B),
-                                              fontSize: 14.sp),
+                                              fontSize: 16.sp),
                                         ),
                                         Container(
-                                            width: 5.w,
+                                            width: 15.w,
                                             height: 38.h,
                                             child: VerticalDivider()),
                                         Expanded(
@@ -819,6 +889,11 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                                       "null"
                                                       ? " "
                                                       : snapshot.data![index].emergencyNumber1.toString(),
+                                                  hintStyle: TextStyle(
+                                                      fontSize: 16.sp,
+                                                      fontWeight: FontWeight.normal,
+                                                      fontFamily: "Gilroy",
+                                                      color: CustomColor.riderprofileColor),
                                                 ),
                                                 enabled: false,
                                                 inputFormatters: [

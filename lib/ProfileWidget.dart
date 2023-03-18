@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:ride_safe_travel/color_constant.dart';
 
 import '../rider_profile_edit.dart';
 import 'LoginModule/custom_color.dart';
@@ -39,7 +40,7 @@ class ProfileWidget extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 20.h),
               child: CircleAvatar(
-                backgroundColor: CustomColor.yellow,
+                backgroundColor: CustomColor.black,
                 radius: 23.r,
                 child: CircleAvatar(
                   radius: 22.r,
@@ -76,12 +77,12 @@ class ProfileWidget extends StatelessWidget {
                   children: [
                     MyText(
                         text: profileName,
-                        fontFamily: 'transport',
+                        fontFamily: 'Gilroy',
                         color: CustomColor.black,
                         fontSize: 16.sp),
                     MyText(
                         text: profileMobile,
-                        fontFamily: 'transport',
+                        fontFamily: 'Gilroy',
                         color: CustomColor.black,
                         fontSize: 16.sp),
                   ],
@@ -98,7 +99,7 @@ class ProfileWidget extends StatelessWidget {
                 onPressed: onPress,
                 style: ElevatedButton.styleFrom(
                   shape: StadiumBorder(),
-                  backgroundColor: CustomColor.yellow,
+                  backgroundColor: appBlue,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -109,6 +110,7 @@ class ProfileWidget extends StatelessWidget {
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 12.sp,
+                          fontFamily: "Gilroy",
                           color: CustomColor.riderprofileColor),
                     ),
                     Image(
@@ -134,7 +136,7 @@ class ProfileWidget extends StatelessWidget {
               percent: indicator,
               center: Text('Complete Profile: $progressValue%'),
               linearStrokeCap: LinearStrokeCap.roundAll,
-              progressColor: CustomColor.yellow,
+              progressColor: appBlue,
             ),
             const SizedBox(
               height: 10,

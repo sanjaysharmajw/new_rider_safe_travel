@@ -6,7 +6,7 @@ class MyText extends StatelessWidget {
   final Color color;
   final double fontSize;
 
-  const MyText(
+   MyText(
       {Key? key,
       required this.text,
       required this.fontFamily,

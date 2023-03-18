@@ -29,8 +29,8 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
               padding:  EdgeInsets.only(left: 20,right: 20),
               child:  Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const[
-                   MyText(text: 'Road Side Assistance', fontFamily: 'transport', color: Colors.black, fontSize: 22),
+                children: [
+                   MyText(text: 'Road Side Assistance', fontFamily: 'Gilroy', color: Colors.black, fontSize: 22),
                 ],
               ),
             ),

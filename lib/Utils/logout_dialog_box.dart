@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
+import 'package:ride_safe_travel/color_constant.dart';
 
 import '../LoginModule/RiderLoginPage.dart';
 import '../LoginModule/preferences.dart';
@@ -31,7 +32,7 @@ Future<bool> logoutPopup(context) async {
                         },
                         child: Text("Yes"),
                         style: ElevatedButton.styleFrom(
-                            primary: CustomColor.yellow),
+                            primary: appBlue),
                       ),
                     ),
                     SizedBox(width: 15),

@@ -36,8 +36,8 @@ class MyRiderItemsList extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children:  [
-              MyText(text: myRideList.date.toString(), fontFamily: 'transport', color: Colors.black, fontSize: 12),
-              MyText(text: myRideList.date.toString(), fontFamily: 'transport', color: Colors.black, fontSize: 12),
+              MyText(text: myRideList.date.toString(), fontFamily: 'Gilroy', color: Colors.black, fontSize: 15),
+              MyText(text: myRideList.date.toString(), fontFamily: 'Gilroy', color: Colors.black, fontSize: 15),
 
             ],
           ),
@@ -53,9 +53,9 @@ class MyRiderItemsList extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  MyText(text: myRideList.driverName.toString(), fontFamily: 'transport', color: Colors.black, fontSize: 16),
+                  MyText(text: myRideList.driverName.toString(), fontFamily: 'Gilroy', color: Colors.black, fontSize: 16),
                   const SizedBox(height: 5),
-                  MyText(text: myRideList.driverMobileNumber.toString(), fontFamily: 'transport', color: Colors.black, fontSize: 12),
+                  MyText(text: myRideList.driverMobileNumber.toString(), fontFamily: 'Gilroy', color: Colors.black, fontSize: 14),
                 ],
               )
 

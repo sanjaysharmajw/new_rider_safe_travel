@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/bottom_nav/profile_nav.dart';
+import 'package:ride_safe_travel/color_constant.dart';
 
 import '../LoginModule/Map/RiderFamilyList.dart';
 import '../MyRidesPage.dart';
@@ -30,7 +31,7 @@ class UserDashBoardScreenState extends State<CustomBottomNav> {
     const FamilyMemberListScreen(changeUiValue: 'bottomNav'),
      MyRidesPage(changeAppbar: 'bottomNav',),
      RejectedServiceList(changeColor: 'bottomNav',),
-    const ProfileNav(),
+     ProfileNav(),
   ];
 
   List<BottomNavigationBarItem> icons =const [
@@ -52,7 +53,7 @@ class UserDashBoardScreenState extends State<CustomBottomNav> {
       child: Scaffold(
         body: page[currentPage],
         bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: CustomColor.yellow,
+          selectedItemColor: appBlue,
           showUnselectedLabels: false,
           showSelectedLabels: false,
           currentIndex: currentPage,

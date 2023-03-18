@@ -155,209 +155,211 @@ class _HomePageState extends State<HomePageNav> {
           return SafeArea(
             child: Scaffold(
               backgroundColor: Colors.white,
-              body: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        margin:
-                            const EdgeInsets.only(right: 15, left: 15, top: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const MyText(
-                                    text: 'Nirbhaya Rider',
-                                    fontFamily: 'transport',
-                                    color: Colors.black,
-                                    fontSize: 22),
-                                Row(
-                                  children: [
-                                    InkWell(
-                                      onTap: () async {
-                                        Get.to(const NotificationScreen());
-                                        String refresh= await Navigator.push(context,
-                                            MaterialPageRoute(builder: (context)=>const NotificationScreen()));
-                                        if(refresh=='refresh'){
-                                          await countNotification();
-                                        }
-                                      },
-                                      child: Center(
-                                        child: badges.Badge(
-                                          badgeContent:  Text(
-                                            countNitification.toString(),
-                                            style: const TextStyle(color: CustomColor.black,fontSize: 15, fontFamily: 'transport',),
+              body: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          margin:
+                              const EdgeInsets.only(right: 15, left: 15, top: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                   MyText(
+                                      text: 'Nirbhaya Rider',
+                                      fontFamily: 'Gilroy',
+                                      color: Colors.black,
+                                      fontSize: 22),
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () async {
+                                          Get.to(const NotificationScreen());
+                                          String refresh= await Navigator.push(context,
+                                              MaterialPageRoute(builder: (context)=>const NotificationScreen()));
+                                          if(refresh=='refresh'){
+                                            await countNotification();
+                                          }
+                                        },
+                                        child: Center(
+                                          child: badges.Badge(
+                                            badgeContent:  Text(
+                                              countNitification.toString(),
+                                              style: const TextStyle(color: CustomColor.black,fontSize: 15, fontFamily: 'Gilroy',),
+                                            ),
+                                            child: const Icon(Icons.notifications_outlined, size: 40,color: CustomColor.black,),
                                           ),
-                                          child: const Icon(Icons.notifications_outlined, size: 30,color: CustomColor.black,),
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 20),
-                                      child: GestureDetector(
-                                        onTap: (){
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileNav()));
-                                          },
-                                        child: CircleAvatar(
-                                          backgroundColor: CustomColor.yellow,
-                                          radius: 27,
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 20),
+                                        child: GestureDetector(
+                                          onTap: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileNav()));
+                                            },
                                           child: CircleAvatar(
-                                            radius: 26,
-                                            backgroundColor: Colors.white,
-                                            child: AspectRatio(
-                                              aspectRatio: 1,
-                                              child: ClipOval(
-                                                child: CachedNetworkImage(
-                                                    imageUrl: image.toString(),
-                                                    width: 30,
-                                                    height: 20,
-                                                    progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                                        CircularProgressIndicator(value: downloadProgress.progress),
-                                                    errorWidget: (context, url, error) => Image(image: AssetImage("assets/user_avatar.png"))
+                                            backgroundColor: CustomColor.black,
+                                            radius: 27,
+                                            child: CircleAvatar(
+                                              radius: 26,
+                                              backgroundColor: Colors.white,
+                                              child: AspectRatio(
+                                                aspectRatio: 1,
+                                                child: ClipOval(
+                                                  child: CachedNetworkImage(
+                                                      imageUrl: image.toString(),
+                                                      width: 30,
+                                                      height: 20,
+                                                      progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                          CircularProgressIndicator(value: downloadProgress.progress),
+                                                      errorWidget: (context, url, error) => Image(image: AssetImage("assets/user_avatar.png"))
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                )
+                                    ],
+                                  )
 
-                              ],
-                            ),
-                            const SizedBox(height: 30),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 5, left: 5),
-                              child: ProfileHozontalView(
-                                  profileName: profileName,
-                                  profileMobile: Preferences.getMobileNumber(
-                                          Preferences.mobileNumber)
-                                      .toString(),
-                                  click: () {
-                                    Get.to(const RiderProfileView());
-                                  },
-                                  imageLink:
-                                      Preferences.getProfileImage().toString()),
-                            ),
-                          ],
+                                ],
+                              ),
+                              const SizedBox(height: 30),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 5, left: 5),
+                                child: ProfileHozontalView(
+                                    profileName: profileName,
+                                    profileMobile: Preferences.getMobileNumber(
+                                            Preferences.mobileNumber)
+                                        .toString(),
+                                    click: () {
+                                      Get.to(const RiderProfileView());
+                                    },
+                                    imageLink:
+                                        Preferences.getProfileImage().toString()),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        margin:
-                            const EdgeInsets.only(left: 20, right: 20, top: 30),
-                        child: const MyText(
-                            text: 'Progress',
-                            fontFamily: 'transport',
-                            color: Colors.black,
-                            fontSize: 14),
-                      ),
-                      GridView.count(
-                          shrinkWrap: true,
-                          physics: const ClampingScrollPhysics(),
-                          crossAxisCount: 2,
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 10),
-                          mainAxisSpacing: 20,
-                          childAspectRatio: 3 / 2,
-                          crossAxisSpacing: 20,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Get.to( MyRidesPage(changeAppbar: 'fromClass',));
-                              },
-                              child:  HomePageItems(
-                                completed: 58,
-                                backgroundColor: Colors.blue,
-                                title: 'My Rides',
-                                subtitle: myRiderCount!.toString(),
+                        Container(
+                          margin:
+                              const EdgeInsets.only(left: 20, right: 20, top: 30),
+                          child: MyText(
+                              text: 'Progress',
+                              fontFamily: 'Gilroy',
+                              color: Colors.black,
+                              fontSize: 16),
+                        ),
+                        GridView.count(
+                            shrinkWrap: true,
+                            physics: const ClampingScrollPhysics(),
+                            crossAxisCount: 2,
+                            padding: const EdgeInsets.only(
+                                left: 20, right: 20, top: 10),
+                            mainAxisSpacing: 20,
+                            childAspectRatio: 3 / 2,
+                            crossAxisSpacing: 20,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Get.to( MyRidesPage(changeAppbar: 'fromClass',));
+                                },
+                                child:  HomePageItems(
+                                  completed: 58,
+                                  backgroundColor: Colors.blue,
+                                  title: 'My Rides',
+                                  subtitle: myRiderCount!.toString(),
+                                ),
                               ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Get.to(const UserFamilyList());
-                              },
-                              child:  HomePageItems(
-                                completed: 58,
-                                backgroundColor: Colors.red,
-                                title: 'People Tracking Me',
-                                subtitle: peopleTrackingMe!.toString(),
+                              InkWell(
+                                onTap: () {
+                                  Get.to(const UserFamilyList());
+                                },
+                                child:  HomePageItems(
+                                  completed: 58,
+                                  backgroundColor: Colors.red,
+                                  title: 'People Tracking Me',
+                                  subtitle: peopleTrackingMe!.toString(),
+                                ),
                               ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Get.to(const FamilyMemberListScreen(changeUiValue: 'fromClass'));
-                              },
-                              child:  HomePageItems(
-                                completed: 45,
-                                backgroundColor: Colors.green,
-                                title: 'Track Family & Friends',
-                                subtitle: trackFamily!.toString(),
+                              InkWell(
+                                onTap: () {
+                                  Get.to(const FamilyMemberListScreen(changeUiValue: 'fromClass'));
+                                },
+                                child:  HomePageItems(
+                                  completed: 45,
+                                  backgroundColor: Colors.green,
+                                  title: 'Track Family & Friends',
+                                  subtitle: trackFamily!.toString(),
+                                ),
                               ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                OverlayLoadingProgress.start(context);
-                                checkActiveUser();
-                              },
-                              child: const HomePageItems(
-                                completed: 58,
-                                backgroundColor: Colors.orange,
-                                title: 'Start new ride',
-                                subtitle: '',
+                              InkWell(
+                                onTap: () {
+                                  OverlayLoadingProgress.start(context);
+                                  checkActiveUser();
+                                },
+                                child: const HomePageItems(
+                                  completed: 58,
+                                  backgroundColor: Colors.orange,
+                                  title: 'Start new ride',
+                                  subtitle: '',
+                                ),
                               ),
-                            ),
-                          ]),
-                    ],
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 20, right: 20, top: 30),
-                    child: const MyText(
-                        text: 'My Active Ride List',
-                        fontFamily: 'transport',
-                        color: Colors.black,
-                        fontSize: 14),
-                  ),
-                  Container(
-                    child: Center(
-                      child: controller.isLoading.value
-                          ? LoaderUtils.loader():
-                           controller.getMyRiderData.isEmpty
-                              ? const Center(
-                                  child: EmptyScreen(),
-                                )
-                              : ListView.builder(
-                                  itemCount: controller.getMyRiderData.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    return MyRiderItemsList(
-                                      myRideList:
-                                          controller.getMyRiderData[index],
-                                      pressOnView: () {
-                                        OverlayLoadingProgress.start(context);
-                                        checkActiveUser();
-                                      },
-                                      pressOnEnd: () {
-                                        showExitPopup(context,
-                                            "Do you want to stop ride?",
-                                            () async {
-                                          Navigator.pop(context, true);
-                                          checkUser(userId, index);
-                                        });
-                                      },
-                                    );
-                                  }),
+                            ]),
+                      ],
                     ),
-                  ),
-                ],
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, right: 20, top: 30),
+                      child: MyText(
+                          text: 'My Active Ride List',
+                          fontFamily: 'Gilroy',
+                          color: Colors.black,
+                          fontSize: 16),
+                    ),
+                    Container(
+                      child: Center(
+                        child: controller.isLoading.value
+                            ? LoaderUtils.loader():
+                             controller.getMyRiderData.isEmpty
+                                ? const Center(
+                                    child: EmptyScreen(),
+                                  )
+                                : ListView.builder(
+                                    itemCount: controller.getMyRiderData.length,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      return MyRiderItemsList(
+                                        myRideList:
+                                            controller.getMyRiderData[index],
+                                        pressOnView: () {
+                                          OverlayLoadingProgress.start(context);
+                                          checkActiveUser();
+                                        },
+                                        pressOnEnd: () {
+                                          showExitPopup(context,
+                                              "Do you want to stop ride?",
+                                              () async {
+                                            Navigator.pop(context, true);
+                                            checkUser(userId, index);
+                                          });
+                                        },
+                                      );
+                                    }),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
@@ -511,12 +513,10 @@ class _HomePageState extends State<HomePageNav> {
             driverLicense: driverLicense.toString(),
             vOwnerName: vOwnerName.toString(),
             vRegNumber: vRegNumber.toString(),
-            vPucvalidity:
-                DateFormat('dd-MM-yyyy').format(DateTime.parse(vPucvalidity)),
-            vFitnessValidity: DateFormat('dd-MM-yyyy')
-                .format(DateTime.parse(vFitnessValidity)),
+            vPucvalidity: vPucvalidity.toString(),
+            vFitnessValidity: vFitnessValidity.toString(),
             vInsurance:
-                DateFormat('dd-MM-yyyy').format(DateTime.parse(vInsurance)),
+                vInsurance.toString(),
             vModel: vModel.toString(),
             dPhoto: dPhoto.toString(),
             vPhoto: vPhoto.toString(),

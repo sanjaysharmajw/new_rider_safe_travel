@@ -11,7 +11,8 @@ class ProfileText extends StatelessWidget {
   final String title;
   final String subTitle;
   final IconData icons;
-  const ProfileText({Key? key, required this.title, required this.subTitle, required this.icons}) : super(key: key);
+
+  const ProfileText({Key? key, required this.title, required this.subTitle, required this.icons,}) : super(key: key);
 
   @override 
   Widget build(BuildContext context) {
@@ -26,9 +27,9 @@ class ProfileText extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MyText(text: title, fontFamily: 'transport', color: Colors.black, fontSize: 16),
+              MyText(text: title,  fontFamily: 'Gilroy', color: Colors.black, fontSize: 16,),
               const SizedBox(height: 5),
-              MyText(text: subTitle, fontFamily: 'transport', color: Colors.black, fontSize: 12),
+              MyText(text: subTitle,  fontFamily: 'Gilroy', color: Colors.black, fontSize: 12),
             ],
           ),
 

@@ -12,6 +12,9 @@ import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
 
+import '../color_constant.dart';
+import '../custom_button.dart';
+
 class RiderLoginPage extends StatefulWidget {
   RiderLoginPage({Key? key, }) : super(key: key);
 
@@ -62,7 +65,7 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
                     child: Text("Login",
                         style: TextStyle(
                             fontSize: 21,
-                            fontFamily: 'transport',
+                            fontFamily: 'Gilroy',
                             fontWeight: FontWeight.bold)),
                   ),
                   const SizedBox(
@@ -72,67 +75,49 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 15, right: 15, top: 0, bottom: 0),
-                              child: Image.asset('assets/phone.png',
-                                  height: 25, width: 25),
-                            ),
-                            const Text(
-                              "Enter Mobile Number",
-                              style: TextStyle(
-                                  fontFamily: 'transport', fontSize: 16),
-                            ),
-                          ],
-                        ),
+
                         Padding(
-                          padding: const EdgeInsets.only(right: 15, left: 5),
+                          padding: const EdgeInsets.only(right: 15, left: 15),
                           child: Row(
                             children: <Widget>[
                               Expanded(
                                 flex: 2,
                                 child: SizedBox(
-                                  height: 45,
+                                  height: 80,
                                   child: TextFormField(
-                                    showCursor: true,
-                                    cursorHeight:25,
-                                    cursorWidth: 2.0,
 
-                                    controller: _controllerMobile,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.allow(
                                           RegExp("[0-9]")),
                                       FilteringTextInputFormatter.deny(RegExp(r'^0+')),
                                       LengthLimitingTextInputFormatter(10),
+                                      FilteringTextInputFormatter.deny('  ')
                                     ],
-                                    style: const TextStyle(
-                                        fontSize: 18.0,
-                                        fontFamily: "transport"),
-                                    keyboardType: TextInputType.number,
-                                    decoration: InputDecoration(
-                                      border: const UnderlineInputBorder(),
-                                      enabledBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 1,
-                                            color: CustomColor.yellow),
-                                      ),
-                                      focusedBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 1,
-                                            color: Colors.amberAccent),
-                                      ),
-                                      prefixIcon: Image.asset(
-                                        "icons/flag.png",
-                                        width: 50,
+                                    style:  TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Gilroy',
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                    controller: _controllerMobile,
+                                    decoration:  InputDecoration(
+                                      labelText: "Mobile Number",
+                                      labelStyle: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: 'Gilroy',
+                                        fontWeight: FontWeight.normal,
                                       ),
                                       prefixText: "+91",
-                                      prefixStyle: const TextStyle(
-                                          fontSize: 18,
-                                          fontFamily: "transport",
-                                          fontWeight: FontWeight.normal),
+                                      // hintText: widget.dlMobNumber ,
+                                      border: UnderlineInputBorder(),
+                                      enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 1, color: appBlack)),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1, color: appBlue),
+                                      ),
                                     ),
+
                                     validator: (value) {
                                       if (value == null ||
                                           value.isEmpty ||
@@ -141,6 +126,7 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
                                       }
                                       return null;
                                     },
+
                                   ),
                                 ),
                               ),
@@ -156,7 +142,18 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 17, right: 17),
-                    child: Button(
+                    child: CustomButton(press: () {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          OverlayLoadingProgress.start(context);
+                        });
+                        sendOtpApi(_controllerMobile.text.toString());
+                        setState(() {});
+                      }
+
+                    }, buttonText: 'Next',)
+
+                    /*Button(
                         textColor: CustomColor.black,
                         size: 75,
                         buttonTitle: "Next",
@@ -168,7 +165,7 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
                             sendOtpApi(_controllerMobile.text.toString());
                             setState(() {});
                           }
-                        }),
+                        }),*/
                   ),
                 ],
               ),

@@ -26,9 +26,9 @@ class HomePageItems extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title,style: const TextStyle(fontWeight: FontWeight.w500,fontFamily: 'transport',color: Colors.white,fontSize: 16)),
+            Text(title,style: const TextStyle(fontWeight: FontWeight.w500,fontFamily: 'Gilroy',color: Colors.white,fontSize: 16)),
             const SizedBox(height: 5),
-            Text(subtitle,style: const TextStyle(fontWeight: FontWeight.w100,fontFamily: 'transport',color: Colors.white,fontSize: 16))
+            Text(subtitle,style: const TextStyle(fontWeight: FontWeight.w100,fontFamily: 'Gilroy',color: Colors.white,fontSize: 16))
           ],
         ),
       ),

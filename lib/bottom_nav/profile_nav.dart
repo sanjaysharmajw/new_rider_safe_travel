@@ -19,19 +19,39 @@ class ProfileNav extends StatefulWidget {
 }
 
 class _ProfileNavState extends State<ProfileNav> {
+  var profileName;
+
+  void initState(){
+    profileName = Preferences.getFirstName(Preferences.firstname).toString() +
+        " " +
+        Preferences.getLastName(Preferences.lastname).toString();
+    print("ProifleName.."+profileName);
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+          appBar: AppBar(
+
+            backgroundColor: Colors.white,
+            elevation: 0,
+            leading: IconButton(
+              color: CustomColor.black,
+              onPressed: () {
+                Get.back();
+              },
+              icon: const Icon(Icons.arrow_back_outlined),
+            ),
+          ),
         body: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10),
-              const Padding(
+               Padding(
                 padding:  EdgeInsets.only(left: 10,right: 10),
-                child:  MyText(text: 'Profile', fontFamily: 'transport', color: Colors.black, fontSize: 22),
+                child:  MyText(text: 'Profile',  fontFamily: 'Gilroy', color: Colors.black, fontSize: 22),
               ),
               const SizedBox(height: 30),
               Column(
@@ -51,7 +71,7 @@ class _ProfileNavState extends State<ProfileNav> {
                           ),
                         ),*/
                         CircleAvatar(
-                          backgroundColor: CustomColor.yellow,
+                          backgroundColor: CustomColor.black,
                           radius: 50,
                           child: CircleAvatar(
                             radius: 48,
@@ -101,7 +121,7 @@ class _ProfileNavState extends State<ProfileNav> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const MyText(text: 'Sanjay Sahrma', fontFamily: 'transport', color: Colors.black, fontSize: 14),
+                   MyText(text: profileName.toString(),  fontFamily: 'Gilroy', color: Colors.black, fontSize: 14),
                   const SizedBox(height: 60),
                   const ProfileText(title: 'Language', subTitle: 'Change your language', icons: FeatherIcons.edit),
                   const ProfileText(title: 'Notification', subTitle: 'Check notification', icons: FeatherIcons.bell),

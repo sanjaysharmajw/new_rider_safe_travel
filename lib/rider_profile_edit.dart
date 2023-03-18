@@ -14,6 +14,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
+import 'package:ride_safe_travel/custom_button.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -33,6 +34,7 @@ import 'MyTextField.dart';
 
 import 'RiderUserListData.dart';
 import 'Sharepreferences.dart';
+import 'bottom_nav/home_page_nav.dart';
 
 
 class RiderProfileEdit extends StatefulWidget {
@@ -293,8 +295,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: CustomColor.yellow,
-          elevation: 15,
+          backgroundColor: CustomColor.white,
+          elevation: 0,
           leading: Padding(
             padding: EdgeInsets.only(left: 10.sp, right: 10.sp),
             child: IconButton(
@@ -307,8 +309,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                   size: 30.sp,
                 )),
           ),
-          title: Text("Edit Profile",
-            style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',),),
+
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -318,16 +319,17 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /* Padding(
+                   Padding(
                     padding: EdgeInsets.only(left: 20.sp, top: 10.sp),
                     child: Text(
-                      "Rider Profile",
+                      "Edit your profile",
                       style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
-                          color: CustomColor.riderprofileColor),
+                          fontFamily: "Gilroy",
+                          color: CustomColor.black),
                     ),
-                  ), */
+                  ),
                   SizedBox(
                     height: 40.h,
                   ),
@@ -353,7 +355,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                         alignment: Alignment.bottomRight,
                                         children: [
                                           CircleAvatar(
-                                            backgroundColor: CustomColor.yellow,
+                                            backgroundColor: CustomColor.black,
                                             radius: 45.0,
                                             child: CircleAvatar(
                                               radius: 43.0,
@@ -402,6 +404,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17,
+                                fontFamily: "Gilroy",
                                 color: CustomColor.riderprofileColor),
                           ),
                           SizedBox(
@@ -412,6 +415,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17.sp,
+                                fontFamily: "Gilroy",
                                 color: CustomColor.text),
                           ),
                         ],
@@ -434,10 +438,11 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
+                              fontFamily: "Gilroy",
                               color: CustomColor.riderprofileColor),
                         ),
                       ),
-                      VerticalDivider(width: 40.0.w),
+                      VerticalDivider(width: 30.0.w),
                       Expanded(
                           child: Center(
                             child: TextFormField(
@@ -451,11 +456,11 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 FilteringTextInputFormatter.deny('  '),
 
                               ],
-                              style: TextStyle(
-                                fontFamily: 'transport',
-                                fontSize: 18.sp,
-                              ),
-
+                              style:TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Gilroy",
+                                  color: CustomColor.riderprofileColor),
                               controller: firstNameController,
                               textCapitalization: TextCapitalization.words,
                               keyboardType: TextInputType.text,
@@ -464,10 +469,10 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 border: const UnderlineInputBorder(),
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        width: 1, color: CustomColor.yellow)),
+                                        width: 1, color: Colors.black45)),
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        width: 2, color: CustomColor.yellow)),
+                                        width: 2, color: Colors.black54)),
                               ),
                               onChanged: (value) {
                                 firstname = value;
@@ -491,10 +496,11 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
+                              fontFamily: "Gilroy",
                               color: CustomColor.riderprofileColor),
                         ),
                       ),
-                      VerticalDivider(width: 40.0.w),
+                      VerticalDivider(width: 30.0.w),
                       Expanded(
                           child: Center(
                             child: TextFormField(
@@ -507,21 +513,22 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 FilteringTextInputFormatter.deny('  ')
                               ],
                               style: TextStyle(
-                                fontFamily: 'transport',
-                                fontSize: 18,
-                              ),
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Gilroy",
+                                  color: CustomColor.riderprofileColor),
                               controller: lastNameController,
                               textCapitalization: TextCapitalization.words,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 border: const UnderlineInputBorder(),
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1, color: CustomColor.yellow)),
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 2, color: CustomColor.yellow)),
-                              ),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1, color: Colors.black45)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 2, color: Colors.black54)),
+                          ),
                               onChanged: (value) {
                                 lastname = value;
                               },
@@ -542,8 +549,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                         child: Text(
                           "Email Id  -",
                           style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 15,
                               fontWeight: FontWeight.bold,
+                              fontFamily: "Gilroy",
                               color: CustomColor.riderprofileColor),
                         ),
                       ),
@@ -559,20 +567,21 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 FilteringTextInputFormatter.deny(' '),
 
                               ],
-                              style: TextStyle(
-                                fontFamily: 'transport',
-                                fontSize: 18,
-                              ),
+                              style:TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Gilroy",
+                                  color: CustomColor.riderprofileColor),
                               controller: emailController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
                                 border: const UnderlineInputBorder(),
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        width: 1, color: CustomColor.yellow)),
+                                        width: 1, color: Colors.black45)),
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        width: 2, color: CustomColor.yellow)),
+                                        width: 2, color: Colors.black54)),
                               ),
                               onChanged: (value) {
                                 email = value;
@@ -614,88 +623,52 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           Text(
                             "DOB",
                             style: TextStyle(
-                                fontFamily: 'transport', fontSize: 16),
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Gilroy",
+                                color: CustomColor.riderprofileColor),
                           ),
                         ],
                       ),
-                      VerticalDivider(width: 45.0),
+                      VerticalDivider(width: 60.0),
                       Expanded(
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 15, left: 15),
-                              child: Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    flex: 2,
-                                    child: SizedBox(
-                                      height: 45,
-                                      child: Center(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 15, left: 15),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                flex: 2,
-                                                child: SizedBox(
-                                                  height: 45,
-                                                  child: TextFormField(
-                                                    // keyboardType: TextInputType.number,
-                                                    style: const TextStyle(
-                                                        fontFamily: 'transport',
-                                                        fontSize: 18),
-                                                    maxLines: 1,
-                                                    controller: dobController,
-                                                    decoration:
-                                                    const InputDecoration(
-                                                      border:
-                                                      UnderlineInputBorder(),
-                                                      enabledBorder:
-                                                      UnderlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              width: 1,
-                                                              color: CustomColor
-                                                                  .yellow)),
-                                                      focusedBorder:
-                                                      UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            width: 2,
-                                                            color:
-                                                            Colors.amberAccent),
-                                                      ),
-                                                        // hintText: 'YYYY/MM/DD',
-                                                      hintStyle: TextStyle(
-                                                          fontFamily: 'transport',
-                                                          fontSize: 15),
-                                                    ),
-                                                    readOnly: true,
-
-                                                    onTap: () async {
-                                                      _selectDate(context);
-                                                    },
-                                                    validator: (value) {
-                                                      if (value == null ||
-                                                          value.isEmpty) {
-                                                        return 'Please enter your Date of Birth';
-                                                      }
-                                                      return null;
-                                                    },
-                                                    onChanged: (value) {
-                                                      dob = value;
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                        child: Center(
+                          child: TextFormField(
+                            // keyboardType: TextInputType.number,
+                            style: const  TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Gilroy",
+                                color: CustomColor.riderprofileColor),
+                            maxLines: 1,
+                            controller: dobController,
+                            decoration: InputDecoration(
+                              border: const UnderlineInputBorder(),
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1, color: Colors.black45)),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 2, color: Colors.black54)),
                             ),
-                          )),
+                            readOnly: true,
+
+                            onTap: () async {
+                              _selectDate(context);
+                            },
+                            validator: (value) {
+                              if (value == null ||
+                                  value.isEmpty) {
+                                return 'Please enter your Date of Birth';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              dob = value;
+                            },
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   Row(
@@ -705,12 +678,13 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                         child: Text(
                           "Blood Group  -",
                           style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
+                              fontFamily: "Gilroy",
                               color: CustomColor.riderprofileColor),
                         ),
                       ),
-                      VerticalDivider(width: 60.0),
+                      VerticalDivider(width: 20.0),
                       Expanded(
                           child: Center(
                             child: TextFormField(
@@ -722,20 +696,23 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 FilteringTextInputFormatter.deny(' '),
 
                               ],
-                              style: TextStyle(
-                                fontFamily: 'transport',
-                                fontSize: 18,
-                              ),
+                              style:TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Gilroy",
+                                  color: CustomColor.riderprofileColor),
                               controller: bloodgroupController,
-                              //keyboardType: TextInputType.emailAddress,
+                              textCapitalization: TextCapitalization.words,
+                              keyboardType: TextInputType.text,
+
                               decoration: InputDecoration(
                                 border: const UnderlineInputBorder(),
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        width: 1, color: CustomColor.yellow)),
+                                        width: 1, color: Colors.black45)),
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        width: 2, color: CustomColor.yellow)),
+                                        width: 2, color: Colors.black54)),
                               ),
 
                               validator: (value) {
@@ -755,80 +732,113 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                     height: 20,
                   ),
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.only(left: 12, right: 12),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         child: Row(
                           children: const [
                             Expanded(
                               child: Text(
                                 "Gender",
                                 style: TextStyle(
-                                    fontSize: 18, fontFamily: "transport"),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Gilroy",
+                                    color: CustomColor.riderprofileColor),
                               ),
                             ),
                           ],
                         ),
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Radio(
-                            fillColor: MaterialStateColor.resolveWith(
-                                    (states) => CustomColor.yellow),
-                            focusColor: MaterialStateColor.resolveWith(
-                                    (states) => CustomColor.yellow),
-                            value: 1,
-                            groupValue: id,
-                            onChanged: (val) {
-                              setState(() {
-                                radioButtonItem = 'Female';
-                                id = 1;
-                              });
-                            },
+                          Row(
+                            children: [
+                              Radio(
+                                fillColor: MaterialStateColor.resolveWith(
+                                        (states) => Colors.black54),
+                                focusColor: MaterialStateColor.resolveWith(
+                                        (states) => Colors.black54),
+                                value: 1,
+                                groupValue: id,
+                                onChanged: (val) {
+                                  setState(() {
+                                    radioButtonItem = 'Female';
+                                    id = 1;
+                                  });
+                                },
+                              ),
+                              const Text(
+                                'Female',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Gilroy",
+                                    color: CustomColor.riderprofileColor),
+                              ),
+                            ],
                           ),
-                          const Text(
-                            'Female',
-                            style: TextStyle(fontSize: 17.0),
+                          SizedBox(width: 30,),
+                          Row(
+                            children: [
+                              Radio(
+                                fillColor: MaterialStateColor.resolveWith(
+                                        (states) => Colors.black54),
+                                focusColor: MaterialStateColor.resolveWith(
+                                        (states) => Colors.black54),
+                                value: 2,
+                                groupValue: id,
+                                onChanged: (val) {
+                                  setState(() {
+                                    radioButtonItem = 'Male';
+                                    id = 2;
+                                  });
+                                },
+                              ),
+                              const Text(
+                                'Male',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Gilroy",
+                                    color: CustomColor.riderprofileColor),
+                              ),
+                            ],
                           ),
-                          Radio(
-                            fillColor: MaterialStateColor.resolveWith(
-                                    (states) => CustomColor.yellow),
-                            focusColor: MaterialStateColor.resolveWith(
-                                    (states) => CustomColor.yellow),
-                            value: 2,
-                            groupValue: id,
-                            onChanged: (val) {
-                              setState(() {
-                                radioButtonItem = 'Male';
-                                id = 2;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'Male',
-                            style: TextStyle(
-                              fontSize: 17.0,
-                            ),
-                          ),
-                          Radio(
-                            fillColor: MaterialStateColor.resolveWith(
-                                    (states) => CustomColor.yellow),
-                            focusColor: MaterialStateColor.resolveWith(
-                                    (states) => CustomColor.yellow),
-                            value: 3,
-                            groupValue: id,
-                            onChanged: (val) {
-                              setState(() {
-                                radioButtonItem = 'Other';
-                                id = 3;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'Other',
-                            style: TextStyle(fontSize: 17.0),
-                          ),
+                          SizedBox(width: 30,),
+                          Row(
+                            children: [
+                              Radio(
+                                fillColor: MaterialStateColor.resolveWith(
+                                        (states) => Colors.black54),
+                                focusColor: MaterialStateColor.resolveWith(
+                                        (states) => Colors.black54),
+                                value: 3,
+                                groupValue: id,
+                                onChanged: (val) {
+                                  setState(() {
+                                    radioButtonItem = 'Other';
+                                    id = 3;
+                                  });
+                                },
+                              ),
+                              const Text(
+                                'Other',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Gilroy",
+                                    color: CustomColor.riderprofileColor),
+                              ),
+                            ],
+                          )
+
+
+
                         ],
                       ),
                     ],
@@ -840,7 +850,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                     height: 25,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 15, left: 15),
+                    padding: const EdgeInsets.only(right: 20, left: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -852,9 +862,10 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
 
                               const Text("State",
                                   style: TextStyle(
-                                      color: CustomColor.black,
-                                      fontFamily: 'transport',
-                                      fontSize: 16)),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),),
                             ],
                           ),
                         ),
@@ -866,9 +877,10 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               Container(width: 15),
                               const Text("City",
                                   style: TextStyle(
-                                      color: CustomColor.black,
-                                      fontFamily: 'transport',
-                                      fontSize: 16)),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),),
                             ],
                           ),
                         )
@@ -876,7 +888,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 15, left: 15),
+                    padding: const EdgeInsets.only(right: 20, left: 20),
                     child: Row(
                       children: [
                         Expanded(
@@ -899,20 +911,22 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 FilteringTextInputFormatter.deny('  ')
                               ],
                               style: TextStyle(
-                                fontFamily: 'transport',
-                                fontSize: 18,
-                              ),
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Gilroy",
+                                  color: CustomColor.riderprofileColor),
                               controller: stateController,
-                              textCapitalization: TextCapitalization.sentences,
+                              textCapitalization: TextCapitalization.words,
                               keyboardType: TextInputType.text,
+
                               decoration: InputDecoration(
                                 border: const UnderlineInputBorder(),
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        width: 1, color: CustomColor.yellow)),
+                                        width: 1, color: Colors.black45)),
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        width: 2, color: CustomColor.yellow)),
+                                        width: 2, color: Colors.black54)),
                               ),
                               onChanged: (value) {
                                 mystates = value;
@@ -941,21 +955,23 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                     RegExp("[A-Za-z]")),
                                 FilteringTextInputFormatter.deny('  ')
                               ],
-                              style: TextStyle(
-                                fontFamily: 'transport',
-                                fontSize: 18,
-                              ),
+                              style:TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Gilroy",
+                                  color: CustomColor.riderprofileColor),
                               controller: cityController,
-                              textCapitalization: TextCapitalization.sentences,
+                              textCapitalization: TextCapitalization.words,
                               keyboardType: TextInputType.text,
+
                               decoration: InputDecoration(
                                 border: const UnderlineInputBorder(),
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        width: 1, color: CustomColor.yellow)),
+                                        width: 1, color: Colors.black45)),
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        width: 2, color: CustomColor.yellow)),
+                                        width: 2, color: Colors.black54)),
                               ),
                               onChanged: (value) {
                                 mycities = value;
@@ -971,15 +987,17 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                   ),
                   Row(
                     children: [
+
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15, right: 15, top: 0, bottom: 0),
-                        child: Image.asset('assets/registration_no.png',
-                            height: 25, width: 25),
-                      ),
-                      const Text(
-                        "PinCode",
-                        style: TextStyle(fontFamily: 'transport', fontSize: 16),
+                        padding: const EdgeInsets.only(left: 20),
+                        child: const Text(
+                          "PinCode",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "Gilroy",
+                              color: CustomColor.riderprofileColor),
+                        ),
                       ),
                     ],
                   ),
@@ -1007,20 +1025,21 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       RegExp("[0-9]")),
                                   LengthLimitingTextInputFormatter(6),
                                 ],
-                                style: TextStyle(
-                                  fontFamily: 'transport',
-                                  fontSize: 18,
-                                ),
+                                style:TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Gilroy",
+                                    color: CustomColor.riderprofileColor),
                                 controller: pinController,
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   border: const UnderlineInputBorder(),
                                   enabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                          width: 1, color: CustomColor.yellow)),
+                                          width: 1, color: Colors.black45)),
                                   focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                          width: 2, color: CustomColor.yellow)),
+                                          width: 2, color: Colors.black54)),
                                 ),
                               ),
                             ),
@@ -1034,15 +1053,17 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                   ),
                   Row(
                     children: [
+
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15, right: 15, top: 0, bottom: 0),
-                        child: Image.asset('assets/registration_no.png',
-                            height: 25, width: 25),
-                      ),
-                      const Text(
-                        "Address",
-                        style: TextStyle(fontFamily: 'transport', fontSize: 16),
+                        padding: const EdgeInsets.only(left: 15),
+                        child: const Text(
+                          "Address",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "Gilroy",
+                              color: CustomColor.riderprofileColor),
+                        ),
                       ),
                     ],
                   ),
@@ -1070,20 +1091,22 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 FilteringTextInputFormatter.deny('  ')
                               ],
                               style: TextStyle(
-                                fontFamily: 'transport',
-                                fontSize: 18,
-                              ),
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Gilroy",
+                                  color: CustomColor.riderprofileColor),
                               controller: addressController,
-                              textCapitalization: TextCapitalization.sentences,
+                              textCapitalization: TextCapitalization.words,
                               keyboardType: TextInputType.multiline,
+
                               decoration: InputDecoration(
                                 border: const UnderlineInputBorder(),
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        width: 1, color: CustomColor.yellow)),
+                                        width: 1, color: Colors.black45)),
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        width: 2, color: CustomColor.yellow)),
+                                        width: 2, color: Colors.black54)),
                               ),
                               onChanged: (value) {
                                 myaddress = value;
@@ -1109,9 +1132,10 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
 
                               const Text("Contact Person Name",
                                   style: TextStyle(
-                                      color: CustomColor.black,
-                                      fontFamily: 'transport',
-                                      fontSize: 16)),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),),
                             ],
                           ),
                         ),
@@ -1123,10 +1147,12 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
 
 
                               const Text("Emergency contact no.",
-                                  style: TextStyle(
-                                      color: CustomColor.black,
-                                      fontFamily: 'transport',
-                                      fontSize: 16)),
+                                  style:TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),),
                             ],
                           ),
                         ),
@@ -1149,11 +1175,15 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 //LengthLimitingTextInputFormatter(10),
                               ],
                               style: const TextStyle(
-                                  fontFamily: 'transport',
-                                  fontSize: 16),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Gilroy",
+                                  color: CustomColor.riderprofileColor),
                               maxLines: 1,
                               controller: contactPersonController,
-                              decoration:  InputDecoration(
+                              textCapitalization: TextCapitalization.words,
+                              keyboardType: TextInputType.text,
+
                                 // suffixIcon:
                                 //GestureDetector(
                                 //  onTap: (){
@@ -1164,17 +1194,15 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 //height: 0,
                                 //)
                                 //),
-                                border: UnderlineInputBorder(),
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1,
-                                        color: CustomColor.yellow)),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1,
-                                      color: Colors.amberAccent),
+                                decoration: InputDecoration(
+                                  border: const UnderlineInputBorder(),
+                                  enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.black45)),
+                                  focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 2, color: Colors.black54)),
                                 ),
-                              ),
                               onTap: () async {
 
                               },
@@ -1202,8 +1230,10 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 LengthLimitingTextInputFormatter(10),
                               ],
                               style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontFamily: "transport"),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Gilroy",
+                                  color: CustomColor.riderprofileColor),
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 border: const UnderlineInputBorder(),
@@ -1211,20 +1241,21 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 const UnderlineInputBorder(
                                   borderSide: BorderSide(
                                       width: 1,
-                                      color: CustomColor.yellow),
+                                      color: Colors.black54),
                                 ),
                                 focusedBorder:
                                 const UnderlineInputBorder(
                                   borderSide: BorderSide(
                                       width: 1,
-                                      color: Colors.amberAccent),
+                                      color: Colors.black54),
                                 ),
 
                                 prefixText: "+91",
                                 prefixStyle: const TextStyle(
-                                    fontSize: 17,
-                                    fontFamily: "transport",
-                                    fontWeight: FontWeight.normal),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Gilroy",
+                                    color: CustomColor.riderprofileColor),
                               ),
                               validator: (value) {
                                 if (value == null ||
@@ -1255,9 +1286,10 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
 
                               const Text("Contact Person Name",
                                   style: TextStyle(
-                                      color: CustomColor.black,
-                                      fontFamily: 'transport',
-                                      fontSize: 16)),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),),
                             ],
                           ),
                         ),
@@ -1270,9 +1302,10 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
 
                               const Text("Emergency contact no.",
                                   style: TextStyle(
-                                      color: CustomColor.black,
-                                      fontFamily: 'transport',
-                                      fontSize: 16)),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),),
                             ],
                           ),
                         ),
@@ -1294,23 +1327,24 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                     RegExp("[A-Za-z]")),
                                 //LengthLimitingTextInputFormatter(10),
                               ],
-                              style: const TextStyle(
-                                  fontFamily: 'transport',
-                                  fontSize: 16),
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Gilroy",
+                                  color: CustomColor.riderprofileColor),
                               maxLines: 1,
                               controller: contactPerson1Controller,
-                              decoration:  InputDecoration(
+                              textCapitalization: TextCapitalization.words,
+                              keyboardType: TextInputType.text,
 
-                                border: UnderlineInputBorder(),
+                              decoration: InputDecoration(
+                                border: const UnderlineInputBorder(),
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        width: 1,
-                                        color: CustomColor.yellow)),
+                                        width: 1, color: Colors.black45)),
                                 focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1,
-                                      color: Colors.amberAccent),
-                                ),
+                                    borderSide: BorderSide(
+                                        width: 2, color: Colors.black54)),
                               ),
                               onTap: () async {
 
@@ -1339,8 +1373,10 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 LengthLimitingTextInputFormatter(10),
                               ],
                               style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontFamily: "transport"),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Gilroy",
+                                  color: CustomColor.riderprofileColor),
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 border: const UnderlineInputBorder(),
@@ -1348,20 +1384,21 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 const UnderlineInputBorder(
                                   borderSide: BorderSide(
                                       width: 1,
-                                      color: CustomColor.yellow),
+                                      color: Colors.black54),
                                 ),
                                 focusedBorder:
                                 const UnderlineInputBorder(
                                   borderSide: BorderSide(
                                       width: 1,
-                                      color: Colors.amberAccent),
+                                      color: Colors.black54),
                                 ),
 
                                 prefixText: "+91",
                                 prefixStyle: const TextStyle(
-                                    fontSize: 17,
-                                    fontFamily: "transport",
-                                    fontWeight: FontWeight.normal),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Gilroy",
+                                    color: CustomColor.riderprofileColor),
                               ),
                               validator: (value) {
                                 if (value == null ||
@@ -1378,12 +1415,47 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                     ),
                   ),
                   SizedBox(
-                    height: 110,
+                    height: 60,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 10, left: 20, right: 20, bottom: 20),
-                    child: Button(
+                   left: 25, right: 25, bottom: 20),
+                    child: CustomButton(press: () async{
+                      if (_formKey.currentState!.validate()) {
+                        await Preferences.setPreferences();
+                        String userId = Preferences.getId(Preferences.id);
+                        firstname = firstNameController.text.toString();
+                        lastname = lastNameController.text.toString();
+                        dob = dobController.text.toString();
+                        email = emailController.text.toString();
+                        myaddress = addressController.text.toString();
+                        pinNumber = pinController.text.toString();
+                        mobilenumber = mobileNumberController.text.toString();
+                        gender=radioButtonItem.toString();
+                        uploadedImage = imageFilePath.toString();
+                        mystates = stateController.text.toString();
+                        mycities = cityController.text.toString();
+                        emergencyContact0Controller.text.toString();
+                        print(userId);
+                        print(pinNumber);
+                        print(uploadedImage);
+                        print(mycities);
+                        print(mystates);
+                        print(myaddress);
+                        print(gender);
+                        print("**************************");
+
+                        // if (age < 6) {
+                        //   openAndCloseLoadingDialog();
+                        // } else {
+
+                        updateProfile(userId);
+                        // OverlayLoadingProgress.start(context);
+                        // }
+                      }
+                    }, buttonText: "Update Profile")
+
+                    /*Button(
                         textColor: CustomColor.black,
                         size: 80,
                         buttonTitle: "Update Profile",
@@ -1420,7 +1492,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             // OverlayLoadingProgress.start(context);
                             // }
                           }
-                        }),
+                        }),*/
                   )
                 ],
               ),
@@ -1876,7 +1948,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
           Preferences.setProfileImage(uploadedImage.toString());
 
           print("imageprofile:" + Preferences.getProfileImage());
-          Get.to(MainPage());
+          //Get.to(MainPage());
+          Get.to(HomePageNav());
         } else {
           OverlayLoadingProgress;
 

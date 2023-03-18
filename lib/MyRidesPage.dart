@@ -6,7 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
+import 'package:ride_safe_travel/color_constant.dart';
 import 'Error.dart';
 import 'LoginModule/Api_Url.dart';
 import 'LoginModule/custom_color.dart';
@@ -30,10 +32,10 @@ class _MyRidesPageState extends State<MyRidesPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: (widget.changeAppbar =='bottomNav') ? Colors.white : Colors.yellow,
+          backgroundColor: (widget.changeAppbar =='bottomNav') ? Colors.white : appBlue,
           elevation: 0,
           title: const Text("My Trips List",
-              style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',)),
+              style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'Gilroy',)),
           leading: IconButton(
             color: Colors.black,
             onPressed: () {
@@ -53,6 +55,13 @@ class _MyRidesPageState extends State<MyRidesPage> {
                 itemCount: snapshot.data?.length,
                 itemBuilder: (context, index) {
                   image = snapshot.data![index].driverPhoto;
+                  DateTime tempDate = DateTime.parse(snapshot.data![index].date.toString());
+
+
+                 //DateFormat.yMd('es').format(now)
+                  final DateFormat formatter = DateFormat('dd-MM-yyyy');
+                  final String formatted = formatter.format(tempDate);
+                  print("RideDate..."+formatted.toString());
                   return InkWell(
                     onTap: () {
                       setState(() {
@@ -68,11 +77,11 @@ class _MyRidesPageState extends State<MyRidesPage> {
                       padding:
                       const EdgeInsets.only(left: 10, right: 10, top: 10),
                       child: Card(
-                          elevation: 5,
+                          elevation: 10,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                          color: CustomColor.yellow,
+                          color: CustomColor.white,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,8 +89,8 @@ class _MyRidesPageState extends State<MyRidesPage> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 15,top: 15),
                                 child: Text("Driver Details",style: const TextStyle(
-                                    fontFamily: 'transport',
-                                    fontSize: 16,
+                                    fontFamily: 'Gilroy',
+                                    fontSize: 18,
                                     color: CustomColor.black)),
                               ),
                               Padding(
@@ -90,10 +99,12 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Text("Ride Date : ",style: const TextStyle(
+                                        fontFamily: 'Gilroy',
                                         fontSize: 16,
                                         color: CustomColor.black,fontWeight: FontWeight.bold)),
-                                    Text(snapshot.data![index].date.toString() == "null" ? "Data Not Available" :
-                                    snapshot.data![index].date.toString(),style: const TextStyle(
+                                    Text(formatted == "null" ? "Data Not Available" :
+                                    formatted.toString(),style: const TextStyle(
+                                        fontFamily: 'Gilroy',
                                         fontSize: 16,
                                         color: CustomColor.black)),
                                   ],
@@ -105,7 +116,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
 
                                 leading:    CircleAvatar(
                                   backgroundColor:
-                                  CustomColor.yellow,
+                                  Colors.black54,
                                   radius: 27.0,
                                   child: CircleAvatar(
                                     radius: 25.0,
@@ -134,9 +145,9 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                     Row(
                                       children: [
                                         Text("Name: ", style: const TextStyle(
-                                            fontFamily: 'transport',
+                                            fontFamily: 'Gilroy',
                                             fontSize: 16,
-                                            color: CustomColor.black)),
+                                            color: CustomColor.black,fontWeight: FontWeight.bold)),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
@@ -147,9 +158,9 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                                   .toString()
                                                   : " ",
                                               style: const TextStyle(
-
-                                                  fontSize: 15,
-                                                  color: Colors.black87, fontStyle: FontStyle.normal)),
+                                                  fontFamily: 'Gilroy',
+                                                  fontSize: 16,
+                                                  color: CustomColor.black,fontWeight: FontWeight.normal)),
                                         ),
                                       ],
                                     ),
@@ -160,9 +171,9 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                     Row(
                                       children: [
                                         Text("Mobile Number : ",style: const TextStyle(
-                                            fontFamily: 'transport',
+                                            fontFamily: 'Gilroy',
                                             fontSize: 16,
-                                            color: CustomColor.black)),
+                                            color: CustomColor.black,fontWeight: FontWeight.bold)),
                                         Text(
                                             snapshot.data![index].driverMobileNumber
                                                 .toString() ==
@@ -172,9 +183,9 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                                 .data![index].driverMobileNumber
                                                 .toString(),
                                             style: const TextStyle(
-
-                                                fontSize: 15,
-                                                color: Colors.black87, fontStyle: FontStyle.normal)),
+                                                fontFamily: 'Gilroy',
+                                                fontSize: 16,
+                                                color: CustomColor.black,fontWeight: FontWeight.normal)),
                                       ],
                                     ),
 
@@ -209,9 +220,9 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                               child: Text(
                                                 "Vehicle Details",
                                                 style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                                    fontFamily: 'Gilroy',
+                                                    fontSize: 17,
+                                                    color: CustomColor.black)
                                               ),
                                             ),
                                             Row(
@@ -223,10 +234,9 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                                       left: 20, right: 25),
                                                   child: Text("Model Name",
                                                       style: const TextStyle(
-                                                          fontFamily: 'transport',
-                                                          fontSize: 15,
-                                                          color:
-                                                          CustomColor.black)),
+                                                          fontFamily: 'Gilroy',
+                                                          fontSize: 16,
+                                                          color: CustomColor.black, fontWeight: FontWeight.bold)),
                                                 ),
                                                 Container(
                                                     width: 20,
@@ -244,6 +254,10 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                                               border: InputBorder.none,
                                                               hintText:  snapshot.data![index].vehicleModel != "null" ?
                                                               snapshot.data![index].vehicleModel : " ",
+                                                              hintStyle: TextStyle(
+                                                                  fontFamily: 'Gilroy',
+                                                                  fontSize: 16,
+                                                                  color: CustomColor.black,fontWeight: FontWeight.normal)
                                                             ),
                                                             readOnly: true,
                                                           ),
@@ -261,10 +275,9 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                                       left: 20, right: 5),
                                                   child: Text("Registration No",
                                                       style: const TextStyle(
-                                                          fontFamily: 'transport',
-                                                          fontSize: 15,
-                                                          color:
-                                                          CustomColor.black)),
+                                                          fontFamily: 'Gilroy',
+                                                          fontSize: 16,
+                                                          color: CustomColor.black, fontWeight: FontWeight.bold)),
                                                 ),
                                                 Container(
                                                     width: 20,
@@ -282,6 +295,10 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                                             border: InputBorder.none,
                                                             hintText:  snapshot.data![index].vehicleRegistrationNumber != "null" ?
                                                             snapshot.data![index].vehicleRegistrationNumber : " ",
+                                                            hintStyle: TextStyle(
+                                                                fontFamily: 'Gilroy',
+                                                                fontSize: 16,
+                                                                color: CustomColor.black,fontWeight: FontWeight.normal)
                                                           ),
                                                           readOnly: true,
                                                         ),
@@ -300,10 +317,9 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                                       left: 20, right: 30),
                                                   child: Text("RC Number",
                                                       style: const TextStyle(
-                                                          fontFamily: 'transport',
-                                                          fontSize: 15,
-                                                          color:
-                                                          CustomColor.black)),
+                                                          fontFamily: 'Gilroy',
+                                                          fontSize: 16,
+                                                          color: CustomColor.black,fontWeight: FontWeight.bold)),
                                                 ),
                                                 Container(
                                                     width: 20,
@@ -321,6 +337,10 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                                             border: InputBorder.none,
                                                             hintText: snapshot.data![index].vehicleRcNumber.toString() != "null" ?
                                                             snapshot.data![index].vehicleRcNumber.toString() : " ",
+                                                            hintStyle: TextStyle(
+                                                                fontFamily: 'Gilroy',
+                                                                fontSize: 16,
+                                                                color: CustomColor.black,fontWeight: FontWeight.normal)
                                                           ),
                                                           readOnly: true,
                                                         ),

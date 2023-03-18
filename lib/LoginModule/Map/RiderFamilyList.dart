@@ -16,6 +16,7 @@ import '../../FamilyMemberAddOtherTrack.dart';
 import '../../FamilyMemberAddScreen.dart';
 import '../../Models/MemberBlockDeleteModel.dart';
 import '../../ToggleSwitch.dart';
+import '../../color_constant.dart';
 import '../../familydatamodel.dart';
 import '../../switchbutton.dart';
 import 'FamilyListDataModel.dart';
@@ -98,10 +99,10 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           centerTitle: (widget.changeUiValue=='bottomNav') ? true : false,
-          backgroundColor: (widget.changeUiValue=='bottomNav') ? Colors.white : CustomColor.yellow,
+          backgroundColor: (widget.changeUiValue=='bottomNav') ? Colors.white : appBlue,
           elevation: 0,
           title: const Text("Other's Live Ride",
-              style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',)),
+              style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'Gilroy',)),
           leading: IconButton(
             color: (widget.changeUiValue=='bottomNav') ? Colors.white : CustomColor.black,
             onPressed: () {
@@ -212,7 +213,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                             height: 170,
                                             width: 350,
                                             decoration: BoxDecoration(
-                                                color: CustomColor.yellow,
+                                                color: CustomColor.white,
                                                 borderRadius:
                                                 BorderRadius.circular(
                                                     18.0)),
@@ -268,7 +269,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                                   ? " "
                                                   : memberStatus.toString(),
                                               style: TextStyle(
-                                                  fontFamily: 'transport',
+                                                  fontFamily: 'Gilroy',
                                                   fontSize: 16)),
                                         ),
                                         Positioned(
@@ -279,7 +280,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                                   ? " "
                                                   : memberName.toString(),
                                               style: TextStyle(
-                                                  fontFamily: 'transport',
+                                                  fontFamily: 'Gilroy',
                                                   fontSize: 16)),
                                         ),
                                         Positioned(
@@ -295,7 +296,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                                   .driverName
                                                   .toString(),
                                               style: TextStyle(
-                                                  fontFamily: 'transport',
+                                                  fontFamily: 'Gilroy',
                                                   fontSize: 16)),
                                         ),
                                         Positioned(
@@ -311,7 +312,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                                   .driverMobileNumber
                                                   .toString(),
                                               style: TextStyle(
-                                                  fontFamily: 'transport',
+                                                  fontFamily: 'Gilroy',
                                                   fontSize: 16)),
                                         ),
                                         Positioned(
@@ -327,7 +328,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                                   .drivingLicenceNumber
                                                   .toString(),
                                               style: TextStyle(
-                                                fontFamily: 'transport',
+                                                fontFamily: 'Gilroy',
                                                 fontSize: 16,
                                               )),
                                         ),

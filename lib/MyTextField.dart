@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'LoginModule/custom_color.dart';
+
 class MyTextField extends StatelessWidget {
   final String fontName;
   final double fontSize;
@@ -11,6 +13,7 @@ class MyTextField extends StatelessWidget {
   final bool enable;
   final String hintText;
   final Color textColor;
+
 
   TextEditingController textEditingController;
 
@@ -26,7 +29,7 @@ class MyTextField extends StatelessWidget {
       required this.textInputType,
       required this.enable,
       required this.hintText,
-      required this.textColor})
+      required this.textColor, })
       : super(key: key);
 
   @override
@@ -44,8 +47,11 @@ class MyTextField extends StatelessWidget {
           focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(width: broad, color: focusedBorderColor)),
           hintText: hintText,
-        hintStyle: TextStyle( fontFamily: 'transport',
-            fontSize: 15,color: textColor)
+        hintStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            fontFamily: "Gilroy",
+            color: CustomColor.riderprofileColor),
 
       ),
     );

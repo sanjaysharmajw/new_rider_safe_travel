@@ -16,6 +16,7 @@ import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/LoginModule/riderNewRegisterLoginModel.dart';
 import 'package:ride_safe_travel/OtpModel.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
+import 'package:ride_safe_travel/custom_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../bottom_nav/custom_bottom_navi.dart';
@@ -82,7 +83,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       height: 60.w,
       textStyle:  TextStyle(
           fontSize: 25.sp,
-          fontFamily: 'transport',
+          fontFamily: 'Gilroy',
           color: CustomColor.black,
           fontWeight: FontWeight.w600),
       decoration: BoxDecoration(
@@ -93,7 +94,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
 
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
       border: Border.all(
-        color: CustomColor.yellow,
+        color: Colors.blue,
       ),
       borderRadius: BorderRadius.circular(5.r),
     );
@@ -119,12 +120,12 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         body: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          padding:  EdgeInsets.only(left: 40, right: 40),
+          padding:  EdgeInsets.only(left: 20, right: 20),
           child: Form(
             // key: _formKey,
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-               crossAxisAlignment: CrossAxisAlignment.center,
+               mainAxisAlignment: MainAxisAlignment.start,
+               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(
                   height: 20,
@@ -132,7 +133,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                 Text("Verify Mobile Number",
                     style: TextStyle(
                         fontSize: 20.sp,
-                        fontFamily: 'transport',
+                        fontFamily: 'Gilroy',
                         fontWeight: FontWeight.bold)),
                  SizedBox(
                   height: 15.h,
@@ -140,7 +141,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                  Text(
                   "Enter 4 digit verification code sent to",
                   style: TextStyle(
-                      fontFamily: "transport",
+                      fontFamily: "Gilroy",
                       fontWeight: FontWeight.w400,
                       fontSize: 15.sp),
                 ),
@@ -148,20 +149,20 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                   height: 5.h,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  //crossAxisAlignment: CrossAxisAlignment.stretch    ,
                   children: [
                     Text(
                       "your mobile number ",
                       style: TextStyle(
-                          fontFamily: "transport",
+                          fontFamily: "Gilroy",
                           fontWeight: FontWeight.w400,
                           fontSize: 15.sp),
                     ),
                     Text(
                       mobileController.text.toString(),
                       style: TextStyle(
-                          fontFamily: "transport",
+                          fontFamily: "Gilroy",
                           fontWeight: FontWeight.w400,
                           fontSize: 13.sp),
                     ),
@@ -172,8 +173,8 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                       child: Text(
                         '  Edit',
                         style: TextStyle(
-                            color: CustomColor.yellow,
-                            fontFamily: "transport",
+                            color: Colors.blue,
+                            fontFamily: "Gilroy",
                             fontWeight: FontWeight.w400,
                             fontSize: 14.sp),
                       ),
@@ -189,7 +190,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                     "Enter OTP here",
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                      fontFamily: "transport",
+                      fontFamily: "Gilroy",
                       fontWeight: FontWeight.w400,
                       fontSize: 14.sp,
                     ),
@@ -230,7 +231,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                          "Didn't receive OTP ? ",
                          textAlign: TextAlign.left,
                          style: TextStyle(
-                           fontFamily: "transport",
+                           fontFamily: "Gilroy",
                            fontWeight: FontWeight.w400,
                            fontSize: 14.sp,
                          ),
@@ -244,7 +245,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                            text:  Text(
                              'RESEND OTP',
                              style: TextStyle(
-                                 fontFamily: "transport",
+                                 fontFamily: "Gilroy",
                                  fontSize: 12.sp,
                                  color: Colors.red),
                            ),
@@ -267,7 +268,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                  SizedBox(
                   height: 70.h,
                 ),
-                Button(
+                /*Button(
                     textColor: CustomColor.black,
                     size: 75,
                     buttonTitle: "VERIFY NUMBER",
@@ -277,7 +278,17 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                       });
                       await new_VerifyOtpApi(mobileController.text.toString(),
                           otpController.text.toString());
-                    }),
+                    }),*/
+                Padding(
+                  padding: const EdgeInsets.only(left:15,right: 15 ),
+                  child: CustomButton(press: () async{
+                    setState(() {
+                      OverlayLoadingProgress.start(context);
+                    });
+                    await new_VerifyOtpApi(mobileController.text.toString(),
+                        otpController.text.toString());
+                  }, buttonText: "Verify Number"),
+                )
               ],
             ),
           ),

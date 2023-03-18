@@ -39,7 +39,7 @@ class ProfileHozontalView extends StatelessWidget {
                   ),
                 ), */
                 CircleAvatar(
-                  backgroundColor: CustomColor.yellow,
+                  backgroundColor: CustomColor.black,
                   radius: 27,
                   child: CircleAvatar(
                     radius: 26,
@@ -62,9 +62,9 @@ class ProfileHozontalView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children:  [
-                      MyText(text: profileName, fontFamily: 'transport', color: Colors.black, fontSize: 16),
+                      MyText(text: profileName, fontFamily: 'Gilroy', color: Colors.black, fontSize: 16),
                       const SizedBox(height: 4),
-                      MyText(text: profileMobile, fontFamily: 'transport', color: Colors.black, fontSize: 14)
+                      MyText(text: profileMobile, fontFamily: 'Gilroy', color: Colors.black, fontSize: 16)
                     ],
                   ),
                 ),
