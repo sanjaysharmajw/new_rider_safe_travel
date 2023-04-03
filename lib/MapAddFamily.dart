@@ -11,6 +11,8 @@ import 'package:ride_safe_travel/LoginModule/Map/RiderFamilyList.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/Models/affFamilyMemberNewModel.dart';
 import 'package:ride_safe_travel/Utils/RiderButton.dart';
+import 'package:ride_safe_travel/color_constant.dart';
+import 'package:ride_safe_travel/custom_button.dart';
 import 'LoginModule/Error.dart';
 import 'LoginModule/preferences.dart';
 import 'Utils/Validators.dart';
@@ -40,8 +42,8 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
         leading:  IconButton(icon: Icon(Icons.keyboard_backspace_sharp,color: CustomColor.black,), onPressed: () {
           Get.back();
         },),
-        centerTitle: true,
-        backgroundColor: CustomColor.yellow,
+        centerTitle: false,
+        backgroundColor: appBlue,
         title: const Text("Add Family Member",
             style: TextStyle(fontFamily: 'transport', fontSize: 18,color: CustomColor.black)),
       ),
@@ -131,7 +133,23 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
                   },
                 ),
               ),
-              RiderButton(
+
+              SizedBox(height: 25,),
+              Padding(
+                padding: const EdgeInsets.only(left: 20,right: 20,),
+                child: CustomButton(press: (){
+                  if (_formKey.currentState!.validate()) {
+                    OverlayLoadingProgress.start(context);
+                    addFamilyMember(
+                        controllerName.text.toString(),
+                        userId,
+                        controllerRelation.text.toString(),
+                        controllerMobile.text.toString());
+
+                  }
+                }, buttonText: "Add Member"),
+              )
+             /* RiderButton(
                   click: () {
                     if (_formKey.currentState!.validate()) {
                       OverlayLoadingProgress.start(context);
@@ -144,7 +162,7 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
                     }
 
                   },
-                  textBtn: 'Add')
+                  textBtn: 'Add') */
             ],
           ),
         ),

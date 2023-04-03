@@ -280,7 +280,7 @@ var riderOtp="";
                     icons: 'images/my_profile.png',
                     text: 'My Profile',
                     press: () {
-                      Get.to(const RiderProfileView());
+                     // Get.to(const RiderProfileView());
                     },
                     width: 165.w,
                     height: 165.h,

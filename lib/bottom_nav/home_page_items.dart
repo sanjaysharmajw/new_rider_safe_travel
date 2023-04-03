@@ -23,15 +23,18 @@ class HomePageItems extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.only(bottom: 20, left: 10),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title,style: const TextStyle(fontWeight: FontWeight.w500,fontFamily: 'Gilroy',color: Colors.white,fontSize: 16)),
-            const SizedBox(height: 5),
+            Text(
+                title,
+                style: const TextStyle(fontWeight: FontWeight.w500,fontFamily: 'Gilroy',color: Colors.white,fontSize: 25)),
+            const SizedBox(height: 20),
             Text(subtitle,style: const TextStyle(fontWeight: FontWeight.w100,fontFamily: 'Gilroy',color: Colors.white,fontSize: 16))
           ],
         ),
       ),
     );
   }
+
 }

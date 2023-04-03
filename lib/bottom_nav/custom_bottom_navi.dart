@@ -31,12 +31,12 @@ class UserDashBoardScreenState extends State<CustomBottomNav> {
     const FamilyMemberListScreen(changeUiValue: 'bottomNav'),
      MyRidesPage(changeAppbar: 'bottomNav',),
      RejectedServiceList(changeColor: 'bottomNav',),
-     ProfileNav(),
+     ProfileNav(backbutton: 'bottomNav',),
   ];
 
   List<BottomNavigationBarItem> icons =const [
     BottomNavigationBarItem(icon: Icon(FeatherIcons.home), label: ''),
-    BottomNavigationBarItem(icon: Icon(MdiIcons.viewStream), label: ''),
+    BottomNavigationBarItem(icon: Icon(Icons.directions_car_outlined), label: ''),
     BottomNavigationBarItem(icon: Icon(Icons.work_outline_sharp), label: ''),
     BottomNavigationBarItem(icon: Icon(Icons.car_repair_outlined), label: ''),
     BottomNavigationBarItem(icon: Icon(FeatherIcons.user), label: '')

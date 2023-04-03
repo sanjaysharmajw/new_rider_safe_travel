@@ -3,6 +3,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:badges/badges.dart' as badges;
@@ -12,11 +14,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:majascan/majascan.dart';
 import 'package:location/location.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
+import 'package:ride_safe_travel/SpinkitLoader.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/bottom_nav/profile_nav.dart';
+import 'package:ride_safe_travel/color_constant.dart';
 import '../LoginModule/Map/RiderFamilyList.dart';
 import '../Models/CheckActiveUserRide.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -38,6 +43,7 @@ import '../UserFamilyList.dart';
 import '../Utils/exit_alert_dialog.dart';
 import '../Utils/profile_horizontal_view.dart';
 import '../Utils/toast.dart';
+import '../chat_bot/ChatScreen.dart';
 import '../controller/end_ride_controller.dart';
 import '../controller/get_count_notification_controller.dart';
 import '../rider_profile_view.dart';
@@ -63,9 +69,9 @@ class _HomePageState extends State<HomePageNav> {
   LocationData? locationData;
   late Location location;
 
-  var myRiderCount="";
-  var peopleTrackingMe="";
-  var trackFamily="";
+  var myRiderCount="wait...";
+  var peopleTrackingMe="wait...";
+  var trackFamily="wait...";
 
   String profileName = "";
   String profileMobile = "";
@@ -73,6 +79,8 @@ class _HomePageState extends State<HomePageNav> {
   String profileEmailId = "";
   String? riderIdFromStartRider;
   late int countNitification = 0;
+
+  bool isLoading = true;
 
   var userId;
   var riderOtp = "";
@@ -154,6 +162,45 @@ class _HomePageState extends State<HomePageNav> {
         builder: (controller) {
           return SafeArea(
             child: Scaffold(
+              appBar: AppBar(
+                titleSpacing: 35,
+                centerTitle: false,
+                elevation: 40,
+                automaticallyImplyLeading:  false,
+                backgroundColor: appBlue,
+                title: Text("Kite",style: TextStyle(fontFamily: "Gilroy",fontSize: 25,color: Colors.white,fontWeight: FontWeight.bold),),
+                actions: [
+                  InkWell(
+                    onTap: () async {
+                      Get.to(const NotificationScreen());
+                      String refresh= await Navigator.push(context,
+                          MaterialPageRoute(builder: (context)=>const NotificationScreen()));
+                      if(refresh=='refresh'){
+                        await countNotification();
+                      }
+                    },
+                    child: Center(
+                      child: badges.Badge(
+                        badgeContent:  Text(
+                          countNitification.toString(),
+                          style: const TextStyle(color: CustomColor.white,fontSize: 15, fontFamily: 'Gilroy',),
+                        ),
+                        child: const Icon(FeatherIcons.bell, size: 27,color: CustomColor.white,),
+                      ),
+                    ),
+                  ),
+
+                  IconButton(
+                      icon: const Icon(Icons.chat),
+                      color: CustomColor.white,
+                      onPressed: () {
+                        Get.to(const ChatScreen());
+                      }),
+
+
+                ],
+
+              ),
               backgroundColor: Colors.white,
               body: SingleChildScrollView(
                 child: Column(
@@ -171,8 +218,8 @@ class _HomePageState extends State<HomePageNav> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const SizedBox(height: 10),
-                              Row(
+
+                           /*   Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                    MyText(
@@ -205,7 +252,7 @@ class _HomePageState extends State<HomePageNav> {
                                         padding: const EdgeInsets.only(left: 20),
                                         child: GestureDetector(
                                           onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileNav()));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileNav(backbutton: '',)));
                                             },
                                           child: CircleAvatar(
                                             backgroundColor: CustomColor.black,
@@ -234,7 +281,7 @@ class _HomePageState extends State<HomePageNav> {
                                   )
 
                                 ],
-                              ),
+                              ),*/
                               const SizedBox(height: 30),
                               Padding(
                                 padding: const EdgeInsets.only(right: 5, left: 5),
@@ -244,7 +291,7 @@ class _HomePageState extends State<HomePageNav> {
                                             Preferences.mobileNumber)
                                         .toString(),
                                     click: () {
-                                      Get.to(const RiderProfileView());
+                                      Get.to( RiderProfileView(backbutton: '',));
                                     },
                                     imageLink:
                                         Preferences.getProfileImage().toString()),
@@ -278,8 +325,8 @@ class _HomePageState extends State<HomePageNav> {
                                 child:  HomePageItems(
                                   completed: 58,
                                   backgroundColor: Colors.blue,
-                                  title: 'My Rides',
-                                  subtitle: myRiderCount!.toString(),
+                                    title:  myRiderCount.toString(),
+                                  subtitle: 'My Rides'
                                 ),
                               ),
                               InkWell(
@@ -289,8 +336,8 @@ class _HomePageState extends State<HomePageNav> {
                                 child:  HomePageItems(
                                   completed: 58,
                                   backgroundColor: Colors.red,
-                                  title: 'People Tracking Me',
-                                  subtitle: peopleTrackingMe!.toString(),
+                                  title:  peopleTrackingMe!.toString(),
+                                  subtitle: 'People Tracking Me'
                                 ),
                               ),
                               InkWell(
@@ -300,20 +347,21 @@ class _HomePageState extends State<HomePageNav> {
                                 child:  HomePageItems(
                                   completed: 45,
                                   backgroundColor: Colors.green,
-                                  title: 'Track Family & Friends',
-                                  subtitle: trackFamily!.toString(),
+                                  title: trackFamily!.toString(),
+                                  subtitle: 'Track Family & Friends'
                                 ),
                               ),
                               InkWell(
                                 onTap: () {
+                                  //SpinKitThreeBounce();
                                   OverlayLoadingProgress.start(context);
                                   checkActiveUser();
                                 },
-                                child: const HomePageItems(
+                                child: HomePageItems(
                                   completed: 58,
                                   backgroundColor: Colors.orange,
-                                  title: 'Start new ride',
-                                  subtitle: '',
+                                  title:"",
+                                  subtitle: 'Start New Ride',
                                 ),
                               ),
                             ]),
@@ -322,7 +370,7 @@ class _HomePageState extends State<HomePageNav> {
                     Container(
                       margin: const EdgeInsets.only(left: 20, right: 20, top: 30),
                       child: MyText(
-                          text: 'My Active Ride List',
+                          text: 'My Active Ride',
                           fontFamily: 'Gilroy',
                           color: Colors.black,
                           fontSize: 16),
@@ -330,7 +378,8 @@ class _HomePageState extends State<HomePageNav> {
                     Container(
                       child: Center(
                         child: controller.isLoading.value
-                            ? LoaderUtils.loader():
+                            ?
+                        LoaderUtils.loader():
                              controller.getMyRiderData.isEmpty
                                 ? const Center(
                                     child: EmptyScreen(),
@@ -343,6 +392,7 @@ class _HomePageState extends State<HomePageNav> {
                                         myRideList:
                                             controller.getMyRiderData[index],
                                         pressOnView: () {
+                                         // SpinKitThreeBounce();
                                           OverlayLoadingProgress.start(context);
                                           checkActiveUser();
                                         },
@@ -370,11 +420,11 @@ class _HomePageState extends State<HomePageNav> {
     print("_scanQR");
     try {
       String? qrResult = await MajaScan.startScan(
-          barColor: CustomColor.yellow,
+          barColor: appBlue,
           title: "QR Code scanner",
-          titleColor: CustomColor.black,
-          qRCornerColor: Colors.orange,
-          qRScannerColor: Colors.orange);
+          titleColor: CustomColor.white,
+          qRCornerColor: appBlue,
+          qRScannerColor: appBlue);
       setState(() async {
         print("qrResult" + qrResult.toString());
         result = qrResult ?? 'null string';
@@ -659,4 +709,7 @@ class _HomePageState extends State<HomePageNav> {
       }
     });
   }
+
+
+
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/Utils/circular_image_widgets.dart';
+import 'package:ride_safe_travel/color_constant.dart';
 
 class DrawerInfo extends StatelessWidget {
   final String dInfoName;
@@ -61,7 +62,7 @@ class DrawerInfo extends StatelessWidget {
                     alignment: Alignment.bottomRight,
                     children: [
                       CircularImage(imageLink: dInfoImage, imageWidth: 40.w,
-                          imageHeight: 40.h, borderColor: CustomColor.yellow)
+                          imageHeight: 40.h, borderColor: appBlack)
                     ],
                   ),
                 ),

@@ -182,8 +182,13 @@ class _SignUpState extends State<StartRide> {
       setState(() {});
       final GoogleMapController controller = await _completer.future;
       if (destinationMarkerLat == 0.0) {
-        live_polylineCoordinates.add(
-            LatLng(currentLocation!.latitude!, currentLocation!.longitude!));
+
+        if(speed>5){
+
+          ToastMessage.toast(speed.toString());
+          live_polylineCoordinates.add(
+              LatLng(currentLocation!.latitude!, currentLocation!.longitude!));
+        }
         controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
             target: LatLng(cLoc.latitude!, cLoc.longitude!), zoom: 19)));
       } else {
@@ -262,7 +267,7 @@ class _SignUpState extends State<StartRide> {
           centerTitle: true,
           title: const Text(
             "Ongoing Journey",
-            style: TextStyle(color: CustomColor.black, fontFamily: 'transport'),
+            style: TextStyle(color: CustomColor.white, fontFamily: 'Gilroy',fontSize: 22),
           ),
           elevation: 0,
           backgroundColor: appBlue,
@@ -274,19 +279,19 @@ class _SignUpState extends State<StartRide> {
                 await endRide();
               });
             },
-            icon: Image.asset('assets/map_back.png'),
+            icon: Image.asset('assets/map_back.png',color: Colors.white,),
           ),
           actions: <Widget>[
             IconButton(
                 icon: const Icon(Icons.chat),
-                color: CustomColor.black,
+                color: CustomColor.white,
                 onPressed: () {
                   Get.to(const ChatScreen());
                 }),
             IconButton(
                 icon: const Icon(
                   Icons.share,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
                 onPressed: () {
                   shareData();
@@ -361,7 +366,7 @@ class _SignUpState extends State<StartRide> {
                       child: Column(
                         children: [
                           Text('OTP: ${widget.otpRide.toString()}',style: const TextStyle(
-                            fontWeight: FontWeight.w600
+                            fontWeight: FontWeight.w600,fontFamily: 'Gilroy'
                           )),
                          const SizedBox(
                             height: 10,
@@ -373,7 +378,7 @@ class _SignUpState extends State<StartRide> {
                                 decoration: const InputDecoration(
                                     hintText: "Destination",
                                     hintStyle: TextStyle(
-                                        fontSize: 18, color: Colors.black),
+                                        fontSize: 18, color: Colors.black,fontFamily: 'Gilroy'),
                                     border: InputBorder.none),
                                 readOnly: true,
                                 onTap: () {
@@ -406,18 +411,20 @@ class _SignUpState extends State<StartRide> {
                                               ],
                                             ),
                                             const SizedBox(
-                                              height: 18.0,
+                                              height: 30.0,
                                             ),
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
+                                                  MainAxisAlignment.center,
                                               children: const <Widget>[
+
                                                 Text(
                                                   "Select a location",
                                                   style: TextStyle(
                                                     fontWeight:
                                                         FontWeight.normal,
                                                     fontSize: 20.0,
+                                                    fontFamily: 'Gilroy'
                                                   ),
                                                 ),
                                               ],
@@ -464,6 +471,7 @@ class _SignUpState extends State<StartRide> {
                                                                 InputDecoration(
                                                                     hintText:
                                                                         "Search",
+                                                                    hintStyle: TextStyle(fontFamily: 'Gilroy'),
                                                                     border:
                                                                         InputBorder
                                                                             .none,
@@ -612,7 +620,7 @@ class _SignUpState extends State<StartRide> {
                                         SizedBox(height: 10.h),
                                         Text("End Ride",
                                             style: TextStyle(
-                                                fontFamily: 'transport',
+                                                fontFamily: 'Gilroy',
                                                 fontSize: 12.sp)),
                                       ],
                                     ),
@@ -630,7 +638,7 @@ class _SignUpState extends State<StartRide> {
                                     SizedBox(height: 10.h),
                                     Text("Ride Details",
                                         style: TextStyle(
-                                            fontFamily: 'transport',
+                                            fontFamily: 'Gilroy',
                                             fontSize: 12.sp)),
                                   ],
                                 ),
@@ -646,7 +654,7 @@ class _SignUpState extends State<StartRide> {
                                     SizedBox(height: 10.h),
                                     Text("Add Family",
                                         style: TextStyle(
-                                            fontFamily: 'transport',
+                                            fontFamily: 'Gilroy',
                                             fontSize: 12.sp)),
                                   ],
                                 ),
@@ -673,7 +681,7 @@ class _SignUpState extends State<StartRide> {
                                   SizedBox(height: 10.h),
                                   Text("Navigate",
                                       style: TextStyle(
-                                          fontFamily: 'transport',
+                                          fontFamily: 'Gilroy',
                                           fontSize: 12.sp)),
                                 ],
                               ),
@@ -949,8 +957,16 @@ class _SignUpState extends State<StartRide> {
       );
       if (result.points.isNotEmpty) {
         result.points.forEach(
-          (PointLatLng point) =>
-              polylineCoordinates.add(LatLng(point.latitude, point.longitude)),
+          (PointLatLng point) =>{
+           // ToastMessage.toast(speed.toString()),
+             // if(speed>=5) //kilometer check if greater than 10 meter
+             // {
+                polylineCoordinates.add(LatLng(point.latitude, point.longitude))
+              //}
+              //else
+               // {
+                //}
+          }
         );
         setState(() {});
       }
@@ -1146,7 +1162,7 @@ class _SignUpState extends State<StartRide> {
                                     .map((e) {
                                   return DropdownMenuItem(
                                     value: e[
-                                    "_id"]
+                                    'name']
                                         .toString(),
                                     child: Text(
                                         e['name']

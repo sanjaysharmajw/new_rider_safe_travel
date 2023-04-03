@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
+import 'package:ride_safe_travel/color_constant.dart';
 import 'package:ride_safe_travel/riderData.dart';
 import 'package:ride_safe_travel/rider_profile_edit.dart';
 
@@ -26,7 +27,8 @@ import 'RiderUserListData.dart';
 
 
 class RiderProfileView extends StatefulWidget {
-  const RiderProfileView({Key? key}) : super(key: key);
+  String backbutton;
+  RiderProfileView({Key? key, required this.backbutton}) : super(key: key);
 
   @override
   State<RiderProfileView> createState() => _RiderProfileViewState();
@@ -112,7 +114,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return  Scaffold(
       appBar: AppBar(
-        backgroundColor: CustomColor.white,
+        backgroundColor: (widget.backbutton == 'bottomNav') ? CustomColor.white : appBlue,
         elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),
@@ -122,10 +124,11 @@ class _RiderProfileViewState extends State<RiderProfileView> {
               },
               icon: const Icon(
                 Icons.arrow_back_sharp,
-                color: CustomColor.black,
-                size: 30,
+                color: CustomColor.white,
+                size: 25,
               )),
         ),
+        title: Text("Your profile",style: TextStyle(fontFamily: "Gilroy",fontSize: 22,color: Colors.white),),
 
       ),
         body: FutureBuilder<List<RiderData>>(
@@ -133,35 +136,36 @@ class _RiderProfileViewState extends State<RiderProfileView> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(
-                itemCount: snapshot.data!.length,
+                itemCount: snapshot.data?.length,
                 itemBuilder: (context, index) {
                  profileImage= "${snapshot.data![index].profileImage}";
                   //mystate="${snapshot.data![index].presentAddress?.state.toString()}";
                   //mycity="${snapshot.data![index].presentAddress?.city.toString()}";
                 // print(mycity+" "+mystate);
-                 print(profileImage);
+                 print(snapshot.data?.length);
                  print("@@@@@@@@@@@@@@@@@@@@@@@@@@");
-                  return SafeArea(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 20.sp, top: 10.sp),
-                            child: Text(
-                              "Your profile",
-                              style: TextStyle(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Gilroy",
-                                  color: CustomColor.black),
-                            ),
+                  return SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /*Padding(
+                          padding: EdgeInsets.only(left: 20.sp, top: 30.sp),
+                          child: Text(
+                            "Your profile",
+                            style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Gilroy",
+                                color: CustomColor.black),
                           ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          ProfileWidget(profileName:"${snapshot.data![index].firstName.toString()} ${snapshot.data![index].lastName.toString()}"  == "null" ? " " :
+                        ),*/
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10,),
+                          child: ProfileWidget(profileName:"${snapshot.data![index].firstName.toString()} ${snapshot.data![index].lastName.toString()}"  == "null" ? " " :
                           "${snapshot.data![index].firstName.toString()} ${snapshot.data![index].lastName.toString()}",
                               profileMobile:  '${snapshot.data![index].mobileNumber.toString()}' == "null" ? " " : '${snapshot.data![index].mobileNumber.toString()}',
                               onPress: () async {
@@ -182,7 +186,8 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                        bloodgroup: '${snapshot.data![index].bloodGroup.toString()}' == "null" ? " " : '${snapshot.data![index].bloodGroup.toString()}',
                                        contactPerson: '${snapshot.data![index].personName.toString()}' == "null" ? " " : '${snapshot.data![index].personName.toString()}',
                                        emergencyContact1: '${snapshot.data![index].emergencyNumber1.toString()}' == "null" ? " " : '${snapshot.data![index].emergencyNumber1.toString()}',
-                                       contactPerson1: '${snapshot.data![index].personName1.toString()}' == "null" ? " " : '${snapshot.data![index].personName1.toString()}', )
+                                       contactPerson1: '${snapshot.data![index].personName1.toString()}' == "null" ? " " : '${snapshot.data![index].personName1.toString()}',
+                                       backbutton: '', )
                                  ))
                                      .then((value) {
 
@@ -196,720 +201,792 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                             progressValue: snapshot.data![index].profile_percentage.toString() == "null" ? "100" :  snapshot.data![index].profile_percentage.toString(),
 
                           ),
-                          // const Padding(
-                          //   padding: EdgeInsets.only(left: 20,top: 10),
-                          //   child: Text(
-                          //     "Rider Profile",
-                          //     style: TextStyle(
-                          //         fontSize: 18,
-                          //         fontWeight: FontWeight.bold,
-                          //         color: CustomColor.riderprofileColor),
-                          //   ),
-                          // ),
-                          // const SizedBox(
-                          //   height: 12,
-                          // ),
-                          // Row(
-                          //   children: [
-                          //     Padding(
-                          //       padding: EdgeInsets.only(left: 20),
-                          //       child: CircleAvatar(
-                          //         backgroundImage: AssetImage('assets/Ellipse 1.png'),
-                          //       ),
-                          //     ),
-                          //     SizedBox(
-                          //       width: 14,
-                          //     ),
-                          //     Column(
-                          //       mainAxisAlignment: MainAxisAlignment.start,
-                          //       crossAxisAlignment: CrossAxisAlignment.start,
-                          //       children: [
-                          //         Text(
-                          //           "Vaishali Tanna",
-                          //           style: TextStyle(
-                          //               fontWeight: FontWeight.bold,
-                          //               fontSize: 15,
-                          //               color: CustomColor.riderprofileColor),
-                          //         ),
-                          //         SizedBox(
-                          //           height: 5,
-                          //         ),
-                          //         Text(
-                          //           "+91 -9356432543",
-                          //           style: TextStyle(
-                          //               fontWeight: FontWeight.bold,
-                          //               fontSize: 15,
-                          //               color: CustomColor.text),
-                          //         ),
-                          //       ],
-                          //     ),
-                          //     SizedBox(
-                          //       width: 64,
-                          //     ),
-                          //     Container(
-                          //       width: 110.0,
-                          //       height: 40.0,
-                          //       child: ElevatedButton(
-                          //         onPressed: () {
-                          //           Get.to(RiderProfile());
-                          //         },
-                          //         style: ElevatedButton.styleFrom(
-                          //           shape: StadiumBorder(),
-                          //           backgroundColor: CustomColor.yellow,
-                          //         ),
-                          //         child: Row(
-                          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //           children: const <Widget>[
-                          //             Text(
-                          //               'Edit Profile',
-                          //               textAlign: TextAlign.start,
-                          //               style: TextStyle(
-                          //                   fontWeight: FontWeight.bold,
-                          //                   fontSize:12,
-                          //                   color: CustomColor.riderprofileColor),
-                          //             ),
-                          //             Image(image: AssetImage('assets/Union (1).png'),width: 10,height: 12,)
-                          //           ],
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 15, right: 15, top: 0, bottom: 0),
-                                    child:  Icon(Icons.email_outlined),
-                                  ),
-                                  Text(
-                                    "Email Id",
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Gilroy",
-                                        color: CustomColor.riderprofileColor),
-                                  ),
-                                ],
-                              ),
-                              VerticalDivider(width: 28.0),
-                              Expanded(
-                                  child: Center(
-                                    child: MyTextField(
-                                      textEditingController: emailController,
-                                      fontName: 'Gilroy',
-                                      fontSize: 20  ,
-                                      enabledBorderColor: CustomColor.buttonColor, focusedBorderColor: CustomColor.buttonColor,
-                                      width: 1, broad: 4,
-                                      textInputType: TextInputType.emailAddress,
-                                      enable: false,
-                                      hintText:'${snapshot.data![index].emailId.toString()}' == "null" ? " " : '${snapshot.data![index].emailId.toString()}' ,
-                                      textColor: Colors.black54, ),
-
-                                  )),
-
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 15, right: 15, top: 0, bottom: 0),
-                                    child: Image.asset('images/calendar.png',
-                                        height: 22, width: 25),
-                                  ),
-                                  Text(
-                                    "DOB",
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Gilroy",
-                                        color: CustomColor.riderprofileColor),
-                                  ),
-                                ],
-                              ),
-                              VerticalDivider(width: 50.0),
-                              Expanded(
-                                            flex: 2,
-                                            child: SizedBox(
-                                              height: 45,
-                                              child: TextFormField(
-                                                // keyboardType: TextInputType.number,
-                                                style: const TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontFamily: "Gilroy",
-                                                    color: CustomColor.riderprofileColor),
-                                                maxLines: 1,
-                                                controller: _dateController,
-                                                decoration:  InputDecoration(
-                                                  enabled: false,
-                                                  hintText: this.formatDate('${snapshot.data![index].dob.toString()}' == "null" ? " " : '${snapshot.data![index].dob.toString()}'),
-                                                  hintStyle: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: "Gilroy",
-                  color: CustomColor.riderprofileColor),
-                                                  border: UnderlineInputBorder(),
-                                                  enabledBorder: UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          width: 1,
-                                                          color: CustomColor.yellow)),
-                                                  focusedBorder: UnderlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        width: 1,
-                                                        color: Colors.amberAccent),
-                                                  ),
-
-                                                ),
-                                                readOnly: true,
-                                                onTap: () async {
-                                                  _selectDate(context);
-                                                },
-                                                validator: (value) {
-                                                  if (value == null ||
-                                                      value.isEmpty ){
-                                                    return 'Please enter your Date of Birth';
-                                                  }
-                                                  return null;
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15, right: 15, top: 0, bottom: 0),
-                                    child:  Icon(Icons.location_city_outlined)
-                                  ),
-                                  const Text(
-                                    "State",
-                                    style:
-                                    TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Gilroy",
-                                        color: CustomColor.riderprofileColor),
-                                  ),
-                                ],
-                              ),
-                              VerticalDivider(width: 50.0),
-                              Expanded(
-                                flex: 2,
-                                child: SizedBox(
-                                  height: 45,
-                                  child: TextFormField(
-                                    validator: (value) {
-                                      if (value == null) {
-                                        return 'Please enter your state name.';
-                                      }
-                                      return null;
-                                    },
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.allow(
-                                          RegExp("[A-Za-z]")),
-                                     // LengthLimitingTextInputFormatter(6),
-                                    ],
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Gilroy",
-                                        color: CustomColor.riderprofileColor),
-                                    keyboardType: TextInputType.text,
-                                    maxLines: 1,
-                                    controller: stateController,
-                                    decoration:  InputDecoration(
-                                      enabled: false,
-                                      hintText:  '${snapshot.data![index].presentAddress?.state.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.state.toString()}',
-                                      hintStyle: TextStyle(
-                                          fontSize: 14.sp,
-
-                                          fontFamily: "Gilroy",
-                                          color: CustomColor.riderprofileColor),
-                                      border: UnderlineInputBorder(),
-                                      enabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 1, color: CustomColor.yellow)),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 1, color: Colors.amberAccent),
-                                      ),
-                                    ),
-                                  ),
+                        ),
+                        // const Padding(
+                        //   padding: EdgeInsets.only(left: 20,top: 10),
+                        //   child: Text(
+                        //     "Rider Profile",
+                        //     style: TextStyle(
+                        //         fontSize: 18,
+                        //         fontWeight: FontWeight.bold,
+                        //         color: CustomColor.riderprofileColor),
+                        //   ),
+                        // ),
+                        // const SizedBox(
+                        //   height: 12,
+                        // ),
+                        // Row(
+                        //   children: [
+                        //     Padding(
+                        //       padding: EdgeInsets.only(left: 20),
+                        //       child: CircleAvatar(
+                        //         backgroundImage: AssetImage('assets/Ellipse 1.png'),
+                        //       ),
+                        //     ),
+                        //     SizedBox(
+                        //       width: 14,
+                        //     ),
+                        //     Column(
+                        //       mainAxisAlignment: MainAxisAlignment.start,
+                        //       crossAxisAlignment: CrossAxisAlignment.start,
+                        //       children: [
+                        //         Text(
+                        //           "Vaishali Tanna",
+                        //           style: TextStyle(
+                        //               fontWeight: FontWeight.bold,
+                        //               fontSize: 15,
+                        //               color: CustomColor.riderprofileColor),
+                        //         ),
+                        //         SizedBox(
+                        //           height: 5,
+                        //         ),
+                        //         Text(
+                        //           "+91 -9356432543",
+                        //           style: TextStyle(
+                        //               fontWeight: FontWeight.bold,
+                        //               fontSize: 15,
+                        //               color: CustomColor.text),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //     SizedBox(
+                        //       width: 64,
+                        //     ),
+                        //     Container(
+                        //       width: 110.0,
+                        //       height: 40.0,
+                        //       child: ElevatedButton(
+                        //         onPressed: () {
+                        //           Get.to(RiderProfile());
+                        //         },
+                        //         style: ElevatedButton.styleFrom(
+                        //           shape: StadiumBorder(),
+                        //           backgroundColor: CustomColor.yellow,
+                        //         ),
+                        //         child: Row(
+                        //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //           children: const <Widget>[
+                        //             Text(
+                        //               'Edit Profile',
+                        //               textAlign: TextAlign.start,
+                        //               style: TextStyle(
+                        //                   fontWeight: FontWeight.bold,
+                        //                   fontSize:12,
+                        //                   color: CustomColor.riderprofileColor),
+                        //             ),
+                        //             Image(image: AssetImage('assets/Union (1).png'),width: 10,height: 12,)
+                        //           ],
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 15, right: 5, top: 0, bottom: 0),
+                                  child:  Icon(Icons.email_outlined),
                                 ),
-                              ),
-                            ],
-                          ),
-                          VerticalDivider(width: 30.0),
-                          Row(
-                            children: [
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15, right: 15, top: 0, bottom: 0),
-                                    child:  Icon(Icons.location_city_outlined)
-                                  ),
-                                  const Text(
-                                    "City",
-                                    style:
-                                    TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Gilroy",
-                                        color: CustomColor.riderprofileColor),
-                                  ),
-                                ],
-                              ),
-                              VerticalDivider(width: 60.0),
-                              Expanded(
-                                flex: 2,
-                                child: SizedBox(
-                                  height: 45,
-                                  child: TextFormField(
-                                    validator: (value) {
-                                      if (value == null) {
-                                        return 'Please enter your city name.';
-                                      }
-                                      return null;
-                                    },
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.allow(
-                                          RegExp("[A-Za-z]")),
-                                      //LengthLimitingTextInputFormatter(6),
-                                    ],
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Gilroy",
-                                        color: CustomColor.riderprofileColor),
-                                    keyboardType: TextInputType.text,
-                                    maxLines: 1,
-                                    controller: cityController,
-                                    decoration:  InputDecoration(
-                                      enabled: false,
-                                      hintText:  '${snapshot.data![index].presentAddress?.city.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.city.toString()}',
-                                      hintStyle: TextStyle(
+                                Container(
+                                  width: 115,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 35),
+                                    child: Text(
+                                      "Email Id",
+                                      style: TextStyle(
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.bold,
                                           fontFamily: "Gilroy",
                                           color: CustomColor.riderprofileColor),
-                                      border: UnderlineInputBorder(),
-                                      enabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 1, color: CustomColor.yellow)),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 1, color: Colors.amberAccent),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          VerticalDivider(width: 30.0),
-                          Row(
-                            children: [
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15, right: 15, top: 0, bottom: 0),
-                                    child: Icon(Icons.location_pin)
-                                  ),
-                                  const Text(
-                                    "PinCode",
-                                    style:
-                                    TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Gilroy",
-                                        color: CustomColor.riderprofileColor),
-                                  ),
-                                ],
-                              ),
-                              VerticalDivider(width: 30.0),
-
-                              Expanded(
-                                flex: 2,
-                                child: SizedBox(
-                                  height: 45,
-                                  child: TextFormField(
-                                    validator: (value) {
-                                      if (value == null || value.length != 6) {
-                                        return 'Please enter 6 digit number.';
-                                      }
-                                      return null;
-                                    },
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.allow(
-                                          RegExp("[0-9]")),
-                                      LengthLimitingTextInputFormatter(6),
-                                    ],
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Gilroy",
-                                        color: CustomColor.riderprofileColor),
-                                    keyboardType: TextInputType.number,
-                                    maxLines: 1,
-                                    controller: pinController,
-                                    decoration:  InputDecoration(
-                                      enabled: false,
-                                      hintText:  '${snapshot.data![index].presentAddress?.pincode.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.pincode.toString()}',
-                                      hintStyle: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Gilroy",
-                                          color: CustomColor.riderprofileColor),
-                                      border: UnderlineInputBorder(),
-                                      enabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 1, color: CustomColor.yellow)),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 1, color: Colors.amberAccent),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-
-
-                          Row(
-                            children: [
-                              Row(
-                                children: [
-
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 25),
-                                    child: const Text(
-                                      "Gender",
-                                      style:
-                                      TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Gilroy",
-                                          color: CustomColor.riderprofileColor),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              VerticalDivider(width: 65.0),
-                              Expanded(
-                                flex: 2,
-                                child: SizedBox(
-                                  height: 45,
-                                  child: TextFormField(
-
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Gilroy",
-                                        color: CustomColor.riderprofileColor),
-                                    keyboardType: TextInputType.number,
-                                    maxLines: 1,
-                                    controller: genderController,
-                                    decoration:  InputDecoration(
-                                      enabled: false,
-                                      hintText:  '${snapshot.data![index].gender.toString()}' == "null" ? " " : '${snapshot.data![index].gender.toString()}',
-                                      hintStyle: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Gilroy",
-                                          color: CustomColor.riderprofileColor),
-                                      border: UnderlineInputBorder(),
-                                      enabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 1, color: CustomColor.yellow)),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 1, color: Colors.amberAccent),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-                              Row(
-                                children: [
-
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 25),
-                                    child: const Text(
-                                      "Blood Group",
-                                      style:
-                                      TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Gilroy",
-                                          color: CustomColor.riderprofileColor),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              VerticalDivider(width: 30.0),
-                              Expanded(
-                                flex: 2,
-                                child: SizedBox(
-                                  height: 45,
-                                  child: TextFormField(
-
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Gilroy",
-                                        color: CustomColor.riderprofileColor),
-                                    keyboardType: TextInputType.number,
-                                    maxLines: 1,
-                                    controller: bloodgroupController,
-                                    decoration:  InputDecoration(
-                                      enabled: false,
-                                      hintText:  '${snapshot.data![index].bloodGroup.toString()}' == "null" ? " " : '${snapshot.data![index].bloodGroup.toString()}',
-                                      hintStyle: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Gilroy",
-                                          color: CustomColor.riderprofileColor),
-                                      border: UnderlineInputBorder(),
-                                      enabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 1, color: CustomColor.yellow)),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 1, color: Colors.amberAccent),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(
-                            height: 10,
-                          ),
-
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 15, right: 15, top: 0, bottom: 0),
-                                child:  Icon(Icons.location_pin)
-                              ),
-                              const Text(
-                                "Address",
-                                style:
-                                TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Gilroy",
-                                    color: CustomColor.riderprofileColor),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 15, left: 15),
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                  flex: 2,
-                                  child: SizedBox(
-                                    height: 45,
-                                    child: TextFormField(
-                                      inputFormatters: [
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp("[A-Za-z0-9'\.\-\s\,\ ]")),
-                                      ],
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Gilroy",
-                                          color: CustomColor.riderprofileColor),
-                                      maxLines: 1,
-                                      controller:
-                                      addressController,
-                                      decoration:  InputDecoration(
-                                        hintText: '${snapshot.data![index].presentAddress?.address.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.address.toString()}',
-                                        hintStyle: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Gilroy",
-                                            color: CustomColor.riderprofileColor),
-                                        enabled: false,
-                                        border: UnderlineInputBorder(),
-                                        enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                width: 1, color: CustomColor.yellow)),
-                                        focusedBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 1, color: Colors.amberAccent),
-                                        ),
-                                      ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter your address.';
-                                        }
-                                        return null;
-                                      },
                                     ),
                                   ),
                                 ),
                               ],
                             ),
-                          ),
+                           // VerticalDivider(width: 55.0),
+                            Expanded(
 
-                          const SizedBox(
-                            height: 20,
-                          ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: TextFormField(
+                                    readOnly: true,
+                                    validator: (value) {
+                                      if (value == null) {
+                                        return 'Please enter your email Id.';
+                                      }
+                                      return null;
+                                    },
 
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 15, right: 10),
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.circular(8),
-                                    border: Border.all(
-                                        color:
-                                        const Color(0xffEFEFEF)),
-                                    color: CustomColor.buttonColor),
-                                child: Column(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.start,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 10, top: 10),
-                                      child: Text(
-                                        "Emergency contact number's ",
-                                        style:TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Gilroy",
-                                            color: CustomColor.riderprofileColor),
+                                    style:  TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
+                                    keyboardType: TextInputType.emailAddress,
+                                    maxLines: 1,
+                                    controller: emailController,
+                                    decoration:  InputDecoration(
+
+                                      enabled: false,
+                                      hintText:  '${snapshot.data![index].emailId.toString()}' == "null" ? " " : '${snapshot.data![index].emailId.toString()}',
+                                      hintStyle: TextStyle(
+                                          fontSize: 13.sp,
+
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                      border: UnderlineInputBorder(),
+                                      enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 1, color: CustomColor.yellow)),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1, color: Colors.amberAccent),
                                       ),
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceBetween,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 20, right: 10),
-                                          child: MyText(
-                                              text:
-                                              snapshot.data![index].personName.toString() == "null" ? " " :  snapshot.data![index].personName.toString(),
-                                              fontFamily: 'Gilroy',
-                                              color:
-                                              Color(0xff48422B),
-                                              fontSize: 16.sp),
-                                        ),
-                                        Container(
-                                            width: 30.w,
-                                            height: 38.h,
-                                            child: VerticalDivider()),
-                                        Expanded(
-                                            child: Center(
-                                                child: TextField(
-                                                  decoration: InputDecoration(
-                                                    border: InputBorder.none,
-                                                    hintText: snapshot.data![index].emergencyContact.toString() == "null"
-                                                        ? " "
-                                                        : snapshot.data![index].emergencyContact.toString(),
-                                                    hintStyle: TextStyle(
-                                                        fontSize: 16.sp,
-                                                        fontWeight: FontWeight.normal,
-                                                        fontFamily: "Gilroy",
-                                                        color: CustomColor.riderprofileColor),
-                                                  ),
-                                                  enabled: false,
-                                                  readOnly: true,
-                                                  keyboardType:
-                                                  TextInputType.number,
-                                                  inputFormatters: <
-                                                      TextInputFormatter>[
-                                                    FilteringTextInputFormatter
-                                                        .digitsOnly
-                                                  ],
-                                                ))),
-                                      ],
-                                    ),
-                                    Divider(
-                                      color: CustomColor.text,
-                                      height: 0,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 20, right: 34),
-                                          child: MyText(
-                                              text: snapshot.data![index].personName1.toString() == "null"
-                                                  ? " "
-                                                  : snapshot.data![index].personName1.toString() ,
-                                              fontFamily: 'Gilroy',
-                                              color:
-                                              Color(0xff48422B),
-                                              fontSize: 16.sp),
-                                        ),
-                                        Container(
-                                            width: 15.w,
-                                            height: 38.h,
-                                            child: VerticalDivider()),
-                                        Expanded(
-                                            child: TextField(
-                                                decoration:
-                                                InputDecoration(
-                                                  border: InputBorder
-                                                      .none,
-                                                  hintText: snapshot.data![index].emergencyNumber1.toString() ==
-                                                      "null"
-                                                      ? " "
-                                                      : snapshot.data![index].emergencyNumber1.toString(),
-                                                  hintStyle: TextStyle(
-                                                      fontSize: 16.sp,
-                                                      fontWeight: FontWeight.normal,
-                                                      fontFamily: "Gilroy",
-                                                      color: CustomColor.riderprofileColor),
-                                                ),
-                                                enabled: false,
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp(
-                                                      "[a-zA-Z0-9]")),
-                                                ])),
-                                      ],
-                                    ),
-
-                                  ],
+                                  ),
                                 )),
-                          ),
 
-                        ],
-                      ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 15, right: 5, top: 0, bottom: 0),
+                                  child: Image.asset('images/calendar.png',
+                                      height: 22, width: 25),
+                                ),
+                                Container(
+                                  width: 115,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 50),
+                                    child: Text(
+                                      "DOB",
+                                      style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          //  VerticalDivider(width: 78.0),
+                            Expanded(
+
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(right: 10),
+                                            child: TextFormField(
+                                              // keyboardType: TextInputType.number,
+                                              style:  TextStyle(
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: "Gilroy",
+                                                  color: CustomColor.riderprofileColor),
+                                              maxLines: 1,
+                                              controller: _dateController,
+                                              decoration:  InputDecoration(
+                                                enabled: false,
+                                                hintText: this.formatDate('${snapshot.data![index].dob.toString()}' == "null" ? " " : '${snapshot.data![index].dob.toString()}'),
+                                                hintStyle: TextStyle(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Gilroy",
+                  color: CustomColor.riderprofileColor),
+                                                border: UnderlineInputBorder(),
+                                                enabledBorder: UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        width: 1,
+                                                        color: CustomColor.yellow)),
+                                                focusedBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      width: 1,
+                                                      color: Colors.amberAccent),
+                                                ),
+
+                                              ),
+                                              readOnly: true,
+                                              onTap: () async {
+                                                _selectDate(context);
+                                              },
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.isEmpty ){
+                                                  return 'Please enter your Date of Birth';
+                                                }
+                                                return null;
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 5, top: 0, bottom: 0),
+                                  child:  Icon(Icons.location_city_outlined)
+                                ),
+                                Container(
+                                  width: 115,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 50),
+                                    child: Text(
+                                      "State",
+                                      style:
+                                      TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            //VerticalDivider(width: 75.0),
+                            Expanded(
+
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (value == null) {
+                                      return 'Please enter your state name.';
+                                    }
+                                    return null;
+                                  },
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp("[A-Za-z]")),
+                                   // LengthLimitingTextInputFormatter(6),
+                                  ],
+                                  style:  TextStyle(
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),
+                                  keyboardType: TextInputType.text,
+                                  maxLines: 1,
+                                  controller: stateController,
+                                  decoration:  InputDecoration(
+                                    enabled: false,
+                                    hintText:  '${snapshot.data![index].presentAddress?.state.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.state.toString()}',
+                                    hintStyle: TextStyle(
+                                        fontSize: 13.sp,
+
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
+                                    border: UnderlineInputBorder(),
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1, color: CustomColor.yellow)),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.amberAccent),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                       // VerticalDivider(width: 30.0),
+                        Row(
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 5, top: 0, bottom: 0),
+                                  child:  Icon(Icons.location_city_outlined)
+                                ),
+                                 Container(
+                                   width: 115,
+                                   child: Padding(
+                                     padding: const EdgeInsets.only(right: 58),
+                                     child: Text(
+                                      "City",
+                                      style:
+                                      TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                ),
+                                   ),
+                                 ),
+                              ],
+                            ),
+                           // VerticalDivider(width: 85.0),
+                            Expanded(
+
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (value == null) {
+                                      return 'Please enter your city name.';
+                                    }
+                                    return null;
+                                  },
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp("[A-Za-z]")),
+                                    //LengthLimitingTextInputFormatter(6),
+                                  ],
+                                  style:  TextStyle(
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),
+                                  keyboardType: TextInputType.text,
+                                  maxLines: 1,
+                                  controller: cityController,
+                                  decoration:  InputDecoration(
+                                    enabled: false,
+                                    hintText:  '${snapshot.data![index].presentAddress?.city.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.city.toString()}',
+                                    hintStyle: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
+                                    border: UnderlineInputBorder(),
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1, color: CustomColor.yellow)),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.amberAccent),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      //  VerticalDivider(width: 30.0),
+                        Row(
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 5, top: 0, bottom: 0),
+                                  child: Icon(Icons.location_pin)
+                                ),
+                                 Container(
+                                   width: 115,
+                                   child: Padding(
+                                     padding: const EdgeInsets.only(right: 35),
+                                     child: Text(
+                                      "PinCode",
+                                      style:
+                                      TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                ),
+                                   ),
+                                 ),
+                              ],
+                            ),
+                           // VerticalDivider(width: 50.0),
+
+                            Expanded(
+
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.length != 6) {
+                                      return 'Please enter 6 digit number.';
+                                    }
+                                    return null;
+                                  },
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp("[0-9]")),
+                                    LengthLimitingTextInputFormatter(6),
+                                  ],
+                                  style:  TextStyle(
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),
+                                  keyboardType: TextInputType.number,
+                                  maxLines: 1,
+                                  controller: pinController,
+                                  decoration:  InputDecoration(
+                                    enabled: false,
+                                    hintText:  '${snapshot.data![index].presentAddress?.pincode.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.pincode.toString()}',
+                                    hintStyle: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
+                                    border: UnderlineInputBorder(),
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1, color: CustomColor.yellow)),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.amberAccent),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+
+                        Row(
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 15, right: 5, top: 0, bottom: 0),
+                                    child: Icon(Icons.person_3_outlined)
+                                ),
+
+                                 Container(
+                                   width: 115,
+                                   child: Padding(
+                                     padding: const EdgeInsets.only(right: 40),
+                                     child: Text(
+                                      "Gender",
+                                      style:
+                                      TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                ),
+                                   ),
+                                 ),
+                              ],
+                            ),
+                           // VerticalDivider(width: 55.0),
+                            Expanded(
+
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: TextFormField(
+
+                                  style: TextStyle(
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),
+                                  keyboardType: TextInputType.number,
+                                  maxLines: 1,
+                                  controller: genderController,
+                                  decoration:  InputDecoration(
+                                    enabled: false,
+                                    hintText:  '${snapshot.data![index].gender.toString()}' == "null" ? " " : '${snapshot.data![index].gender.toString()}',
+                                    hintStyle: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
+                                    border: UnderlineInputBorder(),
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1, color: CustomColor.yellow)),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.amberAccent),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 15, right: 5, top: 0, bottom: 0),
+                                    child: Icon(Icons.bloodtype_outlined)
+                                ),
+
+                                 Container(
+                                   width: 115,
+                                   child: Padding(
+                                     padding: const EdgeInsets.only(right: 15 ),
+                                     child: Text(
+                                      "Blood Group",
+                                      style:
+                                      TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                ),
+                                   ),
+                                 ),
+                              ],
+                            ),
+                           // VerticalDivider(width: 20.0),
+                            Expanded(
+
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: TextFormField(
+
+
+                                  style:  TextStyle(
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),
+                                  keyboardType: TextInputType.number,
+                                  maxLines: 1,
+                                  controller: bloodgroupController,
+                                  decoration:  InputDecoration(
+                                    enabled: false,
+                                    hintText:  '${snapshot.data![index].bloodGroup.toString()}' == "null" ? " " : '${snapshot.data![index].bloodGroup.toString()}',
+                                    hintStyle: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
+                                    border: UnderlineInputBorder(),
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1, color: CustomColor.yellow)),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.amberAccent),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(
+                          height: 10,
+                        ),
+
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 15, right: 5, top: 0, bottom: 0),
+                              child:  Icon(Icons.location_pin)
+                            ),
+                             Text(
+                              "Address",
+                              style:
+                              TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Gilroy",
+                                  color: CustomColor.riderprofileColor),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 15, left: 15),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+
+                                child: TextFormField(
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp("[A-Za-z0-9'\.\-\s\,\ ]")),
+                                  ],
+                                  style:  TextStyle(
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),
+                                  maxLines: 1,
+                                  controller:
+                                  addressController,
+                                  decoration:  InputDecoration(
+                                    hintText: '${snapshot.data![index].presentAddress?.address.toString()}' == "null" ? " " : '${snapshot.data![index].presentAddress?.address.toString()}',
+                                    hintStyle: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
+                                    enabled: false,
+                                    border: UnderlineInputBorder(),
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1, color: CustomColor.yellow)),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.amberAccent),
+                                    ),
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter your address.';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(
+                          height: 20,
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 15, right: 10),
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.circular(8),
+                                  border: Border.all(
+                                      color:
+                                      const Color(0xffEFEFEF)),
+                                  color: CustomColor.buttonColor),
+                              child: Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.start,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 10, top: 10),
+                                    child: Text(
+                                      "Emergency contact number's ",
+                                      style:TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 20, right: 20),
+                                        child: MyText(
+                                            text:
+                                            snapshot.data![index].personName.toString() == "null" ? " " :  snapshot.data![index].personName.toString(),
+                                            fontFamily: 'Gilroy',
+                                            color:
+                                            Color(0xff48422B),
+                                            fontSize: 13.sp),
+                                      ),
+                                      /*Container(
+                                          width: 15.w,
+                                          height: 38.h,
+                                          child: VerticalDivider()),*/
+                                      Expanded(
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: snapshot.data![index].emergencyContact.toString() == "null"
+                                                  ? " "
+                                                  : snapshot.data![index].emergencyContact.toString(),
+                                              hintStyle: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.normal,
+                                                  fontFamily: "Gilroy",
+                                                  color: CustomColor.riderprofileColor),
+                                            ),
+                                            enabled: false,
+                                            readOnly: true,
+                                            keyboardType:
+                                            TextInputType.number,
+                                            inputFormatters: <
+                                                TextInputFormatter>[
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly
+                                            ],
+                                          )),
+                                    ],
+                                  ),
+                                  Divider(
+                                    color: CustomColor.text,
+                                    height: 0,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 20, right: 50),
+                                        child: MyText(
+                                            text: snapshot.data![index].personName1.toString() == "null"
+                                                ? " "
+                                                : snapshot.data![index].personName1.toString() ,
+                                            fontFamily: 'Gilroy',
+                                            color:
+                                            Color(0xff48422B),
+                                            fontSize: 13.sp),
+                                      ),
+                                     /* Container(
+                                          width: 15.w,
+                                          height: 38.h,
+                                          child: VerticalDivider()),*/
+                                      Expanded(
+                                          child: TextField(
+                                              decoration:
+                                              InputDecoration(
+                                                border: InputBorder
+                                                    .none,
+                                                hintText: snapshot.data![index].emergencyNumber1.toString() ==
+                                                    "null"
+                                                    ? " "
+                                                    : snapshot.data![index].emergencyNumber1.toString(),
+                                                hintStyle: TextStyle(
+                                                    fontSize: 13.sp,
+                                                    fontWeight: FontWeight.normal,
+                                                    fontFamily: "Gilroy",
+                                                    color: CustomColor.riderprofileColor),
+                                              ),
+                                              enabled: false,
+                                              readOnly: true,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow(RegExp(
+                                                    "[a-zA-Z0-9]")),
+                                              ])),
+                                    ],
+                                  ),
+
+                                ],
+                              )),
+                        ),
+
+                      ],
                     ),
                   );
                 },

@@ -1,24 +1,23 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:ride_safe_travel/color_constant.dart';
 
+import 'color_constant.dart';
 
-class LoaderUtils {
-  static showToast(String? message, {EasyLoadingToastPosition position = EasyLoadingToastPosition.center}) {
+class SpinkitUtils{
+   showToast(String? message, {EasyLoadingToastPosition position = EasyLoadingToastPosition.center}) {
     EasyLoading.showToast(message!, toastPosition: position);
   }
 
-  static showLoader(String message) {
+   showLoader(String message) {
     EasyLoading.show(status: message);
   }
 
-  static closeLoader() {
+  closeLoader() {
     EasyLoading.dismiss();
   }
-  static message(String msg){
+   message(String msg){
     Fluttertoast.showToast(
         msg: msg,
         toastLength: Toast.LENGTH_SHORT,
@@ -29,10 +28,10 @@ class LoaderUtils {
         fontSize: 16.0
     );
   }
-  static Widget loader() {
+   Widget loader() {
     return Center(
-      child:
-      CircularProgressIndicator(color: Colors.yellow),
+        child: SpinKitThreeBounce(color: appBlue, size: 15,)
+      // CircularProgressIndicator(color: Colors.yellow),
     );
   }
 

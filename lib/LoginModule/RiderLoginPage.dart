@@ -178,7 +178,7 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
 
   Future<http.Response?> sendOtpApi(String mobileNumber) async {
    // var loginToken = Preferences.getLoginToken(Preferences.loginToken);
-    final response = await http.post(
+    final response =  await http.post(
       Uri.parse(
           'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/sendOtpNew'),
       headers: <String, String>{

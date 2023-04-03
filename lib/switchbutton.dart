@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:http/http.dart' as http;
+import 'package:ride_safe_travel/color_constant.dart';
 import 'Error.dart';
 import 'LoginModule/custom_color.dart';
 import 'LoginModule/preferences.dart';
@@ -16,30 +17,113 @@ class ToggleSwitchButton extends StatefulWidget {
   String mstatus;
   String memberId;
   String userId;
-   ToggleSwitchButton({Key? key, required this.mstatus, required this.memberId,required this.userId}) : super(key: key);
+  ToggleSwitchButton(
+      {Key? key,
+      required this.mstatus,
+      required this.memberId,
+      required this.userId})
+      : super(key: key);
 
   @override
   State<ToggleSwitchButton> createState() => _ToggleSwitchButtonState();
 }
 
 class _ToggleSwitchButtonState extends State<ToggleSwitchButton> {
+
+
   @override
   Widget build(BuildContext context) {
-    return   Container(
-      child: Column(
+    return Container(
+      child: Row(
         children: [
-         // Text("Status:"+widget.mstatus.toString()),
-          FlutterSwitch(
-            activeText: "Block",
-            inactiveText: "Unblock",
+          Text(widget.mstatus.toString()),
+          Switch.adaptive(
+            activeColor: Colors.red,
+              activeTrackColor: Colors.redAccent.shade100,
+              inactiveThumbColor: Colors.lightBlue,
+              inactiveTrackColor: Colors.lightBlueAccent,
+
+              value: (widget.mstatus.toString() == 'Blocked' ? true : false),
+              onChanged: (value) {
+                setState(() {
+                  setState(() {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return StatefulBuilder(builder:
+                              (BuildContext context, StateSetter setState) {
+                            return AlertDialog(
+                              content: Container(
+                                height: 120,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(widget.mstatus == "Blocked"
+                                        ? "Do you really want to Unblock this family member ?"
+                                        : "Do you really want to Block this family member  ?"),
+                                    SizedBox(height: 15),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                if (value == true) {
+                                                  widget.mstatus = "Blocked";
+                                                  getMembersStatus();
+                                                  Navigator.pop(context);
+                                                } else {
+                                                  widget.mstatus = "Active";
+                                                  getMembersStatus();
+                                                  Navigator.pop(context);
+                                                }
+                                              });
+                                            },
+                                            child: Text("Yes"),
+                                            style: ElevatedButton.styleFrom(
+                                                primary: appBlue),
+                                          ),
+                                        ),
+                                        SizedBox(width: 15),
+                                        Expanded(
+                                            child: ElevatedButton(
+                                          onPressed: () {
+                                            print('no selected');
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text("No",
+                                              style: TextStyle(
+                                                  color: Colors.black)),
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Colors.white,
+                                          ),
+                                        ))
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
+                        });
+                  });
+                });
+              }),
+          //
+          /* FlutterSwitch(
+            activeText: "Blocked",
+            inactiveText: "Unblocked",
             value: (widget.mstatus.toString()=='Blocked'?true:false),
             activeTextColor: Colors.black54,
             inactiveTextColor: Colors.black54,
             activeColor: Colors.red,
             inactiveColor: Colors.green,
-            valueFontSize: 15.0,
-            width: 100,
-            height: 40,
+            valueFontSize: 9.0,
+            width: 57,
+            height: 30,
             borderRadius: 32.0,
             //switchBorder: Border.all(
             //color: Colors.black,
@@ -47,7 +131,7 @@ class _ToggleSwitchButtonState extends State<ToggleSwitchButton> {
             //),
 
             showOnOff: true,
-            toggleSize: 20,
+            toggleSize: 10,
             toggleColor: Colors.black54,
             onToggle: (val) {
               setState(() {
@@ -103,7 +187,7 @@ class _ToggleSwitchButtonState extends State<ToggleSwitchButton> {
                             child:
                             Text("Yes"),
                             style:
-                            ElevatedButton.styleFrom(primary: CustomColor.yellow),
+                            ElevatedButton.styleFrom(primary: appBlue),
                           ),
                         ),
                         SizedBox(
@@ -134,22 +218,20 @@ class _ToggleSwitchButtonState extends State<ToggleSwitchButton> {
             );
           });
                 });
-              });
+              }
+              );
 
 
             },
 
-          ),
+          ),*/
         ],
       ),
     );
   }
 
   Future<MemberBlockDeleteModel> getMembersStatus() async {
-    setState(() {
-
-    });
-
+    setState(() {});
 
     await Preferences.setPreferences();
     String userId = Preferences.getId(Preferences.id).toString();
@@ -172,19 +254,16 @@ class _ToggleSwitchButtonState extends State<ToggleSwitchButton> {
           "status": widget.mstatus.toString()
         }));
     if (response.statusCode == 200) {
-      setState(() {
-
-      });
-     // getUserFamilyList();
+      setState(() {});
+      // getUserFamilyList();
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       print("Body: " + response.body);
       if (status == true) {
-
         setState(() {
           // getUserFamilyList();
         });
-       // getUserFamilyList();
+        // getUserFamilyList();
         // Navigator.pop(context);
         // updateStatus();
         Get.snackbar("Hello!", msg.toString(),
@@ -203,5 +282,4 @@ class _ToggleSwitchButtonState extends State<ToggleSwitchButton> {
       throw Exception('Failed to create album.');
     }
   }
-
 }

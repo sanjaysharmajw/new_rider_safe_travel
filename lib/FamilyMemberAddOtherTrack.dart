@@ -11,10 +11,12 @@ import 'package:ride_safe_travel/LoginModule/Map/RiderFamilyList.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/Models/affFamilyMemberNewModel.dart';
 import 'package:ride_safe_travel/Utils/RiderButton.dart';
+import 'package:ride_safe_travel/custom_button.dart';
 import 'LoginModule/Error.dart';
 import 'LoginModule/preferences.dart';
 import 'Utils/Validators.dart';
 import 'Utils/toast.dart';
+import 'color_constant.dart';
 
 class FamilyMemberAddOtherTrack extends StatefulWidget {
   const FamilyMemberAddOtherTrack({Key? key}) : super(key: key);
@@ -38,13 +40,14 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        leading:  IconButton(icon: Icon(Icons.keyboard_backspace_sharp,color: CustomColor.black,), onPressed: () {
+        elevation: 15,
+        leading:  IconButton(icon: Icon(Icons.keyboard_backspace_sharp,color: CustomColor.white,), onPressed: () {
           Get.back();
         },),
-        centerTitle: true,
-        backgroundColor: CustomColor.yellow,
+        centerTitle: false,
+        backgroundColor: appBlue,
         title: const Text("Add Tracking Member",
-            style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',)),
+            style: TextStyle(color: CustomColor.white,fontSize: 22, fontFamily: 'Gilroy',)),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -55,7 +58,7 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
               const SizedBox(height: 50),
               const SizedBox(height: 20),
               const Text("User Who can track",
-                  style: TextStyle(fontFamily: 'transport', fontSize: 20)),
+                  style: TextStyle(fontFamily: 'Gilroy', fontSize: 20)),
               Padding(
                 padding: const EdgeInsets.all(15),
                 child: TextFormField(
@@ -78,7 +81,7 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
                   cursorHeight: 25.0,
                   controller: controllerName,
 
-                  style: const TextStyle(fontFamily: 'transport', fontSize: 16),
+                  style: const TextStyle(fontFamily: 'Gilroy', fontSize: 16),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Enter Name',
@@ -106,7 +109,7 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
                   textCapitalization: TextCapitalization.sentences,
                   keyboardType: TextInputType.text,
                   controller: controllerRelation,
-                  style: const TextStyle(fontFamily: 'transport', fontSize: 16),
+                  style: const TextStyle(fontFamily: 'Gilroy', fontSize: 16),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Enter Relation',
@@ -125,7 +128,7 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
                   ],
                   cursorHeight: 25.0,
                   controller: controllerMobile,
-                  style: const TextStyle(fontFamily: 'transport', fontSize: 16),
+                  style: const TextStyle(fontFamily: 'Gilroy', fontSize: 16),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Enter Mobile',
@@ -142,7 +145,22 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
                 ),
               ),
               SizedBox(height: 30,),
-              RiderButton(
+             Padding(
+               padding: const EdgeInsets.only(left: 20,right: 20),
+               child: CustomButton(press: (){
+                 if (_formKey.currentState!.validate()) {
+                   OverlayLoadingProgress.start(context);
+                   addFamilyMember(
+                       controllerName.text.toString(),
+                       userId,
+                       controllerRelation.text.toString(),
+                       controllerMobile.text.toString());
+
+
+                 }
+               }, buttonText: "Add Member"),
+             )
+             /* RiderButton(
                   click: () {
            if (_formKey.currentState!.validate()) {
              OverlayLoadingProgress.start(context);
@@ -156,7 +174,7 @@ class _FamilyMemberAddOtherTrack extends State<FamilyMemberAddOtherTrack> {
            }
 
                                 },
-                  textBtn: 'Add')
+                  textBtn: 'Add') */
             ],
           ),
         ),

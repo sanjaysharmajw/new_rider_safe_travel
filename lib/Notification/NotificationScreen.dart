@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/Notification/NotificationDialogBox.dart';
+import 'package:ride_safe_travel/color_constant.dart';
 
 import '../Error.dart';
 import '../LoginModule/Api_Url.dart';
@@ -28,14 +29,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
         child: Scaffold(
             appBar: AppBar(
               elevation: 15,
-              backgroundColor: CustomColor.yellow,
+              backgroundColor: appBlue,
               leading: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.black),
+                  icon: Icon(Icons.arrow_back_outlined, color: Colors.white,size: 25,),
                   onPressed: () {
                     Navigator.of(context).pop('refresh');
                   }),
               title: const Text("Notification",
-                style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'transport',),),
+                style: TextStyle(fontFamily: "Gilroy",fontSize: 22,color: Colors.white),),
             ),
             body: FutureBuilder<List<NotificationData>>(
               future: getNotification(),
@@ -44,15 +45,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   return ListView.builder(
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
-                      if (snapshot.data![index].status == 0) {
-                        status = CustomColor.yellow;
+                      if (snapshot.data![index].type == 'ride sos alert') {
+                        status = Colors.red;
                       } else {
-                        status = CustomColor.lightYellow;
+                        status = Colors.blue;
                       }
                       return NotificationItems(
                           Title: snapshot.data![index].title.toString(),
                           Des: snapshot.data![index].description.toString(),
-                          border: status,
+                          border: Colors.white,
                           click: () {
                             NotificationPopup(
                                 context,
@@ -67,7 +68,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               });
                             });
                           },
-                          date: snapshot.data![index].date.toString());
+                          date: snapshot.data![index].date.toString(),
+                        borderColor: status,);
                     },
                   );
                 } else if (snapshot.hasError) {

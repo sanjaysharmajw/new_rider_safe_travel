@@ -33,6 +33,8 @@ class RideDataModel {
     this.vehiclePucValidity,
     this.vehicleInsuranceValidity,
     this.vehiclePhoto,
+    this.startTime,
+    this.endTime,
   });
 
   RideDataModel.fromJson(dynamic json) {
@@ -65,6 +67,8 @@ class RideDataModel {
     vehiclePucValidity = json['vehicle_pucValidity'];
     vehicleInsuranceValidity = json['vehicle_insuranceValidity'];
     vehiclePhoto = json['vehicle_photo'];
+    startTime = json['start_time'];
+    endTime = json['end_time'];
   }
   String? id;
   String? userId;
@@ -93,6 +97,8 @@ class RideDataModel {
   String? vehiclePucValidity;
   String? vehicleInsuranceValidity;
   String? vehiclePhoto;
+  String? startTime;
+  String? endTime;
   RideDataModel copyWith({
     String? id,
     String? userId,
@@ -121,6 +127,8 @@ class RideDataModel {
     String? vehiclePucValidity,
     String? vehicleInsuranceValidity,
     String? vehiclePhoto,
+    String? startTime,
+    String? endTime,
   }) =>
       RideDataModel(
         id: id ?? this.id,
@@ -153,6 +161,8 @@ class RideDataModel {
         vehicleInsuranceValidity:
             vehicleInsuranceValidity ?? this.vehicleInsuranceValidity,
         vehiclePhoto: vehiclePhoto ?? this.vehiclePhoto,
+        startTime: startTime ?? this.startTime,
+        endTime: endTime ?? this.endTime,
       );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -187,6 +197,8 @@ class RideDataModel {
     map['vehicle_pucValidity'] = vehiclePucValidity;
     map['vehicle_insuranceValidity'] = vehicleInsuranceValidity;
     map['vehicle_photo'] = vehiclePhoto;
+    map['start_time'] = startTime;
+    map['end_time'] = endTime;
     return map;
   }
 }

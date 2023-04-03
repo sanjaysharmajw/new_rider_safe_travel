@@ -8,12 +8,14 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
+import 'package:ride_safe_travel/Utils/view_image.dart';
 import 'package:ride_safe_travel/color_constant.dart';
 import 'Error.dart';
 import 'LoginModule/Api_Url.dart';
 import 'LoginModule/custom_color.dart';
 import 'LoginModule/preferences.dart';
 import 'Models/RideDataModel.dart';
+import 'bottom_nav/custom_bottom_navi.dart';
 
 class MyRidesPage extends StatefulWidget {
   String changeAppbar;
@@ -32,14 +34,15 @@ class _MyRidesPageState extends State<MyRidesPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: (widget.changeAppbar =='bottomNav') ? Colors.white : appBlue,
+
+          backgroundColor:  appBlue,
           elevation: 0,
-          title: const Text("My Trips List",
-              style: TextStyle(color: CustomColor.black,fontSize: 20, fontFamily: 'Gilroy',)),
+          title:  Text("My Rides",
+              style: TextStyle(color:  appWhiteColor,fontSize: 22, fontFamily: 'Gilroy',)),
           leading: IconButton(
-            color: Colors.black,
+            color:  appWhiteColor,
             onPressed: () {
-              Get.back();
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>CustomBottomNav()));
             },
             icon: const Icon(Icons.arrow_back_outlined),
           ),
@@ -54,12 +57,12 @@ class _MyRidesPageState extends State<MyRidesPage> {
                 ListView.builder(
                 itemCount: snapshot.data?.length,
                 itemBuilder: (context, index) {
-                  image = snapshot.data![index].driverPhoto;
+                  image = snapshot.data![index].driverPhoto.toString();
                   DateTime tempDate = DateTime.parse(snapshot.data![index].date.toString());
 
 
                  //DateFormat.yMd('es').format(now)
-                  final DateFormat formatter = DateFormat('dd-MM-yyyy');
+                  final DateFormat formatter = DateFormat.yMMMd();
                   final String formatted = formatter.format(tempDate);
                   print("RideDate..."+formatted.toString());
                   return InkWell(
@@ -86,31 +89,192 @@ class _MyRidesPageState extends State<MyRidesPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 15,top: 15),
-                                child: Text("Driver Details",style: const TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    fontSize: 18,
-                                    color: CustomColor.black)),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 15,top: 15),
+                                    child: Text(  snapshot.data![index].vehicleRegistrationNumber
+                                        .toString() !=
+                                        "null"
+                                        ? snapshot.data![index].vehicleRegistrationNumber
+                                        .toString()
+                                        : "NA",
+                                        style: const TextStyle(
+                                            fontFamily: 'Gilroy',
+                                            fontSize: 18,
+                                            color: CustomColor.black)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 15,top: 15),
+                                    child: Text(  formatted !=
+                                        "null"
+                                        ? formatted
+                                        : "NA",
+                                        style: const TextStyle(
+                                            fontFamily: 'Gilroy',
+                                            fontSize: 15,
+                                            color: CustomColor.black)),
+                                  ),
+                                ],
                               ),
+
                               Padding(
-                                padding: const EdgeInsets.only(right: 10),
+                                padding: const EdgeInsets.only(right: 10,top: 15,left: 10,bottom: 15),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("Ride Date : ",style: const TextStyle(
-                                        fontFamily: 'Gilroy',
-                                        fontSize: 16,
-                                        color: CustomColor.black,fontWeight: FontWeight.bold)),
-                                    Text(formatted == "null" ? "Data Not Available" :
-                                    formatted.toString(),style: const TextStyle(
-                                        fontFamily: 'Gilroy',
-                                        fontSize: 16,
-                                        color: CustomColor.black)),
+                                    Row(
+                                      children: [
+                                        Text("Timing : ",style: const TextStyle(
+                                            fontFamily: 'Gilroy',
+                                            fontSize: 16,
+                                            color: CustomColor.black,fontWeight: FontWeight.bold)),
+                                        Text( snapshot.data![index].startTime
+                                            .toString() !=
+                                            "null"
+                                            ? snapshot.data![index].startTime
+                                            .toString()
+                                            : "NA",style: const TextStyle(
+                                            fontFamily: 'Gilroy',
+                                            fontSize: 16,
+                                            color: CustomColor.black)),
+                                        Text(snapshot.data![index].startTime
+                                            .toString() !=
+                                            "null"
+                                            ? " to "
+                                            : " ",style: const TextStyle(
+                                            fontFamily: 'Gilroy',
+                                            fontSize: 16,
+                                            color: CustomColor.black)),
+                                        Text( snapshot.data![index].endTime
+                                            .toString() !=
+                                            "null"
+                                            ? snapshot.data![index].endTime
+                                            .toString()
+                                            : "NA",style: const TextStyle(
+                                            fontFamily: 'Gilroy',
+                                            fontSize: 16,
+                                            color: CustomColor.black)),
+                                      ],
+                                    ),
+                                  
                                   ],
                                 ),
                               ),
-                              ExpansionTile(
+                             /* Padding(
+                                padding: const EdgeInsets.only(left: 15,bottom: 10),
+                                child: Row(
+                                  children: [
+                                  CircularImage(
+                                      imageUrl: image,
+                                      boxFit: BoxFit.fill,
+                                      width: 60,
+                                      height: 60,
+                                  ),
+                                  /* CircleAvatar(
+                                      backgroundColor:
+                                      Colors.black54,
+                                      radius: 27.0,
+                                      child: CircleAvatar(
+                                        radius: 25.0,
+                                        backgroundColor:
+                                        Colors.white,
+                                        child: AspectRatio(
+                                          aspectRatio: 1,
+                                          child: ClipOval(
+                                            //""
+                                            child:(image != null)
+                                                ? Image.network(
+                                              image!,
+                                              width: 100,
+                                              height: 100,
+                                              fit: BoxFit.cover,
+                                            )
+                                                : Image.asset(
+                                                'assets/user_avatar.png'),
+                                          ),
+                                        ),
+                                      ),
+                                    ), */
+                                    Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 15),
+                                          child: Column(
+
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text("Registation No.: ", style: const TextStyle(
+                                                      fontFamily: 'Gilroy',
+                                                      fontSize: 16,
+                                                      color: CustomColor.black,fontWeight: FontWeight.bold)),
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(8.0),
+                                                    child: Text(
+                                                        snapshot.data![index].vehicleRegistrationNumber
+                                                            .toString() !=
+                                                            "null"
+                                                            ? snapshot.data![index].vehicleRegistrationNumber
+                                                            .toString()
+                                                            : "NA",
+                                                        style: const TextStyle(
+                                                            fontFamily: 'Gilroy',
+                                                            fontSize: 16,
+                                                            color: CustomColor.black,fontWeight: FontWeight.normal)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(bottom: 10),
+                                          child: Row(
+                                            children: [
+                                              /* Text("From destination : ",style: const TextStyle(
+                                              fontFamily: 'Gilroy',
+                                              fontSize: 16,
+                                              color: CustomColor.black,fontWeight: FontWeight.bold)),*/
+                                              Text(
+                                                  snapshot.data![index].fromDestination
+                                                      .toString() ==
+                                                      "null"
+                                                      ? "NA - "
+                                                      : snapshot
+                                                      .data![index].fromDestination
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      fontFamily: 'Gilroy',
+                                                      fontSize: 16,
+                                                      color: CustomColor.black,fontWeight: FontWeight.normal)),
+                                              Text(
+                                                  snapshot.data![index].toDestination
+                                                      .toString() ==
+                                                      "null"
+                                                      ? "NA"
+                                                      : snapshot
+                                                      .data![index].toDestination
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      fontFamily: 'Gilroy',
+                                                      fontSize: 16,
+                                                      color: CustomColor.black,fontWeight: FontWeight.normal)),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    )
+
+
+
+                                  ],
+                                ),
+                              )*/
+
+
+                              /*ExpansionTile(
 
                                 iconColor: Colors.black,
 
@@ -144,19 +308,19 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                   children: [
                                     Row(
                                       children: [
-                                        Text("Name: ", style: const TextStyle(
+                                        Text("Registation No.: ", style: const TextStyle(
                                             fontFamily: 'Gilroy',
                                             fontSize: 16,
                                             color: CustomColor.black,fontWeight: FontWeight.bold)),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                              snapshot.data![index].driverName
+                                              snapshot.data![index].vehicleRegistrationNumber
                                                   .toString() !=
                                                   "null"
-                                                  ? snapshot.data![index].driverName
+                                                  ? snapshot.data![index].vehicleRegistrationNumber
                                                   .toString()
-                                                  : " ",
+                                                  : "NA",
                                               style: const TextStyle(
                                                   fontFamily: 'Gilroy',
                                                   fontSize: 16,
@@ -170,17 +334,29 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                   children: [
                                     Row(
                                       children: [
-                                        Text("Mobile Number : ",style: const TextStyle(
+                                       /* Text("From destination : ",style: const TextStyle(
                                             fontFamily: 'Gilroy',
                                             fontSize: 16,
-                                            color: CustomColor.black,fontWeight: FontWeight.bold)),
+                                            color: CustomColor.black,fontWeight: FontWeight.bold)),*/
                                         Text(
-                                            snapshot.data![index].driverMobileNumber
+                                            snapshot.data![index].fromDestination
                                                 .toString() ==
                                                 "null"
-                                                ? "Data Not Available"
+                                                ? "NA - "
                                                 : snapshot
-                                                .data![index].driverMobileNumber
+                                                .data![index].fromDestination
+                                                .toString(),
+                                            style: const TextStyle(
+                                                fontFamily: 'Gilroy',
+                                                fontSize: 16,
+                                                color: CustomColor.black,fontWeight: FontWeight.normal)),
+                                        Text(
+                                            snapshot.data![index].toDestination
+                                                .toString() ==
+                                                "null"
+                                                ? "NA"
+                                                : snapshot
+                                                .data![index].toDestination
                                                 .toString(),
                                             style: const TextStyle(
                                                 fontFamily: 'Gilroy',
@@ -353,7 +529,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                   ),
 
                                 ],
-                              ),
+                              ),*/
                             ],
                           )
 

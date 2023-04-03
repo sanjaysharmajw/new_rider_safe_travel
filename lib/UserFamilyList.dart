@@ -23,6 +23,7 @@ import 'LoginModule/custom_color.dart';
 import 'LoginModule/preferences.dart';
 import 'Models/MemberBlockDeleteModel.dart';
 import 'UserFamilyListData.dart';
+import 'Utils/circular_image_widgets.dart';
 
 class UserFamilyList extends StatefulWidget {
   const UserFamilyList({Key? key}) : super(key: key);
@@ -79,6 +80,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
   var memberName;
 
   bool isSwitched = false;
+  bool value = true;
 
   @override
   Widget build(BuildContext context) {
@@ -95,28 +97,40 @@ class _UserFamilyListState extends State<UserFamilyList> {
                 },
                 icon: const Icon(
                   Icons.arrow_back_sharp,
-                  color: CustomColor.black,
-                  size: 30,
+                  color: CustomColor.white,
+                  size: 25,
                 )),
           ),
           title: const Text("People Tracking Me",
               style: TextStyle(
-                color: CustomColor.black,
-                fontSize: 20,
+                color: CustomColor.white,
+                fontSize: 22,
                 fontFamily: 'Gilroy',
               )),
 
         ),
-        floatingActionButton: Container(
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(left: 10,right: 10,bottom: 40),
+          child: FloatingActionButton(
+            backgroundColor: appBlue,
+            onPressed: () {
+              Get.to(const FamilyMemberAddOtherTrack());
+            },
+            child: Icon(Icons.add,color: Colors.white,),
+          ),
+        ),
+        /*floatingActionButton: Container(
+
           height: 60,
           width: 60,
           child: Material(
-            type: MaterialType
-                .transparency,
+            elevation: 15,
+
             child: Ink(
               decoration: BoxDecoration(
-                border: Border.all(color: CustomColor.black, width: 2.0),
-                color: Colors.black54,
+
+                color: appBlue,
                 shape: BoxShape.circle,
               ),
               child: InkWell(
@@ -134,7 +148,7 @@ class _UserFamilyListState extends State<UserFamilyList> {
               ),
             ),
           ),
-        ),
+        ), */
 
         body: FutureBuilder<List<FamilyMemberDataModel>>(
           future: _future,
@@ -162,144 +176,287 @@ class _UserFamilyListState extends State<UserFamilyList> {
                           onTap: () {
                             setState(() {});
                           },
-                          child: Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: 5,
+                          child:  Padding(
+                            padding:
+                            const EdgeInsets.only(left: 10, right: 10, top: 10,),
+                            child: Card(
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
                                 ),
-                                Container(
-                                    height: 210,
-                                    width: 370,
-                                    child: Stack(
-                                      children: [
-                                        Center(
-                                          child: Container(
-                                            height: 170,
-                                            width: 350,
-                                            decoration: BoxDecoration(
-                                                color: CustomColor.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        18.0)),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          top: 10,
-                                          right: 20,
-                                          child: Container(
-                                            height: 100,
-                                            width: 100,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: CustomColor.white,
-                                            ),
-                                            child: CircleAvatar(
-                                              radius: 90.r,
-                                              backgroundColor: Colors.black,
-                                              child: CircleAvatar(
-                                                radius: 90.r,
-                                                backgroundColor: Colors.white,
-                                                child: ClipOval(
-                                                  child: (snapshot.data![index]
-                                                              .memberProfileImage
-                                                              .toString() !=
-                                                          null)
-                                                      ? Image.network(
-                                                          snapshot.data![index]
-                                                                      .memberProfileImage
-                                                                      .toString() ==
-                                                                  null
-                                                              ? " "
-                                                              : snapshot
-                                                                  .data![index]
-                                                                  .memberProfileImage
-                                                                  .toString(),
-                                                          width: 100,
-                                                          height: 100,
-                                                          fit: BoxFit.cover,
-                                                        )
-                                                      : Image.asset(
-                                                          'assets/user_avatar.png'),
+                                color: CustomColor.white,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 10,top: 15),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+
+                                            children: [
+
+                                              Row(
+                                                children: [
+                                                 /* Text("Name: ", style: const TextStyle(
+                                                      fontFamily: 'Gilroy',
+                                                      fontSize: 16,
+                                                      color: CustomColor.black,fontWeight: FontWeight.bold)),*/
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(left: 15),
+                                                    child: Text(
+                                                        memberName
+                                                            .toString() !=
+                                                            "null"
+                                                            ? memberName
+                                                            .toString()
+                                                            : "NA",
+                                                        style: const TextStyle(
+                                                            fontFamily: 'Gilroy',
+                                                            fontSize: 17,
+                                                            color: CustomColor.black,fontWeight: FontWeight.w600)),
+                                                  ),
+                                                ],
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 15),
+                                                child: Row(
+                                                  children: [
+                                                   /* Text("Email Id : ",style: const TextStyle(
+                                                        fontFamily: 'Gilroy',
+                                                        fontSize: 16,
+                                                        color: CustomColor.black,fontWeight: FontWeight.bold)),*/
+                                                    Text(
+                                                        snapshot.data![index].memberEmailId
+                                                            .toString() ==
+                                                            "null"
+                                                            ? "NA"
+                                                            : snapshot
+                                                            .data![index].memberEmailId
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                            fontFamily: 'Gilroy',
+                                                            fontSize: 16,
+                                                            color: CustomColor.black,fontWeight: FontWeight.normal)),
+                                                  ],
                                                 ),
                                               ),
-                                            ),
+                                              Row(
+                                                children: [
+                                                 /* Text("Mobile No : ",style: const TextStyle(
+                                                      fontFamily: 'Gilroy',
+                                                      fontSize: 16,
+                                                      color: CustomColor.black,fontWeight: FontWeight.bold)),*/
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(left: 15),
+                                                    child: Text(
+                                                        snapshot.data![index].memberMobileNumber
+                                                            .toString() ==
+                                                            "null"
+                                                            ? "NA"
+                                                            : snapshot
+                                                            .data![index].memberMobileNumber
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                            fontFamily: 'Gilroy',
+                                                            fontSize: 16,
+                                                            color: CustomColor.black,fontWeight: FontWeight.normal)),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  /* Text("Mobile No : ",style: const TextStyle(
+                                                      fontFamily: 'Gilroy',
+                                                      fontSize: 16,
+                                                      color: CustomColor.black,fontWeight: FontWeight.bold)),*/
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(left: 15),
+                                                    child: Text(
+                                                        snapshot.data![index].relation
+                                                            .toString() ==
+                                                            "null"
+                                                            ? "NA"
+                                                            : snapshot
+                                                            .data![index].relation
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                            fontFamily: 'Gilroy',
+                                                            fontSize: 16,
+                                                            color: CustomColor.black,fontWeight: FontWeight.normal)),
+                                                  ),
+                                                ],
+                                              ),
+
+                                            ],
                                           ),
-                                        ),
-                                        Positioned(
-                                          top: 30,
-                                          left: 40,
-                                          child: Text(
-                                              memberStatus.toString() == "null"
-                                                  ? " "
-                                                  : memberStatus.toString(),
-                                              style: TextStyle(
-                                                  fontFamily: 'Gilroy',
-                                                  fontSize: 16)),
-                                        ),
-                                        Positioned(
-                                          top: 50,
-                                          left: 40,
-                                          child: Text(
-                                              memberName.toString() == "null"
-                                                  ? " "
-                                                  : memberName.toString(),
-                                              style: TextStyle(
-                                                  fontFamily: 'Gilroy',
-                                                  fontSize: 16)),
-                                        ),
-                                        Positioned(
-                                          top: 70,
-                                          left: 40,
-                                          child: Text(
-                                              snapshot.data![index]
-                                                          .memberEmailId
-                                                          .toString() ==
-                                                      "null"
-                                                  ? " "
-                                                  : snapshot.data![index]
-                                                      .memberEmailId
-                                                      .toString(),
-                                              style: TextStyle(
-                                                  fontFamily: 'Gilroy',
-                                                  fontSize: 16)),
-                                        ),
-                                        Positioned(
-                                          top: 90,
-                                          left: 40,
-                                          child: Text(
-                                              snapshot.data![index]
-                                                          .memberMobileNumber
-                                                          .toString() ==
-                                                      "null"
-                                                  ? " "
-                                                  : snapshot.data![index]
-                                                      .memberMobileNumber
-                                                      .toString(),
-                                              style: TextStyle(
-                                                fontFamily: 'Gilroy',
-                                                fontSize: 16,
-                                              )),
-                                        ),
-                                        Positioned(
-                                          top: 110,
-                                          left: 40,
-                                          child: Text(
-                                              snapshot.data![index].relation
-                                                          .toString()
-                                                          .toString() ==
-                                                      "null"
-                                                  ? " "
-                                                  : snapshot
-                                                      .data![index].relation
-                                                      .toString()
-                                                      .toString(),
-                                              style: TextStyle(
-                                                  fontFamily: 'Gilroy',
-                                                  fontSize: 14)),
-                                        ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 15,right: 25),
+                                            child: CircularImage(
+                                              imageLink: image,
+                                              imageWidth: 60,
+                                              imageHeight: 60,
+                                              borderColor: Colors.black,)
+                                            /*CircleAvatar(
+                                              backgroundColor:
+                                              Colors.black54,
+                                              radius: 27.0,
+                                              child: CircleAvatar(
+                                                radius: 25.0,
+                                                backgroundColor:
+                                                Colors.white,
+                                                child: AspectRatio(
+                                                  aspectRatio: 1,
+                                                  child: ClipOval(
+                                                    //""
+                                                    child:(image != null)
+                                                        ? Image.network(
+                                                      image!,
+                                                      width: 100,
+                                                      height: 100,
+                                                      fit: BoxFit.fill,
+                                                    )
+                                                        : Image.asset(
+                                                        'assets/user_avatar.png'),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),*/
+                                          ),
+
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 15,),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          ToggleSwitchButton(mstatus: memberStatus,
+                                            memberId: snapshot.data![index].memberId.toString(),
+                                            userId: snapshot.data![index].userId.toString(),),
+                                          IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  print("Deleted");
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                      context) {
+                                                        return StatefulBuilder(
+                                                            builder: (BuildContext
+                                                            context,
+                                                                StateSetter
+                                                                setState) {
+                                                              return AlertDialog(
+                                                                content:
+                                                                Container(
+                                                                  height: 150,
+                                                                  child: Column(
+                                                                    crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                    children: [
+                                                                      SizedBox(
+                                                                        height:
+                                                                        10,
+                                                                      ),
+                                                                      Text("This will remove the user permanently from the list, You can also block the user to temporarily disable the users."),
+                                                                      SizedBox(
+                                                                          height:
+                                                                          15),
+                                                                      Row(
+                                                                        children: [
+                                                                          Expanded(
+                                                                            child:
+                                                                            ElevatedButton(
+                                                                              onPressed:
+                                                                                  () {
+                                                                                // OverlayLoadingProgress.start(context);
+                                                                                getMembersStatus("Deleted",snapshot.data![index].memberId.toString()
+                                                                                    ,snapshot.data![index].userId.toString());
+                                                                                setState(() {});
+                                                                                Get.back();
+                                                                                snapshot.data!.removeAt(index);
+                                                                                //getUserFamilyList();
+                                                                              },
+                                                                              child:
+                                                                              Text("Yes"),
+                                                                              style:
+                                                                              ElevatedButton.styleFrom(primary:appBlue),
+                                                                            ),
+                                                                          ),
+                                                                          SizedBox(width: 15),
+                                                                          Expanded(
+                                                                              child:
+                                                                              ElevatedButton(
+                                                                                onPressed:
+                                                                                    () {
+                                                                                  Navigator.of(context).pop();
+                                                                                  getMembersStatus('Blocked',snapshot.data![index].memberId.toString(),
+                                                                                      snapshot.data![index].userId.toString());
+                                                                                },
+                                                                                child: Text(
+                                                                                    "Block",
+                                                                                    style: TextStyle(color: Colors.black,)),
+                                                                                style:
+                                                                                ElevatedButton.styleFrom(
+                                                                                  primary:
+                                                                                  Colors.white,
+                                                                                ),
+                                                                              )),
+                                                                          SizedBox(
+                                                                              width:
+                                                                              15),
+                                                                          Expanded(
+                                                                              child:
+                                                                              ElevatedButton(
+                                                                                onPressed:
+                                                                                    () {
+                                                                                  print('no selected');
+                                                                                  Navigator.of(context).pop();
+                                                                                },
+                                                                                child: Text(
+                                                                                    "No",
+                                                                                    style: TextStyle(color: Colors.black)),
+                                                                                style:
+                                                                                ElevatedButton.styleFrom(
+                                                                                  primary:
+                                                                                  Colors.white,
+                                                                                ),
+                                                                              ))
+                                                                        ],
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            });
+                                                      });
+                                                });
+                                              },
+                                              icon: const Icon(
+                                                Icons.delete,
+                                                size: 27,
+                                                color: CustomColor.red,
+                                              ))
+                                        ],
+                                      ),
+                                    ),
+                                   /* Padding(
+                                      padding:
+                                      const EdgeInsets.only(left: 15, right: 15),
+                                      child: Divider(
+                                        thickness: 2,
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
                                         Positioned(
                                           top: 140,
                                           left: 40,
@@ -318,109 +475,375 @@ class _UserFamilyListState extends State<UserFamilyList> {
                                                     showDialog(
                                                         context: context,
                                                         builder: (BuildContext
-                                                            context) {
+                                                        context) {
                                                           return StatefulBuilder(
                                                               builder: (BuildContext
-                                                                      context,
+                                                              context,
                                                                   StateSetter
-                                                                      setState) {
-                                                            return AlertDialog(
-                                                              content:
+                                                                  setState) {
+                                                                return AlertDialog(
+                                                                  content:
                                                                   Container(
-                                                                height: 150,
-                                                                child: Column(
-                                                                  crossAxisAlignment:
+                                                                    height: 150,
+                                                                    child: Column(
+                                                                      crossAxisAlignment:
                                                                       CrossAxisAlignment
                                                                           .center,
-                                                                  children: [
-                                                                    SizedBox(
-                                                                      height:
-                                                                          10,
-                                                                    ),
-                                                                    Text("This will remove the user permanently from the list, You can also block the user to temporarily disable the users."),
-                                                                    SizedBox(
-                                                                        height:
-                                                                            15),
-                                                                    Row(
                                                                       children: [
-                                                                        Expanded(
-                                                                          child:
-                                                                              ElevatedButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              // OverlayLoadingProgress.start(context);
-                                                                              getMembersStatus("Deleted",snapshot.data![index].memberId.toString()
-                                                                              ,snapshot.data![index].userId.toString());
-                                                                              setState(() {});
-                                                                              Get.back();
-                                                                              snapshot.data!.removeAt(index);
-                                                                              //getUserFamilyList();
-                                                                            },
-                                                                            child:
-                                                                                Text("Yes"),
-                                                                            style:
-                                                                                ElevatedButton.styleFrom(primary: CustomColor.yellow),
-                                                                          ),
-                                                                        ),
-                                                                        SizedBox(width: 15),
-                                                                        Expanded(
-                                                                            child:
-                                                                            ElevatedButton(
-                                                                              onPressed:
-                                                                                  () {
-                                                                                Navigator.of(context).pop();
-                                                                                getMembersStatus('Blocked',snapshot.data![index].memberId.toString(),
-                                                                                    snapshot.data![index].userId.toString());
-                                                                              },
-                                                                              child: Text(
-                                                                                  "Block",
-                                                                                  style: TextStyle(color: Colors.black,)),
-                                                                              style:
-                                                                              ElevatedButton.styleFrom(
-                                                                                primary:
-                                                                                Colors.white,
-                                                                              ),
-                                                                            )),
                                                                         SizedBox(
-                                                                            width:
-                                                                                15),
-                                                                        Expanded(
-                                                                            child:
+                                                                          height:
+                                                                          10,
+                                                                        ),
+                                                                        Text("This will remove the user permanently from the list, You can also block the user to temporarily disable the users."),
+                                                                        SizedBox(
+                                                                            height:
+                                                                            15),
+                                                                        Row(
+                                                                          children: [
+                                                                            Expanded(
+                                                                              child:
+                                                                              ElevatedButton(
+                                                                                onPressed:
+                                                                                    () {
+                                                                                  // OverlayLoadingProgress.start(context);
+                                                                                  getMembersStatus("Deleted",snapshot.data![index].memberId.toString()
+                                                                                      ,snapshot.data![index].userId.toString());
+                                                                                  setState(() {});
+                                                                                  Get.back();
+                                                                                  snapshot.data!.removeAt(index);
+                                                                                  //getUserFamilyList();
+                                                                                },
+                                                                                child:
+                                                                                Text("Yes"),
+                                                                                style:
+                                                                                ElevatedButton.styleFrom(primary:appBlue),
+                                                                              ),
+                                                                            ),
+                                                                            SizedBox(width: 15),
+                                                                            Expanded(
+                                                                                child:
                                                                                 ElevatedButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            print('no selected');
-                                                                            Navigator.of(context).pop();
-                                                                          },
-                                                                          child: Text(
-                                                                              "No",
-                                                                              style: TextStyle(color: Colors.black)),
-                                                                          style:
-                                                                              ElevatedButton.styleFrom(
-                                                                            primary:
-                                                                                Colors.white,
-                                                                          ),
-                                                                        ))
+                                                                                  onPressed:
+                                                                                      () {
+                                                                                    Navigator.of(context).pop();
+                                                                                    getMembersStatus('Blocked',snapshot.data![index].memberId.toString(),
+                                                                                        snapshot.data![index].userId.toString());
+                                                                                  },
+                                                                                  child: Text(
+                                                                                      "Block",
+                                                                                      style: TextStyle(color: Colors.black,)),
+                                                                                  style:
+                                                                                  ElevatedButton.styleFrom(
+                                                                                    primary:
+                                                                                    Colors.white,
+                                                                                  ),
+                                                                                )),
+                                                                            SizedBox(
+                                                                                width:
+                                                                                15),
+                                                                            Expanded(
+                                                                                child:
+                                                                                ElevatedButton(
+                                                                                  onPressed:
+                                                                                      () {
+                                                                                    print('no selected');
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                  child: Text(
+                                                                                      "No",
+                                                                                      style: TextStyle(color: Colors.black)),
+                                                                                  style:
+                                                                                  ElevatedButton.styleFrom(
+                                                                                    primary:
+                                                                                    Colors.white,
+                                                                                  ),
+                                                                                ))
+                                                                          ],
+                                                                        )
                                                                       ],
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            );
-                                                          });
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              });
                                                         });
                                                   });
                                                 },
                                                 icon: const Icon(
                                                   Icons.delete_rounded,
-                                                  size: 40,
+                                                  size: 30,
                                                   color: CustomColor.red,
                                                 )))
                                       ],
+                                    ),*/
+                                  ],
+                                )
+
+
+                            ),
+                          ),
+
+                         /* Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                    height: 200,
+                                    width: 320,
+                                    child: Card(
+                                      elevation: 5,
+                                      child: Stack(
+                                        children: [
+                                          Center(
+                                            child: Container(
+                                              height: 170,
+                                              width: 350,
+                                              decoration: BoxDecoration(
+                                                  color: CustomColor.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          18.0)),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            top: 50,
+                                            right: 20,
+                                            child: Container(
+                                              height: 70,
+                                              width: 70,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: CustomColor.white,
+                                              ),
+                                              child: CircleAvatar(
+                                                radius: 70.r,
+                                                backgroundColor: Colors.black,
+                                                child: CircleAvatar(
+                                                  radius: 70.r,
+                                                  backgroundColor: Colors.white,
+                                                  child: ClipOval(
+                                                    child: (snapshot.data![index]
+                                                                .memberProfileImage
+                                                                .toString() !=
+                                                            null)
+                                                        ? Image.network(
+                                                            snapshot.data![index]
+                                                                        .memberProfileImage
+                                                                        .toString() ==
+                                                                    null
+                                                                ? " "
+                                                                : snapshot
+                                                                    .data![index]
+                                                                    .memberProfileImage
+                                                                    .toString(),
+                                                            width: 70,
+                                                            height: 70,
+                                                            fit: BoxFit.cover,
+                                                          )
+                                                        : Image.asset(
+                                                            'assets/user_avatar.png'),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            top: 30,
+                                            left: 40,
+                                            child: Text(
+                                                memberStatus.toString() == "null"
+                                                    ? " "
+                                                    : memberStatus.toString(),
+                                                style: TextStyle(
+                                                    fontFamily: 'Gilroy',
+                                                    fontSize: 16)),
+                                          ),
+                                          Positioned(
+                                            top: 50,
+                                            left: 40,
+                                            child: Text(
+                                                memberName.toString() == "null"
+                                                    ? " "
+                                                    : memberName.toString(),
+                                                style: TextStyle(
+                                                    fontFamily: 'Gilroy',
+                                                    fontSize: 16)),
+                                          ),
+                                          Positioned(
+                                            top: 70,
+                                            left: 40,
+                                            child: Text(
+                                                snapshot.data![index]
+                                                            .memberEmailId
+                                                            .toString() ==
+                                                        "null"
+                                                    ? " "
+                                                    : snapshot.data![index]
+                                                        .memberEmailId
+                                                        .toString(),
+                                                style: TextStyle(
+                                                    fontFamily: 'Gilroy',
+                                                    fontSize: 16)),
+                                          ),
+                                          Positioned(
+                                            top: 90,
+                                            left: 40,
+                                            child: Text(
+                                                snapshot.data![index]
+                                                            .memberMobileNumber
+                                                            .toString() ==
+                                                        "null"
+                                                    ? " "
+                                                    : snapshot.data![index]
+                                                        .memberMobileNumber
+                                                        .toString(),
+                                                style: TextStyle(
+                                                  fontFamily: 'Gilroy',
+                                                  fontSize: 16,
+                                                )),
+                                          ),
+                                          Positioned(
+                                            top: 110,
+                                            left: 40,
+                                            child: Text(
+                                                snapshot.data![index].relation
+                                                            .toString()
+                                                            .toString() ==
+                                                        "null"
+                                                    ? " "
+                                                    : snapshot
+                                                        .data![index].relation
+                                                        .toString()
+                                                        .toString(),
+                                                style: TextStyle(
+                                                    fontFamily: 'Gilroy',
+                                                    fontSize: 14)),
+                                          ),
+                                          Positioned(
+                                            top: 140,
+                                            left: 40,
+                                            child: ToggleSwitchButton(
+                                              mstatus: memberStatus.toString(),
+                                              memberId: snapshot.data![index].memberId.toString(), userId: snapshot.data![index].userId.toString(),
+                                            ),
+                                          ),
+                                          Positioned(
+                                              top: 135,
+                                              right: 20,
+                                              child: IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      print("Deleted");
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return StatefulBuilder(
+                                                                builder: (BuildContext
+                                                                        context,
+                                                                    StateSetter
+                                                                        setState) {
+                                                              return AlertDialog(
+                                                                content:
+                                                                    Container(
+                                                                  height: 150,
+                                                                  child: Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      SizedBox(
+                                                                        height:
+                                                                            10,
+                                                                      ),
+                                                                      Text("This will remove the user permanently from the list, You can also block the user to temporarily disable the users."),
+                                                                      SizedBox(
+                                                                          height:
+                                                                              15),
+                                                                      Row(
+                                                                        children: [
+                                                                          Expanded(
+                                                                            child:
+                                                                                ElevatedButton(
+                                                                              onPressed:
+                                                                                  () {
+                                                                                // OverlayLoadingProgress.start(context);
+                                                                                getMembersStatus("Deleted",snapshot.data![index].memberId.toString()
+                                                                                ,snapshot.data![index].userId.toString());
+                                                                                setState(() {});
+                                                                                Get.back();
+                                                                                snapshot.data!.removeAt(index);
+                                                                                //getUserFamilyList();
+                                                                              },
+                                                                              child:
+                                                                                  Text("Yes"),
+                                                                              style:
+                                                                                  ElevatedButton.styleFrom(primary: CustomColor.yellow),
+                                                                            ),
+                                                                          ),
+                                                                          SizedBox(width: 15),
+                                                                          Expanded(
+                                                                              child:
+                                                                              ElevatedButton(
+                                                                                onPressed:
+                                                                                    () {
+                                                                                  Navigator.of(context).pop();
+                                                                                  getMembersStatus('Blocked',snapshot.data![index].memberId.toString(),
+                                                                                      snapshot.data![index].userId.toString());
+                                                                                },
+                                                                                child: Text(
+                                                                                    "Block",
+                                                                                    style: TextStyle(color: Colors.black,)),
+                                                                                style:
+                                                                                ElevatedButton.styleFrom(
+                                                                                  primary:
+                                                                                  Colors.white,
+                                                                                ),
+                                                                              )),
+                                                                          SizedBox(
+                                                                              width:
+                                                                                  15),
+                                                                          Expanded(
+                                                                              child:
+                                                                                  ElevatedButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              print('no selected');
+                                                                              Navigator.of(context).pop();
+                                                                            },
+                                                                            child: Text(
+                                                                                "No",
+                                                                                style: TextStyle(color: Colors.black)),
+                                                                            style:
+                                                                                ElevatedButton.styleFrom(
+                                                                              primary:
+                                                                                  Colors.white,
+                                                                            ),
+                                                                          ))
+                                                                        ],
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            });
+                                                          });
+                                                    });
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.delete_rounded,
+                                                    size: 40,
+                                                    color: CustomColor.red,
+                                                  )))
+                                        ],
+                                      ),
                                     )),
                               ],
                             ),
-                          ),
+                          ), */
                         );
 
                         /*ListViewItem( relation: snapshot.data![index].relation.toString(),

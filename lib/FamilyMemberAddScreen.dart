@@ -9,6 +9,8 @@ import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/Models/affFamilyMemberNewModel.dart';
 import 'package:ride_safe_travel/Utils/RiderButton.dart';
+import 'package:ride_safe_travel/color_constant.dart';
+import 'package:ride_safe_travel/custom_button.dart';
 import 'package:ride_safe_travel/start_ride_map.dart';
 
 import 'LoginModule/Error.dart';
@@ -66,10 +68,10 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
           Get.back();
         }, icon: Icon(Icons.keyboard_backspace_sharp,)),
 
-        centerTitle: true,
-        backgroundColor: CustomColor.yellow,
+
+        backgroundColor: appBlue,
         title: const Text("Add Family Member",
-            style: TextStyle(fontFamily: 'transport', fontSize: 18)),
+            style: TextStyle(fontFamily: 'Gilroy', fontSize: 18,color: Colors.white)),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -78,7 +80,7 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
             const SizedBox(height: 50),
             const SizedBox(height: 20),
             const Text("User Who can track",
-                style: TextStyle(fontFamily: 'transport', fontSize: 20)),
+                style: TextStyle(fontFamily: 'Gilroy', fontSize: 20)),
             Padding(
               padding: const EdgeInsets.all(15),
               child: TextFormField(
@@ -96,7 +98,7 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
                   return null;
                 },
                 controller: controllerName,
-                style: const TextStyle(fontFamily: 'transport', fontSize: 14),
+                style: const TextStyle(fontFamily: 'Gilroy', fontSize: 14),
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Enter Name',
@@ -121,7 +123,7 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
             return null;
             },
                 controller: controllerRelation,
-                style: const TextStyle(fontFamily: 'transport', fontSize: 14),
+                style: const TextStyle(fontFamily: 'Gilroy', fontSize: 14),
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Enter Relation',
@@ -139,7 +141,7 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
                   LengthLimitingTextInputFormatter(10),
                 ],
                 controller: controllerMobile,
-                style: const TextStyle(fontFamily: 'transport', fontSize: 14),
+                style: const TextStyle(fontFamily: 'Gilroy', fontSize: 14),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Enter Mobile',
@@ -152,7 +154,18 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
                 },
               ),
             ),
-            RiderButton(
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: CustomButton(press: (){
+                OverlayLoadingProgress.start(context);
+                addFamilyMember(
+                    controllerName.text.toString(),
+                    userId,
+                    controllerRelation.text.toString(),
+                    controllerMobile.text.toString());
+              }, buttonText: "Add Family Member"),
+            ),
+            /*RiderButton(
                 click: () {
 
                   OverlayLoadingProgress.start(context);
@@ -162,7 +175,7 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
                       controllerRelation.text.toString(),
                       controllerMobile.text.toString());
                 },
-                textBtn: 'Add')
+                textBtn: 'Add')*/
           ],
         ),
       ),

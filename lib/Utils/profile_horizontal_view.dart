@@ -73,7 +73,7 @@ class ProfileHozontalView extends StatelessWidget {
             InkWell(
               onTap: click,
               child: const Icon(
-                FeatherIcons.edit,
+                FeatherIcons.eye,
               ),
             ),
           ],

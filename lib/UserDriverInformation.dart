@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -14,7 +15,10 @@ import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/DriverVehicleList.dart';
 import 'package:ride_safe_travel/FamilyMemberAddScreen.dart';
 import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
+import 'package:ride_safe_travel/Utils/view_image.dart';
 import 'package:ride_safe_travel/bottom_nav/custom_bottom_navi.dart';
+import 'package:ride_safe_travel/color_constant.dart';
+import 'package:ride_safe_travel/custom_button.dart';
 import 'package:ride_safe_travel/new_items/tracking_me_list.dart';
 import 'package:ride_safe_travel/start_ride_map.dart';
 
@@ -104,8 +108,8 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
 
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: CustomColor.transparent,
-            elevation: 0,
+            backgroundColor: appBlue,
+            elevation: 15,
             leading: Padding(
               padding: EdgeInsets.only(left: 10, right: 10),
               child: IconButton(
@@ -114,8 +118,8 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                   },
                   icon: Icon(
                     Icons.arrow_back_sharp,
-                    color: CustomColor.black,
-                    size: 30,
+                    color: CustomColor.white,
+                    size: 25,
                   )),
             ),
 
@@ -153,7 +157,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                                 width: 25,
                                 child: ClipOval(
                                   child: Material(
-                                    color: Colors.orange, // button color
+                                    color: Colors.lightBlue, // button color
                                     child: InkWell(
                                      // splashColor: Colors.green, // splash color
                                       onTap: () {}, // button pressed
@@ -172,7 +176,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                               padding: const EdgeInsets.only(left: 250,top: 10),
                               child: RatingBarIndicator(
                                 rating: drating,
-                                itemBuilder: (context, index) => Icon(Icons.star, color: Colors.amber),
+                                itemBuilder: (context, index) => Icon(Icons.star, color: Colors.lightBlue),
                                 itemCount: 5,
                                 itemSize: 15,
                                 direction: Axis.horizontal,
@@ -190,7 +194,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                                     alignment: Alignment.bottomRight,
                                     children: [
                                       CircleAvatar(
-                                        backgroundColor: CustomColor.yellow,
+                                        backgroundColor: CustomColor.black,
                                         radius: 30,
                                         child: CircleAvatar(
                                           radius: 30,
@@ -274,27 +278,53 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                           children: [
                             Row(
                               children: [
-                                Stack(
-                                  alignment: Alignment.bottomRight,
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor: CustomColor.yellow,
-                                      radius: 30.0,
-                                      child: CircleAvatar(
-                                        radius: 29.0,
-                                        backgroundColor: Colors.white,
-                                        child: ClipOval(
-                                          child: (widget.vPhoto != null)
-                                              ? Image.network(
-                                            widget.vPhoto!,
-                                            fit: BoxFit.cover,
-                                          )
-                                              : Image.asset('assets/car.png'),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: appBlack),
+                                      borderRadius: const BorderRadius.all(Radius.circular(50))
+                                  ),
+                                  child: Stack(
+                                    clipBehavior: Clip.none,
+                                    children:  [
+                                      InkWell(
+                                        onTap: (){
+                                        },
+                                        child:  ClipRRect(
+                                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                                          borderRadius: const BorderRadius.all(Radius.circular(60)),
+                                          child: CachedNetworkImage(
+                                            width: 60,
+                                            height: 60,
+                                            fit: BoxFit.fill,
+                                            imageUrl: widget.vPhoto,
+                                            placeholder: (context, url) => const CircularProgressIndicator(
+                                                color: appBlue,strokeWidth: 2),
+                                            errorWidget: (context, url, error) =>
+                                                Image.asset('images/car.png',width: 100,height: 100,fit: BoxFit.fill),
+                                          ),
+
+
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
+                               /* CircleAvatar(
+                                  backgroundColor: CustomColor.black,
+                                  radius: 30.0,
+                                  child: CircleAvatar(
+                                    radius: 29.0,
+                                    backgroundColor: Colors.white,
+                                    child: ClipOval(
+                                      child: (widget.vPhoto.toString() != null)
+                                          ? Image.network(
+                                        widget.vPhoto.toString(),
+                                        fit: BoxFit.cover,
+                                      )
+                                          : Image.asset('assets/car.png'),
+                                    ),
+                                  ),
+                                ),*/
                                 const SizedBox(
                                   width: 20,
                                 ),
@@ -411,7 +441,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                                 height: 100,
                                 decoration:  BoxDecoration (
                                   borderRadius:  BorderRadius.circular(8),
-                                  border:  Border.all(color: Color(0xffffd91d)),
+                                  border:  Border.all(color: appBlack),
                                 ),
                                 child: Padding(
                                   padding: EdgeInsets.only(left: 20,top: 2),
@@ -452,19 +482,25 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                           height: 65,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(onPressed: () async{
+                            child: CustomButton(press: () async{
                               OverlayLoadingProgress.start(context);
                               await userRideAdd(userId, widget.vehicleId.toString(), widget.driverId.toString());
                               setState(() {});
-                            }, child: Text("Next", style: const TextStyle(
-
+                            },
+                                buttonText: "Next")
+                           /* ElevatedButton(onPressed: () async{
+                              OverlayLoadingProgress.start(context);
+                              await userRideAdd(userId, widget.vehicleId.toString(), widget.driverId.toString());
+                              setState(() {});
+                            }, child: Text("Next", style: const
+                            TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16),),
                               style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
                                   backgroundColor: CustomColor.yellow,
-                                  foregroundColor: CustomColor.black),),
+                                  foregroundColor: CustomColor.black),),*/
                           ),
                         ),
                         SizedBox(
@@ -472,17 +508,23 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                           height: 65,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(onPressed: () async{
+                            child: CustomButton(press: (){
                               Navigator.push(context, MaterialPageRoute(builder: (context)=>const CustomBottomNav())); //MainPage
                               setState(() {});
-                            }, child: Text("Cancel Ride", style:  TextStyle(
+                            },
+                                buttonText: "Cancel Ride")
+                           /* ElevatedButton(onPressed: () async{
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>const CustomBottomNav())); //MainPage
+                              setState(() {});
+                            }, child: Text("Cancel Ride", style:
+                            TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16),),
                               style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
                                   backgroundColor: CustomColor.yellow,
-                                  foregroundColor: CustomColor.black),),
+                                  foregroundColor: CustomColor.black),),*/
                           ),
                         )
                       ],

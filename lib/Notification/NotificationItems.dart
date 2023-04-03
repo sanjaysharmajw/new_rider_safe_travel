@@ -8,8 +8,10 @@ class NotificationItems extends StatelessWidget {
   final String Des;
   final String date;
   final Color border;
+  final Color borderColor;
   final VoidCallback click;
-  const NotificationItems({Key? key, required this.Title, required this.Des, required this.border, required this.click, required this.date}) : super(key: key);
+  const NotificationItems({Key? key, required this.Title, required this.Des, required this.border, required this.click,
+    required this.date, required this.borderColor}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,9 @@ class NotificationItems extends StatelessWidget {
           decoration: BoxDecoration(
             color: border,
             borderRadius: BorderRadius.all(Radius.circular(5)),
+            border: Border.all(
+              color: borderColor
+            )
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),

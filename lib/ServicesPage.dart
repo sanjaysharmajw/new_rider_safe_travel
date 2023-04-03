@@ -11,6 +11,7 @@ import 'package:location/location.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:ride_safe_travel/color_constant.dart';
 import 'package:ride_safe_travel/service_list_items.dart';
 
 import 'BottomSheet/GeocodeResultModel.dart';
@@ -72,8 +73,8 @@ class _ServicesScreenPageState extends State<ServicesScreenPage> {
         builder: (controller) {
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: CustomColor.yellow,
-              elevation: 15,
+              backgroundColor: Colors.white,
+              elevation: 0,
               title:
               const Text("Services", style: TextStyle(color: CustomColor.black)),
               leading: IconButton(

@@ -15,6 +15,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/custom_button.dart';
+import 'package:ride_safe_travel/rider_profile_view.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -34,10 +35,14 @@ import 'MyTextField.dart';
 
 import 'RiderUserListData.dart';
 import 'Sharepreferences.dart';
+import 'bottom_nav/custom_bottom_navi.dart';
 import 'bottom_nav/home_page_nav.dart';
+import 'bottom_nav/profile_nav.dart';
+import 'color_constant.dart';
 
 
 class RiderProfileEdit extends StatefulWidget {
+  String backbutton;
   String birthdate;
   String state;
   String city;
@@ -72,7 +77,8 @@ class RiderProfileEdit extends StatefulWidget {
       required this.bloodgroup,
       required this.contactPerson,
       required this.emergencyContact1,
-      required this.contactPerson1})
+      required this.contactPerson1,
+      required this.backbutton})
       : super(key: key);
 
   @override
@@ -182,7 +188,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     if(response_date.toString() == "null" || response_date.toString().isEmpty) {
       var agedate = widget.birthdate.toString().split('-');
       var date = agedate[0];
-      // agedate[1]=int.parse(agedate[1]);
+       agedate[1]=agedate[1];
       var month = (int.parse(agedate[1]) < 10 ? '0' +
           int.parse(agedate[1]).toString() : agedate[1]);
       var year = (int.parse(agedate[2]) < 10 ? '0' +
@@ -295,7 +301,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: CustomColor.white,
+          backgroundColor: (widget.backbutton == 'bottomNav') ? CustomColor.white : appBlue,
           elevation: 0,
           leading: Padding(
             padding: EdgeInsets.only(left: 10.sp, right: 10.sp),
@@ -305,1161 +311,1367 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                 },
                 icon: Icon(
                   Icons.arrow_back_sharp,
-                  color: CustomColor.black,
-                  size: 30.sp,
+                  color: CustomColor.white,
+                  size: 25,
                 )),
           ),
+          title: Text("Edit your profile",style: TextStyle(fontFamily: "Gilroy",fontSize: 22,color: Colors.white),),
 
         ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                   Padding(
-                    padding: EdgeInsets.only(left: 20.sp, top: 10.sp),
-                    child: Text(
-                      "Edit your profile",
-                      style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "Gilroy",
-                          color: CustomColor.black),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40.h,
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                          padding: EdgeInsets.only(left: 20),
-                          child:  Column(
-                            children: [
-                              Column(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                          context: context,
-                                          builder: ((builder) =>
-                                              bottomSheet()));
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          0, 10, 10, 0),
-                                      child: Stack(
-                                        alignment: Alignment.bottomRight,
-                                        children: [
-                                          CircleAvatar(
-                                            backgroundColor: CustomColor.black,
-                                            radius: 45.0,
-                                            child: CircleAvatar(
-                                              radius: 43.0,
-                                              backgroundColor: Colors.white,
-                                              //backgroundImage: NetworkImage(),
-                                              child: AspectRatio(
-                                                aspectRatio: 1,
-                                                child: ClipOval(
-                                                  child: (image != null)
-                                                      ? Image.file(
-                                                    image!,
-                                                    width: 100,
-                                                    height: 100,
-                                                    fit: BoxFit.fill,
-                                                  )
-                                                      : Image.network(
-                                                    widget.imageProfile,
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Image.asset(
-                                              'assets/select_image.png'),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )
-                      ),
-                      SizedBox(
-                        width: 14.w,
-                      ),
-                      Column(
+        body: Container(
+          height: 1000,
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Container(
+               child: Column(
+                  children: [
+                    Container(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            firstNameController.text.toString() +
-                                " " +
-                                lastNameController.text.toString(),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17,
-                                fontFamily: "Gilroy",
-                                color: CustomColor.riderprofileColor),
+                          /* Padding(
+                            padding: EdgeInsets.only(left: 20.sp, top: 30.sp),
+                            child: Text(
+                              "Edit your profile",
+                              style: TextStyle(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Gilroy",
+                                  color: CustomColor.black),
+                            ),
+                          ),*/
+                          SizedBox(
+                            height: 40.h,
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.only(left: 20),
+                                  child:  Column(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              showModalBottomSheet(
+                                                  context: context,
+                                                  builder: ((builder) =>
+                                                      bottomSheet()));
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.fromLTRB(
+                                                  0, 10, 10, 0),
+                                              child: Stack(
+                                                alignment: Alignment.bottomRight,
+                                                children: [
+                                                  CircleAvatar(
+                                                    backgroundColor: CustomColor.black,
+                                                    radius: 45.0,
+                                                    child: CircleAvatar(
+                                                      radius: 43.0,
+                                                      backgroundColor: Colors.white,
+                                                      //backgroundImage: NetworkImage(),
+                                                      child: AspectRatio(
+                                                        aspectRatio: 1,
+                                                        child: ClipOval(
+                                                          child: (image != null)
+                                                              ? Image.file(
+                                                            image!,
+                                                            width: 100,
+                                                            height: 100,
+                                                            fit: BoxFit.fill,
+                                                          )
+                                                              : Image.network(
+                                                            widget.imageProfile,
+                                                            fit: BoxFit.fill,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                 Container(
+                                                   height: 35,
+                                                   width: 35,
+                                                   decoration: BoxDecoration(
+
+                                                       color: Colors.white,
+                                                     shape: BoxShape.circle
+                                                   ),child: Icon(Icons.camera_alt_outlined,color: appBlack
+                                                     ,)
+                                                 )
+
+
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                              ),
+                              SizedBox(
+                                width: 14.w,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    firstNameController.text.toString() +
+                                        " " +
+                                        lastNameController.text.toString(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17.sp,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
+                                  ),
+                                  SizedBox(
+                                    height: 5.h,
+                                  ),
+                                  Text(
+                                    mobileNumberController.text.toString(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17.sp,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.text),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 64.w,
+                              ),
+                            ],
                           ),
                           SizedBox(
-                            height: 5.h,
+                            height: 10.h,
                           ),
-                          Text(
-                            mobileNumberController.text.toString(),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17.sp,
-                                fontFamily: "Gilroy",
-                                color: CustomColor.text),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 64.w,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.sp),
-                        child: Text(
-                          "First Name  -",
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Gilroy",
-                              color: CustomColor.riderprofileColor),
-                        ),
-                      ),
-                      VerticalDivider(width: 30.0.w),
-                      Expanded(
-                          child: Center(
-                            child: TextFormField(
-
-                              showCursor: true,
-                              cursorHeight:30,
-                              cursorWidth: 2.0,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp("[a-zA-Z\]")),
-                                FilteringTextInputFormatter.deny('  '),
-
-                              ],
-                              style:TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Gilroy",
-                                  color: CustomColor.riderprofileColor),
-                              controller: firstNameController,
-                              textCapitalization: TextCapitalization.words,
-                              keyboardType: TextInputType.text,
-
-                              decoration: InputDecoration(
-                                border: const UnderlineInputBorder(),
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1, color: Colors.black45)),
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 2, color: Colors.black54)),
-                              ),
-                              onChanged: (value) {
-                                firstname = value;
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your first name';
-                                }
-                                return value.length < 2 ? 'Name must be greater than two characters' : null;
-                              },
-                            ),
-                          )),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.sp),
-                        child: Text(
-                          "Last Name  -",
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Gilroy",
-                              color: CustomColor.riderprofileColor),
-                        ),
-                      ),
-                      VerticalDivider(width: 30.0.w),
-                      Expanded(
-                          child: Center(
-                            child: TextFormField(
-                              showCursor: true,
-                              cursorHeight:30,
-                              cursorWidth: 2.0,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp("[a-zA-Z\]")),
-                                FilteringTextInputFormatter.deny('  ')
-                              ],
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Gilroy",
-                                  color: CustomColor.riderprofileColor),
-                              controller: lastNameController,
-                              textCapitalization: TextCapitalization.words,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                border: const UnderlineInputBorder(),
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 1, color: Colors.black45)),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 2, color: Colors.black54)),
-                          ),
-                              onChanged: (value) {
-                                lastname = value;
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your last name';
-                                }
-                                return value.length < 2 ? 'Name must be greater than two characters' : null;
-                              },
-                            ),
-                          )),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Text(
-                          "Email Id  -",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Gilroy",
-                              color: CustomColor.riderprofileColor),
-                        ),
-                      ),
-                      VerticalDivider(width: 60.0),
-                      Expanded(
-                          child: Center(
-                            child: TextFormField(
-
-                              showCursor: true,
-                              cursorHeight:30,
-                              cursorWidth: 2.0,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny(' '),
-
-                              ],
-                              style:TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Gilroy",
-                                  color: CustomColor.riderprofileColor),
-                              controller: emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                border: const UnderlineInputBorder(),
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1, color: Colors.black45)),
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 2, color: Colors.black54)),
-                              ),
-                              onChanged: (value) {
-                                email = value;
-                              },
-                              validator: (value) {
-                                if (value == null ||
-                                    value.isEmpty) {
-                                  return 'Email is Required !';
-                                } if (
-                                //!RegExp(
-                                //  r'^[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]')
-                                //.hasMatch(value)
-                                !EmailValidator.validate(value)
-                                ) {
-                                  return 'Please enter a valid Email';
-                                }
-                                return null;
-                              },
-                            ),
-                          )),
-                    ],
-                  ),
-
-                  Row(
-                    children: [
-                      Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: 15, right: 15, top: 0, bottom: 0),
-                            child: InkWell(
-                              child: Image.asset(
-                                'images/calendar.png',
-                                height: 22,
-                                width: 25,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            "DOB",
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Gilroy",
-                                color: CustomColor.riderprofileColor),
-                          ),
-                        ],
-                      ),
-                      VerticalDivider(width: 60.0),
-                      Expanded(
-                        child: Center(
-                          child: TextFormField(
-                            // keyboardType: TextInputType.number,
-                            style: const  TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Gilroy",
-                                color: CustomColor.riderprofileColor),
-                            maxLines: 1,
-                            controller: dobController,
-                            decoration: InputDecoration(
-                              border: const UnderlineInputBorder(),
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1, color: Colors.black45)),
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 2, color: Colors.black54)),
-                            ),
-                            readOnly: true,
-
-                            onTap: () async {
-                              _selectDate(context);
-                            },
-                            validator: (value) {
-                              if (value == null ||
-                                  value.isEmpty) {
-                                return 'Please enter your Date of Birth';
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              dob = value;
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Text(
-                          "Blood Group  -",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Gilroy",
-                              color: CustomColor.riderprofileColor),
-                        ),
-                      ),
-                      VerticalDivider(width: 20.0),
-                      Expanded(
-                          child: Center(
-                            child: TextFormField(
-
-                              showCursor: true,
-                              cursorHeight:30,
-                              cursorWidth: 2.0,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny(' '),
-
-                              ],
-                              style:TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Gilroy",
-                                  color: CustomColor.riderprofileColor),
-                              controller: bloodgroupController,
-                              textCapitalization: TextCapitalization.words,
-                              keyboardType: TextInputType.text,
-
-                              decoration: InputDecoration(
-                                border: const UnderlineInputBorder(),
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1, color: Colors.black45)),
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 2, color: Colors.black54)),
-                              ),
-
-                              validator: (value) {
-                                if (value == null ||
-                                    value.isEmpty) {
-                                  return 'Blood Group is Required !';
-                                }
-                                return null;
-                              },
-                            ),
-                          )),
-                    ],
-                  ),
-
-
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: Row(
-                          children: const [
-                            Expanded(
-                              child: Text(
-                                "Gender",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Gilroy",
-                                    color: CustomColor.riderprofileColor),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Radio(
-                                fillColor: MaterialStateColor.resolveWith(
-                                        (states) => Colors.black54),
-                                focusColor: MaterialStateColor.resolveWith(
-                                        (states) => Colors.black54),
-                                value: 1,
-                                groupValue: id,
-                                onChanged: (val) {
-                                  setState(() {
-                                    radioButtonItem = 'Female';
-                                    id = 1;
-                                  });
-                                },
+                              Padding(
+                                padding: EdgeInsets.only(left: 20.sp),
+                                child: Icon(Icons.person_2_outlined,size: 20,)
                               ),
-                              const Text(
-                                'Female',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Gilroy",
-                                    color: CustomColor.riderprofileColor),
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: 30,),
-                          Row(
-                            children: [
-                              Radio(
-                                fillColor: MaterialStateColor.resolveWith(
-                                        (states) => Colors.black54),
-                                focusColor: MaterialStateColor.resolveWith(
-                                        (states) => Colors.black54),
-                                value: 2,
-                                groupValue: id,
-                                onChanged: (val) {
-                                  setState(() {
-                                    radioButtonItem = 'Male';
-                                    id = 2;
-                                  });
-                                },
-                              ),
-                              const Text(
-                                'Male',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Gilroy",
-                                    color: CustomColor.riderprofileColor),
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: 30,),
-                          Row(
-                            children: [
-                              Radio(
-                                fillColor: MaterialStateColor.resolveWith(
-                                        (states) => Colors.black54),
-                                focusColor: MaterialStateColor.resolveWith(
-                                        (states) => Colors.black54),
-                                value: 3,
-                                groupValue: id,
-                                onChanged: (val) {
-                                  setState(() {
-                                    radioButtonItem = 'Other';
-                                    id = 3;
-                                  });
-                                },
-                              ),
-                              const Text(
-                                'Other',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Gilroy",
-                                    color: CustomColor.riderprofileColor),
-                              ),
-                            ],
-                          )
-
-
-
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20, left: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(width: 2),
-                        Expanded(
-                          flex: 2,
-                          child: Row(
-                            children: [
-
-                              const Text("State",
+                              SizedBox(width: 5,),
+                              Container(
+                                width: 95,
+                                child: Text(
+                                  "First Name",
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14.sp,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: "Gilroy",
-                                      color: CustomColor.riderprofileColor),),
+                                      color: CustomColor.riderprofileColor),
+                                ),
+                              ),
+
+                              Expanded(
+                                  child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: TextFormField(
+
+                                        showCursor: true,
+                                        cursorHeight:30,
+                                        cursorWidth: 2.0,
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.allow(
+                                              RegExp("[a-zA-Z\]")),
+                                          FilteringTextInputFormatter.deny('  '),
+
+                                        ],
+                                        style:TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.normal,
+                                            fontFamily: "Gilroy",
+                                            color: CustomColor.riderprofileColor),
+                                        controller: firstNameController,
+                                        textCapitalization: TextCapitalization.words,
+                                        keyboardType: TextInputType.text,
+
+                                        decoration: InputDecoration(
+                                          border: const UnderlineInputBorder(),
+                                          enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 1, color: Colors.black45)),
+                                          focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 2, color: Colors.black54)),
+                                        ),
+                                        onChanged: (value) {
+                                          firstname = value;
+                                        },
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter your first name';
+                                          }
+                                          return value.length < 2 ? 'Name must be greater than two characters' : null;
+                                        },
+                                      ),
+                                    ),
+                                  )),
                             ],
                           ),
-                        ),
-
-                        Expanded(
-                          flex: 2,
-                          child: Row(
+                          Row(
                             children: [
-                              Container(width: 15),
-                              const Text("City",
+                              Padding(
+                                  padding: EdgeInsets.only(left: 20.sp,),
+                                  child: Icon(Icons.person_2_outlined,size: 20,)
+                              ),
+                              SizedBox(width: 5,),
+                              Container(
+                                width: 95,
+                                child: Text(
+                                  "Last Name",
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14.sp,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: "Gilroy",
-                                      color: CustomColor.riderprofileColor),),
+                                      color: CustomColor.riderprofileColor),
+                                ),
+                              ),
+
+                              Expanded(
+                                  child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: TextFormField(
+                                        showCursor: true,
+                                        cursorHeight:30,
+                                        cursorWidth: 2.0,
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.allow(
+                                              RegExp("[a-zA-Z\]")),
+                                          FilteringTextInputFormatter.deny('  ')
+                                        ],
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.normal,
+                                            fontFamily: "Gilroy",
+                                            color: CustomColor.riderprofileColor),
+                                        controller: lastNameController,
+                                        textCapitalization: TextCapitalization.words,
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                          border: const UnderlineInputBorder(),
+                                      enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 1, color: Colors.black45)),
+                                      focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 2, color: Colors.black54)),
+                                  ),
+                                        onChanged: (value) {
+                                          lastname = value;
+                                        },
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter your last name';
+                                          }
+                                          return value.length < 2 ? 'Name must be greater than two characters' : null;
+                                        },
+                                      ),
+                                    ),
+                                  )),
                             ],
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20, left: 20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: SizedBox(
-                            height: 45,
-                            child: TextFormField(
-                              showCursor: true,
-                              cursorHeight:30,
-                              cursorWidth: 2.0,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your state name';
-                                }
-                                return null;
-                              },
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp("[A-Za-z]")),
-                                FilteringTextInputFormatter.deny('  ')
-                              ],
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Gilroy",
-                                  color: CustomColor.riderprofileColor),
-                              controller: stateController,
-                              textCapitalization: TextCapitalization.words,
-                              keyboardType: TextInputType.text,
-
-                              decoration: InputDecoration(
-                                border: const UnderlineInputBorder(),
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1, color: Colors.black45)),
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 2, color: Colors.black54)),
+                          Row(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.only(left: 20.sp),
+                                  child: Icon(Icons.email_outlined,size: 20,)
                               ),
-                              onChanged: (value) {
-                                mystates = value;
-                              },
-                            ),
-                          ),
-                        ),
-                        Container(width: 15),
-                        Expanded(
-
-                          flex: 2,
-                          child: SizedBox(
-                            height: 45,
-                            child: TextFormField(
-                              showCursor: true,
-                              cursorHeight:30,
-                              cursorWidth: 2.0,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your city name';
-                                }
-                                return null;
-                              },
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp("[A-Za-z]")),
-                                FilteringTextInputFormatter.deny('  ')
-                              ],
-                              style:TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Gilroy",
-                                  color: CustomColor.riderprofileColor),
-                              controller: cityController,
-                              textCapitalization: TextCapitalization.words,
-                              keyboardType: TextInputType.text,
-
-                              decoration: InputDecoration(
-                                border: const UnderlineInputBorder(),
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1, color: Colors.black45)),
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 2, color: Colors.black54)),
+                              SizedBox(width: 5,),
+                              Container(
+                                width: 95,
+                                child: Text(
+                                  "Email Id",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),
+                                ),
                               ),
-                              onChanged: (value) {
-                                mycities = value;
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Row(
-                    children: [
 
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: const Text(
-                          "PinCode",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Gilroy",
-                              color: CustomColor.riderprofileColor),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 15, left: 15),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: SizedBox(
-                            height: 45,
-                            child: Center(
-                              child: TextFormField(
-                                showCursor: true,
-                                cursorHeight:30,
-                                cursorWidth: 2.0,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty || value.length != 6) {
-                                    return 'Please enter 6 pincode.';
-                                  }
-                                  return null;
-                                },
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp("[0-9]")),
-                                  LengthLimitingTextInputFormatter(6),
+                              Expanded(
+                                  child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: TextFormField(
+
+                                        showCursor: true,
+                                        cursorHeight:30,
+                                        cursorWidth: 2.0,
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.deny(' '),
+
+                                        ],
+                                        style:TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.normal,
+                                            fontFamily: "Gilroy",
+                                            color: CustomColor.riderprofileColor),
+                                        controller: emailController,
+                                        keyboardType: TextInputType.emailAddress,
+                                        decoration: InputDecoration(
+                                          border: const UnderlineInputBorder(),
+                                          enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 1, color: Colors.black45)),
+                                          focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 2, color: Colors.black54)),
+                                        ),
+                                        onChanged: (value) {
+                                          email = value;
+                                        },
+                                        validator: (value) {
+                                          if (value == null ||
+                                              value.isEmpty) {
+                                            return 'Email is Required !';
+                                          } if (
+                                          //!RegExp(
+                                          //  r'^[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]')
+                                          //.hasMatch(value)
+                                          !EmailValidator.validate(value)
+                                          ) {
+                                            return 'Please enter a valid Email';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  )),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.only(left: 20.sp),
+                                  child: Icon(Icons.calendar_month_outlined,size: 25,)
+                              ),
+                              SizedBox(width: 5,),
+                              Container(
+                                width: 90 ,
+                                child: Text(
+                                  "DOB",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),
+                                ),
+                              ),
+
+                              Expanded(
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: TextFormField(
+                                      // keyboardType: TextInputType.number,
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.normal,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                      maxLines: 1,
+                                      controller: dobController,
+                                      decoration: InputDecoration(
+                                        border: const UnderlineInputBorder(),
+                                        enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 1, color: Colors.black45)),
+                                        focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 2, color: Colors.black54)),
+                                      ),
+                                      readOnly: true,
+
+                                      onTap: () async {
+                                        _selectDate(context);
+                                      },
+                                      validator: (value) {
+                                        if (value == null ||
+                                            value.isEmpty) {
+                                          return 'Please enter your Date of Birth';
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value) {
+                                        dob = value;
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.only(left: 20.sp),
+                                  child: Icon(Icons.bloodtype_outlined,size: 25,)
+                              ),
+                              SizedBox(width: 5,),
+                              Container(
+                                width: 90,
+                                child: Text(
+                                  "Blood Group",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),
+                                ),
+                              ),
+
+                              Expanded(
+                                  child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: TextFormField(
+
+                                        showCursor: true,
+                                        cursorHeight:30,
+                                        cursorWidth: 2.0,
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.deny(' '),
+
+                                        ],
+                                        style:TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.normal,
+                                            fontFamily: "Gilroy",
+                                            color: CustomColor.riderprofileColor),
+                                        controller: bloodgroupController,
+                                        textCapitalization: TextCapitalization.words,
+                                        keyboardType: TextInputType.text,
+
+                                        decoration: InputDecoration(
+                                          border: const UnderlineInputBorder(),
+                                          enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 1, color: Colors.black45)),
+                                          focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 2, color: Colors.black54)),
+                                        ),
+
+                                        validator: (value) {
+                                          if (value == null ||
+                                              value.isEmpty || value.length > 3) {
+                                            return 'Blood Group is Required !';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  )),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.only(left: 20.sp),
+                                  child: Icon(Icons.location_city_outlined,)
+                              ),
+                              SizedBox(width: 5,),
+                              Container(
+                                width: 90,
+                                child: Text(
+                                  "State",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),
+                                ),
+                              ),
+
+                              Expanded(
+                                  child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: TextFormField(
+
+                                        showCursor: true,
+                                        cursorHeight:30,
+                                        cursorWidth: 2.0,
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.allow(
+                                              RegExp("[A-Za-z]")),
+                                          FilteringTextInputFormatter.deny(' '),
+
+                                        ],
+                                        style:TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.normal,
+                                            fontFamily: "Gilroy",
+                                            color: CustomColor.riderprofileColor),
+                                        controller: stateController,
+                                        textCapitalization: TextCapitalization.words,
+                                        keyboardType: TextInputType.text,
+
+                                        decoration: InputDecoration(
+                                          border: const UnderlineInputBorder(),
+                                          enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 1, color: Colors.black45)),
+                                          focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 2, color: Colors.black54)),
+                                        ),
+
+                                        validator: (value) {
+                                          if (value == null ||
+                                              value.isEmpty) {
+                                            return 'Please enter your state name !';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  )),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.only(left: 20.sp),
+                                  child: Icon(Icons.location_city_outlined,)
+                              ),
+                              SizedBox(width: 5,),
+                              Container(
+                                width: 90,
+                                child: Text(
+                                  "City",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),
+                                ),
+                              ),
+
+                              Expanded(
+                                  child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: TextFormField(
+
+                                        showCursor: true,
+                                        cursorHeight:30,
+                                        cursorWidth: 2.0,
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.allow(
+                                              RegExp("[A-Za-z]")),
+                                          FilteringTextInputFormatter.deny(' '),
+
+                                        ],
+                                        style:TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.normal,
+                                            fontFamily: "Gilroy",
+                                            color: CustomColor.riderprofileColor),
+                                        controller: cityController,
+                                        textCapitalization: TextCapitalization.words,
+                                        keyboardType: TextInputType.text,
+
+                                        decoration: InputDecoration(
+                                          border: const UnderlineInputBorder(),
+                                          enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 1, color: Colors.black45)),
+                                          focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 2, color: Colors.black54)),
+                                        ),
+
+                                        validator: (value) {
+                                          if (value == null ||
+                                              value.isEmpty ) {
+                                            return 'Please enter your city name!';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  )),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.only(left: 20.sp),
+                                  child: Icon(Icons.pin_outlined)
+                              ),
+                              SizedBox(width: 5,),
+                              Container(
+                                width: 90,
+                                child: Text(
+                                  " PinCode",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),
+                                ),
+                              ),
+
+                              Expanded(
+                                  child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: TextFormField(
+
+                                        showCursor: true,
+                                        cursorHeight:30,
+                                        cursorWidth: 2.0,
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.allow(
+                                              RegExp("[0-9]")),
+                                          FilteringTextInputFormatter.deny(' '),
+
+                                        ],
+                                        style:TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.normal,
+                                            fontFamily: "Gilroy",
+                                            color: CustomColor.riderprofileColor),
+                                        controller: pinController,
+                                        textCapitalization: TextCapitalization.words,
+                                        keyboardType: TextInputType.text,
+
+                                        decoration: InputDecoration(
+                                          border: const UnderlineInputBorder(),
+                                          enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 1, color: Colors.black45)),
+                                          focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 2, color: Colors.black54)),
+                                        ),
+
+                                        validator: (value) {
+                                          if (value == null ||
+                                              value.isEmpty || value.length != 6) {
+                                            return 'Please enter 6 digit number !';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                  )),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.only(left: 20.sp,right: 10),
+                                  child: Icon(Icons.person_3_outlined,size: 20,)
+                              ),
+                              SizedBox(width: 5,),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: Text(
+                                  "Gender",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Radio(
+                                    fillColor: MaterialStateColor.resolveWith(
+                                            (states) => Colors.black54),
+                                    focusColor: MaterialStateColor.resolveWith(
+                                            (states) => Colors.black54),
+                                    value: 1,
+                                    groupValue: id,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        radioButtonItem = 'Female';
+                                        id = 1;
+                                      });
+                                    },
+                                  ),
+                                   Text(
+                                    'Female',
+                                    style: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.normal,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
+                                  ),
                                 ],
-                                style:TextStyle(
+                              ),
+
+                              Row(
+                                children: [
+                                  Radio(
+                                    fillColor: MaterialStateColor.resolveWith(
+                                            (states) => Colors.black54),
+                                    focusColor: MaterialStateColor.resolveWith(
+                                            (states) => Colors.black54),
+                                    value: 2,
+                                    groupValue: id,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        radioButtonItem = 'Male';
+                                        id = 2;
+                                      });
+                                    },
+                                  ),
+                                   Text(
+                                    'Male',
+                                    style: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.normal,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
+                                  ),
+                                ],
+                              ),
+
+                              Row(
+                                children: [
+                                  Radio(
+                                    fillColor: MaterialStateColor.resolveWith(
+                                            (states) => Colors.black54),
+                                    focusColor: MaterialStateColor.resolveWith(
+                                            (states) => Colors.black54),
+                                    value: 3,
+                                    groupValue: id,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        radioButtonItem = 'Other';
+                                        id = 3;
+                                      });
+                                    },
+                                  ),
+                                   Text(
+                                    'Other',
+                                    style: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.normal,
+                                        fontFamily: "Gilroy",
+                                        color: CustomColor.riderprofileColor),
+                                  ),
+                                ],
+                              )
+
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                         /* const SizedBox(
+                            height: 25,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 20, left: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(width: 2),
+                                Expanded(
+                                  flex: 2,
+                                  child: Row(
+                                    children: [
+
+                                      const Text("State",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: "Gilroy",
+                                              color: CustomColor.riderprofileColor),),
+                                    ],
+                                  ),
+                                ),
+
+                                Expanded(
+                                  flex: 2,
+                                  child: Row(
+                                    children: [
+                                      Container(width: 15),
+                                      const Text("City",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: "Gilroy",
+                                              color: CustomColor.riderprofileColor),),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 20, left: 20),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: SizedBox(
+                                    height: 45,
+                                    child: TextFormField(
+                                      showCursor: true,
+                                      cursorHeight:30,
+                                      cursorWidth: 2.0,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter your state name';
+                                        }
+                                        return null;
+                                      },
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp("[A-Za-z]")),
+                                        FilteringTextInputFormatter.deny('  ')
+                                      ],
+                                      style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                      controller: stateController,
+                                      textCapitalization: TextCapitalization.words,
+                                      keyboardType: TextInputType.text,
+
+                                      decoration: InputDecoration(
+                                        border: const UnderlineInputBorder(),
+                                        enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 1, color: Colors.black45)),
+                                        focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 2, color: Colors.black54)),
+                                      ),
+                                      onChanged: (value) {
+                                        mystates = value;
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                Container(width: 15),
+                                Expanded(
+
+                                  flex: 2,
+                                  child: SizedBox(
+                                    height: 45,
+                                    child: TextFormField(
+                                      showCursor: true,
+                                      cursorHeight:30,
+                                      cursorWidth: 2.0,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter your city name';
+                                        }
+                                        return null;
+                                      },
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp("[A-Za-z]")),
+                                        FilteringTextInputFormatter.deny('  ')
+                                      ],
+                                      style:TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                      controller: cityController,
+                                      textCapitalization: TextCapitalization.words,
+                                      keyboardType: TextInputType.text,
+
+                                      decoration: InputDecoration(
+                                        border: const UnderlineInputBorder(),
+                                        enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 1, color: Colors.black45)),
+                                        focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 2, color: Colors.black54)),
+                                      ),
+                                      onChanged: (value) {
+                                        mycities = value;
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 25,
+                          ),
+                          Row(
+                            children: [
+
+                              Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: const Text(
+                                  "PinCode",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Gilroy",
+                                      color: CustomColor.riderprofileColor),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15, left: 15),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 2,
+                                  child: SizedBox(
+                                    height: 45,
+                                    child: Center(
+                                      child: TextFormField(
+                                        showCursor: true,
+                                        cursorHeight:30,
+                                        cursorWidth: 2.0,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty || value.length != 6) {
+                                            return 'Please enter 6 pincode.';
+                                          }
+                                          return null;
+                                        },
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.allow(
+                                              RegExp("[0-9]")),
+                                          LengthLimitingTextInputFormatter(6),
+                                        ],
+                                        style:TextStyle(
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: "Gilroy",
+                                            color: CustomColor.riderprofileColor),
+                                        controller: pinController,
+                                        keyboardType: TextInputType.number,
+                                        decoration: InputDecoration(
+                                          border: const UnderlineInputBorder(),
+                                          enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 1, color: Colors.black45)),
+                                          focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 2, color: Colors.black54)),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 25,
+                          ),*/
+                          Row(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.only(left: 20.sp),
+                                  child: Icon(Icons.location_on_outlined)
+                              ),
+                              SizedBox(width: 5,),
+
+                               Text(
+                                "Address",
+                                style: TextStyle(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: "Gilroy",
                                     color: CustomColor.riderprofileColor),
-                                controller: pinController,
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  border: const UnderlineInputBorder(),
-                                  enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          width: 1, color: Colors.black45)),
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          width: 2, color: Colors.black54)),
-                                ),
                               ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15, left: 15),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 2,
+                                  child: SizedBox(
+                                    height: 45,
+                                    child: TextFormField(
+                                      showCursor: true,
+                                      cursorHeight:30,
+                                      cursorWidth: 2.0,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter your address';
+                                        }
+                                        return null;
+                                      },
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp("[A-Za-z0-9'\.\-\s\,\ ]")),
+                                        FilteringTextInputFormatter.deny('  ')
+                                      ],
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.normal,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                      controller: addressController,
+                                      textCapitalization: TextCapitalization.words,
+                                      keyboardType: TextInputType.multiline,
+                                      maxLines: 2,
+
+                                      decoration: InputDecoration(
+                                        border: const UnderlineInputBorder(),
+                                        enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 1, color: Colors.black45)),
+                                        focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 2, color: Colors.black54)),
+                                      ),
+                                      onChanged: (value) {
+                                        myaddress = value;
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Row(
-                    children: [
+                          const SizedBox(
+                            height: 25,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 2,
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.person,size: 20,),
+                                      SizedBox(width: 2,),
 
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15),
-                        child: const Text(
-                          "Address",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Gilroy",
-                              color: CustomColor.riderprofileColor),
-                        ),
+                                      Text("Contact Person Name",
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: "Gilroy",
+                                              color: CustomColor.riderprofileColor),),
+                                    ],
+                                  ),
+                                ),
+                                Container(width: 3),
+                                Expanded(
+                                  flex: 2,
+                                  child: Row(
+                                    children: [
+
+                                      Icon(Icons.call_outlined,size: 20,),
+                                      SizedBox(width: 2,),
+
+                                       Text("Emergency contact no.",
+                                          style:TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.bold,
+
+                                              fontFamily: "Gilroy",
+                                              color: CustomColor.riderprofileColor),),
+                                    ],
+                                  ),
+                                ),
+
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15, left: 15),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 3,
+                                  child: SizedBox(
+                                    height: 45,
+                                    child: TextFormField(
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp("[A-Za-z]")),
+                                        //LengthLimitingTextInputFormatter(10),
+                                      ],
+                                      style:  TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.normal,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                      maxLines: 1,
+                                      controller: contactPersonController,
+                                      textCapitalization: TextCapitalization.words,
+                                      keyboardType: TextInputType.text,
+
+                                        // suffixIcon:
+                                        //GestureDetector(
+                                        //  onTap: (){
+                                        // },
+                                        //child: Image(
+                                        // image: AssetImage("images/circle_checked.png"),
+                                        //width: 0,
+                                        //height: 0,
+                                        //)
+                                        //),
+                                        decoration: InputDecoration(
+                                          border: const UnderlineInputBorder(),
+                                          enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 1, color: Colors.black45)),
+                                          focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 2, color: Colors.black54)),
+                                        ),
+                                      onTap: () async {
+
+                                      },
+                                      validator: (value) {
+                                        if (value == null ||
+                                            value.isEmpty) {
+                                          return 'Please enter person name ';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+
+                                  ),
+                                ),
+                                Container(width: 15),
+                                Expanded(
+                                  flex: 3,
+                                  child: SizedBox(
+                                    height: 45,
+                                    child: TextFormField(
+                                      controller: emergencyContact0Controller,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp("[0-9]")),
+                                        LengthLimitingTextInputFormatter(10),
+                                      ],
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.normal,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                        border: const UnderlineInputBorder(),
+                                        enabledBorder:
+                                        const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 1,
+                                              color: Colors.black54),
+                                        ),
+                                        focusedBorder:
+                                        const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 1,
+                                              color: Colors.black54),
+                                        ),
+
+                                        prefixText: "+91",
+                                        prefixStyle: TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.normal,
+                                            fontFamily: "Gilroy",
+                                            color: CustomColor.riderprofileColor),
+                                      ),
+                                      validator: (value) {
+                                        if (value == null ||
+                                            value.isEmpty ||
+                                            value.length != 10) {
+                                          return 'Please enter 10 digit mobile number';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 18.h,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15, left: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 2,
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.person,size: 20,),
+                                      SizedBox(width: 2,),
+
+
+                                       Text("Contact Person Name",
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: "Gilroy",
+                                              color: CustomColor.riderprofileColor),),
+                                    ],
+                                  ),
+                                ),
+                                Container(width: 1),
+                                Expanded(
+                                  flex: 2,
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.call_outlined,size: 20,),
+                                      SizedBox(width: 2,),
+
+
+                                       Text("Emergency contact no.",
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: "Gilroy",
+                                              color: CustomColor.riderprofileColor),),
+                                    ],
+                                  ),
+                                ),
+
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15, left: 15),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 2,
+                                  child: SizedBox(
+                                    height: 45,
+                                    child: TextFormField(
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp("[A-Za-z]")),
+                                        //LengthLimitingTextInputFormatter(10),
+                                      ],
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.normal,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                      maxLines: 1,
+                                      controller: contactPerson1Controller,
+                                      textCapitalization: TextCapitalization.words,
+                                      keyboardType: TextInputType.text,
+
+                                      decoration: InputDecoration(
+                                        border: const UnderlineInputBorder(),
+                                        enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 1, color: Colors.black45)),
+                                        focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 2, color: Colors.black54)),
+                                      ),
+                                      onTap: () async {
+
+                                      },
+                                      validator: (value) {
+                                        if (value == null ||
+                                            value.isEmpty) {
+                                          return 'Please enter person name';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+
+                                  ),
+                                ),
+                                Container(width: 15),
+                                Expanded(
+                                  flex: 2,
+                                  child: SizedBox(
+                                    height: 45,
+                                    child: TextFormField(
+                                      controller: emergencyContact1Controller,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp("[0-9]")),
+                                        LengthLimitingTextInputFormatter(10),
+                                      ],
+                                      style:  TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.normal,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                        border: const UnderlineInputBorder(),
+                                        enabledBorder:
+                                        const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 1,
+                                              color: Colors.black54),
+                                        ),
+                                        focusedBorder:
+                                        const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 1,
+                                              color: Colors.black54),
+                                        ),
+
+                                        prefixText: "+91",
+                                        prefixStyle:  TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.normal,
+                                            fontFamily: "Gilroy",
+                                            color: CustomColor.riderprofileColor),
+                                      ),
+                                      validator: (value) {
+                                        if (value == null ||
+                                            value.isEmpty ||
+                                            value.length != 10) {
+                                          return 'Please enter 10 digit mobile number';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 60,
+                          ),
+
+                        ],
                       ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 15, left: 15),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: SizedBox(
-                            height: 45,
-                            child: TextFormField(
-                              showCursor: true,
-                              cursorHeight:30,
-                              cursorWidth: 2.0,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your address';
-                                }
-                                return null;
-                              },
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp("[A-Za-z0-9'\.\-\s\,\ ]")),
-                                FilteringTextInputFormatter.deny('  ')
-                              ],
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Gilroy",
-                                  color: CustomColor.riderprofileColor),
-                              controller: addressController,
-                              textCapitalization: TextCapitalization.words,
-                              keyboardType: TextInputType.multiline,
-
-                              decoration: InputDecoration(
-                                border: const UnderlineInputBorder(),
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1, color: Colors.black45)),
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 2, color: Colors.black54)),
-                              ),
-                              onChanged: (value) {
-                                myaddress = value;
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 15, left: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: Row(
-                            children: [
-
-                              const Text("Contact Person Name",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: "Gilroy",
-                                      color: CustomColor.riderprofileColor),),
-                            ],
-                          ),
-                        ),
-                        Container(width: 15),
-                        Expanded(
-                          flex: 2,
-                          child: Row(
-                            children: [
-
-
-                              const Text("Emergency contact no.",
-                                  style:TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-
-                                      fontFamily: "Gilroy",
-                                      color: CustomColor.riderprofileColor),),
-                            ],
-                          ),
-                        ),
-
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 15, left: 15),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: SizedBox(
-                            height: 45,
-                            child: TextFormField(
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp("[A-Za-z]")),
-                                //LengthLimitingTextInputFormatter(10),
-                              ],
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Gilroy",
-                                  color: CustomColor.riderprofileColor),
-                              maxLines: 1,
-                              controller: contactPersonController,
-                              textCapitalization: TextCapitalization.words,
-                              keyboardType: TextInputType.text,
-
-                                // suffixIcon:
-                                //GestureDetector(
-                                //  onTap: (){
-                                // },
-                                //child: Image(
-                                // image: AssetImage("images/circle_checked.png"),
-                                //width: 0,
-                                //height: 0,
-                                //)
-                                //),
-                                decoration: InputDecoration(
-                                  border: const UnderlineInputBorder(),
-                                  enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          width: 1, color: Colors.black45)),
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          width: 2, color: Colors.black54)),
-                                ),
-                              onTap: () async {
-
-                              },
-                              validator: (value) {
-                                if (value == null ||
-                                    value.isEmpty) {
-                                  return 'Please enter person name ';
-                                }
-                                return null;
-                              },
-                            ),
-
-                          ),
-                        ),
-                        Container(width: 15),
-                        Expanded(
-                          flex: 2,
-                          child: SizedBox(
-                            height: 45,
-                            child: TextFormField(
-                              controller: emergencyContact0Controller,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp("[0-9]")),
-                                LengthLimitingTextInputFormatter(10),
-                              ],
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Gilroy",
-                                  color: CustomColor.riderprofileColor),
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                border: const UnderlineInputBorder(),
-                                enabledBorder:
-                                const UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1,
-                                      color: Colors.black54),
-                                ),
-                                focusedBorder:
-                                const UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1,
-                                      color: Colors.black54),
-                                ),
-
-                                prefixText: "+91",
-                                prefixStyle: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Gilroy",
-                                    color: CustomColor.riderprofileColor),
-                              ),
-                              validator: (value) {
-                                if (value == null ||
-                                    value.isEmpty ||
-                                    value.length != 10) {
-                                  return 'Please enter 10 digit mobile number';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 18.h,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 15, left: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: Row(
-                            children: [
-
-                              const Text("Contact Person Name",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: "Gilroy",
-                                      color: CustomColor.riderprofileColor),),
-                            ],
-                          ),
-                        ),
-                        Container(width: 15),
-                        Expanded(
-                          flex: 2,
-                          child: Row(
-                            children: [
-
-
-                              const Text("Emergency contact no.",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: "Gilroy",
-                                      color: CustomColor.riderprofileColor),),
-                            ],
-                          ),
-                        ),
-
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 15, left: 15),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: SizedBox(
-                            height: 45,
-                            child: TextFormField(
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp("[A-Za-z]")),
-                                //LengthLimitingTextInputFormatter(10),
-                              ],
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Gilroy",
-                                  color: CustomColor.riderprofileColor),
-                              maxLines: 1,
-                              controller: contactPerson1Controller,
-                              textCapitalization: TextCapitalization.words,
-                              keyboardType: TextInputType.text,
-
-                              decoration: InputDecoration(
-                                border: const UnderlineInputBorder(),
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1, color: Colors.black45)),
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 2, color: Colors.black54)),
-                              ),
-                              onTap: () async {
-
-                              },
-                              validator: (value) {
-                                if (value == null ||
-                                    value.isEmpty) {
-                                  return 'Please enter person name';
-                                }
-                                return null;
-                              },
-                            ),
-
-                          ),
-                        ),
-                        Container(width: 15),
-                        Expanded(
-                          flex: 2,
-                          child: SizedBox(
-                            height: 45,
-                            child: TextFormField(
-                              controller: emergencyContact1Controller,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp("[0-9]")),
-                                LengthLimitingTextInputFormatter(10),
-                              ],
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Gilroy",
-                                  color: CustomColor.riderprofileColor),
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                border: const UnderlineInputBorder(),
-                                enabledBorder:
-                                const UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1,
-                                      color: Colors.black54),
-                                ),
-                                focusedBorder:
-                                const UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 1,
-                                      color: Colors.black54),
-                                ),
-
-                                prefixText: "+91",
-                                prefixStyle: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Gilroy",
-                                    color: CustomColor.riderprofileColor),
-                              ),
-                              validator: (value) {
-                                if (value == null ||
-                                    value.isEmpty ||
-                                    value.length != 10) {
-                                  return 'Please enter 10 digit mobile number';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 60,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                   left: 25, right: 25, bottom: 20),
-                    child: CustomButton(press: () async{
-                      if (_formKey.currentState!.validate()) {
-                        await Preferences.setPreferences();
-                        String userId = Preferences.getId(Preferences.id);
-                        firstname = firstNameController.text.toString();
-                        lastname = lastNameController.text.toString();
-                        dob = dobController.text.toString();
-                        email = emailController.text.toString();
-                        myaddress = addressController.text.toString();
-                        pinNumber = pinController.text.toString();
-                        mobilenumber = mobileNumberController.text.toString();
-                        gender=radioButtonItem.toString();
-                        uploadedImage = imageFilePath.toString();
-                        mystates = stateController.text.toString();
-                        mycities = cityController.text.toString();
-                        emergencyContact0Controller.text.toString();
-                        print(userId);
-                        print(pinNumber);
-                        print(uploadedImage);
-                        print(mycities);
-                        print(mystates);
-                        print(myaddress);
-                        print(gender);
-                        print("**************************");
-
-                        // if (age < 6) {
-                        //   openAndCloseLoadingDialog();
-                        // } else {
-
-                        updateProfile(userId);
-                        // OverlayLoadingProgress.start(context);
-                        // }
-                      }
-                    }, buttonText: "Update Profile")
-
-                    /*Button(
-                        textColor: CustomColor.black,
-                        size: 80,
-                        buttonTitle: "Update Profile",
-                        onPressed: () async {
+                    Padding(
+                        padding: const EdgeInsets.only(
+                            left: 25, right: 25, bottom: 20),
+                        child: CustomButton(press: () async{
                           if (_formKey.currentState!.validate()) {
                             await Preferences.setPreferences();
                             String userId = Preferences.getId(Preferences.id);
@@ -1492,9 +1704,49 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             // OverlayLoadingProgress.start(context);
                             // }
                           }
-                        }),*/
-                  )
-                ],
+                        }, buttonText: "Update Profile")
+
+                      /*Button(
+                              textColor: CustomColor.black,
+                              size: 80,
+                              buttonTitle: "Update Profile",
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  await Preferences.setPreferences();
+                                  String userId = Preferences.getId(Preferences.id);
+                                  firstname = firstNameController.text.toString();
+                                  lastname = lastNameController.text.toString();
+                                  dob = dobController.text.toString();
+                                  email = emailController.text.toString();
+                                  myaddress = addressController.text.toString();
+                                  pinNumber = pinController.text.toString();
+                                  mobilenumber = mobileNumberController.text.toString();
+                                  gender=radioButtonItem.toString();
+                                  uploadedImage = imageFilePath.toString();
+                                  mystates = stateController.text.toString();
+                                  mycities = cityController.text.toString();
+                                  emergencyContact0Controller.text.toString();
+                                  print(userId);
+                                  print(pinNumber);
+                                  print(uploadedImage);
+                                  print(mycities);
+                                  print(mystates);
+                                  print(myaddress);
+                                  print(gender);
+                                  print("**************************");
+
+                                  // if (age < 6) {
+                                  //   openAndCloseLoadingDialog();
+                                  // } else {
+
+                                  updateProfile(userId);
+                                  // OverlayLoadingProgress.start(context);
+                                  // }
+                                }
+                              }),*/
+                    )
+                  ],
+                ),
               ),
             ),
           ),
@@ -1949,7 +2201,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
 
           print("imageprofile:" + Preferences.getProfileImage());
           //Get.to(MainPage());
-          Get.to(HomePageNav());
+          Get.to(CustomBottomNav());
         } else {
           OverlayLoadingProgress;
 

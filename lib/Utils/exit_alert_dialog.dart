@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 
+import '../color_constant.dart';
+
 Future<bool> showExitPopup(context, String title, VoidCallback press) async {
   return await showDialog(
       context: context,
@@ -21,7 +23,7 @@ Future<bool> showExitPopup(context, String title, VoidCallback press) async {
                         onPressed: press,
                         child: Text("Yes"),
                         style: ElevatedButton.styleFrom(
-                            primary: CustomColor.yellow),
+                            primary: appBlue),
                       ),
                     ),
                     SizedBox(width: 15),

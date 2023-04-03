@@ -117,179 +117,181 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
           ),
         ),
         backgroundColor: const Color(0xFFffffff),
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          padding:  EdgeInsets.only(left: 20, right: 20),
-          child: Form(
-            // key: _formKey,
-            child: Column(
-               mainAxisAlignment: MainAxisAlignment.start,
-               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                Text("Verify Mobile Number",
+        body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            padding:  EdgeInsets.only(left: 20, right: 20),
+            child: Form(
+              // key: _formKey,
+              child: Column(
+                 mainAxisAlignment: MainAxisAlignment.start,
+                 crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text("Verify Mobile Number",
+                      style: TextStyle(
+                          fontSize: 20.sp,
+                          fontFamily: 'Gilroy',
+                          fontWeight: FontWeight.bold)),
+                   SizedBox(
+                    height: 15.h,
+                  ),
+                   Text(
+                    "Enter 4 digit verification code sent to",
                     style: TextStyle(
-                        fontSize: 20.sp,
-                        fontFamily: 'Gilroy',
-                        fontWeight: FontWeight.bold)),
-                 SizedBox(
-                  height: 15.h,
-                ),
-                 Text(
-                  "Enter 4 digit verification code sent to",
-                  style: TextStyle(
-                      fontFamily: "Gilroy",
-                      fontWeight: FontWeight.w400,
-                      fontSize: 15.sp),
-                ),
-                 SizedBox(
-                  height: 5.h,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  //crossAxisAlignment: CrossAxisAlignment.stretch    ,
-                  children: [
-                    Text(
-                      "your mobile number ",
-                      style: TextStyle(
-                          fontFamily: "Gilroy",
-                          fontWeight: FontWeight.w400,
-                          fontSize: 15.sp),
-                    ),
-                    Text(
-                      mobileController.text.toString(),
-                      style: TextStyle(
-                          fontFamily: "Gilroy",
-                          fontWeight: FontWeight.w400,
-                          fontSize: 13.sp),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Get.to(RiderLoginPage());
-                      },
-                      child: Text(
-                        '  Edit',
+                        fontFamily: "Gilroy",
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15.sp),
+                  ),
+                   SizedBox(
+                    height: 5.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    //crossAxisAlignment: CrossAxisAlignment.stretch    ,
+                    children: [
+                      Text(
+                        "your mobile number ",
                         style: TextStyle(
-                            color: Colors.blue,
                             fontFamily: "Gilroy",
                             fontWeight: FontWeight.w400,
-                            fontSize: 14.sp),
+                            fontSize: 15.sp),
                       ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 50.h,
-                ),
-                SizedBox(
-                  width: 260.w,
-                  child: Text(
-                    "Enter OTP here",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontFamily: "Gilroy",
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14.sp,
+                      Text(
+                        mobileController.text.toString(),
+                        style: TextStyle(
+                            fontFamily: "Gilroy",
+                            fontWeight: FontWeight.w400,
+                            fontSize: 13.sp),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Get.to(RiderLoginPage());
+                        },
+                        child: Text(
+                          '  Edit',
+                          style: TextStyle(
+                              color: Colors.blue,
+                              fontFamily: "Gilroy",
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14.sp),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 50.h,
+                  ),
+                  SizedBox(
+                    width: 260.w,
+                    child: Text(
+                      "Enter OTP here",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontFamily: "Gilroy",
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14.sp,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Center(
-                  child: Pinput(
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                    defaultPinTheme: defaultPinTheme,
-                    controller: otpController,
-                    length: 4,
-                    focusedPinTheme: focusedPinTheme,
-                    focusNode: focusNode,
-                    androidSmsAutofillMethod:
-                    AndroidSmsAutofillMethod.smsUserConsentApi,
-                    listenForMultipleSmsOnAndroid: true,
-                    // submittedPinTheme: submittedPinTheme,
-                    pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
-                    showCursor: true,
+                  SizedBox(
+                    height: 10.h,
                   ),
-                ),
-                 SizedBox(
-                  height: 20.h,
-                ),
-                 Padding(
-                   padding: EdgeInsets.only(left: 25,right: 20),
-                   child: Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                       children: [
+                  Center(
+                    child: Pinput(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      defaultPinTheme: defaultPinTheme,
+                      controller: otpController,
+                      length: 4,
+                      focusedPinTheme: focusedPinTheme,
+                      focusNode: focusNode,
+                      androidSmsAutofillMethod:
+                      AndroidSmsAutofillMethod.smsUserConsentApi,
+                      listenForMultipleSmsOnAndroid: true,
+                      // submittedPinTheme: submittedPinTheme,
+                      pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                      showCursor: true,
+                    ),
+                  ),
+                   SizedBox(
+                    height: 20.h,
+                  ),
+                   Padding(
+                     padding: EdgeInsets.only(left: 25,right: 20),
+                     child: Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                         children: [
 
-                     SizedBox(
-                       child: Text(
-                         "Didn't receive OTP ? ",
-                         textAlign: TextAlign.left,
-                         style: TextStyle(
-                           fontFamily: "Gilroy",
-                           fontWeight: FontWeight.w400,
-                           fontSize: 14.sp,
+                       SizedBox(
+                         child: Text(
+                           "Didn't receive OTP ? ",
+                           textAlign: TextAlign.left,
+                           style: TextStyle(
+                             fontFamily: "Gilroy",
+                             fontWeight: FontWeight.w400,
+                             fontSize: 14.sp,
+                           ),
                          ),
                        ),
-                     ),
-                     Column(
-                       children: [
-                         OtpTimerButton(
-                           controller: timercontroller,
-                           onPressed: () => _requestOtp(),
-                           text:  Text(
-                             'RESEND OTP',
-                             style: TextStyle(
-                                 fontFamily: "Gilroy",
-                                 fontSize: 12.sp,
-                                 color: Colors.red),
+                       Column(
+                         children: [
+                           OtpTimerButton(
+                             controller: timercontroller,
+                             onPressed: () => _requestOtp(),
+                             text:  Text(
+                               'RESEND OTP',
+                               style: TextStyle(
+                                   fontFamily: "Gilroy",
+                                   fontSize: 12.sp,
+                                   color: Colors.red),
+                             ),
+                             duration: 15,
+                             backgroundColor: CustomColor.white,
+                             //textColor: Colors.indigo,
+                             buttonType: ButtonType.text_button,
+                             // or ButtonType.outlined_button
+                             loadingIndicator: const CircularProgressIndicator(
+                               strokeWidth: 2,
+                               color: Colors.red,
+                             ),
                            ),
-                           duration: 15,
-                           backgroundColor: CustomColor.white,
-                           //textColor: Colors.indigo,
-                           buttonType: ButtonType.text_button,
-                           // or ButtonType.outlined_button
-                           loadingIndicator: const CircularProgressIndicator(
-                             strokeWidth: 2,
-                             color: Colors.red,
-                           ),
-                         ),
-                       ],
-                     ),
-                   ]),
-                 ),
+                         ],
+                       ),
+                     ]),
+                   ),
 
 
-                 SizedBox(
-                  height: 70.h,
-                ),
-                /*Button(
-                    textColor: CustomColor.black,
-                    size: 75,
-                    buttonTitle: "VERIFY NUMBER",
-                    onPressed: () async {
+                   SizedBox(
+                    height: 70.h,
+                  ),
+                  /*Button(
+                      textColor: CustomColor.black,
+                      size: 75,
+                      buttonTitle: "VERIFY NUMBER",
+                      onPressed: () async {
+                        setState(() {
+                          OverlayLoadingProgress.start(context);
+                        });
+                        await new_VerifyOtpApi(mobileController.text.toString(),
+                            otpController.text.toString());
+                      }),*/
+                  Padding(
+                    padding: const EdgeInsets.only(left:15,right: 15 ),
+                    child: CustomButton(press: () async{
                       setState(() {
                         OverlayLoadingProgress.start(context);
                       });
                       await new_VerifyOtpApi(mobileController.text.toString(),
                           otpController.text.toString());
-                    }),*/
-                Padding(
-                  padding: const EdgeInsets.only(left:15,right: 15 ),
-                  child: CustomButton(press: () async{
-                    setState(() {
-                      OverlayLoadingProgress.start(context);
-                    });
-                    await new_VerifyOtpApi(mobileController.text.toString(),
-                        otpController.text.toString());
-                  }, buttonText: "Verify Number"),
-                )
-              ],
+                    }, buttonText: "Verify Number"),
+                  )
+                ],
+              ),
             ),
           ),
         ),

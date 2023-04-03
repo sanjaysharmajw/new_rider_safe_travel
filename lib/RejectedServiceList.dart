@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
+import 'package:ride_safe_travel/color_constant.dart';
 
 import 'LoginModule/custom_color.dart';
 import 'MyText.dart';
@@ -126,7 +127,7 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
         floatingActionButton: Padding(
           padding: const EdgeInsets.only(left: 10,right: 10,bottom: 40),
           child: FloatingActionButton(
-            backgroundColor: Colors.yellow,
+            backgroundColor: appBlue,
             onPressed: () {
               Get.to(const ServicesScreenPage());
             },

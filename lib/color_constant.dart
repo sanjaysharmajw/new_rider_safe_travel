@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-const appBlue =  Color(0xFF408CFF);
+const appBlue =  Color(0xFF3380F3);
 const appBlack =  Color(0xFF000000);
 const appWhiteColor =  Color(0xFFFFFFFF);
 const appGrey =  Color(0xFFF5F5F5);

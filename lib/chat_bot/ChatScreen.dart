@@ -1,5 +1,6 @@
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:flutter/material.dart';
+import 'package:ride_safe_travel/color_constant.dart';
 
 import 'Messages.dart';
 import 'UpperCaseTextFormatter.dart';
@@ -44,14 +45,14 @@ class _HomeState extends State<ChatBot> {
     return Scaffold(
       appBar: AppBar(
         elevation: 15,
-        backgroundColor: Colors.yellow,
+        backgroundColor: appBlue,
         leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
+            icon: Icon(Icons.arrow_back_outlined, color: Colors.white,size: 25,),
             onPressed: () {
               Navigator.pop(context);
             }),
         title: const Text("Chat",
-          style: TextStyle(color: Colors.black,fontSize: 20, fontFamily: 'transport',),),
+          style: TextStyle(fontFamily: "Gilroy",fontSize: 22,color: Colors.white),),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -66,18 +67,19 @@ class _HomeState extends State<ChatBot> {
                       child: Container(
                         decoration: const BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(50)),
-                            color: Colors.yellow
+                            color: appBlue
                         ),
                         child: TextField(
                           inputFormatters: [
                             UpperCaseTextFormatter(),
                           ],
                           controller: _controller,
-                          style: const TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.white),
                           decoration: const InputDecoration(
 
                             border: InputBorder.none,
                             hintText: 'Enter Something',
+                            hintStyle: TextStyle(fontFamily: "Gilroy",fontSize: 16,color: Colors.white),
                             contentPadding: EdgeInsets.only(right: 20,left: 20),
                           ),
                         ),
@@ -88,14 +90,14 @@ class _HomeState extends State<ChatBot> {
                   Container(
                     decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(50)),
-                        color: Colors.yellow
+                        color: appBlue
                     ),
                     child: IconButton(
                         onPressed: () {
                           sendMessage(_controller.text);
                           _controller.clear();
                         },
-                        icon: Icon(Icons.send)),
+                        icon: Icon(Icons.send,color: Colors.white,)),
                   )
                 ],
               )

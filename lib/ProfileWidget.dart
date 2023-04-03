@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -9,6 +10,7 @@ import 'package:ride_safe_travel/color_constant.dart';
 import '../rider_profile_edit.dart';
 import 'LoginModule/custom_color.dart';
 import 'MyText.dart';
+import 'Utils/circular_image_widgets.dart';
 
 class ProfileWidget extends StatelessWidget {
   final String profileName;
@@ -38,35 +40,12 @@ class ProfileWidget extends StatelessWidget {
         Row(
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 20.h),
-              child: CircleAvatar(
-                backgroundColor: CustomColor.black,
-                radius: 23.r,
-                child: CircleAvatar(
-                  radius: 22.r,
-                  backgroundColor: Colors.white,
-                  child: ClipOval(
-                    child: (assetsPath != null)
-                        ? Image.network(
-                      assetsPath,
-                      width: 80.w,
-                      height: 80.w,
-                      fit: BoxFit.cover,
-                    )
-                        : Image.asset('assets/user_avatar.png'),
-                  ),
-
-                  /*CachedNetworkImage(
-                    imageUrl: assetsPath,
-
-                    fit: BoxFit.contain,
-                    progressIndicatorBuilder: (context, url, downloadProgress) =>
-                        CircularProgressIndicator(value: downloadProgress.progress),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
-                  ),*/
-                ),
-              ),
+              padding: const EdgeInsets.only(left: 20),
+              child: CircularImage(
+                imageLink:assetsPath,
+                imageWidth: 50, imageHeight: 50, borderColor: Colors.black,),
             ),
+
             SizedBox(
               width: 14.w,
             ),
@@ -89,37 +68,39 @@ class ProfileWidget extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
-              width: 30,
-            ),
-            Container(
-              width: 110.0.w,
-              height: 40.0.h,
-              child: ElevatedButton(
-                onPressed: onPress,
-                style: ElevatedButton.styleFrom(
-                  shape: StadiumBorder(),
-                  backgroundColor: appBlue,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'Edit Profile',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12.sp,
-                          fontFamily: "Gilroy",
-                          color: CustomColor.riderprofileColor),
-                    ),
-                    Image(
-                      image: AssetImage('assets/Union (1).png'),
-                      width: 10.w,
-                      height: 12.h,
-                    )
-                  ],
-                ),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Container(
+                width: 80.0.w,
+                height: 40.0.h,
+                child: IconButton(onPressed:onPress, icon: Icon(FeatherIcons.edit3))
+                /* ElevatedButton(
+                  onPressed: onPress,
+                  style: ElevatedButton.styleFrom(
+                    shape: StadiumBorder(),
+                    backgroundColor: appBlue,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'Edit Profile',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12.sp,
+                            fontFamily: "Gilroy",
+                            color: CustomColor.riderprofileColor),
+                      ),
+                      Image(
+                        image: AssetImage('assets/Union (1).png'),
+                        width: 10.w,
+                        height: 12.h,
+                      )
+                    ],
+                  ),
+                ),*/
               ),
             ),
           ],
@@ -129,12 +110,14 @@ class ProfileWidget extends StatelessWidget {
         ),
         Column(
           children: [
+
             LinearPercentIndicator(
+
               animation: true,
-              lineHeight: 20.0,
+              lineHeight: 13.0,
               animationDuration: 2000,
               percent: indicator,
-              center: Text('Complete Profile: $progressValue%'),
+              center: Text('$progressValue% Completed',style: TextStyle(fontSize: 8.sp),),
               linearStrokeCap: LinearStrokeCap.roundAll,
               progressColor: appBlue,
             ),
