@@ -42,6 +42,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
     await Preferences.setPreferences();
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     String userId = Preferences.getId(Preferences.id).toString();
+    String mobileNumber = Preferences.getMobileNumber(Preferences.mobileNumber);
     print(userId);
     print("@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     final response = await http.post(
@@ -51,8 +52,15 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': loginToken
       },
-      body: jsonEncode(<String, String>{"user_id": userId}),
+      body: jsonEncode(<String, String>{
+        'mobile_number': mobileNumber,
+        "user_id": userId
+      }),
     );
+    print(jsonEncode(<String, String>{
+      'mobile_number': mobileNumber,
+      "user_id": userId
+    }),);
     if (response.statusCode == 200) {
       print('RES:${response.body}');
       List<FamilyListDataModel> loginData = jsonDecode(response.body)['data']

@@ -11,14 +11,14 @@ class ServiceTypeModel {
     if (json['data'] != null) {
       data = [];
       json['data'].forEach((v) {
-        data?.add(Data.fromJson(v));
+        data?.add(ServiceTypeData.fromJson(v));
       });
     }
   }
   bool? status;
-  List<Data>? data;
+  List<ServiceTypeData>? data;
 ServiceTypeModel copyWith({  bool? status,
-  List<Data>? data,
+  List<ServiceTypeData>? data,
 }) => ServiceTypeModel(  status: status ?? this.status,
   data: data ?? this.data,
 );
@@ -33,10 +33,10 @@ ServiceTypeModel copyWith({  bool? status,
 
 }
 
-Data dataFromJson(String str) => Data.fromJson(json.decode(str));
-String dataToJson(Data data) => json.encode(data.toJson());
-class Data {
-  Data({
+ServiceTypeData dataFromJson(String str) => ServiceTypeData.fromJson(json.decode(str));
+String dataToJson(ServiceTypeData data) => json.encode(data.toJson());
+class ServiceTypeData {
+  ServiceTypeData({
       this.id, 
       this.name, 
       this.status, 
@@ -45,7 +45,7 @@ class Data {
       this.createdBy, 
       this.updatedBy,});
 
-  Data.fromJson(dynamic json) {
+  ServiceTypeData.fromJson(dynamic json) {
     id = json['_id'];
     name = json['name'];
     status = json['status'];
@@ -61,14 +61,14 @@ class Data {
   String? updatedAt;
   String? createdBy;
   String? updatedBy;
-Data copyWith({  String? id,
+  ServiceTypeData copyWith({  String? id,
   String? name,
   String? status,
   String? createdAt,
   String? updatedAt,
   String? createdBy,
   String? updatedBy,
-}) => Data(  id: id ?? this.id,
+}) => ServiceTypeData(  id: id ?? this.id,
   name: name ?? this.name,
   status: status ?? this.status,
   createdAt: createdAt ?? this.createdAt,

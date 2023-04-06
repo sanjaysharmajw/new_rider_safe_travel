@@ -27,6 +27,7 @@ import 'LoginModule/Error.dart';
 import 'Models/sosReasonModel.dart';
 import 'Utils/exit_alert_dialog.dart';
 import 'Utils/rider_otp.dart';
+import 'bottom_nav/home_page_nav.dart';
 import 'chat_bot/ChatScreen.dart';
 import 'color_constant.dart';
 
@@ -273,11 +274,13 @@ class _SignUpState extends State<StartRide> {
           backgroundColor: appBlue,
           leading: IconButton(
             onPressed: () {
-              showExitPopup(context, "Do you want to stop ride?", () async {
+               OverlayLoadingProgress.stop();
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>CustomBottomNav()));
+             /* showExitPopup(context, "Do you want to stop ride?", () async {
                 // OverlayLoadingProgress.start(context);
                 //Navigator.pop(context, true);
                 await endRide();
-              });
+              });*/
             },
             icon: Image.asset('assets/map_back.png',color: Colors.white,),
           ),

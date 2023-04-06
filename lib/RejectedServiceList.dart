@@ -7,6 +7,7 @@ import 'package:ride_safe_travel/color_constant.dart';
 import 'LoginModule/custom_color.dart';
 import 'MyText.dart';
 import 'ServicesPage.dart';
+import 'Services_Module/service_types.dart';
 
 class RejectedServiceList extends StatefulWidget {
   String changeColor;
@@ -129,9 +130,11 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
           child: FloatingActionButton(
             backgroundColor: appBlue,
             onPressed: () {
-              Get.to(const ServicesScreenPage());
+             // Get.to(const ServicesScreenPage());
+              Get.to(const ServiceListsScreen());
             },
-            child: Icon(Icons.add,color: Colors.black,),
+            child: Icon(Icons.add,color: Colors.white
+              ,),
           ),
         ),
       ),

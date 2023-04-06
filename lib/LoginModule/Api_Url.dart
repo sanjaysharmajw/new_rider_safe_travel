@@ -34,5 +34,6 @@ class ApiUrl {
   static var geolocationDetails = '${baseUrl}user/geocodelocationdetails';
   static var sosReason = '${baseUrl}user/sosReasonMaster';
   static var getserviceType = '${baseUrl}serviceProvider/serviceTypeMasterList';
+  static var serviceRequest = '${baseUrl}serviceProvider/sendServiceRequest';
 
 }

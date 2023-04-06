@@ -35,11 +35,11 @@ class UserDashBoardScreenState extends State<CustomBottomNav> {
   ];
 
   List<BottomNavigationBarItem> icons =const [
-    BottomNavigationBarItem(icon: Icon(FeatherIcons.home), label: ''),
-    BottomNavigationBarItem(icon: Icon(Icons.directions_car_outlined), label: ''),
-    BottomNavigationBarItem(icon: Icon(Icons.work_outline_sharp), label: ''),
-    BottomNavigationBarItem(icon: Icon(Icons.car_repair_outlined), label: ''),
-    BottomNavigationBarItem(icon: Icon(FeatherIcons.user), label: '')
+    BottomNavigationBarItem(icon: Icon(FeatherIcons.home), label: 'Home'),
+    BottomNavigationBarItem(icon: Icon(Icons.assistant_navigation), label: "Track Your's"),
+    BottomNavigationBarItem(icon: Icon(Icons.directions_car_outlined), label: 'My Rides'),
+    BottomNavigationBarItem(icon: Icon(Icons.car_repair_outlined), label: 'Services'),
+    BottomNavigationBarItem(icon: Icon(FeatherIcons.user), label: 'Profile')
   ];
 
 
@@ -54,8 +54,8 @@ class UserDashBoardScreenState extends State<CustomBottomNav> {
         body: page[currentPage],
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: appBlue,
-          showUnselectedLabels: false,
-          showSelectedLabels: false,
+          showUnselectedLabels: true,
+          showSelectedLabels: true,
           currentIndex: currentPage,
           type: BottomNavigationBarType.fixed,
           items: icons,

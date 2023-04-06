@@ -604,11 +604,11 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                     child: Padding(
                                       padding: const EdgeInsets.only(right: 10),
                                       child: TextFormField(
-
                                         showCursor: true,
                                         cursorHeight:30,
                                         cursorWidth: 2.0,
                                         inputFormatters: [
+
                                           FilteringTextInputFormatter.deny(' '),
 
                                         ],
@@ -618,6 +618,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                             fontFamily: "Gilroy",
                                             color: CustomColor.riderprofileColor),
                                         controller: emailController,
+                                       // textCapitalization: TextCapitalization.none,
                                         keyboardType: TextInputType.emailAddress,
                                         decoration: InputDecoration(
                                           border: const UnderlineInputBorder(),
@@ -636,14 +637,14 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                               value.isEmpty) {
                                             return 'Email is Required !';
                                           } if (
-                                          //!RegExp(
-                                          //  r'^[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]')
-                                          //.hasMatch(value)
-                                          !EmailValidator.validate(value)
+                                          !RegExp(
+                                            r'^[a-zA-Z0-9]+@[a-z]+\.[a-z]')
+                                          .hasMatch(value)
+                                         // EmailValidator.validate(value)
                                           ) {
-                                            return 'Please enter a valid Email';
+                                            return 'Email is Required !';
                                           }
-                                          return null;
+                                          return null ;
                                         },
                                       ),
                                     ),
@@ -742,6 +743,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                         cursorHeight:30,
                                         cursorWidth: 2.0,
                                         inputFormatters: [
+                                          FilteringTextInputFormatter.allow(
+                                            RegExp("[A|B|AB|O\+|\-]")),
                                           FilteringTextInputFormatter.deny(' '),
 
                                         ],
@@ -766,10 +769,13 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
 
                                         validator: (value) {
                                           if (value == null ||
-                                              value.isEmpty || value.length > 3) {
+                                              value.isEmpty) {
                                             return 'Blood Group is Required !';
                                           }
-                                          return null;
+                                          if(value.length < 4){
+                                            return null;
+                                          }
+                                          return 'Blood Group is Required !';
                                         },
                                       ),
                                     ),
@@ -1413,8 +1419,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                     child: TextFormField(
                                       inputFormatters: [
                                         FilteringTextInputFormatter.allow(
-                                            RegExp("[A-Za-z]")),
-                                        //LengthLimitingTextInputFormatter(10),
+                                            RegExp("[A-Za-z \]")),
+                                        FilteringTextInputFormatter.deny('  '),
                                       ],
                                       style:  TextStyle(
                                           fontSize: 13.sp,
@@ -1571,8 +1577,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                     child: TextFormField(
                                       inputFormatters: [
                                         FilteringTextInputFormatter.allow(
-                                            RegExp("[A-Za-z]")),
-                                        //LengthLimitingTextInputFormatter(10),
+                                            RegExp("[A-Za-z \]")),
+                                        FilteringTextInputFormatter.deny('  '),
                                       ],
                                       style: TextStyle(
                                           fontSize: 13.sp,

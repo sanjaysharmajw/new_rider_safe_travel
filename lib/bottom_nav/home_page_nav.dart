@@ -35,6 +35,8 @@ import '../Error.dart';
 import '../LoginModule/Api_Url.dart';
 import '../LoginModule/MainPage.dart';
 
+
+import '../Models/Count.dart';
 import '../MyRidesPage.dart';
 import '../MyText.dart';
 import '../Notification/NotificationScreen.dart';
@@ -211,7 +213,8 @@ class _HomePageState extends State<HomePageNav> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
+                        SizedBox(height: 30,),
+                       /* Container(
                           width: double.infinity,
                           margin:
                               const EdgeInsets.only(right: 15, left: 15, top: 15),
@@ -307,7 +310,7 @@ class _HomePageState extends State<HomePageNav> {
                               fontFamily: 'Gilroy',
                               color: Colors.black,
                               fontSize: 16),
-                        ),
+                        ), */
                         GridView.count(
                             shrinkWrap: true,
                             physics: const ClampingScrollPhysics(),
@@ -318,7 +321,51 @@ class _HomePageState extends State<HomePageNav> {
                             childAspectRatio: 3 / 2,
                             crossAxisSpacing: 20,
                             children: [
-                              InkWell(
+                              HomePageItems(
+                                backgroundColor: Colors.blue,
+                                title: 'My Rides',
+                                count: myRiderCount == "null"
+                                    ? '0'
+                                    : myRiderCount ?? "0",
+                                icons: 'new_assets/car_direction.png',
+                                click: () {
+                                  Get.to( MyRidesPage(changeAppbar: 'fromClass',));
+                                }, width: 28, height: 28,
+                              ),
+                              HomePageItems(
+                                backgroundColor: Colors.red,
+                                title: 'People Tracking Me',
+                                count: peopleTrackingMe == "null"
+                                    ? '0'
+                                    : peopleTrackingMe ?? "0",
+                                icons: 'assets/search.png',
+                                click: () {
+                                  Get.to(const UserFamilyList());
+                                }, width: 28, height: 28,
+                              ),
+                              HomePageItems(
+                                backgroundColor: Colors.green,
+                                title: 'Track Family & Friends',
+                                count: trackFamily == "null"
+                                    ? '0'
+                                    : trackFamily ?? "0",
+                                icons: 'images/my_family_icons.png',
+                                click: () {
+                                  Get.to(const FamilyMemberListScreen(changeUiValue: 'fromClass'));
+                                }, width: 25, height: 25,
+                              ),
+                              HomePageItems(
+                                backgroundColor: Colors.orange,
+                                title: 'Start New Ride',
+                                count: "",
+                                icons: 'new_assets/show_qr.png',
+                                click: () {
+                                  OverlayLoadingProgress.start(context);
+                                  checkActiveUser();
+                                }, width: 25, height: 25,
+                              ),
+
+                             /* InkWell(
                                 onTap: () {
                                   Get.to( MyRidesPage(changeAppbar: 'fromClass',));
                                 },
@@ -336,7 +383,7 @@ class _HomePageState extends State<HomePageNav> {
                                 child:  HomePageItems(
                                   completed: 58,
                                   backgroundColor: Colors.red,
-                                  title:  peopleTrackingMe!.toString(),
+                                  title:  peopleTrackingMe.toString(),
                                   subtitle: 'People Tracking Me'
                                 ),
                               ),
@@ -345,9 +392,9 @@ class _HomePageState extends State<HomePageNav> {
                                   Get.to(const FamilyMemberListScreen(changeUiValue: 'fromClass'));
                                 },
                                 child:  HomePageItems(
-                                  completed: 45,
+                                  completed: 58,
                                   backgroundColor: Colors.green,
-                                  title: trackFamily!.toString(),
+                                  title: trackFamily.toString(),
                                   subtitle: 'Track Family & Friends'
                                 ),
                               ),
@@ -363,14 +410,14 @@ class _HomePageState extends State<HomePageNav> {
                                   title:"",
                                   subtitle: 'Start New Ride',
                                 ),
-                              ),
+                              ),*/
                             ]),
                       ],
                     ),
                     Container(
                       margin: const EdgeInsets.only(left: 20, right: 20, top: 30),
                       child: MyText(
-                          text: 'My Active Ride',
+                          text: 'My Location',
                           fontFamily: 'Gilroy',
                           color: Colors.black,
                           fontSize: 16),
@@ -478,27 +525,31 @@ class _HomePageState extends State<HomePageNav> {
     setState(() {});
   }
 
-  Future<http.Response> countNotification() async {
+  Future<Count> countNotification() async {
+    var mobileNumber = Preferences.getMobileNumber(Preferences.mobileNumber);
     final response = await http.post(Uri.parse(ApiUrl.countNotification),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: json.encode({
+          'mobile_number': mobileNumber,
           'user_id': userId.toString(),
           'count': true,
           'unread': true,
         }));
     print(json.encode({
+      'mobile_number': mobileNumber,
       'user_id': userId.toString(),
       'count': true,
       'unread': true,
     }));
     if (response.statusCode == 200) {
       //bool status = jsonDecode(response.body)[ErrorMessage.status];
-      countNitification = jsonDecode(response.body)['data'];
+      countNitification = jsonDecode(response.body);
+      print(">>>>"+countNitification.toString()+"<<<<");
       //ToastMessage.toast(status.toString());
       setState(() {});
-      return response;
+      return Count.fromJson(response.body);
     } else {
       throw Exception('Failed');
     }
@@ -694,14 +745,18 @@ class _HomePageState extends State<HomePageNav> {
       }
     });
   }
+
+
   void getCount()async{
     await getCountController.getCount().then((value) async {
       if (value != null) {
         if (value.status == true) {
+
           myRiderCount=value.count.totalRides.toString();
           trackFamily=value.count.familymemberrides.toString();
           peopleTrackingMe=value.count.trackingmembers.toString();
           countNitification=value.data.length;
+          print("RiderCount.."+myRiderCount + "TrackFamily.."+trackFamily + "PeopleTrackingMe.."+peopleTrackingMe);
           setState(() {
 
           });

@@ -942,7 +942,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            left: 20, right: 50),
+                                            left: 20, right: 20),
                                         child: MyText(
                                             text: snapshot.data![index].personName1.toString() == "null"
                                                 ? " "
