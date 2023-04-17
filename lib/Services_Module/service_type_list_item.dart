@@ -6,6 +6,8 @@ import 'package:ride_safe_travel/Services_Module/selected_service_list.dart';
 
 import '../ServiceTypeModel.dart';
 import '../color_constant.dart';
+import '../new_widgets/my_new_text.dart';
+import '../new_widgets/new_my_image.dart';
 
 class ServiceTypeListItem extends StatelessWidget {
 
@@ -14,7 +16,45 @@ class ServiceTypeListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return InkWell(
+      onTap: (){
+        Get.to(SelectedServiceLists(serviceId: serviceTypeData.id.toString(),));
+      },
+      child: Container(
+
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              blurRadius: 15.0, // soften the shadow
+              spreadRadius: 2.0, //extend the shadow
+              offset: Offset(
+                5.0, // Move to right 5  horizontally
+                5.0, // Move to bottom 5 Vertically
+              ),
+            )
+          ],
+          border: Border.all(color: appBlue),
+          color: appWhiteColor,
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
+        ),
+        padding: const EdgeInsets.only(left: 12, right: 12, top: 20, bottom: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            NewMyText(
+                textValue: serviceTypeData.name.toString(),
+                fontName: 'Gilroy',
+                color: Colors.black,
+                fontWeight: FontWeight.w700,
+                fontSize: 12),
+            const NewMyImage(image: 'new_assets/forword_arrow.png', width: 15, height: 15, fit: BoxFit.contain, color: appBlack)
+          ],
+        ),
+      ),
+    );
+
+    /*Card(
       elevation: 10.0,
       shape: RoundedRectangleBorder( //<-- SEE HERE
         side: BorderSide(
@@ -35,22 +75,9 @@ class ServiceTypeListItem extends StatelessWidget {
           Get.to(SelectedServiceLists(serviceId: serviceTypeData.id.toString(),));
         }, icon: Icon(Icons.arrow_forward_ios_sharp,size: 14,color: appBlack,))
       ),
-    );
-
-    /* Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-        color: appBlack,
-        borderRadius: BorderRadius.circular(15)),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Icon(Icons.car_repair_outlined,size: 20,color: appWhiteColor,),
-        Text(serviceTypeData.name.toString(),style: TextStyle(fontFamily: 'Gilroy',fontSize: 18,color: appWhiteColor),),
-        IconButton(onPressed: (){}, icon: Icon(Icons.arrow_forward_ios_sharp,size: 20,color: appWhiteColor,))
-      ],
-    )
     );*/
+
+
 
 
   }

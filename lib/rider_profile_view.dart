@@ -823,7 +823,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                       fontWeight: FontWeight.bold,
                                       fontFamily: "Gilroy",
                                       color: CustomColor.riderprofileColor),
-                                  maxLines: 1,
+                                  maxLines: 2,
                                   controller:
                                   addressController,
                                   decoration:  InputDecoration(

@@ -292,14 +292,14 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                                             color: CustomColor.red,
                                           )),
                                     ),
-                                    Padding(
+                                   /* Padding(
                                       padding: const EdgeInsets.only(right: 15),
                                       child: Text(memberStatus == "null" ? "NA" :
                                       memberStatus.toString(),style: const TextStyle(
                                           fontFamily: 'Gilroy',
                                           fontSize: 16,
                                           color: CustomColor.black)),
-                                    ),
+                                    ),*/
 
                                   ],
                                 ),

@@ -67,7 +67,17 @@ class _ServiceListsScreenState extends State<ServiceListsScreen> {
                     ) :
                     Padding(
                       padding: const EdgeInsets.only(left: 10,right: 10),
-                      child: GridView.builder(
+                      child: GridView.count(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10.0,
+                        mainAxisSpacing: 10.0,
+                        childAspectRatio: (3 / 1),
+                        shrinkWrap: true,
+                        children: List.generate( controller.serviceTypeList.length, (index) {
+                          return ServiceTypeListItem(serviceTypeData: controller.serviceTypeList[index],);
+                        }),
+                      )
+                      /*GridView.builder(
                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             mainAxisSpacing: 10.0,
                               childAspectRatio: 2.5,
@@ -76,14 +86,8 @@ class _ServiceListsScreenState extends State<ServiceListsScreen> {
                           itemBuilder: (BuildContext ctx, index) {
                             return ServiceTypeListItem(serviceTypeData: controller.serviceTypeList[index],);
 
-                              /*Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  color: Colors.amber,
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Text(controller.serviceTypeList[index]),
-                            );*/
-                          }),
+
+                          }),*/
                     ),
                     /* GridView.count(
                       crossAxisCount: 2,

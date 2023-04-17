@@ -5,6 +5,7 @@ import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:badges/badges.dart' as badges;
@@ -23,6 +24,7 @@ import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/bottom_nav/profile_nav.dart';
 import 'package:ride_safe_travel/color_constant.dart';
 import '../LoginModule/Map/RiderFamilyList.dart';
+import '../MapAddFamily.dart';
 import '../Models/CheckActiveUserRide.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -40,14 +42,20 @@ import '../Models/Count.dart';
 import '../MyRidesPage.dart';
 import '../MyText.dart';
 import '../Notification/NotificationScreen.dart';
+import '../RejectedServiceList.dart';
 import '../UserDriverInformation.dart';
 import '../UserFamilyList.dart';
 import '../Utils/exit_alert_dialog.dart';
 import '../Utils/profile_horizontal_view.dart';
 import '../Utils/toast.dart';
+import '../Widgets/circle_icon_widget.dart';
 import '../chat_bot/ChatScreen.dart';
+import '../controller/checkActiveRideRequest.dart';
+import '../controller/check_active_rider.dart';
 import '../controller/end_ride_controller.dart';
 import '../controller/get_count_notification_controller.dart';
+import '../controller/permision_controller.dart';
+import '../new_widgets/my_new_text.dart';
 import '../rider_profile_view.dart';
 import '../start_ride_map.dart';
 import 'EmptyScreen.dart';
@@ -65,15 +73,27 @@ class HomePageNav extends StatefulWidget {
 class _HomePageState extends State<HomePageNav> {
   String result = "";
   String image = "";
+  bool? dataVisibility=false;
+  bool? floatingVisibility=false;
   final listController = Get.put(MyRiderController());
   final checkUserController = Get.put(CheckUserController());
   final getCountController = Get.put(GetNotificationController());
+  final checkActiveRide = Get.put(CheckActiveRideController());
   LocationData? locationData;
-  late Location location;
+   Location? location;
+
+  static const LatLng destinationLocation = LatLng(19.067949048869405, 73.0039520555996);
+  static CameraPosition _cameraPosition = CameraPosition(target: destinationLocation, zoom: 18,);
 
   var myRiderCount="wait...";
   var peopleTrackingMe="wait...";
   var trackFamily="wait...";
+
+String? vehicleReg;
+String? vehicleModel;
+String? driverPhoto;
+int? index;
+bool ridestatus = false;
 
   String profileName = "";
   String profileMobile = "";
@@ -81,9 +101,9 @@ class _HomePageState extends State<HomePageNav> {
   String profileEmailId = "";
   String? riderIdFromStartRider;
   late int countNitification = 0;
-
+  final permissionController = Get.put(PermissionController());
   bool isLoading = true;
-
+  final Completer<GoogleMapController> _completer = Completer();
   var userId;
   var riderOtp = "";
   void sharePre() async {
@@ -95,15 +115,50 @@ class _HomePageState extends State<HomePageNav> {
     riderOtp = Preferences.getRideOtp();
     setState(() {});
     location = Location();
-    locationData = await location.getLocation();
+    locationData = await location?.getLocation();
+    if(locationData!=null){
+     await listController.getServiceList(Preferences.getId(Preferences.id).toString());
+    }
   }
+  void currentLocation()async{
+    await permissionController.permissionLocation();
+    location=Location();
+    location?.onLocationChanged.listen((LocationData cLoc) async {
+      locationData=cLoc;
+      final GoogleMapController controller = await _completer.future;
+      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(cLoc.latitude!, cLoc.longitude!), zoom: 15)));
+    });
 
+  }
+  void checkActiveRdieApi(){
+    CheckActiveRideRequest checkActiveRideRequest=CheckActiveRideRequest(
+      userId: Preferences.getId(Preferences.id).toString()
+    );
+    checkActiveRide.checkActiveRideApi(checkActiveRideRequest).then((value){
+      if(value!=null){
+        if(value.status == true){
+          dataVisibility = true;
+        }
+else{
+  floatingVisibility = true;
+        }
+        vehicleReg=value.data![0].vehicleRegistrationNumber;
+         vehicleModel = value.data![0].vehicleModel;
+         driverPhoto=value.data![0].driverPhoto.toString();
+
+
+      }
+    });
+  }
   @override
   void initState() {
+
+    currentLocation();
     getCount();
     super.initState();
     init();
     sharePre();
+    checkActiveRdieApi();
     setState(() {
       sharePreferences();
     });
@@ -159,310 +214,561 @@ class _HomePageState extends State<HomePageNav> {
 
   @override
   Widget build(BuildContext context) {
-    return GetX<MyRiderController>(
-        init: MyRiderController(),
-        builder: (controller) {
-          return SafeArea(
-            child: Scaffold(
-              appBar: AppBar(
-                titleSpacing: 35,
-                centerTitle: false,
-                elevation: 40,
-                automaticallyImplyLeading:  false,
-                backgroundColor: appBlue,
-                title: Text("Kite",style: TextStyle(fontFamily: "Gilroy",fontSize: 25,color: Colors.white,fontWeight: FontWeight.bold),),
-                actions: [
-                  InkWell(
-                    onTap: () async {
-                      Get.to(const NotificationScreen());
-                      String refresh= await Navigator.push(context,
-                          MaterialPageRoute(builder: (context)=>const NotificationScreen()));
-                      if(refresh=='refresh'){
-                        await countNotification();
-                      }
-                    },
-                    child: Center(
-                      child: badges.Badge(
-                        badgeContent:  Text(
-                          countNitification.toString(),
-                          style: const TextStyle(color: CustomColor.white,fontSize: 15, fontFamily: 'Gilroy',),
-                        ),
-                        child: const Icon(FeatherIcons.bell, size: 27,color: CustomColor.white,),
-                      ),
-                    ),
+    ThemeData theme = Theme.of(context);
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          titleSpacing: 35,
+          centerTitle: false,
+          elevation: 40,
+          automaticallyImplyLeading:  false,
+          backgroundColor: appBlue,
+          title: Text("Kite",style: TextStyle(fontFamily: "Gilroy",fontSize: 25,color: Colors.white,fontWeight: FontWeight.bold),),
+          actions: [
+            InkWell(
+              onTap: () async {
+                Get.to(const NotificationScreen());
+                String refresh= await Navigator.push(context,
+                    MaterialPageRoute(builder: (context)=>const NotificationScreen()));
+                if(refresh=='refresh'){
+                  await countNotification();
+                }
+              },
+              child: Center(
+                child: badges.Badge(
+                  badgeContent:  Text(
+                    countNitification.toString(),
+                    style: const TextStyle(color: CustomColor.white,fontSize: 15, fontFamily: 'Gilroy',),
                   ),
-
-                  IconButton(
-                      icon: const Icon(Icons.chat),
-                      color: CustomColor.white,
-                      onPressed: () {
-                        Get.to(const ChatScreen());
-                      }),
-
-
-                ],
-
+                  child: const Icon(FeatherIcons.bell, size: 27,color: CustomColor.white,),
+                ),
               ),
-              backgroundColor: Colors.white,
-              body: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 30,),
-                       /* Container(
-                          width: double.infinity,
-                          margin:
-                              const EdgeInsets.only(right: 15, left: 15, top: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
+            ),
 
-                           /*   Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                   MyText(
-                                      text: 'Nirbhaya Rider',
-                                      fontFamily: 'Gilroy',
-                                      color: Colors.black,
-                                      fontSize: 22),
-                                  Row(
-                                    children: [
-                                      InkWell(
-                                        onTap: () async {
-                                          Get.to(const NotificationScreen());
-                                          String refresh= await Navigator.push(context,
-                                              MaterialPageRoute(builder: (context)=>const NotificationScreen()));
-                                          if(refresh=='refresh'){
-                                            await countNotification();
-                                          }
-                                        },
-                                        child: Center(
-                                          child: badges.Badge(
-                                            badgeContent:  Text(
-                                              countNitification.toString(),
-                                              style: const TextStyle(color: CustomColor.black,fontSize: 15, fontFamily: 'Gilroy',),
-                                            ),
-                                            child: const Icon(Icons.notifications_outlined, size: 40,color: CustomColor.black,),
+            IconButton(
+                icon: const Icon(Icons.chat),
+                color: CustomColor.white,
+                onPressed: () {
+                  Get.to(const ChatScreen());
+                }),
+
+
+          ],
+
+        ),
+        backgroundColor: Colors.white,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 30,),
+              /*  Container(
+                  width: double.infinity,
+                  margin:
+                      const EdgeInsets.only(right: 15, left: 15, top: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+
+                     /* Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                           MyText(
+                              text: 'Nirbhaya Rider',
+                              fontFamily: 'Gilroy',
+                              color: Colors.black,
+                              fontSize: 22),
+                          Row(
+                            children: [
+                              InkWell(
+                                onTap: () async {
+                                  Get.to(const NotificationScreen());
+                                  String refresh= await Navigator.push(context,
+                                      MaterialPageRoute(builder: (context)=>const NotificationScreen()));
+                                  if(refresh=='refresh'){
+                                    await countNotification();
+                                  }
+                                },
+                                child: Center(
+                                  child: badges.Badge(
+                                    badgeContent:  Text(
+                                      countNitification.toString(),
+                                      style: const TextStyle(color: CustomColor.black,fontSize: 15, fontFamily: 'Gilroy',),
+                                    ),
+                                    child: const Icon(Icons.notifications_outlined, size: 40,color: CustomColor.black,),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: GestureDetector(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileNav(backbutton: '',)));
+                                    },
+                                  child: CircleAvatar(
+                                    backgroundColor: CustomColor.black,
+                                    radius: 27,
+                                    child: CircleAvatar(
+                                      radius: 26,
+                                      backgroundColor: Colors.white,
+                                      child: AspectRatio(
+                                        aspectRatio: 1,
+                                        child: ClipOval(
+                                          child: CachedNetworkImage(
+                                              imageUrl: image.toString(),
+                                              width: 30,
+                                              height: 20,
+                                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                  CircularProgressIndicator(value: downloadProgress.progress),
+                                              errorWidget: (context, url, error) => Image(image: AssetImage("assets/user_avatar.png"))
                                           ),
                                         ),
                                       ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+
+                        ],
+                      ),*/
+                      const SizedBox(height: 30),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5, left: 5),
+                        child: ProfileHozontalView(
+                            profileName: profileName,
+                            profileMobile: Preferences.getMobileNumber(
+                                    Preferences.mobileNumber)
+                                .toString(),
+                            click: () {
+                              Get.to( RiderProfileView(backbutton: '',));
+                            },
+                            imageLink:
+                                Preferences.getProfileImage().toString()),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin:
+                      const EdgeInsets.only(left: 20, right: 20, top: 30),
+                  child: MyText(
+                      text: 'Progress',
+                      fontFamily: 'Gilroy',
+                      color: Colors.black,
+                      fontSize: 16),
+                ), */
+                GridView.count(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    crossAxisCount: 2,
+                    padding: const EdgeInsets.only(
+                        left: 20, right: 20, top: 10),
+                    mainAxisSpacing: 20,
+                    childAspectRatio: 3 / 2,
+                    crossAxisSpacing: 20,
+                    children: [
+                      HomePageItems(
+                        backgroundColor: Colors.blue,
+                        title: 'Ride History',
+                        count: myRiderCount == "null"
+                            ? '0'
+                            : myRiderCount ?? "0",
+                        icons: 'new_assets/car_direction.png',
+                        click: () {
+                          Get.to( MyRidesPage(changeAppbar: 'fromClass',));
+                        }, width: 28, height: 28,
+                      ),
+                      HomePageItems(
+                        backgroundColor: Colors.orange,
+                        title: 'Tracking',
+                        count: peopleTrackingMe == "null"
+                            ? '0'
+                            : peopleTrackingMe ?? "0",
+                        icons: 'new_assets/eye-tracking.png',
+                        click: () {
+                          Get.to(const UserFamilyList());
+                        }, width: 28, height: 28,
+                      ),
+                     /* HomePageItems(
+                        backgroundColor: Colors.green,
+                        title: 'Track Family & Friends',
+                        count: trackFamily == "null"
+                            ? '0'
+                            : trackFamily ?? "0",
+                        icons: 'images/my_family_icons.png',
+                        click: () {
+                          Get.to(const FamilyMemberListScreen(changeUiValue: 'fromClass'));
+                        }, width: 25, height: 25,
+                      ),
+                      HomePageItems(
+                        backgroundColor: Colors.orange,
+                        title: 'Start New Ride',
+                        count: "",
+                        icons: 'new_assets/automobile.png',
+                        click: () {
+                          OverlayLoadingProgress.start(context);
+                          checkActiveUser();
+                        }, width: 28, height: 28,
+                      ),*/
+
+                     /* InkWell(
+                        onTap: () {
+                          Get.to( MyRidesPage(changeAppbar: 'fromClass',));
+                        },
+                        child:  HomePageItems(
+                          completed: 58,
+                          backgroundColor: Colors.blue,
+                            title:  myRiderCount.toString(),
+                          subtitle: 'My Rides'
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Get.to(const UserFamilyList());
+                        },
+                        child:  HomePageItems(
+                          completed: 58,
+                          backgroundColor: Colors.red,
+                          title:  peopleTrackingMe.toString(),
+                          subtitle: 'People Tracking Me'
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Get.to(const FamilyMemberListScreen(changeUiValue: 'fromClass'));
+                        },
+                        child:  HomePageItems(
+                          completed: 58,
+                          backgroundColor: Colors.green,
+                          title: trackFamily.toString(),
+                          subtitle: 'Track Family & Friends'
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          //SpinKitThreeBounce();
+                          OverlayLoadingProgress.start(context);
+                          checkActiveUser();
+                        },
+                        child: HomePageItems(
+                          completed: 58,
+                          backgroundColor: Colors.orange,
+                          title:"",
+                          subtitle: 'Start New Ride',
+                        ),
+                      ),*/
+                    ]),
+              ],
+            ),
+
+            Expanded(
+              child: locationData==null ?const Center(child: Text('Please Wait...\nMap is loading')):
+              Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: googleMap(),
+                      ),
+                    ),
+                  ),
+                  Align(
+                      alignment: Alignment.bottomLeft,
+                      child: actionUi()),
+                  Align(
+                      alignment: Alignment.topRight,
+                      child: vehicleNo())
+                ],
+              ),
+            ),
+           /* Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                child: checkActiveRide
+                    ?
+                LoaderUtils.loader():
+                listController.getMyRiderData.isEmpty
+                        ?*/  Visibility(
+                  visible: floatingVisibility!,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 220,bottom: 10),
+                            child: FloatingActionButton.extended(
+                              elevation: 15,
+                              onPressed: (){
+                                OverlayLoadingProgress.start(context);
+                                checkActiveUser();
+                              },
+                              label: Text("Start new ride"),
+                              ),
+                          ),
+                        ),
+                         Visibility(
+                  visible: dataVisibility!,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+
+                              children: [
+                                Divider(thickness: 2,color: Colors.blueGrey,),
+
+                                const SizedBox(height: 15),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 15,right: 15,bottom: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                                    children: [
+
+
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 20),
-                                        child: GestureDetector(
-                                          onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileNav(backbutton: '',)));
-                                            },
+                                        padding: const EdgeInsets.only(left: 10),
+                                        child: CircleAvatar(
+                                          backgroundColor: CustomColor.black,
+                                          radius: 27,
                                           child: CircleAvatar(
-                                            backgroundColor: CustomColor.black,
-                                            radius: 27,
-                                            child: CircleAvatar(
-                                              radius: 26,
-                                              backgroundColor: Colors.white,
-                                              child: AspectRatio(
-                                                aspectRatio: 1,
-                                                child: ClipOval(
-                                                  child: CachedNetworkImage(
-                                                      imageUrl: image.toString(),
-                                                      width: 30,
-                                                      height: 20,
-                                                      progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                                          CircularProgressIndicator(value: downloadProgress.progress),
-                                                      errorWidget: (context, url, error) => Image(image: AssetImage("assets/user_avatar.png"))
-                                                  ),
+                                            radius: 26,
+                                            backgroundColor: Colors.white,
+                                            child: AspectRatio(
+                                              aspectRatio: 1,
+                                              child: ClipOval(
+                                                child: CachedNetworkImage(
+                                                    imageUrl: driverPhoto.toString(),
+                                                    width: 40,
+                                                    height: 40,
+                                                    progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                        CircularProgressIndicator(value: downloadProgress.progress),
+                                                    errorWidget: (context, url, error) => Image(image: AssetImage("assets/user_avatar.png"))
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
                                       ),
+
+                                      const SizedBox(height: 10,width: 10,),
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 10),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            MyText(text: vehicleReg.toString(), fontFamily: 'Gilroy', color: Colors.black, fontSize: 18),
+                                            const SizedBox(height: 5),
+                                            MyText(text: vehicleModel.toString(), fontFamily: 'Gilroy', color: Colors.black, fontSize: 16),
+                                          ],
+                                        ),
+                                      )
+
                                     ],
-                                  )
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8,right: 8),
+                                      child: ClipOval(
+                                        child: Material(
+                                          //color:
+                                          //theme.colorScheme.error.withAlpha(28), // button color
+                                          child: InkWell(
+                                            splashColor: theme.colorScheme.error.withAlpha(100),
+                                            highlightColor: theme.colorScheme.error.withAlpha(28),
+                                            child: SizedBox(
+                                                width: 40,
+                                                height: 40,
+                                                child: Image.asset("new_assets/view.png")),
+                                            onTap: (){},
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8,right: 20),
+                                      child: ClipOval(
+                                        child: Material(
+                                          //color: CustomColor.lightYellow, // button color
+                                          child: InkWell(
+                                            splashColor: Colors.blue,
+                                            highlightColor:
+                                            theme.colorScheme.primary.withAlpha(28),
+                                            child:  SizedBox(
+                                              width: 40,
+                                              height: 40,
+                                              child: Image.asset('new_assets/stop.png'),
+                                            ),
+                                            onTap: (){
+                                              checkUser(userId.toString());
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Divider(thickness: 2,color: Colors.blueGrey,),
 
-                                ],
-                              ),*/
-                              const SizedBox(height: 30),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 5),
-                                child: ProfileHozontalView(
-                                    profileName: profileName,
-                                    profileMobile: Preferences.getMobileNumber(
-                                            Preferences.mobileNumber)
-                                        .toString(),
-                                    click: () {
-                                      Get.to( RiderProfileView(backbutton: '',));
-                                    },
-                                    imageLink:
-                                        Preferences.getProfileImage().toString()),
-                              ),
-                            ],
+                              ],
                           ),
-                        ),
-                        Container(
-                          margin:
-                              const EdgeInsets.only(left: 20, right: 20, top: 30),
-                          child: MyText(
-                              text: 'Progress',
-                              fontFamily: 'Gilroy',
-                              color: Colors.black,
-                              fontSize: 16),
-                        ), */
-                        GridView.count(
-                            shrinkWrap: true,
-                            physics: const ClampingScrollPhysics(),
-                            crossAxisCount: 2,
-                            padding: const EdgeInsets.only(
-                                left: 20, right: 20, top: 10),
-                            mainAxisSpacing: 20,
-                            childAspectRatio: 3 / 2,
-                            crossAxisSpacing: 20,
-                            children: [
-                              HomePageItems(
-                                backgroundColor: Colors.blue,
-                                title: 'My Rides',
-                                count: myRiderCount == "null"
-                                    ? '0'
-                                    : myRiderCount ?? "0",
-                                icons: 'new_assets/car_direction.png',
-                                click: () {
-                                  Get.to( MyRidesPage(changeAppbar: 'fromClass',));
-                                }, width: 28, height: 28,
-                              ),
-                              HomePageItems(
-                                backgroundColor: Colors.red,
-                                title: 'People Tracking Me',
-                                count: peopleTrackingMe == "null"
-                                    ? '0'
-                                    : peopleTrackingMe ?? "0",
-                                icons: 'assets/search.png',
-                                click: () {
-                                  Get.to(const UserFamilyList());
-                                }, width: 28, height: 28,
-                              ),
-                              HomePageItems(
-                                backgroundColor: Colors.green,
-                                title: 'Track Family & Friends',
-                                count: trackFamily == "null"
-                                    ? '0'
-                                    : trackFamily ?? "0",
-                                icons: 'images/my_family_icons.png',
-                                click: () {
-                                  Get.to(const FamilyMemberListScreen(changeUiValue: 'fromClass'));
-                                }, width: 25, height: 25,
-                              ),
-                              HomePageItems(
-                                backgroundColor: Colors.orange,
-                                title: 'Start New Ride',
-                                count: "",
-                                icons: 'new_assets/show_qr.png',
-                                click: () {
-                                  OverlayLoadingProgress.start(context);
-                                  checkActiveUser();
-                                }, width: 25, height: 25,
-                              ),
+     //                   ),
+     // ),
+    )
+          ]
+      )
+    )
 
-                             /* InkWell(
-                                onTap: () {
-                                  Get.to( MyRidesPage(changeAppbar: 'fromClass',));
-                                },
-                                child:  HomePageItems(
-                                  completed: 58,
-                                  backgroundColor: Colors.blue,
-                                    title:  myRiderCount.toString(),
-                                  subtitle: 'My Rides'
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Get.to(const UserFamilyList());
-                                },
-                                child:  HomePageItems(
-                                  completed: 58,
-                                  backgroundColor: Colors.red,
-                                  title:  peopleTrackingMe.toString(),
-                                  subtitle: 'People Tracking Me'
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Get.to(const FamilyMemberListScreen(changeUiValue: 'fromClass'));
-                                },
-                                child:  HomePageItems(
-                                  completed: 58,
-                                  backgroundColor: Colors.green,
-                                  title: trackFamily.toString(),
-                                  subtitle: 'Track Family & Friends'
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  //SpinKitThreeBounce();
-                                  OverlayLoadingProgress.start(context);
-                                  checkActiveUser();
-                                },
-                                child: HomePageItems(
-                                  completed: 58,
-                                  backgroundColor: Colors.orange,
-                                  title:"",
-                                  subtitle: 'Start New Ride',
-                                ),
-                              ),*/
-                            ]),
-                      ],
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(left: 20, right: 20, top: 30),
-                      child: MyText(
-                          text: 'My Location',
-                          fontFamily: 'Gilroy',
-                          color: Colors.black,
-                          fontSize: 16),
-                    ),
-                    Container(
-                      child: Center(
-                        child: controller.isLoading.value
-                            ?
-                        LoaderUtils.loader():
-                             controller.getMyRiderData.isEmpty
-                                ? const Center(
-                                    child: EmptyScreen(),
-                                  )
-                                : ListView.builder(
-                                    itemCount: controller.getMyRiderData.length,
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, index) {
-                                      return MyRiderItemsList(
-                                        myRideList:
-                                            controller.getMyRiderData[index],
-                                        pressOnView: () {
-                                         // SpinKitThreeBounce();
-                                          OverlayLoadingProgress.start(context);
-                                          checkActiveUser();
-                                        },
-                                        pressOnEnd: () {
-                                          showExitPopup(context,
-                                              "Do you want to stop ride?",
-                                              () async {
-                                            Navigator.pop(context, true);
-                                            checkUser(userId, index);
-                                          });
-                                        },
-                                      );
-                                    }),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
+    );
   }
+  Widget googleMap() {
+    return GoogleMap(
+      mapType: MapType.normal,
+      myLocationEnabled: true,
+      compassEnabled: true,
+      zoomControlsEnabled: false,
+      mapToolbarEnabled: true,
+      zoomGesturesEnabled: true,
+      myLocationButtonEnabled: true,
+      initialCameraPosition: _cameraPosition,
+      onMapCreated: (GoogleMapController controller) {
+        _completer.complete(controller);
+        controller.setMapStyle(permissionController.mapStyle);
+      },
+    );
+  }
+  Widget actionUi() {
+    return Padding(
+      padding: const EdgeInsets.only(left:25,right: 5,bottom: 45),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children:  [
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.yellow.shade100,
+              border: Border.all(color: appBlue),
+              borderRadius: BorderRadius.all(Radius.circular(10.0))
 
+            ),
+            height: 75,
+            width: 255,
+
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 5,top: 3),
+                  child: Text("Road Side Assistance Near By You",style: TextStyle(fontFamily: 'Gilroy', fontSize: 16 ),),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 5,right: 5),
+                  child: Row(
+                    children: [
+                      Column(
+                        children: [
+                          CircleIcon(click: (){
+                          }, imageAssets: 'new_assets/crane-truck.png', allPadding: 7),
+                          Text("Towing",style: TextStyle(fontFamily: 'Gilroy', ),)
+                        ],
+                      ),
+                      SizedBox(width: 6,),
+                      Column(
+                        children: [
+                          CircleIcon(click: (){
+                          }, imageAssets: 'new_assets/gas-pump-alt.png', allPadding: 10),
+                          Text("Fuel",style: TextStyle(fontFamily: 'Gilroy', ),)
+                        ],
+                      ),
+                      SizedBox(width: 6,),
+                      Column(
+                        children: [
+                          CircleIcon(click: (){
+                          }, imageAssets: 'new_assets/wrench.png', allPadding: 10),
+                          Text("Mech.",style: TextStyle(fontFamily: 'Gilroy', ),)
+                        ],
+                      ),
+                      SizedBox(width: 6,),
+                      Column(
+                        children: [
+                          CircleIcon(click: (){
+                          }, imageAssets: 'new_assets/wheels.png', allPadding: 7),
+                          Text("Tyre",style: TextStyle(fontFamily: 'Gilroy', ),)
+                        ],
+                      ),
+                      SizedBox(width: 6,),
+                      Column(
+                        children: [
+                          CircleIcon(click: (){
+                          }, imageAssets: 'new_assets/ambulance.png', allPadding: 10),
+                          Text("Ambu.",style: TextStyle(fontFamily: 'Gilroy', ),)
+                        ],
+                      ),
+                      SizedBox(width: 6,),
+                      Column(
+                        children: [
+                          CircleIcon(click: (){
+                          }, imageAssets: 'new_assets/search.png', allPadding: 10),
+                          Text("More",style: TextStyle(fontFamily: 'Gilroy', ),)
+                        ],
+                      ),
+
+
+
+
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+
+          Padding(
+            padding: const EdgeInsets.only(left: 18),
+            child: GestureDetector(
+              onTap: (){},
+                child: Image.asset("new_assets/sos_icons.png",height: 50,width: 50,))
+          ),
+
+
+
+          /*  CircleIcon(click: (){
+            checkActiveUser();
+          }, imageAssets: 'new_assets/car_direction.png', allPadding: 10),
+
+          CircleIcon(click: (){
+            Get.to(const MapFamilyAdd());
+          }, imageAssets: 'new_assets/map_add_family.png', allPadding: 10),
+
+          CircleIcon(click: (){
+            Get.to(RejectedServiceList(changeColor: '',));
+          }, imageAssets: 'new_assets/repair.png', allPadding: 10),
+
+          CircleIcon(click: (){
+          }, imageAssets: 'new_assets/sos_icons.png', allPadding: 0),*/
+
+        ],
+      ),
+    );
+  }
+  Widget vehicleNo(){
+    return Padding(
+      padding: const EdgeInsets.all(30),
+      child: Container(
+          width: 120,
+          height: 30,
+          decoration: const BoxDecoration(
+              color: appBlack,
+              borderRadius: BorderRadius.all(Radius.circular(20.0))
+          ),
+          child:  Center(child:  NewMyText(textValue: vehicleReg.toString() == "null" ? "Vehicle No." : vehicleReg.toString(),
+              fontName: 'Gilroy', color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16))),
+    );
+  }
   Future _scanQR() async {
     print("_scanQR");
     try {
@@ -628,7 +934,7 @@ class _HomePageState extends State<HomePageNav> {
       } else if (status == false) {
         OverlayLoadingProgress.stop();
       }
-      return DriverVehicleList.fromJson(response.body);
+        return DriverVehicleList.fromJson(response.body);
     } else {
       throw Exception('Failed to create.');
     }
@@ -698,7 +1004,7 @@ class _HomePageState extends State<HomePageNav> {
   }
 
   Future<http.Response> endRide(
-      String riderId, String lat, String lng, int index) async {
+      String riderId, String lat, String lng) async {
     final response = await http.post(
         Uri.parse(
             'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/endRide'),
@@ -714,15 +1020,29 @@ class _HomePageState extends State<HomePageNav> {
             'location': ""
           }
         }));
+    print("object");
+    print(json.encode({
+      'ride_id': riderId,
+      'end_point': {
+        'time': DateTime.now().millisecondsSinceEpoch.toString(),
+        'latitude': lat.toString(),
+        'longitude': lng.toString(),
+        'location': ""
+      }
+    }));
     if (response.statusCode == 200) {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
+      print("response");
       print("$response");
       if (status == true) {
         LoaderUtils.closeLoader();
         ToastMessage.toast(msg);
         Preferences.setRideOtp(''); //MainPage
-        listController.getServiceList(userId.toString());
+        await listController.getServiceList(userId.toString());
+        setState(() {
+
+        });
 
       } else {
         LoaderUtils.closeLoader();
@@ -734,15 +1054,16 @@ class _HomePageState extends State<HomePageNav> {
     }
   }
 
-  void checkUser(String userid, int index) async {
+  void checkUser(String userid) async {
     await checkUserController.checkActiveUser(userid).then((value) async {
       if (value != null) {
-        if (value.status == true) {
-          String riderId = value.data![0].id.toString();
+
+          var riderId = value.data![0].id.toString();
+
           await endRide(riderId, locationData!.latitude.toString(),
-              locationData!.longitude.toString(), index);
+              locationData!.longitude.toString(),);
         }
-      }
+
     });
   }
 

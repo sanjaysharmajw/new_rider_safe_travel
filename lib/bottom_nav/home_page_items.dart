@@ -40,15 +40,18 @@ class HomePageItems extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding:  const EdgeInsets.only(right: 10),
+                padding:  const EdgeInsets.only(right: 10,top: 2),
                 child:  Align(
                   alignment: Alignment.topRight,
-                  child: NewMyText(textValue: count, fontName: 'Gilroy', color: Colors.white, fontWeight: FontWeight.w700, fontSize: 20),
+                  child: NewMyText(textValue: count, fontName: 'Gilroy', color: Colors.white, fontWeight: FontWeight.w700, fontSize: 25),
                 ),
               ),
               NewMyImage(image: icons, width: width, height: height, fit: BoxFit.cover, color: Colors.white),
               const SizedBox(height: 10),
-              Text(title,style: const TextStyle(fontWeight: FontWeight.w100,fontFamily: 'Gilroy',color: Colors.white,fontSize: 16))
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: NewMyText(textValue: title, fontName: 'Gilroy', color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),
+              ),
             ],
           ),
         ),

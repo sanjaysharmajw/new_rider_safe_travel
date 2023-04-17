@@ -61,6 +61,7 @@ dependencies:
   autocomplete_textfield: ^2.0.1
   flutter_switch: ^0.3.2
   percent_indicator: ^4.2.2
+  awesome_dialog: ^3.0.2
 
 
   # The following adds the Cupertino Icons font to your application.

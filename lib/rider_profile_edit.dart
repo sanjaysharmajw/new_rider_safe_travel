@@ -638,7 +638,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                             return 'Email is Required !';
                                           } if (
                                           !RegExp(
-                                            r'^[a-zA-Z0-9]+@[a-z]+\.[a-z]')
+                                            r'^[a-z0-9]+@[a-z]+\.[a-z]')
                                           .hasMatch(value)
                                          // EmailValidator.validate(value)
                                           ) {

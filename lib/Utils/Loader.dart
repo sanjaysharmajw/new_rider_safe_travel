@@ -24,7 +24,7 @@ class LoaderUtils {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,
-        backgroundColor: Colors.yellow,
+        backgroundColor: appBlue,
         textColor: Colors.white,
         fontSize: 16.0
     );
@@ -32,7 +32,7 @@ class LoaderUtils {
   static Widget loader() {
     return Center(
       child:
-      CircularProgressIndicator(color: Colors.yellow),
+      CircularProgressIndicator(color: appBlue),
     );
   }
 

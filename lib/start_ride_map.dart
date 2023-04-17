@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -275,7 +276,8 @@ class _SignUpState extends State<StartRide> {
           leading: IconButton(
             onPressed: () {
                OverlayLoadingProgress.stop();
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>CustomBottomNav()));
+               Get.offAll(CustomBottomNav());
+
              /* showExitPopup(context, "Do you want to stop ride?", () async {
                 // OverlayLoadingProgress.start(context);
                 //Navigator.pop(context, true);

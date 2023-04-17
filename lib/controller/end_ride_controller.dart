@@ -30,7 +30,13 @@ class CheckUserController extends GetxController{
           'user_id': userId!.toString(),
         }),
       );
+      print("::::::::::::::::::::");
+      print(jsonEncode(<String, String>{
+        'user_id': userId!.toString(),
+      }),);
       if (response.statusCode == 200) {
+        print("::::::::::::::::::::");
+        print(response.body);
         bool status = jsonDecode(response.body)[ErrorMessage.status];
         String socketToken = jsonDecode(response.body)['token'];
         Map<String, dynamic> responseBody = json.decode(response.body);

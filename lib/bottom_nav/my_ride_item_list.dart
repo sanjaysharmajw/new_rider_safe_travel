@@ -33,29 +33,29 @@ class MyRiderItemsList extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
 
-          Row(
+        /*  Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children:  [
               MyText(text: myRideList.date.toString(), fontFamily: 'Gilroy', color: Colors.black, fontSize: 15),
               MyText(text: myRideList.date.toString(), fontFamily: 'Gilroy', color: Colors.black, fontSize: 15),
 
             ],
-          ),
+          ),*/
           const SizedBox(height: 15),
           Row(
             children: [
-               ClipRRect(
+              /* ClipRRect(
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 borderRadius: const BorderRadius.all(Radius.circular(60)),
                 child: Image.network(myRideList.driverPhoto.toString(),width: 40,height: 40,fit: BoxFit.cover),
-              ),
+              ),*/
               const SizedBox(height: 10,width: 10,),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  MyText(text: myRideList.driverName.toString(), fontFamily: 'Gilroy', color: Colors.black, fontSize: 16),
+                  MyText(text: myRideList.vehicleRegistrationNumber.toString(), fontFamily: 'Gilroy', color: Colors.black, fontSize: 16),
                   const SizedBox(height: 5),
-                  MyText(text: myRideList.driverMobileNumber.toString(), fontFamily: 'Gilroy', color: Colors.black, fontSize: 14),
+                  MyText(text: myRideList.vehicleModel.toString(), fontFamily: 'Gilroy', color: Colors.black, fontSize: 14),
                 ],
               )
 

@@ -18,10 +18,10 @@ class MyRiderController extends GetxController{
   var isLoading = true.obs;
   var getMyRiderData = <DataMyRider>[].obs;
   @override
-  void onInit() {
-    getServiceList(Preferences.getId(Preferences.id).toString());
-    super.onInit();
-  }
+  // void onInit() {
+  //   getServiceList(Preferences.getId(Preferences.id).toString());
+  //   super.onInit();
+  // }
 
   Future<dynamic> getServiceList(String userId) async {
     try {
@@ -34,6 +34,7 @@ class MyRiderController extends GetxController{
           "status":'Active'
         }),
       );
+      log('ndkdkmdk');
       log(response.body);
       Map<String, dynamic> responseBody = json.decode(response.body);
       if (response.statusCode == 200) {
