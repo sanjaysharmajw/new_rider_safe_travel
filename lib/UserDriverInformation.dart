@@ -139,7 +139,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                       height: 30,
                     ),
                     const Text("Driver Information",
-                        style: TextStyle(fontFamily: 'transport', fontSize: 18)),
+                        style: TextStyle(fontFamily: 'Gilroy', fontSize: 18)),
                     const SizedBox(height: 10),
                     SingleChildScrollView(
                      // scrollDirection: Axis.horizontal,
@@ -266,7 +266,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                     ),
                     const SizedBox(height: 40),
                     const Text("Vehicles Information",
-                        style: TextStyle(fontFamily: 'transport', fontSize: 18)),
+                        style: TextStyle(fontFamily: 'Gilroy', fontSize: 18)),
                     const SizedBox(height: 10),
                     Container(
                       decoration: BoxDecoration(
@@ -411,21 +411,21 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text("Details not matched ?",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600),),
+                                Text("Details not matched ?", style: TextStyle(fontFamily: 'Gilroy', fontSize: 18)),
 
-                                SizedBox(width: 40,),
+                                SizedBox(width: 20,),
                                 Transform.scale(
 
                                   scale: 1.0,
                                   child: Checkbox(
 
                                       value: checkBoxValue,
-                                      checkColor: CustomColor.white,
-                                      activeColor: CustomColor.yellow,
+                                      checkColor: appWhiteColor,
+                                      activeColor: appBlue,
                                       onChanged: (value){
                                         setState((){
                                           checkBoxValue = value!;
-                                          checkBoxValue = true;
+                                         // checkBoxValue = true;
                                         });
 
                                       }),
@@ -435,76 +435,76 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                           ),
 
                           Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: SizedBox(
-                              child: Container(
-                                height: 100,
-                                decoration:  BoxDecoration (
-                                  borderRadius:  BorderRadius.circular(8),
-                                  border:  Border.all(color: appBlack),
+                            padding: EdgeInsets.only(left: 20,top: 2),
+                            child:  TextFormField(
+
+                              controller: commentController,
+                              style: TextStyle(fontFamily: 'Gilroy',fontSize: 16),
+                              cursorColor: appBlack,
+                              maxLines: 3,
+                              minLines: 3,
+                              decoration: InputDecoration(
+                                hintText: 'Write a Comment',
+                                hintStyle: const TextStyle(color: appBlack),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide:
+                                  const BorderSide(color: appBlack, width: 1),
                                 ),
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 20,top: 2),
-                                  child: TextFormField(
-                                    controller: commentController,
-
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: 'Write a Comment',
-                                    ),
-                                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                                    validator: (text) {
-                                      if (text == null || text.isEmpty) {
-                                        return 'Can\'t be empty';
-                                      }
-                                      if (text.length < 4) {
-                                        return 'Too short';
-                                      }
-                                      return null;
-                                    },
-                                    // update the state variable when the text changes
-
-                                  ),
-
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide:
+                                  const BorderSide(color: appBlack, width: 1),
                                 ),
+
                               ),
+                              validator: (text) {
+                                if (text == null || text.isEmpty) {
+                                  return 'Can\'t be empty';
+                                }
+                                if (text.length < 4) {
+                                  return 'Too short';
+                                }
+                                return null;
+                              },
+
                             ),
+
+                            /*TextFormField(
+                              controller: commentController,
+
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+
+                                hintText: 'Write a Comment',
+                              ),
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              validator: (text) {
+                                if (text == null || text.isEmpty) {
+                                  return 'Can\'t be empty';
+                                }
+                                if (text.length < 4) {
+                                  return 'Too short';
+                                }
+                                return null;
+                              },
+                              // update the state variable when the text changes
+
+                            ),*/
+
                           ),
                         ],
                       ),
                     ),
 
+                    SizedBox(height: 30,),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+
                         SizedBox(
-                          width: 125,
-                          height: 65,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CustomButton(press: () async{
-                              OverlayLoadingProgress.start(context);
-                              await userRideAdd(userId, widget.vehicleId.toString(), widget.driverId.toString());
-                              setState(() {});
-                            },
-                                buttonText: "Next")
-                           /* ElevatedButton(onPressed: () async{
-                              OverlayLoadingProgress.start(context);
-                              await userRideAdd(userId, widget.vehicleId.toString(), widget.driverId.toString());
-                              setState(() {});
-                            }, child: Text("Next", style: const
-                            TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16),),
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  backgroundColor: CustomColor.yellow,
-                                  foregroundColor: CustomColor.black),),*/
-                          ),
-                        ),
-                        SizedBox(
-                          width: 125,
+                          width: 150,
                           height: 65,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -517,6 +517,32 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                               Navigator.push(context, MaterialPageRoute(builder: (context)=>const CustomBottomNav())); //MainPage
                               setState(() {});
                             }, child: Text("Cancel Ride", style:
+                            TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16),),
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  backgroundColor: CustomColor.yellow,
+                                  foregroundColor: CustomColor.black),),*/
+                          ),
+                        ),
+                        SizedBox(
+                          width: 150,
+                          height: 65,
+                          child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CustomButton(press: () async{
+                                OverlayLoadingProgress.start(context);
+                                await userRideAdd(userId, widget.vehicleId.toString(), widget.driverId.toString());
+                                setState(() {});
+                              },
+                                  buttonText: "Next")
+                            /* ElevatedButton(onPressed: () async{
+                              OverlayLoadingProgress.start(context);
+                              await userRideAdd(userId, widget.vehicleId.toString(), widget.driverId.toString());
+                              setState(() {});
+                            }, child: Text("Next", style: const
                             TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16),),
@@ -629,7 +655,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
       String userId, rideId, socketToken, rideOtp) async {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
-      Uri.parse('https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userFamilyList'),
+      Uri.parse('https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userFamilyList'),
       headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8', 'Authorization': loginToken},
       body: jsonEncode(<String, String>{
         'user_id': userId,

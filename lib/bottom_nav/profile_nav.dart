@@ -28,6 +28,67 @@ class ProfileNav extends StatefulWidget {
 }
 
 class _ProfileNavState extends State<ProfileNav> {
+
+  final List locale = [
+    {'name': 'English', 'locale': const Locale('en', 'US')},
+    {'name': 'हिंदी', 'locale': const Locale('hi', 'IN')},
+    {'name': 'मराठी', 'locale': const Locale('mr', 'IN')},
+  ];
+
+  updateLanguage(Locale locale) {
+    Get.back();
+    Get.updateLocale(locale);
+  }
+
+  Future<void> share(String language) async {
+    await Preferences.setPreferences();
+    Preferences.setLanguage(language);
+  }
+
+  buildLanguageDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (builder) {
+          return AlertDialog(
+            title: Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Text('choose_language'.tr,
+                  style: TextStyle(fontFamily: 'Gilroy')),
+            ),
+            content: SizedBox(
+              width: double.maxFinite,
+              child: ListView.separated(
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: GestureDetector(
+                        child: Text(locale[index]['name'],
+                            style: const TextStyle(fontFamily: 'Gilroy')),
+                        onTap: () {
+                          if (index == 0) {
+                            share('en');
+                          } else if (index == 1) {
+                            share('hi');
+                          } else {
+                            share('mr');
+                          }
+                          updateLanguage(locale[index]['locale']);
+                        },
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return const Divider(
+                      color: appBlue,
+                    );
+                  },
+                  itemCount: locale.length),
+            ),
+          );
+        });
+  }
+
   var profileName;
 
   void initState(){
@@ -51,7 +112,7 @@ class _ProfileNavState extends State<ProfileNav> {
               },
               icon: const Icon(Icons.arrow_back_outlined),
             ),
-            title: Text("Profile",style: TextStyle(fontFamily: 'Gilroy',fontSize: 22,color: Colors.white ),),
+            title: Text("profile".tr,style: TextStyle(fontFamily: 'Gilroy',fontSize: 22,color: Colors.white ),),
           ),
         body: SingleChildScrollView(
           child: Padding(
@@ -134,29 +195,26 @@ class _ProfileNavState extends State<ProfileNav> {
                     const SizedBox(height: 10),
                      MyText(text: profileName.toString(),  fontFamily: 'Gilroy', color: Colors.black, fontSize: 14),
                     const SizedBox(height: 60),
-                    GestureDetector(
-                      onTap: (){},
-                        child: const ProfileText(title: 'Language', subTitle: 'Change your language', icons: FeatherIcons.globe)),
-                    GestureDetector(
-                      onTap: (){
+                     ProfileText(title: 'language'.tr, subTitle: 'change_your_language'.tr, icons: FeatherIcons.globe,
+                       voidCallback: () {
+                         buildLanguageDialog(context);
+                       },),
+                    ProfileText(title: 'notification'.tr, subTitle: 'check_notification'.tr, icons: FeatherIcons.bell,
+                      voidCallback: () {
                         Get.to(const NotificationScreen());
-                      },
-                        child: const ProfileText(title: 'Notification', subTitle: 'Check notification', icons: FeatherIcons.bell)),
-                    GestureDetector(
-                      onTap: (){
+                      },),
+                    ProfileText(title: 'help'.tr, subTitle: 'contact_us'.tr, icons: FeatherIcons.messageCircle,
+                      voidCallback: () {
                         Get.to(ChatBot());
-                      },
-                        child: const ProfileText(title: 'Help', subTitle: 'Contact Us', icons: FeatherIcons.messageCircle)),
-                    GestureDetector(
-                      onTap: (){
+                      },),
+                    ProfileText(title: 'about'.tr, subTitle: 'about_the_application'.tr, icons: FeatherIcons.alertCircle,
+                      voidCallback: () {
                         Get.to(AboutScreenPage());
-                      },
-                        child: const ProfileText(title: 'About', subTitle: 'About the application', icons: FeatherIcons.alertCircle)),
-                    GestureDetector(
-                        onTap: (){
-                          logoutPopup(context);
-                        },
-                        child: const ProfileText(title: 'Logout', subTitle: 'Exit from your account', icons: FeatherIcons.logOut)),
+                      },),
+                    ProfileText(title: 'logout'.tr, subTitle: 'exit_from_your_account'.tr, icons: FeatherIcons.logOut,
+                      voidCallback: () {
+                        logoutPopup(context);
+                      },),
                   ],
                 ),
               ],

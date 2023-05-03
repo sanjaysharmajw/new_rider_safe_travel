@@ -49,7 +49,7 @@ class _ServiceListScreenPageState extends State<ServiceListScreenPage> {
                 child:  MyText(text: 'Profile', fontFamily: 'transport', color: Colors.black, fontSize: 22),
               ),
                SizedBox(height: 30),
-              RejectedServiceList(changeColor: 'bottomNav',),
+              RejectedServiceList(),
             ],
           ),
 

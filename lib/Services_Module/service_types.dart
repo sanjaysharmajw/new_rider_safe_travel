@@ -36,7 +36,7 @@ class _ServiceListsScreenState extends State<ServiceListsScreen> {
 
                 backgroundColor:  appBlue,
                 elevation: 10,
-                title:  Text("Service Category",
+                title:  Text("service_category".tr,
                     style: TextStyle(color:  appWhiteColor,fontSize: 22, fontFamily: 'Gilroy',)),
                 leading: IconButton(
                   color:  appWhiteColor,
@@ -62,8 +62,8 @@ class _ServiceListsScreenState extends State<ServiceListsScreen> {
                     child: controller.isLoading.value
                         ? LoaderUtils.loader()
                         : controller.serviceTypeList.isEmpty
-                        ? const Center(
-                      child: EmptyScreen(),
+                        ? Center(
+                      child: EmptyScreen(text: 'service_type_not_found'.tr,),
                     ) :
                     Padding(
                       padding: const EdgeInsets.only(left: 10,right: 10),

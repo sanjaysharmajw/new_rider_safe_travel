@@ -8,7 +8,10 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
+import 'package:ride_safe_travel/Utils/Loader.dart';
+import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:ride_safe_travel/Utils/view_image.dart';
+import 'package:ride_safe_travel/bottom_nav/EmptyScreen.dart';
 import 'package:ride_safe_travel/color_constant.dart';
 import 'Error.dart';
 import 'LoginModule/Api_Url.dart';
@@ -16,16 +19,22 @@ import 'LoginModule/custom_color.dart';
 import 'LoginModule/preferences.dart';
 import 'Models/RideDataModel.dart';
 import 'bottom_nav/custom_bottom_navi.dart';
+import 'controller/rider_history_controller.dart';
+import 'get_ride_request_body.dart';
+import 'get_rider_data_controller.dart';
+import 'history_map.dart';
+import 'my_rides_history_items.dart';
 
 class MyRidesPage extends StatefulWidget {
   String changeAppbar;
-   MyRidesPage({Key? key, required this.changeAppbar}) : super(key: key);
+  MyRidesPage({Key? key, required this.changeAppbar}) : super(key: key);
 
   @override
   State<MyRidesPage> createState() => _MyRidesPageState();
 }
 
 class _MyRidesPageState extends State<MyRidesPage> {
+  final ridehistoryController = Get.put(RiderHistoryListController());
   var image;
 
   @override
@@ -34,26 +43,87 @@ class _MyRidesPageState extends State<MyRidesPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-
-          backgroundColor:  appBlue,
+          backgroundColor: appBlue,
           elevation: 0,
-          title:  Text("My Rides",
-              style: TextStyle(color:  appWhiteColor,fontSize: 22, fontFamily: 'Gilroy',)),
+          title: Text('my_rides'.tr,
+              style: TextStyle(
+                color: appWhiteColor,
+                fontSize: 22,
+                fontFamily: 'Gilroy',
+              )),
           leading: IconButton(
-            color:  appWhiteColor,
+            color: appWhiteColor,
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>CustomBottomNav()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CustomBottomNav()));
             },
             icon: const Icon(Icons.arrow_back_outlined),
           ),
         ),
-
-        body: FutureBuilder<List<RideDataModel>>(
+        body: Obx(() {
+          return ridehistoryController.isLoading.value
+              ? LoaderUtils.loader()
+              : ridehistoryController.getRiderHistoryData.isEmpty
+                  ? Center(
+                      child: EmptyScreen(
+                        text: 'ride_history_not_found'.tr,
+                      ),
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount:
+                          ridehistoryController.getRiderHistoryData.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return MyRidesHistoryItems(
+                          vehicleReg: ridehistoryController
+                                      .getRiderHistoryData[index]
+                                      .vehicleRegistrationNumber
+                                      .toString() ==
+                                  "null"
+                              ? " "
+                              : ridehistoryController
+                                  .getRiderHistoryData[index]
+                                  .vehicleRegistrationNumber
+                                  .toString(),
+                          driverName: ridehistoryController
+                                      .getRiderHistoryData[index].driverName
+                                      .toString() ==
+                                  "null"
+                              ? " "
+                              : ridehistoryController
+                                  .getRiderHistoryData[index].driverName
+                                  .toString(),
+                          fromdestination: ridehistoryController
+                                      .getRiderHistoryData[index]
+                                      .fromDestination
+                                      .toString() ==
+                                  "null"
+                              ? "N/A"
+                              : ridehistoryController
+                                  .getRiderHistoryData[index]
+                                  .fromDestination
+                                  .toString(),
+                          todestination: ridehistoryController
+                                      .getRiderHistoryData[index]
+                                      .toDestination
+                                      .toString() ==
+                                  "null"
+                              ? " "
+                              : ridehistoryController
+                                  .getRiderHistoryData[index].toDestination
+                                  .toString(),
+                          clickList: () {
+                            getRideDetailsApi(ridehistoryController.getRiderHistoryData[index].id.toString(), index);
+                          },
+                        );
+                      });
+        }));
+    /* FutureBuilder<List<RideDataModel>>(
           future: getData(),
           builder: (context, snapshot) {
 
             if (snapshot.hasData) {
-              return snapshot.data!.isEmpty ? Center(child: Text('Data not found',style: TextStyle(fontSize: 20,color: Colors.black12),)) :
+              return snapshot.data!.isEmpty ? Center(child: EmptyScreen(text: "ride_history_not_found".tr)) :
                 ListView.builder(
                 itemCount: snapshot.data?.length,
                 itemBuilder: (context, index) {
@@ -135,7 +205,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                             "null"
                                             ? snapshot.data![index].startTime
                                             .toString()
-                                            : "NA",style: const TextStyle(
+                                            : "",style: const TextStyle(
                                             fontFamily: 'Gilroy',
                                             fontSize: 16,
                                             color: CustomColor.black)),
@@ -152,7 +222,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                             "null"
                                             ? snapshot.data![index].endTime
                                             .toString()
-                                            : "NA",style: const TextStyle(
+                                            : "",style: const TextStyle(
                                             fontFamily: 'Gilroy',
                                             fontSize: 16,
                                             color: CustomColor.black)),
@@ -694,10 +764,27 @@ class _MyRidesPageState extends State<MyRidesPage> {
             // By default, show a loading spinner.
             return Center(child: const CircularProgressIndicator());
           },
-        ));
+        ));*/
   }
 
-  Future<List<RideDataModel>> getData() async {
+  void getRideDetailsApi(String id,int index)async{
+    final getRideDetailsController=Get.put(GetRideDetailsController());
+    GetRideRequestBody requestBody=GetRideRequestBody(rideId: id.toString());
+    await getRideDetailsController.getRideDataApi(requestBody).then((value){
+      if(value!=null){
+        if(value.status==true){
+          if(value.data!.isNotEmpty){
+
+          }else{
+            ToastMessage.toast("Data Not Found !");
+          }
+          Get.to(HistoryMap(riderHistoryData: value,riderData: ridehistoryController.getRiderHistoryData[index],sourceLat:value.data!.first.lat,sourceLng:value.data!.first.lng));
+        }
+      }
+    });
+  }
+
+ /* Future<List<RideDataModel>> getData() async {
     await Preferences.setPreferences();
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     String userId = Preferences.getId(Preferences.id).toString();
@@ -732,5 +819,5 @@ class _MyRidesPageState extends State<MyRidesPage> {
   void initState() {
     super.initState();
     getData();
-  }
+  }*/
 }

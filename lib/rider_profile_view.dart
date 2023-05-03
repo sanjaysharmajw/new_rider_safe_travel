@@ -128,7 +128,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                 size: 25,
               )),
         ),
-        title: Text("Your profile",style: TextStyle(fontFamily: "Gilroy",fontSize: 22,color: Colors.white),),
+        title: Text("your_profile".tr,style: TextStyle(fontFamily: "Gilroy",fontSize: 22,color: Colors.white),),
 
       ),
         body: FutureBuilder<List<RiderData>>(
@@ -298,7 +298,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(right: 35),
                                     child: Text(
-                                      "Email Id",
+                                      "email_id".tr,
                                       style: TextStyle(
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.bold,
@@ -318,7 +318,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     readOnly: true,
                                     validator: (value) {
                                       if (value == null) {
-                                        return 'Please enter your email Id.';
+                                        return 'please_enter_your_emailId.'.tr;
                                       }
                                       return null;
                                     },
@@ -369,7 +369,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(right: 50),
                                     child: Text(
-                                      "DOB",
+                                      "dob".tr,
                                       style: TextStyle(
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.bold,
@@ -421,7 +421,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                               validator: (value) {
                                                 if (value == null ||
                                                     value.isEmpty ){
-                                                  return 'Please enter your Date of Birth';
+                                                  return 'please_enter_your_date_of_birth'.tr;
                                                 }
                                                 return null;
                                               },
@@ -444,7 +444,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(right: 50),
                                     child: Text(
-                                      "State",
+                                      "state".tr,
                                       style:
                                       TextStyle(
                                           fontSize: 14.sp,
@@ -464,7 +464,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                 child: TextFormField(
                                   validator: (value) {
                                     if (value == null) {
-                                      return 'Please enter your state name.';
+                                      return 'please_enter_your_state_name'.tr;
                                     }
                                     return null;
                                   },
@@ -518,7 +518,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                    child: Padding(
                                      padding: const EdgeInsets.only(right: 58),
                                      child: Text(
-                                      "City",
+                                      "city".tr,
                                       style:
                                       TextStyle(
                                           fontSize: 14.sp,
@@ -538,7 +538,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                 child: TextFormField(
                                   validator: (value) {
                                     if (value == null) {
-                                      return 'Please enter your city name.';
+                                      return 'please_enter_your_city_name.'.tr;
                                     }
                                     return null;
                                   },
@@ -592,7 +592,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                    child: Padding(
                                      padding: const EdgeInsets.only(right: 35),
                                      child: Text(
-                                      "PinCode",
+                                      "pin_code".tr,
                                       style:
                                       TextStyle(
                                           fontSize: 14.sp,
@@ -613,7 +613,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                 child: TextFormField(
                                   validator: (value) {
                                     if (value == null || value.length != 6) {
-                                      return 'Please enter 6 digit number.';
+                                      return 'please_enter_6_digit_number.'.tr;
                                     }
                                     return null;
                                   },
@@ -669,7 +669,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                    child: Padding(
                                      padding: const EdgeInsets.only(right: 40),
                                      child: Text(
-                                      "Gender",
+                                      "gender".tr,
                                       style:
                                       TextStyle(
                                           fontSize: 14.sp,
@@ -734,7 +734,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                    child: Padding(
                                      padding: const EdgeInsets.only(right: 15 ),
                                      child: Text(
-                                      "Blood Group",
+                                      "blood_group".tr,
                                       style:
                                       TextStyle(
                                           fontSize: 14.sp,
@@ -797,7 +797,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                               child:  Icon(Icons.location_pin)
                             ),
                              Text(
-                              "Address",
+                              "address".tr,
                               style:
                               TextStyle(
                                   fontSize: 14.sp,
@@ -845,7 +845,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                   ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter your address.';
+                                      return 'please_enter_your_address.'.tr;
                                     }
                                     return null;
                                   },
@@ -880,7 +880,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     padding: EdgeInsets.only(
                                         left: 10, top: 10),
                                     child: Text(
-                                      "Emergency contact number's ",
+                                      "emergency_contact_number's".tr,
                                       style:TextStyle(
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.bold,
@@ -895,7 +895,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            left: 20, right: 20),
+                                            left: 20,),
                                         child: MyText(
                                             text:
                                             snapshot.data![index].personName.toString() == "null" ? " " :  snapshot.data![index].personName.toString(),
@@ -904,10 +904,11 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                             Color(0xff48422B),
                                             fontSize: 13.sp),
                                       ),
-                                      /*Container(
+
+                                      Container(
                                           width: 15.w,
                                           height: 38.h,
-                                          child: VerticalDivider()),*/
+                                          child: VerticalDivider()),
                                       Expanded(
                                           child: TextField(
                                             decoration: InputDecoration(
@@ -942,7 +943,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            left: 20, right: 20),
+                                            left: 20,),
                                         child: MyText(
                                             text: snapshot.data![index].personName1.toString() == "null"
                                                 ? " "
@@ -952,10 +953,11 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                             Color(0xff48422B),
                                             fontSize: 13.sp),
                                       ),
-                                     /* Container(
+
+                                     Container(
                                           width: 15.w,
                                           height: 38.h,
-                                          child: VerticalDivider()),*/
+                                          child: VerticalDivider()),
                                       Expanded(
                                           child: TextField(
                                               decoration:
@@ -1024,7 +1026,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     String mobileNumber = Preferences.getMobileNumber(Preferences.mobileNumber).toString();
     final response = await http.post(
-      (Uri.parse('https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userList')),
+      (Uri.parse('https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userList')),
       headers: ApiUrl.headerToken,
       body: jsonEncode(<String, String>{
         'mobile_number': mobileNumber,

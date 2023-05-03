@@ -16,7 +16,7 @@ class CheckActiveRideController extends GetxController{
 
   Future<CheckActiveRideModels?> checkActiveRideApi(CheckActiveRideRequest checkActiveRideRequest) async {
     try {
-      LoaderUtils.showLoader("Please wait");
+      //LoaderUtils.showLoader("Please wait");
       final response = await http.post(Uri.parse(ApiUrl.checkActiveUserRide),
           headers: ApiUrl.headerToken, body: jsonEncode(checkActiveRideRequest),
       );

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'color_constant.dart';
 
@@ -22,7 +23,7 @@ class _AboutScreenPageState extends State<AboutScreenPage> {
             onPressed: () {
               Navigator.of(context).pop('refresh');
             }),
-        title: const Text("About",
+        title:  Text('about'.tr,
           style: TextStyle(fontFamily: "Gilroy",fontSize: 22,color: Colors.white),),
       ),
       body: Container(

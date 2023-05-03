@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
+import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:get/get.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
@@ -17,11 +18,12 @@ class ServiceRequestController extends GetxController{
 
   final commentTextField=TextEditingController().obs;
   Future<ServiceRequestModel?> sendRequest(String serviceId, String id, String serviceProviderId,
-      double lng, double lat, String userId) async {
+      double lng, double lat,) async {
+    var userId=Preferences.getId(Preferences.id);
     try {
       LoaderUtils.showLoader('Please Wait...');
       final response = await http.post(
-          Uri.parse("https://i981xwdx4g.execute-api.ap-south-1.amazonaws.com/dev/api/serviceProvider/sendServiceRequest"),
+          Uri.parse("https://24txld2sb5.execute-api.ap-south-1.amazonaws.com/dev/api/serviceProvider/sendServiceRequest"),
           headers: ApiUrl.headerToken,
           body: jsonEncode({
             "service_id":serviceId,

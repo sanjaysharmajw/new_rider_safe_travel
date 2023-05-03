@@ -62,6 +62,7 @@ dependencies:
   flutter_switch: ^0.3.2
   percent_indicator: ^4.2.2
   awesome_dialog: ^3.0.2
+  google_fonts: ^4.0.3
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -89,6 +90,7 @@ dependencies:
   switcher_button: ^0.0.4
   loading_indicator: ^3.1.0
   flutter_spinkit: ^5.1.0
+
 
 
 #  mapmyindia_gl: ^0.2.2

@@ -1,5 +1,6 @@
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ride_safe_travel/color_constant.dart';
 
 import 'Messages.dart';
@@ -51,7 +52,7 @@ class _HomeState extends State<ChatBot> {
             onPressed: () {
               Navigator.pop(context);
             }),
-        title: const Text("Chat",
+        title:  Text('chat'.tr,
           style: TextStyle(fontFamily: "Gilroy",fontSize: 22,color: Colors.white),),
       ),
       body: Padding(
@@ -75,10 +76,10 @@ class _HomeState extends State<ChatBot> {
                           ],
                           controller: _controller,
                           style: const TextStyle(color: Colors.white),
-                          decoration: const InputDecoration(
+                          decoration:  InputDecoration(
 
                             border: InputBorder.none,
-                            hintText: 'Enter Something',
+                            hintText: 'enter_something'.tr,
                             hintStyle: TextStyle(fontFamily: "Gilroy",fontSize: 16,color: Colors.white),
                             contentPadding: EdgeInsets.only(right: 20,left: 20),
                           ),

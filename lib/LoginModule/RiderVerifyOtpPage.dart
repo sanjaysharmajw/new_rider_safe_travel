@@ -70,7 +70,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
   void firebaseToken()async{
     FirebaseMessaging.instance.requestPermission();
     fcmToken = await FirebaseMessaging.instance.getToken();
-      ToastMessage.toast(fcmToken.toString());
+      //ToastMessage.toast(fcmToken.toString());
       print("Firebase Token: $fcmToken");
 
   }
@@ -131,7 +131,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Text("Verify Mobile Number",
+                  Text("verify_mobile_number".tr,
                       style: TextStyle(
                           fontSize: 20.sp,
                           fontFamily: 'Gilroy',
@@ -140,7 +140,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                     height: 15.h,
                   ),
                    Text(
-                    "Enter 4 digit verification code sent to",
+                    "enter_4_digit_verification_code_sent_to".tr,
                     style: TextStyle(
                         fontFamily: "Gilroy",
                         fontWeight: FontWeight.w400,
@@ -154,7 +154,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                     //crossAxisAlignment: CrossAxisAlignment.stretch    ,
                     children: [
                       Text(
-                        "your mobile number ",
+                        "your_mobile_number ".tr,
                         style: TextStyle(
                             fontFamily: "Gilroy",
                             fontWeight: FontWeight.w400,
@@ -172,7 +172,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                           Get.to(RiderLoginPage());
                         },
                         child: Text(
-                          '  Edit',
+                          '  edit'.tr,
                           style: TextStyle(
                               color: Colors.blue,
                               fontFamily: "Gilroy",
@@ -188,7 +188,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                   SizedBox(
                     width: 260.w,
                     child: Text(
-                      "Enter OTP here",
+                      "enter_otp_here".tr,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         fontFamily: "Gilroy",
@@ -229,7 +229,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
 
                        SizedBox(
                          child: Text(
-                           "Didn't receive OTP ? ",
+                           "didn't_receive_otp ? ".tr,
                            textAlign: TextAlign.left,
                            style: TextStyle(
                              fontFamily: "Gilroy",
@@ -244,7 +244,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                              controller: timercontroller,
                              onPressed: () => _requestOtp(),
                              text:  Text(
-                               'RESEND OTP',
+                               'resend_otp'.tr,
                                style: TextStyle(
                                    fontFamily: "Gilroy",
                                    fontSize: 12.sp,
@@ -288,7 +288,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                       });
                       await new_VerifyOtpApi(mobileController.text.toString(),
                           otpController.text.toString());
-                    }, buttonText: "Verify Number"),
+                    }, buttonText: "verify_number".tr),
                   )
                 ],
               ),
@@ -303,7 +303,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       String mobileNumber, String otp) async {
     final response = await http.post(
       Uri.parse(
-          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/verifyOtp'),
+          'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/verifyOtp'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
 
@@ -327,7 +327,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       } else {
         OverlayLoadingProgress.stop();
         ToastMessage.toast(msg);
-       // Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
       }
       return null;
     } else {
@@ -340,7 +340,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
 
     final response = await http.post(
       Uri.parse(
-          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/sendOtpNew'),
+          'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/sendOtpNew'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
 
@@ -373,7 +373,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
       Uri.parse(
-          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/regUserNew'),
+          'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/regUserNew'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': loginToken
@@ -431,7 +431,7 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
         Preferences.setProfileImage(profileImage.toString());
         Preferences.setGender(gender.toString());
         Get.to(const CustomBottomNav());
-        ToastMessage.toast("Successful");
+        //ToastMessage.toast("Successful");
       } else {
         OverlayLoadingProgress.stop();
         ToastMessage.toast("Failed");

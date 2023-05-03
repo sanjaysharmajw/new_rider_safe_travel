@@ -2,21 +2,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
+import 'package:location/location.dart';
 import 'package:ride_safe_travel/color_constant.dart';
 
 import 'LoginModule/custom_color.dart';
+import 'LoginModule/preferences.dart';
 import 'MyText.dart';
 import 'ServicesPage.dart';
+import 'Services_Module/complete_service_request_body.dart';
+import 'Services_Module/complete_service_request_contoller.dart';
 import 'Services_Module/requested_servicelists_item.dart';
 import 'Services_Module/service_requestlist_controller.dart';
 import 'Services_Module/service_types.dart';
 import 'Utils/Loader.dart';
+import 'Widgets/add_custom_btn.dart';
 import 'bottom_nav/EmptyScreen.dart';
 import 'bottom_nav/custom_bottom_navi.dart';
+import 'new_widgets/my_new_text.dart';
 
 class RejectedServiceList extends StatefulWidget {
-  String changeColor;
-  RejectedServiceList({Key? key, required this.changeColor}) : super(key: key);
+
+  const RejectedServiceList({Key? key}) : super(key: key);
 
   @override
   State<RejectedServiceList> createState() => _RejectedServiceListState();
@@ -25,6 +31,28 @@ class RejectedServiceList extends StatefulWidget {
 class _RejectedServiceListState extends State<RejectedServiceList> {
   final requestedservicelist = Get.put(ServiceRequestListController());
 
+  LocationData? currenctLoaction;
+  Location? location;
+
+  void initState(){
+
+    getCurrentLocation();
+
+    super.initState();
+  }
+  void getCurrentLocation()async{
+    location=Location();
+    currenctLoaction=await location!.getLocation();
+
+    if(currenctLoaction!=null){
+
+      requestedServiceList(currenctLoaction!.longitude!, currenctLoaction!.latitude!);
+      print("requestedServiceList....."+currenctLoaction!.longitude.toString());
+      print("requestedServiceList....."+currenctLoaction!.latitude.toString());
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -32,7 +60,7 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
         appBar: AppBar(
           backgroundColor: appBlue,
           elevation: 0,
-          title: Text("Road Side Assistance",
+          title: Text("road_side_assistance".tr,
               style: TextStyle(
                 color: appWhiteColor,
                 fontSize: 22,
@@ -55,8 +83,8 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
                   return requestedservicelist.isLoading.value
                       ? LoaderUtils.loader()
                       : requestedservicelist.requestedList.isEmpty
-                          ? const Center(
-                              child: EmptyScreen(),
+                          ? Center(
+                              child: EmptyScreen(text: 'reqquested_list_not_found'.tr,),
                             )
                           : ListView.builder(
                               itemCount:
@@ -69,7 +97,15 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
 
                                 return RequestedServiceListItems(
                                   requestedList:
-                                      requestedservicelist.requestedList[index],
+                                      requestedservicelist.requestedList[index], feedBackClick: () {
+                                  commentDialogBox(
+                                      context,
+                                      requestedservicelist
+                                          .requestedList[index]
+                                          .id
+                                          .toString());
+
+                                },
                                 );
                               });
                 }),
@@ -94,5 +130,109 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
         ),
       ),
     );
+  }
+
+  void requestedServiceList(
+      double lng, double lat,)async{
+    await requestedservicelist.getRequestedServicesList(lng, lat).then((value) async {
+      if (value != null) {
+
+        LoaderUtils.message(value.message.toString());
+      }
+    });
+  }
+
+  Future commentDialogBox(BuildContext context, String serviceId) {
+    TextStyle textStyle = const TextStyle(
+        color: appBlack, fontFamily: 'Gilroy', height: 1.4, fontSize: 16);
+    final commentTextController = TextEditingController();
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: SizedBox(
+            height: 280,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const NewMyText(
+                        textValue: 'Comment',
+                        fontName: 'Gilroy',
+                        color: appBlack,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18),
+                    IconButton(
+                        padding: const EdgeInsets.only(left: 30.0),
+                        onPressed: () {
+                          Get.back();
+                        },
+                        icon: const Icon(Icons.close_outlined)),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextField(
+                      controller: commentTextController,
+                      style: textStyle,
+                      cursorColor: appBlack,
+                      maxLines: 4,
+                      minLines: 4,
+                      decoration: InputDecoration(
+                        hintText: 'Type your message',
+                        hintStyle: const TextStyle(color: appBlack),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide:
+                          const BorderSide(color: appBlack, width: 1),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide:
+                          const BorderSide(color: appBlack, width: 1),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    AddCustomButton(
+                        press: () {
+                          if (commentTextController.text
+                              .toString()
+                              .isNotEmpty) {
+                            completeService(serviceId,commentTextController);
+                          } else {
+                            LoaderUtils.showToast(
+                                'Write something in the comment box.');
+                          }
+                        },
+                        buttonText: 'Submit')
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void completeService(String serviceId, TextEditingController commentTextController) async {
+    final completeService = Get.put(CompleteServiceRequestController());
+    CompleteServiceRequestBody requestBody = CompleteServiceRequestBody(
+        serviceId: serviceId.toString(),
+        feedback: commentTextController.text.toString(),
+        userId: Preferences.getId(Preferences.id).toString());
+    await completeService.completeServiceApi(requestBody).then((value) {
+      if (value != null) {
+        if (value.status == true) {
+          LoaderUtils.message(value.message.toString());
+          Get.back();
+        } else {
+          LoaderUtils.message(value.message.toString());
+        }
+      }
+    });
   }
 }

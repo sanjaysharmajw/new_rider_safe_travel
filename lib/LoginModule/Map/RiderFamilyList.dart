@@ -16,16 +16,22 @@ import '../../FamilyMemberAddOtherTrack.dart';
 import '../../FamilyMemberAddScreen.dart';
 import '../../Models/MemberBlockDeleteModel.dart';
 import '../../ToggleSwitch.dart';
+import '../../Utils/Loader.dart';
+import '../../bottom_nav/EmptyScreen.dart';
 import '../../bottom_nav/custom_bottom_navi.dart';
 import '../../color_constant.dart';
+import '../../controller/family_status_controller.dart';
+import '../../controller/track_family_controller.dart';
 import '../../familydatamodel.dart';
+import '../../new_items/track_family_item.dart';
 import '../../switchbutton.dart';
+import '../../users_status_controller.dart';
 import 'FamilyListDataModel.dart';
 
 class FamilyMemberListScreen extends StatefulWidget {
-
   final String changeUiValue;
-  const FamilyMemberListScreen({Key? key, required this.changeUiValue}) : super(key: key);
+  const FamilyMemberListScreen({Key? key, required this.changeUiValue})
+      : super(key: key);
 
   @override
   State<FamilyMemberListScreen> createState() => _FamilyMemberListScreenState();
@@ -34,10 +40,12 @@ class FamilyMemberListScreen extends StatefulWidget {
 class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
   var _future;
   var status;
-  var memberId;
+  var userId;
 
+  final trackFamilyController = Get.put(TrackFamilyListController());
+  final familystatusController = Get.put(FamilyStatusController());
 
-  Future<List<FamilyListDataModel>> getFamilyList() async {
+  /*Future<List<FamilyListDataModel>> getFamilyList() async {
     setState(() {});
     await Preferences.setPreferences();
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
@@ -71,13 +79,13 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
     } else {
       throw Exception('Failed to load');
     }
-  }
+  }*/
 
   @override
   void initState() {
     super.initState();
     setState(() {});
-    _future = getFamilyList();
+    //_future = getFamilyList();
 
     /*if(widget.changeUiValue=='bottomNav'){
 
@@ -86,7 +94,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
       textVisibility = true;
 
     }*/
-
+    userId = Preferences.getId(Preferences.id);
   }
 
   var image;
@@ -100,29 +108,111 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
 
   bool isSwitched = false;
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-
-
-
           backgroundColor: appBlue,
           elevation: 5,
-          title: Text("Other's Live Ride",
-              style: TextStyle(color:  CustomColor.white,fontSize: 20, fontFamily: 'Gilroy',)),
+          title: Text("other's_live_rides".tr,
+              style: TextStyle(
+                color: CustomColor.white,
+                fontSize: 20,
+                fontFamily: 'Gilroy',
+              )),
           leading: IconButton(
-            color:  appWhiteColor,
+            color: appWhiteColor,
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>CustomBottomNav()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CustomBottomNav()));
             },
             icon: const Icon(Icons.arrow_back_outlined),
           ),
         ),
-        body: FutureBuilder<List<FamilyListDataModel>>(
+        body: Obx(() {
+          return trackFamilyController.isLoading.value
+              ? LoaderUtils.loader()
+              : trackFamilyController.getTrackData.isEmpty
+                  ? Center(
+                      child: EmptyScreen(
+                        text: 'family_list_not_found'.tr,
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: trackFamilyController.getTrackData.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return TrackFamilyItem(
+                          familyListDataModel:
+                              trackFamilyController.getTrackData[index],
+                          deleteClick: () {
+                            familyStatusApi(index, userId, "", status);
+                          },
+                        );
+                      });
+        }));
+    /*Padding(
+          padding:
+              const EdgeInsets.only(right: 15, left: 15, top: 25, bottom: 20),
+          child: SizedBox(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /* InkWell( onTap: (){
+                Get.back();
+              },child: Image.asset('new_assets/new_back.png',width: 17,height: 17)),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const NewMyText(textValue: 'Family Lists', fontName: 'Gilroy',
+                      color: appBlack, fontWeight: FontWeight.w700, fontSize: 20),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.only(left: 20),
+                        child: Material(
+                          color: appLightBlue, // button color
+                          child: InkWell(
+                            splashColor: appBlue,
+                            //highlightColor:
+                            //theme.colorScheme.primary.withAlpha(28),
+                            child:  SizedBox(
+                                width: 100,
+                                height: 30,
+                                child: AddCustomButton(press: (){
+
+                                  Get.to(const MapFamilyAdd())?.then((value) async {
+                                    if(value==true){
+                                      await familyListController.familyListApi(Preferences.getId(Preferences.id));
+                                      LoaderUtils.message(value);
+                                    }
+                                  });
+                                }, buttonText: 'Add Family ')
+
+                            ),
+                            onTap: () {
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+
+                ],
+              ),*/
+
+                const SizedBox(height: 20),
+                Expanded(
+                  child:
+                ),
+              ],
+            ),
+          ),
+        ));*/
+    /*FutureBuilder<List<FamilyListDataModel>>(
           future: _future,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -928,8 +1018,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
             }
             return Center(child: CircularProgressIndicator());
           },
-        ));
-
+        )); */
 
     /*FutureBuilder<List<FamilyListDataModel>>(
           future: _future,
@@ -1252,8 +1341,25 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
         )); */
   }
 
-
-  Future<MemberBlockDeleteModel> getMembersStatus(String status) async {
+  void familyStatusApi(
+      int index, String userId, String memberId, String status) async {
+    await familystatusController
+        .getFamilyStatus(userId, memberId, status)
+        .then((value) async {
+      if (value != null) {
+        if (value.status == true) {
+          trackFamilyController.getTrackData.removeAt(index);
+          trackFamilyController.trackFamilyListApi(
+              Preferences.getId(Preferences.id),
+              Preferences.getMobileNumber(Preferences.mobileNumber));
+          Get.back();
+        } else {
+          LoaderUtils.showToast(value.message.toString());
+        }
+      }
+    });
+  }
+  /*Future<MemberBlockDeleteModel> getMembersStatus(String status) async {
     setState(() {});
 
     if (status.toLowerCase().toString() == "Deleted") {
@@ -1327,11 +1433,5 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
     } else {
       throw Exception('Failed to create album.');
     }
-  }
-
-
-
-
-
-
+  }*/
 }

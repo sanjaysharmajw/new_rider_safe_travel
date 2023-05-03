@@ -17,6 +17,7 @@ class GetNotificationController extends GetxController{
 
   Future<CountNotificationModel?> getCount() async {
     String mobileNumber = Preferences.getMobileNumber(Preferences.mobileNumber);
+    String  userId = Preferences.getId(Preferences.id);
     try{
       final response = await http.post(
         Uri.parse(ApiUrl.countNotification),
@@ -28,14 +29,14 @@ class GetNotificationController extends GetxController{
           "mobile_number": mobileNumber,
           "count":false,
           "unread":false,
-          "user_id":Preferences.getId(Preferences.id).toString()
+          "user_id":userId
         }),
       );
       print(jsonEncode(<String, dynamic>{
         "mobile_number": mobileNumber,
         "count":false,
         "unread":false,
-        "user_id":Preferences.getId(Preferences.id).toString()
+        "user_id":userId
       }),);
       Map<String, dynamic> responseBody = json.decode(response.body);
       if (response.statusCode == 200) {

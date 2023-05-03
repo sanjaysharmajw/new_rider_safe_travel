@@ -15,8 +15,12 @@ import 'package:ride_safe_travel/color_constant.dart';
 import 'package:ride_safe_travel/custom_button.dart';
 import 'LoginModule/Error.dart';
 import 'LoginModule/preferences.dart';
+import 'UserFamilyList.dart';
 import 'Utils/Validators.dart';
 import 'Utils/toast.dart';
+import 'color_constant.dart';
+import 'color_constant.dart';
+import 'color_constant.dart';
 
 class MapFamilyAdd extends StatefulWidget {
   const MapFamilyAdd({Key? key}) : super(key: key);
@@ -39,13 +43,13 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       appBar: AppBar(
-        leading:  IconButton(icon: Icon(Icons.keyboard_backspace_sharp,color: CustomColor.black,), onPressed: () {
+        leading:  IconButton(icon: Icon(Icons.keyboard_backspace_sharp, color:  appWhiteColor,), onPressed: () {
           Get.back();
         },),
         centerTitle: false,
         backgroundColor: appBlue,
-        title: const Text("Add Family Member",
-            style: TextStyle(fontFamily: 'transport', fontSize: 18,color: CustomColor.black)),
+        title:  Text("add_family_member".tr,
+            style: TextStyle(color:  appWhiteColor,fontSize: 22, fontFamily: 'Gilroy',)),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -55,8 +59,8 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
             children: [
               const SizedBox(height: 50),
               const SizedBox(height: 20),
-              const Text("User Who can track",
-                  style: TextStyle(fontFamily: 'transport', fontSize: 20)),
+              Text("user_who_can_track".tr,
+                  style: TextStyle(fontFamily: 'Gilroy', fontSize: 20,fontWeight: FontWeight.w600)),
               Padding(
                 padding: const EdgeInsets.all(15),
                 child: TextFormField(
@@ -69,16 +73,16 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
                     if (value == null ||
                         value.isEmpty ||
                         value.length < 2) {
-                      return 'Please enter name!';
+                      return 'please_enter_name!'.tr;
                     }
                     return null;
                   },
                   controller: controllerName,
-                  style: const TextStyle(fontFamily: 'transport', fontSize: 14),
-                  decoration: const InputDecoration(
+                  style: const TextStyle(fontFamily: 'Gilroy', fontSize: 14),
+                  decoration:  InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Enter Name',
-                    hintText: 'Enter Name',
+                    labelText: 'enter_name'.tr,
+                    hintText: 'enter_name'.tr,
                   ),
                 ),
               ),
@@ -94,16 +98,16 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
                     if (value == null ||
                         value.isEmpty ||
                         value.length < 2) {
-                      return 'Please enter valid relation!';
+                      return 'please_enter_valid_relation!'.tr;
                     }
                     return null;
                   },
                   controller: controllerRelation,
-                  style: const TextStyle(fontFamily: 'transport', fontSize: 14),
-                  decoration: const InputDecoration(
+                  style: const TextStyle(fontFamily: 'Gilroy', fontSize: 14),
+                  decoration:  InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Enter Relation',
-                    hintText: 'Enter Your Family Relation',
+                    labelText: 'enter_relation'.tr,
+                    hintText: 'enter_your_family_relation'.tr,
                   ),
                 ),
               ),
@@ -117,17 +121,18 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
                     LengthLimitingTextInputFormatter(10),
                   ],
                   controller: controllerMobile,
-                  style: const TextStyle(fontFamily: 'transport', fontSize: 14),
-                  decoration: const InputDecoration(
+                  keyboardType: TextInputType.number,
+                  style: const TextStyle(fontFamily: 'Gilroy', fontSize: 14),
+                  decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Enter Mobile',
-                    hintText: 'Enter Your Mobile Number',
+                    labelText: 'enter_mobile_number'.tr,
+                    hintText: 'enter_your_mobile_number'.tr,
                   ),
                   validator: (value) {
                     if (value == null ||
                         value.isEmpty ||
                         value.length != 10) {
-                      return 'Please enter valid mobile number!';
+                      return 'please_enter_valid_mobile_number!'.tr;
                     }
                     return null;
                   },
@@ -147,7 +152,7 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
                         controllerMobile.text.toString());
 
                   }
-                }, buttonText: "Add Member"),
+                }, buttonText: "add_member".tr),
               )
              /* RiderButton(
                   click: () {
@@ -176,7 +181,7 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
 
     final response = await http.post(
       Uri.parse(
-          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/addFamilyMemberNew'),
+          'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/addFamilyMemberNew'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': loginToken
@@ -194,8 +199,8 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
       if (status == true) {
         OverlayLoadingProgress.stop();
         ToastMessage.toast(msg);
-        Get.back();
-        Navigator.pop(context);
+        //Get.back();
+        Get.offAll(const FamilyList());
         print(userId + msg);
       } else {
         OverlayLoadingProgress.stop();

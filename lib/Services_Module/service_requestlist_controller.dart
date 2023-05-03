@@ -12,35 +12,35 @@ import 'Requested_servicelist_model.dart';
 
 class ServiceRequestListController extends GetxController{
   var isLoading = true.obs;
-  var requestedList = <RequestedList>[].obs;
-  @override
+  var requestedList = <requestedListData>[].obs;
+ /* @override
   void onInit() {
-    getRequestedServicesList();
+    getRequestedServicesList(lng, lat)
     super.onInit();
-  }
+  }*/
 
-  Future<dynamic> getRequestedServicesList() async {
+  Future<dynamic> getRequestedServicesList(double lng, double lat,) async {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     var userId = Preferences.getId(Preferences.id);
     print("USERID...."+userId.toString());
     try {
       final response = await http.post(
-          Uri.parse("https://i981xwdx4g.execute-api.ap-south-1.amazonaws.com/dev/api/serviceProvider/serviceRequestList"),
+          Uri.parse("https://24txld2sb5.execute-api.ap-south-1.amazonaws.com/dev/api/serviceProvider/serviceRequestList"),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': loginToken
           },
           body: jsonEncode({
             "user_id":userId,
-            "lng":73.34589,
-            "lat":18.78562
+            "lng":lng,
+            "lat":lat
 
           }));
       print(
           jsonEncode({
             "user_id":userId,
-            "lng":73.34589,
-            "lat":18.78562
+            "lng":lng,
+            "lat":lat
 
           })
       );
@@ -49,7 +49,7 @@ class ServiceRequestListController extends GetxController{
 
       if (response.statusCode == 200) {
         isLoading.value = false;
-        RequestedServicelistModel model = RequestedServicelistModel.fromJson(responseBody);
+        RequestedListModel model = RequestedListModel.fromJson(responseBody);
         if (model.status == true) {
           requestedList.value = model.data!;
         }

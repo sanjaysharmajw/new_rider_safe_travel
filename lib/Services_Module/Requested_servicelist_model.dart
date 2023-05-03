@@ -10,12 +10,12 @@ class RequestedServicelistModel {
     if (json['data'] != null) {
       data = [];
       json['data'].forEach((v) {
-        data?.add(RequestedList.fromJson(v));
+        data?.add(requestedListData.fromJson(v));
       });
     }
   }
   bool? status;
-  List<RequestedList>? data;
+  List<requestedListData>? data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

@@ -26,10 +26,12 @@ import 'package:url_launcher/url_launcher.dart';
 import 'BottomSheet/GeocodeResultModel.dart';
 import 'LoginModule/Error.dart';
 import 'Models/sosReasonModel.dart';
+import 'UserFamilyList.dart';
 import 'Utils/exit_alert_dialog.dart';
 import 'Utils/rider_otp.dart';
 import 'bottom_nav/home_page_nav.dart';
 import 'chat_bot/ChatScreen.dart';
+import 'co_passanger/co_passanger_screen.dart';
 import 'color_constant.dart';
 
 class StartRide extends StatefulWidget {
@@ -44,9 +46,7 @@ class StartRide extends StatefulWidget {
       required this.vOwnerName,
       required this.vRegNo,
       required this.driverLicense,
-      required this.otpRide
-
-      })
+      required this.otpRide})
       : super(key: key);
 
   @override
@@ -166,9 +166,9 @@ class _SignUpState extends State<StartRide> {
       currentLocation = cLoc;
       speed = cLoc.speed!;
       //setState(() {});
-     if (cLoc.speed.toString().length > 5) {
+      if (cLoc.speed.toString().length > 5) {
         stopAlertTimer();
-     }
+      }
       print('altitude${cLoc.satelliteNumber}');
       print('speed${cLoc.speed}');
       print('speedAccuracy${cLoc.speedAccuracy}');
@@ -184,9 +184,7 @@ class _SignUpState extends State<StartRide> {
       setState(() {});
       final GoogleMapController controller = await _completer.future;
       if (destinationMarkerLat == 0.0) {
-
-        if(speed>5){
-
+        if (speed > 5) {
           ToastMessage.toast(speed.toString());
           live_polylineCoordinates.add(
               LatLng(currentLocation!.latitude!, currentLocation!.longitude!));
@@ -257,470 +255,495 @@ class _SignUpState extends State<StartRide> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
-    return WillPopScope(
+    return /* WillPopScope(
       onWillPop: () =>
           showExitPopup(context, "Do you want to stop ride?", () async {
         OverlayLoadingProgress.start(context);
         Navigator.pop(context, true);
         await endRide();
       }),
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text(
-            "Ongoing Journey",
-            style: TextStyle(color: CustomColor.white, fontFamily: 'Gilroy',fontSize: 22),
-          ),
-          elevation: 0,
-          backgroundColor: appBlue,
-          leading: IconButton(
-            onPressed: () {
-               OverlayLoadingProgress.stop();
-               Get.offAll(CustomBottomNav());
+      child:*/
+        Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          "ongoing_journey".tr,
+          style: TextStyle(
+              color: CustomColor.white, fontFamily: 'Gilroy', fontSize: 22),
+        ),
+        elevation: 0,
+        backgroundColor: appBlue,
+        leading: IconButton(
+          onPressed: () {
+            OverlayLoadingProgress.stop();
+            Get.offAll(CustomBottomNav());
 
-             /* showExitPopup(context, "Do you want to stop ride?", () async {
+            /* showExitPopup(context, "Do you want to stop ride?", () async {
                 // OverlayLoadingProgress.start(context);
                 //Navigator.pop(context, true);
                 await endRide();
               });*/
-            },
-            icon: Image.asset('assets/map_back.png',color: Colors.white,),
+          },
+          icon: Image.asset(
+            'assets/map_back.png',
+            color: Colors.white,
           ),
-          actions: <Widget>[
-            IconButton(
-                icon: const Icon(Icons.chat),
-                color: CustomColor.white,
-                onPressed: () {
-                  Get.to(const ChatScreen());
-                }),
-            IconButton(
-                icon: const Icon(
-                  Icons.share,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  shareData();
-                }),
-          ],
         ),
-        body: Stack(children: [
-          LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-            return SizedBox(
-              height: constraints.maxHeight / 1.2,
-              child: currentLocation == null
-                  ? const Center(child: Text("Loading Map..."))
-                  : GoogleMap(
-                      initialCameraPosition: _cameraPosition,
-                      mapType: MapType.normal,
-                      myLocationEnabled: true,
-                      padding: const EdgeInsets.only(bottom: 60),
-                      compassEnabled: true,
-                      mapToolbarEnabled: true,
-                      myLocationButtonEnabled: true,
-                      polylines: {
-                        Polyline(
-                            polylineId: PolylineId("live_polyline"),
-                            points: live_polylineCoordinates,
-                            color: Colors.blueAccent,
-                            width: 4),
-                        Polyline(
-                            polylineId: PolylineId("route"),
-                            points: polylineCoordinates,
-                            color: Colors.blueAccent,
-                            width: 4)
-                      },
-                      onMapCreated: (GoogleMapController controller) {
-                        _completer.complete(controller);
-                      },
-                      markers: {
-                        Marker(
-                          markerId: const MarkerId("source"),
-                          position: LatLng(currentLocation!.latitude!,
-                              currentLocation!.longitude!),
-                          icon: sourceIcon,
-                        ),
-                        Marker(
-                          markerId: const MarkerId("destination"),
-                          position: LatLng(
-                              destinationMarkerLat, destinationMarkerLng),
-                          icon: destinationIcon,
-                        )
-                      },
+        actions: <Widget>[
+          IconButton(
+              icon: const Icon(Icons.chat),
+              color: CustomColor.white,
+              onPressed: () {
+                Get.to(const ChatScreen());
+              }),
+          IconButton(
+              icon: const Icon(
+                Icons.share,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                shareData();
+              }),
+        ],
+      ),
+      body: Stack(children: [
+        LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+          return SizedBox(
+            height: constraints.maxHeight / 1.2,
+            child: currentLocation == null
+                ? const Center(child: Text("Loading Map..."))
+                : GoogleMap(
+                    initialCameraPosition: _cameraPosition,
+                    mapType: MapType.normal,
+                    myLocationEnabled: true,
+                    padding: const EdgeInsets.only(bottom: 60),
+                    compassEnabled: true,
+                    mapToolbarEnabled: true,
+                    myLocationButtonEnabled: true,
+                    polylines: {
+                      Polyline(
+                          polylineId: PolylineId("live_polyline"),
+                          points: live_polylineCoordinates,
+                          color: Colors.blueAccent,
+                          width: 4),
+                      Polyline(
+                          polylineId: PolylineId("route"),
+                          points: polylineCoordinates,
+                          color: Colors.blueAccent,
+                          width: 4)
+                    },
+                    onMapCreated: (GoogleMapController controller) {
+                      _completer.complete(controller);
+                    },
+                    markers: {
+                      Marker(
+                        markerId: const MarkerId("source"),
+                        position: LatLng(currentLocation!.latitude!,
+                            currentLocation!.longitude!),
+                        icon: sourceIcon,
+                      ),
+                      Marker(
+                        markerId: const MarkerId("destination"),
+                        position:
+                            LatLng(destinationMarkerLat, destinationMarkerLng),
+                        icon: destinationIcon,
+                      )
+                    },
 
-                      // markers: Set<Marker>.of(_markers.values),
-                    ),
-            );
-          }),
-          DraggableScrollableSheet(
-              initialChildSize: 0.30,
-              minChildSize: 0.10,
-              maxChildSize: 1,
-              snapSizes: [0.5, 1],
-              snap: true,
-              builder: (BuildContext context, scrollSheetController) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: CustomColor.white,
-                    borderRadius: BorderRadius.circular(15.r),
+                    // markers: Set<Marker>.of(_markers.values),
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: 10.0.h, horizontal: 20.0.w),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Text('OTP: ${widget.otpRide.toString()}',style: const TextStyle(
-                            fontWeight: FontWeight.w600,fontFamily: 'Gilroy'
-                          )),
-                         const SizedBox(
-                            height: 10,
-                          ),
-                          Card(
-                            child: ListTile(
-                              title: TextFormField(
-                                controller: destinationController,
-                                decoration: const InputDecoration(
-                                    hintText: "Destination",
-                                    hintStyle: TextStyle(
-                                        fontSize: 18, color: Colors.black,fontFamily: 'Gilroy'),
-                                    border: InputBorder.none),
-                                readOnly: true,
-                                onTap: () {
-                                  // getSuggestions();
-                                  showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      context: context,
-                                      builder: (context) {
-                                        return ListView(
-                                          controller: scrollController,
-                                          children: <Widget>[
-                                            SizedBox(
-                                              height: 12.0,
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: <Widget>[
-                                                Container(
-                                                  width: 30,
-                                                  height: 5,
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.grey[300],
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                                  .all(
-                                                              Radius.circular(
-                                                                  12.0))),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              height: 30.0,
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: const <Widget>[
-
-                                                Text(
-                                                  "Select a location",
-                                                  style: TextStyle(
+          );
+        }),
+        DraggableScrollableSheet(
+            initialChildSize: 0.30,
+            minChildSize: 0.10,
+            maxChildSize: 1,
+            snapSizes: [0.5, 1],
+            snap: true,
+            builder: (BuildContext context, scrollSheetController) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: CustomColor.white,
+                  borderRadius: BorderRadius.circular(15.r),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: 10.0.h, horizontal: 20.0.w),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Text('otp: ${widget.otpRide.toString()}'.tr,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontFamily: 'Gilroy')),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Card(
+                          child: ListTile(
+                            title: TextFormField(
+                              controller: destinationController,
+                              decoration: InputDecoration(
+                                  hintText: "destination".tr,
+                                  hintStyle: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontFamily: 'Gilroy'),
+                                  border: InputBorder.none),
+                              readOnly: true,
+                              onTap: () {
+                                // getSuggestions();
+                                showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    context: context,
+                                    builder: (context) {
+                                      return ListView(
+                                        controller: scrollController,
+                                        children: <Widget>[
+                                          SizedBox(
+                                            height: 12.0,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Container(
+                                                width: 30,
+                                                height: 5,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.grey[300],
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                            Radius.circular(
+                                                                12.0))),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 30.0,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: const <Widget>[
+                                              Text(
+                                                "Select a location",
+                                                style: TextStyle(
                                                     fontWeight:
                                                         FontWeight.normal,
                                                     fontSize: 20.0,
-                                                    fontFamily: 'Gilroy'
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              height: 30.0,
-                                            ),
-                                            Padding(
-                                                padding: EdgeInsets.all(15.0),
-                                                child: Autocomplete<Result>(
-                                                    optionsBuilder:
-                                                        (TextEditingValue
-                                                            textEditingValue) {
-                                                      return getSuggestions(
-                                                          textEditingValue);
-                                                    },
-                                                    displayStringForOption:
-                                                        (Result option) =>
-                                                            option.text
-                                                                .toString(),
-                                                    fieldViewBuilder: (BuildContext
-                                                            context,
-                                                        TextEditingController
-                                                            fieldTextEditingController,
-                                                        FocusNode
-                                                            fieldFocusNode,
-                                                        VoidCallback
-                                                            onFieldSubmitted) {
-                                                      return Card(
-                                                        child: ListTile(
-                                                          //leading: Icon(Icons.search),
-                                                          title: TextFormField(
-                                                            onChanged: (value) {
-                                                              setState(() {
-                                                                searchString = value
-                                                                    .toString();
-                                                              });
-                                                            },
-                                                            controller:
-                                                                fieldTextEditingController,
-                                                            focusNode:
-                                                                fieldFocusNode,
-                                                            decoration:
-                                                                InputDecoration(
-                                                                    hintText:
-                                                                        "Search",
-                                                                    hintStyle: TextStyle(fontFamily: 'Gilroy'),
-                                                                    border:
-                                                                        InputBorder
-                                                                            .none,
-                                                                    prefixIcon:
-                                                                        IconButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              // searchMemberApi(mobileController.text,widget.userId);
-                                                                            },
-                                                                            icon:
-                                                                                Icon(
-                                                                              Icons.search,
-                                                                            ))),
-                                                          ),
-                                                          trailing: IconButton(
-                                                              onPressed: () {
-                                                                fieldTextEditingController
-                                                                    .clear();
-                                                              },
-                                                              icon: Icon(
-                                                                  Icons.clear)),
+                                                    fontFamily: 'Gilroy'),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 30.0,
+                                          ),
+                                          Padding(
+                                              padding: EdgeInsets.all(15.0),
+                                              child: Autocomplete<Result>(
+                                                  optionsBuilder:
+                                                      (TextEditingValue
+                                                          textEditingValue) {
+                                                    return getSuggestions(
+                                                        textEditingValue);
+                                                  },
+                                                  displayStringForOption:
+                                                      (Result option) =>
+                                                          option
+                                                              .text
+                                                              .toString(),
+                                                  fieldViewBuilder: (BuildContext
+                                                          context,
+                                                      TextEditingController
+                                                          fieldTextEditingController,
+                                                      FocusNode fieldFocusNode,
+                                                      VoidCallback
+                                                          onFieldSubmitted) {
+                                                    return Card(
+                                                      child: ListTile(
+                                                        //leading: Icon(Icons.search),
+                                                        title: TextFormField(
+                                                          onChanged: (value) {
+                                                            setState(() {
+                                                              searchString = value
+                                                                  .toString();
+                                                            });
+                                                          },
+                                                          controller:
+                                                              fieldTextEditingController,
+                                                          focusNode:
+                                                              fieldFocusNode,
+                                                          decoration:
+                                                              InputDecoration(
+                                                                  hintText:
+                                                                      "Search",
+                                                                  hintStyle: TextStyle(
+                                                                      fontFamily:
+                                                                          'Gilroy'),
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                  prefixIcon:
+                                                                      IconButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            // searchMemberApi(mobileController.text,widget.userId);
+                                                                          },
+                                                                          icon:
+                                                                              Icon(
+                                                                            Icons.search,
+                                                                          ))),
                                                         ),
-                                                      );
-                                                    },
-                                                    onSelected:
-                                                        (Result selection) {
-                                                      print(
-                                                          'Selected: ${selection.text}');
-                                                      fieldTextEditingController
-                                                              .text =
-                                                          selection.text
-                                                              .toString();
-                                                    },
-                                                    optionsViewBuilder:
-                                                        (BuildContext context,
-                                                            AutocompleteOnSelected<
-                                                                    Result>
-                                                                onSelected,
-                                                            Iterable<Result>
-                                                                options) {
-                                                      return Align(
-                                                        alignment:
-                                                            Alignment.topLeft,
-                                                        child: Material(
-                                                          child: Container(
-                                                            width: 365,
-                                                            //color: Colors.grey,
-                                                            child: ListView
-                                                                .builder(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .all(
-                                                                          10.0),
-                                                              itemCount: options
-                                                                  .length,
-                                                              itemBuilder:
-                                                                  (BuildContext
-                                                                          context,
-                                                                      int index) {
-                                                                final Result
-                                                                    option =
-                                                                    options.elementAt(
-                                                                        index);
+                                                        trailing: IconButton(
+                                                            onPressed: () {
+                                                              fieldTextEditingController
+                                                                  .clear();
+                                                            },
+                                                            icon: Icon(
+                                                                Icons.clear)),
+                                                      ),
+                                                    );
+                                                  },
+                                                  onSelected:
+                                                      (Result selection) {
+                                                    print(
+                                                        'Selected: ${selection.text}');
+                                                    fieldTextEditingController
+                                                            .text =
+                                                        selection.text
+                                                            .toString();
+                                                  },
+                                                  optionsViewBuilder:
+                                                      (BuildContext context,
+                                                          AutocompleteOnSelected<
+                                                                  Result>
+                                                              onSelected,
+                                                          Iterable<Result>
+                                                              options) {
+                                                    return Align(
+                                                      alignment:
+                                                          Alignment.topLeft,
+                                                      child: Material(
+                                                        child: Container(
+                                                          width: 365,
+                                                          //color: Colors.grey,
+                                                          child:
+                                                              ListView.builder(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    10.0),
+                                                            itemCount:
+                                                                options.length,
+                                                            itemBuilder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    int index) {
+                                                              final Result
+                                                                  option =
+                                                                  options
+                                                                      .elementAt(
+                                                                          index);
 
-                                                                return GestureDetector(
-                                                                  onTap:
-                                                                      () async {
-                                                                    onSelected(
-                                                                        option);
-                                                                    destinationController
-                                                                            .text =
+                                                              return GestureDetector(
+                                                                onTap:
+                                                                    () async {
+                                                                  onSelected(
+                                                                      option);
+                                                                  destinationController
+                                                                          .text =
+                                                                      option
+                                                                          .text
+                                                                          .toString();
+                                                                  OverlayLoadingProgress
+                                                                      .start(
+                                                                          context);
+                                                                  await getDestination(
+                                                                      option
+                                                                          .placeId);
+
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child: Card(
+                                                                  elevation: 1,
+                                                                  margin: EdgeInsets
+                                                                      .symmetric(
+                                                                          vertical:
+                                                                              2),
+                                                                  child:
+                                                                      ListTile(
+                                                                    leading:
+                                                                        Icon(
+                                                                      Icons
+                                                                          .location_on_rounded,
+                                                                      color: Colors
+                                                                          .red,
+                                                                    ),
+                                                                    title: Text(
                                                                         option
                                                                             .text
-                                                                            .toString();
-                                                                    OverlayLoadingProgress
-                                                                        .start(
-                                                                            context);
-                                                                    await getDestination(
-                                                                        option
-                                                                            .placeId);
-
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  child: Card(
-                                                                    elevation:
-                                                                        1,
-                                                                    margin: EdgeInsets
-                                                                        .symmetric(
-                                                                            vertical:
-                                                                                2),
-                                                                    child:
-                                                                        ListTile(
-                                                                      leading:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .location_on_rounded,
-                                                                        color: Colors
-                                                                            .red,
-                                                                      ),
-                                                                      title: Text(
-                                                                          option
-                                                                              .text
-                                                                              .toString(),
-                                                                          style:
-                                                                              const TextStyle(color: Colors.black)),
-                                                                    ),
+                                                                            .toString(),
+                                                                        style: const TextStyle(
+                                                                            color:
+                                                                                Colors.black)),
                                                                   ),
-                                                                );
-                                                              },
-                                                            ),
+                                                                ),
+                                                              );
+                                                            },
                                                           ),
                                                         ),
-                                                      );
-                                                    }))
-                                          ],
-                                        );
-                                      });
-                                },
-                              ),
+                                                      ),
+                                                    );
+                                                  }))
+                                        ],
+                                      );
+                                    });
+                              },
                             ),
                           ),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      showExitPopup(
-                                          context, "Do you want to stop ride?",
-                                          () async {
-                                        OverlayLoadingProgress.start(context);
-                                        Navigator.pop(context, true);
-                                        await endRide();
-                                      });
-                                      //showAlertDialog(context);
-                                    },
-                                    child: Column(
-                                      children: [
-                                        Image.asset("images/End_Ride.png",
-                                            width: 50.w, height: 50.h),
-                                        SizedBox(height: 10.h),
-                                        Text("End Ride",
-                                            style: TextStyle(
-                                                fontFamily: 'Gilroy',
-                                                fontSize: 12.sp)),
-                                      ],
-                                    ),
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    showExitPopup(
+                                        context, "Do you want to stop ride?",
+                                        () async {
+                                      OverlayLoadingProgress.start(context);
+                                      Navigator.pop(context, true);
+                                      await endRide();
+                                    });
+                                    //showAlertDialog(context);
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Image.asset("images/End_Ride.png",
+                                          width: 50.w, height: 50.h),
+                                      SizedBox(height: 10.h),
+                                      Text("End Ride",
+                                          style: TextStyle(
+                                              fontFamily: 'Gilroy',
+                                              fontSize: 12.sp)),
+                                    ],
                                   ),
-                                ],
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  showMenu();
-                                },
-                                child: Column(
-                                  children: [
-                                    Image.asset("images/Ride_Details.png",
-                                        width: 50.w, height: 50.h),
-                                    SizedBox(height: 10.h),
-                                    Text("Ride Details",
-                                        style: TextStyle(
-                                            fontFamily: 'Gilroy',
-                                            fontSize: 12.sp)),
-                                  ],
                                 ),
-                              ),
-                              InkWell(
-                                onTap: () async {
-                                  Get.to(const MapFamilyAdd());
-                                },
-                                child: Column(
-                                  children: [
-                                    Image.asset("images/family_icons.png",
-                                        width: 50.w, height: 50.h),
-                                    SizedBox(height: 10.h),
-                                    Text("Add Family",
-                                        style: TextStyle(
-                                            fontFamily: 'Gilroy',
-                                            fontSize: 12.sp)),
-                                  ],
-                                ),
-                              ),
-                              Column(
+                              ],
+                            ),
+                            InkWell(
+                              onTap: () {
+                                showMenu();
+                              },
+                              child: Column(
                                 children: [
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: appBlue),
-                                    child: Center(
-                                      child: IconButton(
-                                        icon: const Icon(
-                                          Icons.navigation_outlined,
-                                          color: Colors.black,
-                                        ),
-                                        onPressed: () async {
-                                          await launchUrl(Uri.parse(
-                                              'google.navigation:q=$destinationMarkerLat, $destinationMarkerLng&key=AIzaSyAmOl-QJnc2Spwuh8GAoqx9Z3Wz-ez73V8'));
-                                        },
-                                      ),
-                                    ),
-                                  ),
+                                  Image.asset("images/Ride_Details.png",
+                                      width: 50.w, height: 50.h),
                                   SizedBox(height: 10.h),
-                                  Text("Navigate",
+                                  Text("Ride Details",
                                       style: TextStyle(
                                           fontFamily: 'Gilroy',
                                           fontSize: 12.sp)),
                                 ],
                               ),
-                              Column(
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                Get.to(FamilyList());
+                                // Get.to(const MapFamilyAdd());
+                              },
+                              child: Column(
                                 children: [
-                                  InkWell(
-                                    onTap: () {
-                                      sos();
-                                      //showExitPopup(
-                                      //context, "Are you in trouble?", "Reason" , () {
-                                      //OverlayLoadingProgress.start(context);
-                                      //  SOSNotification();
-                                      //  });
-                                    },
-                                    child: Column(
-                                      children: [
-                                        Image.asset("images/SOS.png",
-                                            width: 50.w, height: 50.h),
-                                      ],
-                                    ),
-                                  ),
+                                  Image.asset("images/family_icons.png",
+                                      width: 50.w, height: 50.h),
+                                  SizedBox(height: 10.h),
+                                  Text("Add Family",
+                                      style: TextStyle(
+                                          fontFamily: 'Gilroy',
+                                          fontSize: 12.sp)),
                                 ],
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                            Column(
+                              children: [
+                                Container(
+                                  decoration: const BoxDecoration(
+                                      shape: BoxShape.circle, color: appBlue),
+                                  child: Center(
+                                    child: IconButton(
+                                      icon: const Icon(
+                                        Icons.navigation_outlined,
+                                        color: Colors.black,
+                                      ),
+                                      onPressed: () async {
+                                        await launchUrl(Uri.parse(
+                                            'google.navigation:q=$destinationMarkerLat, $destinationMarkerLng&key=AIzaSyAmOl-QJnc2Spwuh8GAoqx9Z3Wz-ez73V8'));
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10.h),
+                                Text("Navigate",
+                                    style: TextStyle(
+                                        fontFamily: 'Gilroy', fontSize: 12.sp)),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    sos();
+                                    //showExitPopup(
+                                    //context, "Are you in trouble?", "Reason" , () {
+                                    //OverlayLoadingProgress.start(context);
+                                    //  SOSNotification();
+                                    //  });
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Image.asset("images/SOS.png",
+                                          width: 50.w, height: 50.h),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                );
-              }),
-          roundTextWidget(textValue: speed.toStringAsFixed(1)),
-        ]),
-      ),
+                ),
+              );
+            }),
+        roundTextWidget(textValue: speed.toStringAsFixed(1)),
+        Positioned(
+            top: 50,
+            child: InkWell(
+              onTap: () {
+                Get.to(DriverCoPassScreen(rideId: widget.riderId.toString()));
+              },
+              child: Padding(
+                  padding: EdgeInsets.only(left: 8,right: 8,top: 13),
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                        color: CustomColor.yellow,
+                        borderRadius: BorderRadius.circular(100)),
+                    child: Center(
+                        child: Image.asset('new_assets/guest.png',
+                            width: 30, height: 30)),
+                  )),
+            )),
+      ]),
+      //   ),
     );
   }
 
@@ -789,7 +812,7 @@ class _SignUpState extends State<StartRide> {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
         Uri.parse(
-            'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/endRide'),
+            'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/endRide'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': loginToken
@@ -820,7 +843,7 @@ class _SignUpState extends State<StartRide> {
         OverlayLoadingProgress.stop();
         ToastMessage.toast(msg);
         socket.disconnect();
-        stopAlertValue="Yes";
+        stopAlertValue = "Yes";
         Preferences.setRideOtp('');
         Get.to(const CustomBottomNav()); //MainPage
       } else {
@@ -864,11 +887,10 @@ class _SignUpState extends State<StartRide> {
         OverlayLoadingProgress.stop();
         ToastMessage.toast(msg.toString());
         Navigator.of(context).pop();
-        stopAlertValue="Yes";
+        stopAlertValue = "Yes";
         setState(() {
           sosStatus();
         });
-
       } else {
         OverlayLoadingProgress.stop();
         ToastMessage.toast(msg.toString());
@@ -961,18 +983,16 @@ class _SignUpState extends State<StartRide> {
         wayPoints: [PolylineWayPoint(location: wayPoints, stopOver: false)],
       );
       if (result.points.isNotEmpty) {
-        result.points.forEach(
-          (PointLatLng point) =>{
-           // ToastMessage.toast(speed.toString()),
-             // if(speed>=5) //kilometer check if greater than 10 meter
-             // {
-                polylineCoordinates.add(LatLng(point.latitude, point.longitude))
+        result.points.forEach((PointLatLng point) => {
+              // ToastMessage.toast(speed.toString()),
+              // if(speed>=5) //kilometer check if greater than 10 meter
+              // {
+              polylineCoordinates.add(LatLng(point.latitude, point.longitude))
               //}
               //else
-               // {
-                //}
-          }
-        );
+              // {
+              //}
+            });
         setState(() {});
       }
       //await getDistance(currentLocation!.latitude!,currentLocation!.longitude!,destinationMarkerLat,destinationMarkerLng);
@@ -1009,7 +1029,7 @@ class _SignUpState extends State<StartRide> {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
       Uri.parse(
-          "https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/sosReasonMaster"),
+          "https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/sosReasonMaster"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': loginToken
@@ -1035,15 +1055,15 @@ class _SignUpState extends State<StartRide> {
       throw Exception('Unexpected error occured!');
     }
   }
+
 //stopAlert
   void stopAlertTimer() {
-
     Timer.periodic(const Duration(minutes: 10), (timers) {
-      if(stopAlertValue=="Yes") {
+      if (stopAlertValue == "Yes") {
         setState(() {
           timers.cancel();
         });
-      }else{
+      } else {
         stopAlert();
       }
     });
@@ -1055,11 +1075,11 @@ class _SignUpState extends State<StartRide> {
 
   void sosStatus() {
     Timer.periodic(const Duration(minutes: 10), (timers) {
-      if(Sos_status=="Yes") {
+      if (Sos_status == "Yes") {
         setState(() {
           timers.cancel();
         });
-      }else{
+      } else {
         sosHelpAlert();
       }
     });
@@ -1090,7 +1110,7 @@ class _SignUpState extends State<StartRide> {
               child: const Text('End Rider'),
               onPressed: () {
                 showExitPopup(context, "Do you want to stop ride?", () async {
-                   OverlayLoadingProgress.start(context);
+                  OverlayLoadingProgress.start(context);
                   //Navigator.pop(context, true);
                   await endRide();
                 });
@@ -1107,85 +1127,54 @@ class _SignUpState extends State<StartRide> {
       },
     );
   }
-  void sos(){
+
+  void sos() {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return StatefulBuilder(builder:
-              (BuildContext context,
-              StateSetter setState) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
               content: Container(
                 height: 190,
                 child: Column(
-                  crossAxisAlignment:
-                  CrossAxisAlignment
-                      .start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                        "Are you in trouble? Please select your reason : "),
+                    Text("Are you in trouble? Please select your reason : "),
                     SizedBox(height: 15),
                     Column(
-                      mainAxisAlignment:
-                      MainAxisAlignment
-                          .center,
-                      crossAxisAlignment:
-                      CrossAxisAlignment
-                          .center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         SizedBox(
                           height: 65,
                           child: Card(
-                            color:
-                            Colors.white,
+                            color: Colors.white,
                             shape: UnderlineInputBorder(
-                                borderRadius:
-                                BorderRadius
-                                    .circular(
-                                    10),
-                                borderSide:
-                                BorderSide(
-                                    color:
-                                    appBlue)),
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: appBlue)),
                             child: Padding(
-                              padding:
-                              EdgeInsets
-                                  .all(
-                                  15),
-                              child:
-                              DropdownButton(
-                                underline:
-                                Container(),
+                              padding: EdgeInsets.all(15),
+                              child: DropdownButton(
+                                underline: Container(),
                                 // hint: Text("Select State"),
-                                icon: Icon(Icons
-                                    .keyboard_arrow_down),
+                                icon: Icon(Icons.keyboard_arrow_down),
                                 isDense: true,
-                                isExpanded:
-                                true,
+                                isExpanded: true,
 
-                                items: selectedReason
-                                    .map((e) {
+                                items: selectedReason.map((e) {
                                   return DropdownMenuItem(
-                                    value: e[
-                                    'name']
-                                        .toString(),
-                                    child: Text(
-                                        e['name']
-                                            .toString()),
+                                    value: e['name'].toString(),
+                                    child: Text(e['name'].toString()),
                                   );
                                 }).toList(),
                                 value: reason,
-                                onChanged:
-                                    (value) {
-                                  setState(
-                                          () {
-                                        Sos_status =
-                                        "SOS";
-                                        reason =
-                                            value;
-                                        isSelected =
-                                        true;
-                                      });
+                                onChanged: (value) {
+                                  setState(() {
+                                    Sos_status = "SOS";
+                                    reason = value;
+                                    isSelected = true;
+                                  });
                                 },
                               ),
                             ),
@@ -1199,44 +1188,28 @@ class _SignUpState extends State<StartRide> {
                     Row(
                       children: [
                         Expanded(
-                          child:
-                          ElevatedButton(
+                          child: ElevatedButton(
                             onPressed: () {
-                              OverlayLoadingProgress
-                                  .start(
-                                  context);
+                              OverlayLoadingProgress.start(context);
                               SOSNotification();
                             },
-                            child:
-                            Text("Yes"),
-                            style: ElevatedButton
-                                .styleFrom(
-                                primary:
-                                appBlue),
+                            child: Text("Yes"),
+                            style: ElevatedButton.styleFrom(primary: appBlue),
                           ),
                         ),
                         SizedBox(width: 15),
                         Expanded(
-                            child:
-                            ElevatedButton(
-                              onPressed: () {
-                                print(
-                                    'no selected');
-                                Navigator.of(
-                                    context)
-                                    .pop();
-                              },
-                              child: Text("No",
-                                  style: TextStyle(
-                                      color: Colors
-                                          .black)),
-                              style:
-                              ElevatedButton
-                                  .styleFrom(
-                                primary:
-                                Colors.white,
-                              ),
-                            ))
+                            child: ElevatedButton(
+                          onPressed: () {
+                            print('no selected');
+                            Navigator.of(context).pop();
+                          },
+                          child:
+                              Text("No", style: TextStyle(color: Colors.black)),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.white,
+                          ),
+                        ))
                       ],
                     )
                   ],
@@ -1246,6 +1219,7 @@ class _SignUpState extends State<StartRide> {
           });
         });
   }
+
   Future<void> sosHelpAlert() async {
     return showDialog<void>(
       context: context,
@@ -1265,14 +1239,14 @@ class _SignUpState extends State<StartRide> {
               child: const Text('No'),
               onPressed: () {
                 Navigator.pop(context, true);
-                Sos_status="No";
+                Sos_status = "No";
               },
             ),
             TextButton(
               child: const Text('Yes'),
               onPressed: () {
                 Navigator.pop(context, true);
-                Sos_status="Yes";
+                Sos_status = "Yes";
                 setState(() {
                   timers.cancel();
                 });

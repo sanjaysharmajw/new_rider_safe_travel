@@ -41,7 +41,7 @@ class _UserFamilyListState extends State<TrackingMeList> {
     String userId = Preferences.getId(Preferences.id).toString();
     final response = await http.post(
       (Uri.parse(
-          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/myFamilyList')), //old end url: userFamilyList
+          'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/myFamilyList')), //old end url: userFamilyList
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

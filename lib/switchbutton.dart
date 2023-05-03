@@ -237,7 +237,7 @@ class _ToggleSwitchButtonState extends State<ToggleSwitchButton> {
     String userId = Preferences.getId(Preferences.id).toString();
     final response = await http.post(
       Uri.parse(
-          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/deleteblockFamilyMember'),
+          'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/deleteblockFamilyMember'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

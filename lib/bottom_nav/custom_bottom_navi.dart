@@ -30,16 +30,16 @@ class UserDashBoardScreenState extends State<CustomBottomNav> {
     const HomePageNav(),
     const FamilyMemberListScreen(changeUiValue: 'bottomNav'),
      MyRidesPage(changeAppbar: 'bottomNav',),
-     RejectedServiceList(changeColor: 'bottomNav',),
+     RejectedServiceList(),
      ProfileNav(backbutton: 'bottomNav',),
   ];
 
-  List<BottomNavigationBarItem> icons =const [
-    BottomNavigationBarItem(icon: Icon(FeatherIcons.home), label: 'Home'),
-    BottomNavigationBarItem(icon: Icon(Icons.assistant_navigation), label: "Track Family "),
-    BottomNavigationBarItem(icon: Icon(Icons.directions_car_outlined), label: 'My Rides'),
-    BottomNavigationBarItem(icon: Icon(Icons.car_repair_outlined), label: 'Services'),
-    BottomNavigationBarItem(icon: Icon(FeatherIcons.user), label: 'Profile')
+  List<BottomNavigationBarItem> icons = [
+    BottomNavigationBarItem(icon: Icon(FeatherIcons.home), label: 'home'.tr),
+    BottomNavigationBarItem(icon: Icon(Icons.assistant_navigation), label: 'track_family'.tr),
+    BottomNavigationBarItem(icon: Icon(Icons.directions_car_outlined), label: 'my_rides'.tr),
+    BottomNavigationBarItem(icon: Icon(Icons.car_repair_outlined), label: 'services'.tr),
+    BottomNavigationBarItem(icon: Icon(FeatherIcons.user), label: 'profile'.tr)
   ];
 
 

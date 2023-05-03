@@ -11,29 +11,41 @@ class ProfileText extends StatelessWidget {
   final String title;
   final String subTitle;
   final IconData icons;
-
-  const ProfileText({Key? key, required this.title, required this.subTitle, required this.icons,}) : super(key: key);
+  final VoidCallback voidCallback;
+  const ProfileText({Key? key, required this.title, required this.subTitle, required this.icons,required this.voidCallback}) : super(key: key);
 
   @override 
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Row(
-        children:  [
-          Icon(icons),
-          const SizedBox(
-            height: 10,width: 30,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MyText(text: title,  fontFamily: 'Gilroy', color: Colors.black, fontSize: 16,),
-              const SizedBox(height: 5),
-              MyText(text: subTitle,  fontFamily: 'Gilroy', color: Colors.black, fontSize: 12),
-            ],
-          ),
+      padding: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+      child: GestureDetector(
+        onTap: voidCallback,
+        child: Container(
+          height: 55,
+          width: 500,
+          color: Colors.transparent,
+          child: Center(
+            child: Row(
+              children:  [
+                Icon(icons),
+                const SizedBox(
+                  height: 10,width: 30,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
 
-        ],
+                  children: [
+                    MyText(text: title,  fontFamily: 'Gilroy', color: Colors.black, fontSize: 16,),
+                    const SizedBox(height: 5),
+                    MyText(text: subTitle,  fontFamily: 'Gilroy', color: Colors.black, fontSize: 12),
+                  ],
+                ),
+
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

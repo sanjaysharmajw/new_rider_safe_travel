@@ -28,6 +28,7 @@ class Preferences {
   static const String rideOtp = "RIDEOTP";
   static const String newRiderId = "NEWRIDERID";
   static const String loginToken = 'token';
+  static const String language = 'Language';
 
   static Future<void> setPreferences() async {
     instance = await SharedPreferences.getInstance();
@@ -237,6 +238,14 @@ class Preferences {
 
   static dynamic getPinCode(String key) {
     return Preferences.instance?.get(key);
+  }
+
+  static Future<bool> setLanguage(String value) {
+    return Preferences.instance!.setString(language, value);
+  }
+
+  static dynamic getLanguage() {
+    return Preferences.instance!.get(language);
   }
 
   ///Singleton factory

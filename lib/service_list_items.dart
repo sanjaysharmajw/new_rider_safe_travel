@@ -9,6 +9,7 @@ import 'Error.dart';
 import 'LoginModule/custom_color.dart';
 import 'LoginModule/preferences.dart';
 import 'SearchServicesModel.dart';
+import 'controller/location_controller.dart';
 
 
 class ServiceListItems extends StatelessWidget {
@@ -27,13 +28,15 @@ class ServiceListItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locationController=Get.put(LocationController());
     serviceId = data.serviceId.toString();
     Id = data.id.toString();
     comment = commentController.text.toString();
-    //serviceProvideId = data.
-    lat = data.addressDetails?.lat;
-    lng = data.addressDetails?.lng;
-    userId = data.userId.toString();
+    serviceProvideId = data.serviceProviderId.toString();
+    lat =locationController.locationData!.latitude!;
+    lng = locationController.locationData!.longitude!;
+    userId = Preferences.getId(Preferences.id);
+
 
     return Card(
         elevation: 15,

@@ -24,7 +24,7 @@ class ServiceTypeController extends GetxController{
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     try {
       final response = await http.post(
-          Uri.parse(ApiUrl.getserviceType),
+          Uri.parse("https://24txld2sb5.execute-api.ap-south-1.amazonaws.com/dev/api/serviceProvider/serviceTypeMasterList"),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': loginToken

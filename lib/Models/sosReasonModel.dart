@@ -11,14 +11,14 @@ class SosReasonModel {
     if (json['data'] != null) {
       data = [];
       json['data'].forEach((v) {
-        data?.add(Data.fromJson(v));
+        data?.add(sosReasonData.fromJson(v));
       });
     }
   }
   bool? status;
-  List<Data>? data;
+  List<sosReasonData>? data;
 SosReasonModel copyWith({  bool? status,
-  List<Data>? data,
+  List<sosReasonData>? data,
 }) => SosReasonModel(  status: status ?? this.status,
   data: data ?? this.data,
 );
@@ -33,22 +33,22 @@ SosReasonModel copyWith({  bool? status,
 
 }
 
-Data dataFromJson(String str) => Data.fromJson(json.decode(str));
-String dataToJson(Data data) => json.encode(data.toJson());
-class Data {
-  Data({
+sosReasonData dataFromJson(String str) => sosReasonData.fromJson(json.decode(str));
+String dataToJson(sosReasonData data) => json.encode(data.toJson());
+class sosReasonData {
+  sosReasonData({
       this.id, 
       this.name,});
 
-  Data.fromJson(dynamic json) {
+  sosReasonData.fromJson(dynamic json) {
     id = json['_id'];
     name = json['name'];
   }
   String? id;
   String? name;
-Data copyWith({  String? id,
+  sosReasonData copyWith({  String? id,
   String? name,
-}) => Data(  id: id ?? this.id,
+}) => sosReasonData(  id: id ?? this.id,
   name: name ?? this.name,
 );
   Map<String, dynamic> toJson() {

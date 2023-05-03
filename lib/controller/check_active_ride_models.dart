@@ -89,7 +89,9 @@ class Data {
       String? vehicleFitnessValidity, 
       String? vehiclePucValidity, 
       String? vehicleInsuranceValidity, 
-      String? vehiclePhoto,}){
+      String? vehiclePhoto,
+    double? rating,
+  }){
     _id = id;
     _userId = userId;
     _driverId = driverId;
@@ -134,6 +136,7 @@ class Data {
     _vehiclePucValidity = vehiclePucValidity;
     _vehicleInsuranceValidity = vehicleInsuranceValidity;
     _vehiclePhoto = vehiclePhoto;
+    _rating = rating;
 }
 
   Data.fromJson(dynamic json) {
@@ -180,6 +183,7 @@ class Data {
     _vehiclePucValidity = json['vehicle_pucValidity'];
     _vehicleInsuranceValidity = json['vehicle_insuranceValidity'];
     _vehiclePhoto = json['vehicle_photo'];
+    _rating = json['rating'];
   }
   String? _id;
   String? _userId;
@@ -225,6 +229,7 @@ class Data {
   String? _vehiclePucValidity;
   String? _vehicleInsuranceValidity;
   String? _vehiclePhoto;
+  double? _rating;
 Data copyWith({  String? id,
   String? userId,
   String? driverId,
@@ -269,6 +274,7 @@ Data copyWith({  String? id,
   String? vehiclePucValidity,
   String? vehicleInsuranceValidity,
   String? vehiclePhoto,
+  double? rating,
 }) => Data(  id: id ?? _id,
   userId: userId ?? _userId,
   driverId: driverId ?? _driverId,
@@ -313,6 +319,7 @@ Data copyWith({  String? id,
   vehiclePucValidity: vehiclePucValidity ?? _vehiclePucValidity,
   vehicleInsuranceValidity: vehicleInsuranceValidity ?? _vehicleInsuranceValidity,
   vehiclePhoto: vehiclePhoto ?? _vehiclePhoto,
+  rating: rating ?? _rating,
 );
   String? get id => _id;
   String? get userId => _userId;
@@ -358,6 +365,7 @@ Data copyWith({  String? id,
   String? get vehiclePucValidity => _vehiclePucValidity;
   String? get vehicleInsuranceValidity => _vehicleInsuranceValidity;
   String? get vehiclePhoto => _vehiclePhoto;
+  double? get rating => _rating;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -409,6 +417,7 @@ Data copyWith({  String? id,
     map['vehicle_pucValidity'] = _vehiclePucValidity;
     map['vehicle_insuranceValidity'] = _vehicleInsuranceValidity;
     map['vehicle_photo'] = _vehiclePhoto;
+    map['rating'] = _rating;
     return map;
   }
 

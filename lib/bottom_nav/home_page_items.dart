@@ -32,9 +32,10 @@ class HomePageItems extends StatelessWidget {
           borderRadius: BorderRadius.circular(4),
           color: backgroundColor,
         ),
-        height: 100,
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         child: Container(
-          padding: const EdgeInsets.only(bottom: 20, left: 10),
+          padding: const EdgeInsets.only(bottom: 10, left: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,

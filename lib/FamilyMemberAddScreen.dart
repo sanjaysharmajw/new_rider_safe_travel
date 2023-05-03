@@ -187,7 +187,7 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
       Uri.parse(
-          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/addFamilyMemberNew'),
+          'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/addFamilyMemberNew'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': loginToken

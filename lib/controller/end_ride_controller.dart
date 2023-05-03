@@ -18,7 +18,7 @@ import '../bottom_nav/custom_bottom_navi.dart';
 class CheckUserController extends GetxController{
 
   Future<RiderNewRegisterLoginModel?> checkActiveUser(String? userId) async {
-    LoaderUtils.showLoader('Please wait...');
+    //LoaderUtils.showLoader('Please wait...');
 
     try{
       final response = await http.post(

@@ -315,7 +315,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                   size: 25,
                 )),
           ),
-          title: Text("Edit your profile",style: TextStyle(fontFamily: "Gilroy",fontSize: 22,color: Colors.white),),
+          title: Text("edit_your_profile".tr,style: TextStyle(fontFamily: "Gilroy",fontSize: 22,color: Colors.white),),
 
         ),
         body: Container(
@@ -461,7 +461,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               Container(
                                 width: 95,
                                 child: Text(
-                                  "First Name",
+                                  "first_name".tr,
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.bold,
@@ -508,7 +508,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                         },
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
-                                            return 'Please enter your first name';
+                                            return 'please_enter_your_first_name'.tr;
                                           }
                                           return value.length < 2 ? 'Name must be greater than two characters' : null;
                                         },
@@ -527,7 +527,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               Container(
                                 width: 95,
                                 child: Text(
-                                  "Last Name",
+                                  "last_name".tr,
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.bold,
@@ -571,7 +571,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                         },
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
-                                            return 'Please enter your last name';
+                                            return 'please_enter_your_last_name'.tr;
                                           }
                                           return value.length < 2 ? 'Name must be greater than two characters' : null;
                                         },
@@ -590,7 +590,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               Container(
                                 width: 95,
                                 child: Text(
-                                  "Email Id",
+                                  "email_id".tr,
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.bold,
@@ -635,14 +635,14 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                         validator: (value) {
                                           if (value == null ||
                                               value.isEmpty) {
-                                            return 'Email is Required !';
+                                            return 'email_is_required !'.tr;
                                           } if (
                                           !RegExp(
                                             r'^[a-z0-9]+@[a-z]+\.[a-z]')
                                           .hasMatch(value)
                                          // EmailValidator.validate(value)
                                           ) {
-                                            return 'Email is Required !';
+                                            return 'email_is_required !'.tr;
                                           }
                                           return null ;
                                         },
@@ -662,7 +662,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               Container(
                                 width: 90 ,
                                 child: Text(
-                                  "DOB",
+                                  "dob".tr,
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.bold,
@@ -701,7 +701,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       validator: (value) {
                                         if (value == null ||
                                             value.isEmpty) {
-                                          return 'Please enter your Date of Birth';
+                                          return 'please_enter_your_date_of_birth'.tr;
                                         }
                                         return null;
                                       },
@@ -724,7 +724,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               Container(
                                 width: 90,
                                 child: Text(
-                                  "Blood Group",
+                                  "blood_group".tr,
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.bold,
@@ -770,12 +770,12 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                         validator: (value) {
                                           if (value == null ||
                                               value.isEmpty) {
-                                            return 'Blood Group is Required !';
+                                            return 'blood_group_is_required !'.tr;
                                           }
                                           if(value.length < 4){
                                             return null;
                                           }
-                                          return 'Blood Group is Required !';
+                                          return 'blood_group_is_required !'.tr;
                                         },
                                       ),
                                     ),
@@ -793,7 +793,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               Container(
                                 width: 90,
                                 child: Text(
-                                  "State",
+                                  "state".tr,
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.bold,
@@ -839,7 +839,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                         validator: (value) {
                                           if (value == null ||
                                               value.isEmpty) {
-                                            return 'Please enter your state name !';
+                                            return 'please_enter_your_state_name !'.tr;
                                           }
                                           return null;
                                         },
@@ -859,7 +859,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               Container(
                                 width: 90,
                                 child: Text(
-                                  "City",
+                                  "city".tr,
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.bold,
@@ -905,7 +905,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                         validator: (value) {
                                           if (value == null ||
                                               value.isEmpty ) {
-                                            return 'Please enter your city name!';
+                                            return 'please_enter_your_city_name!'.tr;
                                           }
                                           return null;
                                         },
@@ -925,7 +925,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               Container(
                                 width: 90,
                                 child: Text(
-                                  " PinCode",
+                                  "pin_code".tr,
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.bold,
@@ -956,7 +956,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                             color: CustomColor.riderprofileColor),
                                         controller: pinController,
                                         textCapitalization: TextCapitalization.words,
-                                        keyboardType: TextInputType.text,
+                                        keyboardType: TextInputType.number,
 
                                         decoration: InputDecoration(
                                           border: const UnderlineInputBorder(),
@@ -971,7 +971,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                         validator: (value) {
                                           if (value == null ||
                                               value.isEmpty || value.length != 6) {
-                                            return 'Please enter 6 digit number !';
+                                            return 'please_enter_6_digit_number !';
                                           }
                                           return null;
                                         },
@@ -993,7 +993,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               Padding(
                                 padding: const EdgeInsets.only(right: 20),
                                 child: Text(
-                                  "Gender",
+                                  "gender".tr,
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.bold,
@@ -1001,85 +1001,104 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       color: CustomColor.riderprofileColor),
                                 ),
                               ),
-                              Row(
-                                children: [
-                                  Radio(
-                                    fillColor: MaterialStateColor.resolveWith(
-                                            (states) => Colors.black54),
-                                    focusColor: MaterialStateColor.resolveWith(
-                                            (states) => Colors.black54),
-                                    value: 1,
-                                    groupValue: id,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        radioButtonItem = 'Female';
-                                        id = 1;
-                                      });
-                                    },
-                                  ),
-                                   Text(
-                                    'Female',
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.normal,
-                                        fontFamily: "Gilroy",
-                                        color: CustomColor.riderprofileColor),
-                                  ),
-                                ],
+                              Padding(
+                                padding: const EdgeInsets.only(left: 23,right: 5),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 25,
+                                      child: Radio(
+                                        fillColor: MaterialStateColor.resolveWith(
+                                                (states) => Colors.black54),
+                                        focusColor: MaterialStateColor.resolveWith(
+                                                (states) => Colors.black54),
+                                        value: 1,
+                                        groupValue: id,
+                                        onChanged: (val) {
+                                          setState(() {
+                                            radioButtonItem = 'Female';
+                                            id = 1;
+                                          });
+                                        },
+                                      ),
+                                    ),
+
+                                     Text(
+                                      'female'.tr,
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.normal,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                    ),
+                                  ],
+                                ),
                               ),
 
-                              Row(
-                                children: [
-                                  Radio(
-                                    fillColor: MaterialStateColor.resolveWith(
-                                            (states) => Colors.black54),
-                                    focusColor: MaterialStateColor.resolveWith(
-                                            (states) => Colors.black54),
-                                    value: 2,
-                                    groupValue: id,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        radioButtonItem = 'Male';
-                                        id = 2;
-                                      });
-                                    },
-                                  ),
-                                   Text(
-                                    'Male',
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.normal,
-                                        fontFamily: "Gilroy",
-                                        color: CustomColor.riderprofileColor),
-                                  ),
-                                ],
+                              Padding(
+                                padding: const EdgeInsets.only(left: 5,right: 5),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 25,
+                                      child: Radio(
+                                        fillColor: MaterialStateColor.resolveWith(
+                                                (states) => Colors.black54),
+                                        focusColor: MaterialStateColor.resolveWith(
+                                                (states) => Colors.black54),
+                                        value: 2,
+                                        groupValue: id,
+                                        onChanged: (val) {
+                                          setState(() {
+                                            radioButtonItem = 'Male';
+                                            id = 2;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                     Text(
+                                      'male'.tr,
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.normal,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                    ),
+                                  ],
+                                ),
                               ),
 
-                              Row(
-                                children: [
-                                  Radio(
-                                    fillColor: MaterialStateColor.resolveWith(
-                                            (states) => Colors.black54),
-                                    focusColor: MaterialStateColor.resolveWith(
-                                            (states) => Colors.black54),
-                                    value: 3,
-                                    groupValue: id,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        radioButtonItem = 'Other';
-                                        id = 3;
-                                      });
-                                    },
-                                  ),
-                                   Text(
-                                    'Other',
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.normal,
-                                        fontFamily: "Gilroy",
-                                        color: CustomColor.riderprofileColor),
-                                  ),
-                                ],
+                              Padding(
+                                padding: const EdgeInsets.only(left: 5,right: 5),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 25,
+                                      child: Radio(
+                                        fillColor: MaterialStateColor.resolveWith(
+                                                (states) => Colors.black54),
+                                        focusColor: MaterialStateColor.resolveWith(
+                                                (states) => Colors.black54),
+                                        value: 3,
+                                        groupValue: id,
+                                        onChanged: (val) {
+                                          setState(() {
+                                            radioButtonItem = 'Other';
+                                            id = 3;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                     Text(
+                                      'other'.tr,
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.normal,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                    ),
+                                  ],
+                                ),
                               )
 
                             ],
@@ -1301,7 +1320,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               SizedBox(width: 5,),
 
                                Text(
-                                "Address",
+                                "address".tr,
                                 style: TextStyle(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.bold,
@@ -1324,7 +1343,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       cursorWidth: 2.0,
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'Please enter your address';
+                                          return 'please_enter_your_address'.tr;
                                         }
                                         return null;
                                       },
@@ -1336,7 +1355,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       style: TextStyle(
                                           fontSize: 13.sp,
                                           fontWeight: FontWeight.normal,
-                                          fontFamily: "Gilroy",
+                                            fontFamily: "Gilroy",
                                           color: CustomColor.riderprofileColor),
                                       controller: addressController,
                                       textCapitalization: TextCapitalization.words,
@@ -1376,7 +1395,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       Icon(Icons.person,size: 20,),
                                       SizedBox(width: 2,),
 
-                                      Text("Contact Person Name",
+                                      Text("contact_person_name".tr,
                                           style: TextStyle(
                                               fontSize: 14.sp,
                                               fontWeight: FontWeight.bold,
@@ -1394,7 +1413,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       Icon(Icons.call_outlined,size: 20,),
                                       SizedBox(width: 2,),
 
-                                       Text("Emergency contact no.",
+                                       Text("emergency_contact_number".tr,
                                           style:TextStyle(
                                               fontSize: 14.sp,
                                               fontWeight: FontWeight.bold,
@@ -1457,7 +1476,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       validator: (value) {
                                         if (value == null ||
                                             value.isEmpty) {
-                                          return 'Please enter person name ';
+                                          return 'please_enter_person_name '.tr;
                                         }
                                         return null;
                                       },
@@ -1509,7 +1528,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                         if (value == null ||
                                             value.isEmpty ||
                                             value.length != 10) {
-                                          return 'Please enter 10 digit mobile number';
+                                          return 'please_enter_10_digit_mobile_number'.tr;
                                         }
                                         return null;
                                       },
@@ -1523,7 +1542,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             height: 18.h,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(right: 15, left: 15),
+                            padding: const EdgeInsets.only(left: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
@@ -1534,31 +1553,31 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       Icon(Icons.person,size: 20,),
                                       SizedBox(width: 2,),
 
-
-                                       Text("Contact Person Name",
-                                          style: TextStyle(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: "Gilroy",
-                                              color: CustomColor.riderprofileColor),),
+                                      Text("contact_person_name".tr,
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: "Gilroy",
+                                            color: CustomColor.riderprofileColor),),
                                     ],
                                   ),
                                 ),
-                                Container(width: 1),
+                                Container(width: 3),
                                 Expanded(
                                   flex: 2,
                                   child: Row(
                                     children: [
+
                                       Icon(Icons.call_outlined,size: 20,),
                                       SizedBox(width: 2,),
 
+                                      Text("emergency_contact_number".tr,
+                                        style:TextStyle(
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.bold,
 
-                                       Text("Emergency contact no.",
-                                          style: TextStyle(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: "Gilroy",
-                                              color: CustomColor.riderprofileColor),),
+                                            fontFamily: "Gilroy",
+                                            color: CustomColor.riderprofileColor),),
                                     ],
                                   ),
                                 ),
@@ -1605,7 +1624,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       validator: (value) {
                                         if (value == null ||
                                             value.isEmpty) {
-                                          return 'Please enter person name';
+                                          return 'please_enter_person_name '.tr;
                                         }
                                         return null;
                                       },
@@ -1657,7 +1676,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                         if (value == null ||
                                             value.isEmpty ||
                                             value.length != 10) {
-                                          return 'Please enter 10 digit mobile number';
+                                          return 'please_enter_10_digit_mobile_number'.tr;
                                         }
                                         return null;
                                       },
@@ -1710,7 +1729,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             // OverlayLoadingProgress.start(context);
                             // }
                           }
-                        }, buttonText: "Update Profile")
+                        }, buttonText: "update_profile".tr)
 
                       /*Button(
                               textColor: CustomColor.black,
@@ -1850,8 +1869,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
           const SizedBox(
             height: 8,
           ),
-          const Text(
-            "Choose Profile Photo",
+           Text(
+            "choose_profile_photo".tr,
             style: TextStyle(fontFamily: 'transport', fontSize: 16),
           ),
           const SizedBox(
@@ -1862,7 +1881,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
             height: 20,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               GestureDetector(
                 onTap: () {
@@ -1875,16 +1894,14 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                     const SizedBox(
                       width: 10,
                     ),
-                    const Text(
-                      "Camera",
-                      style: TextStyle(fontFamily: 'transport'),
+                     Text(
+                      "camera".tr,
+                      style: TextStyle(fontFamily: 'Gilroy'),
                     )
                   ],
                 ),
               ),
-              const SizedBox(
-                width: 50,
-              ),
+
               GestureDetector(
                 onTap: () {
                   pickImage();
@@ -1896,16 +1913,14 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                     const SizedBox(
                       width: 10,
                     ),
-                    const Text(
-                      "Gallery",
-                      style: TextStyle(fontFamily: "transport"),
+                     Text(
+                      "gallery".tr,
+                      style: TextStyle(fontFamily: "Gilroy"),
                     )
                   ],
                 ),
               ),
-              const SizedBox(
-                width: 50,
-              ),
+
               GestureDetector(
                 onTap: () {
                   //pickImage();
@@ -1923,9 +1938,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                     const SizedBox(
                       width: 10,
                     ),
-                    const Text(
-                      "Remove",
-                      style: TextStyle(fontFamily: "transport"),
+                     Text(
+                      "remove".tr,
+                      style: TextStyle(fontFamily: "Gilroy"),
                     )
                   ],
                 ),
@@ -1971,7 +1986,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
       Uri.parse(
-          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/getSignedUrlsgb/getSignedURL'),
+          'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/getSignedUrlsgb/getSignedURL'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': loginToken
@@ -2181,7 +2196,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
       };
       final response = await http.post(
         Uri.parse(
-            'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/updateUserProfile'),
+            'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/updateUserProfile'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': loginToken

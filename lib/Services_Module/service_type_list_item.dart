@@ -18,7 +18,7 @@ class ServiceTypeListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        Get.to(SelectedServiceLists(serviceId: serviceTypeData.id.toString(),));
+        Get.to(SelectedServiceLists(serviceId: serviceTypeData.id.toString(), backToDashboard: '', ));
       },
       child: Container(
 

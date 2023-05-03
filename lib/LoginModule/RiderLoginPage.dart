@@ -60,9 +60,9 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(left: 12, right: 12),
-                    child: Text("Login",
+                    child: Text("login".tr,
                         style: TextStyle(
                             fontSize: 21,
                             fontFamily: 'Gilroy',
@@ -99,8 +99,9 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
                                       fontWeight: FontWeight.normal,
                                     ),
                                     controller: _controllerMobile,
+                                    keyboardType: TextInputType.number,
                                     decoration:  InputDecoration(
-                                      labelText: "Mobile Number",
+                                      labelText: "mobile_number".tr,
                                       labelStyle: TextStyle(
                                         fontSize: 16,
                                         fontFamily: 'Gilroy',
@@ -122,7 +123,7 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
                                       if (value == null ||
                                           value.isEmpty ||
                                           value.length != 10) {
-                                        return 'Please enter 10 digit number';
+                                        return 'please_enter_10_digit_number'.tr;
                                       }
                                       return null;
                                     },
@@ -151,7 +152,7 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
                         setState(() {});
                       }
 
-                    }, buttonText: 'Next',)
+                    }, buttonText: 'next'.tr,)
 
                     /*Button(
                         textColor: CustomColor.black,
@@ -179,8 +180,7 @@ class _LoginScreenPageState extends State<RiderLoginPage> {
   Future<http.Response?> sendOtpApi(String mobileNumber) async {
    // var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response =  await http.post(
-      Uri.parse(
-          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/sendOtpNew'),
+      Uri.parse('https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/sendOtpNew'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         //'Authorization': loginToken

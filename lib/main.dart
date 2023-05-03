@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
@@ -13,6 +14,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:ride_safe_travel/LoginModule/MainPage.dart';
 import 'package:ride_safe_travel/LoginModule/RiderLoginPage.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
+import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/bottom_nav/custom_bottom_navi.dart';
 import 'package:ride_safe_travel/start_ride_map.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -21,10 +23,13 @@ import 'package:firebase_core/firebase_core.dart';
 
 
 
+import 'Language/language_string.dart';
 import 'LoginModule/Map/RiderMap.dart';
 import 'Utils/demod.dart';
 import 'Utils/toast.dart';
 import 'Widgets/otp_dialog.dart';
+import 'color_constant.dart';
+import 'new_widgets/new_my_image.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
@@ -43,6 +48,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 Future<void> main() async {
+  await ScreenUtil.ensureScreenSize();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
@@ -69,16 +75,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //  ScreenUtil.init(context, designSize: const Size(375, 812));
-    return GetMaterialApp(
-      builder: EasyLoading.init(),
-      title: 'Rider Safe Travel',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home:  MyHomePage(),
-      debugShowCheckedModeBanner: false,
-    );
+     ScreenUtil.init(context, designSize: const Size(375, 812));
+      //LoaderUtils.statusColor();
+      return GetMaterialApp(
+        builder: EasyLoading.init(),
+        translations: LanguageString(),
+        locale: const Locale('en','US'),
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            inputDecorationTheme:  InputDecorationTheme(
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: appBlue)
+              ),
+            )),
+    home: MyHomePage(),
+      );
   }
 }
 class MyHomePage extends StatefulWidget {
@@ -101,11 +112,28 @@ class MyHomePageState extends State<MyHomePage> {
     print("Print Instance Token ID: " + token!);
   }
 
+  void langaugeChanges() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Preferences.setPreferences();
+    var language = Preferences.getLanguage();
+    if(language=='hi'){
+      var local=const Locale('hi',"IN");
+      Get.updateLocale(local);
+    }else if(language=='en'){
+      var eng=const Locale('en','US');
+      Get.updateLocale(eng);
+    }else if(language=='mr'){
+      var eng=const Locale('mr','IN');
+      Get.updateLocale(eng);
+    }
+  }
+
 
 
   @override
   void initState() {
     super.initState();
+    langaugeChanges();
     _instanceId();
     getLocation();
     //FCM Push Notification
@@ -196,7 +224,7 @@ class MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Future checkLoginStatus() async {
+  Future checkLoginStatus() async{
     await Preferences.setPreferences();
     String? userId = Preferences.getId(Preferences.id);
     if (userId == null) {
@@ -206,6 +234,8 @@ class MyHomePageState extends State<MyHomePage> {
 
     }
   }
+
+  GlobalKey<NavigatorState> chukNavigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -220,5 +250,46 @@ class MyHomePageState extends State<MyHomePage> {
       ],
     );
   }
+
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   //LoaderUtils.statusColor();
+  //   return GetMaterialApp(
+  //     builder: EasyLoading.init(),
+  //     translations: LanguageString(),
+  //     locale: const Locale('en','US'),
+  //     navigatorKey: chukNavigatorKey,
+  //     debugShowCheckedModeBanner: false,
+  //     theme: ThemeData(
+  //         inputDecorationTheme:  InputDecorationTheme(
+  //           focusedBorder: UnderlineInputBorder(
+  //               borderSide: BorderSide(color: appBlue)
+  //           ),
+  //         )),
+  //     home:  Stack(
+  //       children: const <Widget>[
+  //         Image(
+  //           image: AssetImage('assets/splash_image.png'),
+  //           fit: BoxFit.fill,
+  //         ),
+  //       ],
+  //     )
+  //   );
+  // }
+
+  /*@override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: const <Widget>[
+        Positioned.fill(
+          child: Image(
+            image: AssetImage('assets/splash_image.png'),
+            fit: BoxFit.fill,
+          ),
+        ),
+      ],
+    );
+  }*/
 }
 

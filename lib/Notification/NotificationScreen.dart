@@ -35,7 +35,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   onPressed: () {
                     Navigator.of(context).pop('refresh');
                   }),
-              title: const Text("Notification",
+              title:  Text('notification'.tr,
                 style: TextStyle(fontFamily: "Gilroy",fontSize: 22,color: Colors.white),),
             ),
             body: FutureBuilder<List<NotificationData>>(
@@ -86,7 +86,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     String userId = Preferences.getId(Preferences.id).toString();
     final response = await http.post(
       (Uri.parse(
-          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userNotification')), //old end url: userFamilyList
+          'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userNotification')), //old end url: userFamilyList
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': loginToken

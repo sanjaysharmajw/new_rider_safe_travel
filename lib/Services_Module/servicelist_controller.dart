@@ -18,7 +18,7 @@ class ServiceListController extends GetxController{
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     try {
       final response = await http.post(
-          Uri.parse("https://i981xwdx4g.execute-api.ap-south-1.amazonaws.com/dev/api/serviceProvider/searchServiceProvider"),
+          Uri.parse("https://24txld2sb5.execute-api.ap-south-1.amazonaws.com/dev/api/serviceProvider/searchServiceProvider"),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': loginToken
@@ -33,19 +33,20 @@ class ServiceListController extends GetxController{
 
         'Authorization...'+loginToken
       );
+      print(jsonEncode({
+        "service_id": serviceId,
+        "searchServiceProvider": 'fkkf',
+        "lng": 72.998993,
+        "lat":19.077065
+
+      }));
       log(response.body);
       Map<String, dynamic> responseBody = json.decode(response.body);
 
       if (response.statusCode == 200) {
         isLoading.value = false;
         SearchServicesModel model = SearchServicesModel.fromJson(responseBody);
-        if (model.status == true) {
-          servicesList.value = model.data!;
-        }
-        else {
-          servicesList.value = [];
-        }
-
+        servicesList.value = model.data!;
       }
 
     } on TimeoutException catch (e) {

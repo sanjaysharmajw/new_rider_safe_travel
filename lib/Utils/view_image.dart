@@ -31,7 +31,7 @@ class CircularImage extends StatelessWidget {
                   width: width,
                   height: height,
                   fit: boxFit,
-                  imageUrl: imageUrl!,
+                  imageUrl: imageUrl.toString(),
                   placeholder: (context, url) => const CircularProgressIndicator(
                       color: appBlue,strokeWidth: 2),
                   errorWidget: (context, url, error) => Image.asset('assets/user_avatar.png',width: width,height: height,fit: boxFit),
