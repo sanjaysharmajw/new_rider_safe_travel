@@ -39,15 +39,17 @@ import '../start_ride_map.dart';
 import 'Api_Url.dart';
 import 'Error.dart';
 
-
 class MainPage extends StatefulWidget {
+
   const MainPage({Key? key}) : super(key: key);
 
   @override
   State<MainPage> createState() => _MainPageState();
+
 }
 
 class _MainPageState extends State<MainPage> {
+
   String result = "";
   String image = "";
 
@@ -77,7 +79,6 @@ class _MainPageState extends State<MainPage> {
         result = qrResult ?? 'null string';
         print("ScanQRCode:"+result);
         if (result != "") {
-
           if(result.length==24){
            print("ScanQR:"+result);
             driverVehicleListApi(result);

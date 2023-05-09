@@ -49,7 +49,7 @@ class MyRiderItemsList extends StatelessWidget {
                 borderRadius: const BorderRadius.all(Radius.circular(60)),
                 child: Image.network(myRideList.driverPhoto.toString(),width: 40,height: 40,fit: BoxFit.cover),
               ),
-              const SizedBox(height: 10,width: 10,),
+              const SizedBox(height: 10,width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -58,7 +58,6 @@ class MyRiderItemsList extends StatelessWidget {
                   MyText(text: myRideList.driverMobileNumber.toString(), fontFamily: 'Gilroy', color: Colors.black, fontSize: 14),
                 ],
               )
-
             ],
           ),
           Row(
