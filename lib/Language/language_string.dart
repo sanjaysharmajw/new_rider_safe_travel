@@ -36,6 +36,8 @@ class LanguageString extends Translations{
       'do_you_want_to_logout ?':'Do you want to logout ?',
       'yes':'Yes',
       'no':'No',
+      'volunteer':'Volunteer',
+      'join_as_a_volunteer?':'Do You Want To Join as a volunteer?',
 
       /////////////////////////////////////////////////BOTTOM NAVIGATION/////////////////////////////////////////////////////////
 
@@ -214,6 +216,10 @@ class LanguageString extends Translations{
       'do_you_want_to_logout ?':'तुम्हाला लॉगआउट करायचे आहे का ?',
       'yes':'होय',
       'no':'नाही',
+      'volunteer':'स्वयंसेवक',
+      'join_as_a_volunteer?':'तुम्हाला स्वयंसेवक म्हणून काम करायचे आहे का?',
+      'volunteer':'स्वयंसेवक',
+      'join_as_a_volunteer?':'क्या आप एक स्वयंसेवक के रूप में काम करना चाहते हैं?',
 
       /////////////////////////////////////////////////BOTTOM NAVIGATION/////////////////////////////////////////////////////////
 

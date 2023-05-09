@@ -29,7 +29,7 @@ class ProfileText extends StatelessWidget {
               children:  [
                 Icon(icons),
                 const SizedBox(
-                  height: 10,width: 30,
+                  height: 10,width: 25,
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,

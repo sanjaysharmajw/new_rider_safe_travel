@@ -13,6 +13,7 @@ class FamilyListDataModel {
     this.distance,
     this.totalTime,
     this.rideId,
+    this.memberId,
     this.vehicleId,
     this.memberName,
     this.drivingLicenceNumber,
@@ -76,6 +77,7 @@ class FamilyListDataModel {
     vehiclePucValidity = json['vehicle_pucValidity'];
     vehicleInsuranceValidity = json['vehicle_insuranceValidity'];
     vehiclePhoto = json['vehicle_photo'];
+    memberId = json['member_id'];
   }
   String? id;
   String? userId;
@@ -112,6 +114,7 @@ class FamilyListDataModel {
   String? vehiclePucValidity;
   String? vehicleInsuranceValidity;
   dynamic vehiclePhoto;
+  String? memberId;
   FamilyListDataModel copyWith({  String? id,
     String? userId,
     String? driverId,
@@ -147,6 +150,7 @@ class FamilyListDataModel {
     String? vehiclePucValidity,
     String? vehicleInsuranceValidity,
     dynamic vehiclePhoto,
+    String? memberId,
   }) => FamilyListDataModel(  id: id ?? this.id,
     userId: userId ?? this.userId,
     driverId: driverId ?? this.driverId,
@@ -182,6 +186,7 @@ class FamilyListDataModel {
     vehiclePucValidity: vehiclePucValidity ?? this.vehiclePucValidity,
     vehicleInsuranceValidity: vehicleInsuranceValidity ?? this.vehicleInsuranceValidity,
     vehiclePhoto: vehiclePhoto ?? this.vehiclePhoto,
+    memberId: memberId ?? this.memberId,
   );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -220,6 +225,7 @@ class FamilyListDataModel {
     map['vehicle_pucValidity'] = vehiclePucValidity;
     map['vehicle_insuranceValidity'] = vehicleInsuranceValidity;
     map['vehicle_photo'] = vehiclePhoto;
+    map['member_id'] = memberId;
     return map;
   }
 

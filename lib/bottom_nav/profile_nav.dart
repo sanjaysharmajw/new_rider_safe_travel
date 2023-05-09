@@ -15,6 +15,7 @@ import '../MyText.dart';
 import '../Notification/NotificationScreen.dart';
 import '../Utils/logout_dialog_box.dart';
 import '../about_page.dart';
+import '../new_widgets/profile_notification_with_switch.dart';
 import '../rider_profile_view.dart';
 import 'custom_bottom_navi.dart';
 import 'home_page_nav.dart';
@@ -28,6 +29,8 @@ class ProfileNav extends StatefulWidget {
 }
 
 class _ProfileNavState extends State<ProfileNav> {
+
+  bool volunteerToggle = false;
 
   final List locale = [
     {'name': 'English', 'locale': const Locale('en', 'US')},
@@ -116,7 +119,7 @@ class _ProfileNavState extends State<ProfileNav> {
           ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.only(left: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -211,6 +214,18 @@ class _ProfileNavState extends State<ProfileNav> {
                       voidCallback: () {
                         Get.to(AboutScreenPage());
                       },),
+                    SizedBox(height: 5,),
+                    ProfileNotification(
+                      valueChanged: (values) {
+                        values=volunteerToggle;
+
+                        volunteerToggle = true;
+
+
+                      },
+                      status4: volunteerToggle,
+                      title: "volunteer".tr,
+                      subTitle: "join_as_a_volunteer?".tr, imageAssets: 'new_assets/volunteer.png',),
                     ProfileText(title: 'logout'.tr, subTitle: 'exit_from_your_account'.tr, icons: FeatherIcons.logOut,
                       voidCallback: () {
                         logoutPopup(context);

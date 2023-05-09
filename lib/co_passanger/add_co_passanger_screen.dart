@@ -120,7 +120,8 @@ class _AddCoPassangerScreen extends State<AddCoPassangerScreen> {
                             }, onTap: (){}),
                         const SizedBox(height: 10),
 
-                        MyTextFieldWithHint(hintText: 'select_blood_group'.tr, controller:
+                        MyTextFieldWithHint(
+                            hintText: 'select_blood_group'.tr, controller:
                         controllerBloodGroup, validator: (value) {
                           if (value.toString().isEmpty) {
                             return "select_your_blood_group".tr;

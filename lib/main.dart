@@ -232,6 +232,8 @@ class MyHomePageState extends State<MyHomePage> {
     } else {
       Get.to(const CustomBottomNav());  //MainPage //CustomBottomNav
 
+      //Get.to(MainPage());
+
     }
   }
 

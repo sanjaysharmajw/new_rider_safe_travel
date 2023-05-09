@@ -147,7 +147,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                           familyListDataModel:
                               trackFamilyController.getTrackData[index],
                           deleteClick: () {
-                            familyStatusApi(index, userId, "", status);
+                            familyStatusApi(index, userId, trackFamilyController.getTrackData[index].memberId.toString(), status);
                           },
                         );
                       });

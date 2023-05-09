@@ -28,6 +28,8 @@ import 'package:ride_safe_travel/bottom_nav/profile_nav.dart';
 import 'package:ride_safe_travel/bottom_nav/profile_text.dart';
 import 'package:ride_safe_travel/color_constant.dart';
 import 'package:ride_safe_travel/controller/location_controller.dart';
+import 'package:ride_safe_travel/home_page_controller/end_ride_controller.dart';
+import 'package:ride_safe_travel/home_page_controller/get_sos_controller_master.dart';
 import '../LoginModule/Map/RiderFamilyList.dart';
 import '../MapAddFamily.dart';
 import '../Models/CheckActiveUserRide.dart';
@@ -67,6 +69,7 @@ import '../controller/check_active_rider.dart';
 import '../controller/end_ride_controller.dart';
 import '../controller/get_count_notification_controller.dart';
 import '../controller/permision_controller.dart';
+import '../home_page_controller/sos_dialogBox.dart';
 import '../new_widgets/my_new_text.dart';
 import '../rider_profile_view.dart';
 import '../start_ride_map.dart';
@@ -98,6 +101,8 @@ ServiceTypeData serviceTypeData = ServiceTypeData();
   final getCountController = Get.put(GetNotificationController());
   final checkActiveRide = Get.put(CheckActiveRideController());
   final servicelistController = Get.put(ServiceListController());
+  final getSosMasterController = Get.put(GetSosMasterController());
+  final endRideController = Get.put(EndRideController());
   LocationData? locationData;
    late Location location;
 var stopAlertValue = 'No';
@@ -127,7 +132,7 @@ String? socketoken;
 String? vehicleMake;
 String? vehiclePhoto;
 double? rating;
-
+String? rideOtp;
 int? index;
 bool ridestatus = false;
 
@@ -139,6 +144,9 @@ bool ridestatus = false;
   late int countNitification = 0;
   final permissionController = Get.put(PermissionController());
   final locationPermission = Get.put(LocationController());
+CheckActiveRideRequest checkActiveRideRequest=CheckActiveRideRequest(
+    userId: Preferences.getId(Preferences.id).toString()
+);
 
   bool isLoading = true;
   final Completer<GoogleMapController> _completer = Completer();
@@ -165,7 +173,8 @@ bool ridestatus = false;
       locationData=cLoc;
 
 
-      print(locationData?.latitude.toString());
+      print("LOCATION...."+locationData!.latitude.toString());
+      print("LOCATION...."+locationData!.longitude.toString());
       final GoogleMapController controller = await _completer.future;
       controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(cLoc.latitude!, cLoc.longitude!), zoom: 15)));
     });
@@ -178,22 +187,33 @@ bool ridestatus = false;
       userId: Preferences.getId(Preferences.id).toString()
     );
     checkActiveRide.checkActiveRideApi(checkActiveRideRequest).then((value){
+
       if(value!=null){
         if(value.status == true){
           dataVisibility = true;
           floatingVisibility = false;
           RegVisibility=true;
+
+
+          /*Get.to(StartRide(riderId: riderID.toString(), socketToken: socketoken.toString(),
+              dName: driverName.toString(), dMobile: driverMobile.toString(), dPhoto: driverPhoto.toString(),
+              model: vehicleModel.toString(), vOwnerName: oName.toString(), vRegNo: vehicleReg.toString(),
+              driverLicense: dLicense.toString(), otpRide: rideOtp.toString()));*/
+
         }
 else{
+
           dataVisibility = false;
           floatingVisibility = true;
-          RegVisibility=false;
+         RegVisibility=false;
+          //_scanQR();
         }
+
         vehicleReg=value.data![0].vehicleRegistrationNumber;
-         vehicleModel = value.data![0].vehicleModel;
-         driverPhoto=value.data![0].driverPhoto.toString();
-         driverName=value.data![0].driverName.toString();
-         driverMobile=value.data![0].driverMobileNumber.toString();
+        vehicleModel = value.data![0].vehicleModel;
+        driverPhoto=value.data![0].driverPhoto.toString();
+        driverName=value.data![0].driverName.toString();
+        driverMobile=value.data![0].driverMobileNumber.toString();
         dLicense=value.data![0].drivingLicenceNumber.toString();
         vehicleMake=value.data![0].vehicleMake.toString();
         oName=value.data![0].ownerName.toString();
@@ -201,6 +221,8 @@ else{
         socketoken=value.token.toString();
         rating=value.data![0].rating;
         vehiclePhoto=value.data![0].vehiclePhoto.toString();
+        rideOtp=value.data![0].rideStartOtp.toString();
+
 
 
       }
@@ -213,11 +235,10 @@ else{
     super.initState();
     init();
     sharePre();
-    checkActiveRdieApi();
+    //checkActiveRdieApi();
     setState(() {
       sharePreferences();
     });
-    getSosReason();
   }
 
   init() async {
@@ -359,7 +380,7 @@ else{
                   icons: 'new_assets/eye-tracking.png',
                   click: () {
                     //Get.to(const FamilyMemberListScreen(changeUiValue: 'fromClass'));
-                    Get.to(const FamilyList());
+                      Get.to(const FamilyList());
                   }, width: 28, height: 28,
                 ),
               /*  HomePageItems(
@@ -432,7 +453,7 @@ else{
                 ),*/
               ]),
 
-          Expanded(child: googleMap()),
+          Flexible(child: googleMap()),
          /* Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -441,13 +462,13 @@ else{
               LoaderUtils.loader():
               listController.getMyRiderData.isEmpty
                       ?*/
-         Column(
-           mainAxisAlignment: MainAxisAlignment.start,
-           crossAxisAlignment: CrossAxisAlignment.start,
-           children: [
-             Visibility(
-               visible: floatingVisibility!,
-               child: Align(
+         Visibility(
+           visible: floatingVisibility!,
+           child: Column(
+             mainAxisAlignment: MainAxisAlignment.start,
+             crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
+               Align(
                  alignment: Alignment.bottomRight,
                  child: Padding(
                    padding: const EdgeInsets.all(8.0),
@@ -455,212 +476,213 @@ else{
                      elevation: 15,
                      onPressed: (){
                        OverlayLoadingProgress.start(context);
-                       checkActiveUser();
+                       checkActiveRdieApi();
+                       //checkActiveUser();
                      },
                      label: Text("start_new_ride".tr),
                    ),
                  ),
                ),
-             ),
-             Visibility(
-               visible: dataVisibility!,
-               child: Column(
-                 mainAxisAlignment: MainAxisAlignment.end,
+               Visibility(
+                 visible: dataVisibility!,
+                 child: Column(
+                   mainAxisAlignment: MainAxisAlignment.end,
 
-                 children: [
-                   Divider(thickness: 2,color: Colors.blueGrey,),
-                   Divider(thickness: 1,color: Colors.blueGrey,),
-
+                   children: [
+                     Divider(thickness: 2,color: Colors.blueGrey,),
+                     Divider(thickness: 1,color: Colors.blueGrey,),
 
 
-                   Padding(
-                     padding: EdgeInsets.only(left: 25,right: 20,),
-                     child: Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-                       children: [
-                         Column(
-                           children: [
-                             Center(
-                               child: Stack(
-                                 clipBehavior: Clip.none,
-                                 children:  [
-                                   ClipRRect(
-                                     child: CachedNetworkImage(
-                                         imageUrl: vehiclePhoto.toString(),
-                                         width: 80,
-                                         height: 60,
-                                         progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                             CircularProgressIndicator(value: downloadProgress.progress),
-                                         errorWidget: (context, url, error) => Image(image: AssetImage("assets/carImage.png",),height: 50,width: 50,)
+                     Padding(
+                       padding: EdgeInsets.only(left: 25,right: 20,),
+                       child: Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                         children: [
+                           Column(
+                             children: [
+                               Center(
+                                 child: Stack(
+                                   clipBehavior: Clip.none,
+                                   children:  [
+                                     ClipRRect(
+                                       child: CachedNetworkImage(
+                                           imageUrl: vehiclePhoto.toString(),
+                                           width: 80,
+                                           height: 60,
+                                           progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                               CircularProgressIndicator(value: downloadProgress.progress),
+                                           errorWidget: (context, url, error) => Image(image: AssetImage("assets/carImage.png",),height: 50,width: 50,)
+                                       ),
                                      ),
-                                   ),
-                                   /*ClipRRect(
-                                                borderRadius: new BorderRadius.circular(40.0),
-                                                child: Image.asset('assets/carImage.png', height: 60, width: 150),
-                                              ),*/
-                                   Positioned(
-                                     bottom: 0,
-                                     right: 35,
-                                     top: 4,
-                                     child: CircleAvatar(
-                                       backgroundColor: CustomColor.black,
-                                       radius: 22,
+                                     /*ClipRRect(
+                                                  borderRadius: new BorderRadius.circular(40.0),
+                                                  child: Image.asset('assets/carImage.png', height: 60, width: 150),
+                                                ),*/
+                                     Positioned(
+                                       bottom: 0,
+                                       right: 35,
+                                       top: 4,
                                        child: CircleAvatar(
-                                         radius: 21,
-                                         backgroundColor: Colors.white,
-                                         child: AspectRatio(
-                                           aspectRatio: 1,
-                                           child: ClipOval(
-                                             child: CachedNetworkImage(
-                                                 imageUrl: driverPhoto.toString(),
-                                                 width: 25,
-                                                 height: 25,
-                                                 progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                                     CircularProgressIndicator(value: downloadProgress.progress),
-                                                 errorWidget: (context, url, error) => Image(image: AssetImage("assets/user_avatar.png"))
+                                         backgroundColor: CustomColor.black,
+                                         radius: 22,
+                                         child: CircleAvatar(
+                                           radius: 21,
+                                           backgroundColor: Colors.white,
+                                           child: AspectRatio(
+                                             aspectRatio: 1,
+                                             child: ClipOval(
+                                               child: CachedNetworkImage(
+                                                   imageUrl: driverPhoto.toString(),
+                                                   width: 25,
+                                                   height: 25,
+                                                   progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                       CircularProgressIndicator(value: downloadProgress.progress),
+                                                   errorWidget: (context, url, error) => Image(image: AssetImage("assets/user_avatar.png"))
+                                               ),
                                              ),
                                            ),
                                          ),
                                        ),
                                      ),
-                                   ),
+                                   ],
+                                 ),
+                               ),
+
+                             ],
+                           ),
+
+                           Column(
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             children: [
+                               MyText(text: vehicleReg.toString(), fontFamily: 'Gilroy', color: Colors.black, fontSize: 22,),
+                               const SizedBox(height: 5),
+                               Row(
+                                 children: [
+                                   MyText(text: vehicleMake.toString(), fontFamily: 'Gilroy',
+                                       color: Colors.black, fontSize: 17),
+                                   const SizedBox(width: 3),
+                                   MyText(text: vehicleModel.toString(), fontFamily: 'Gilroy',
+                                       color: Colors.black, fontSize: 17),
                                  ],
-                               ),
-                             ),
+                               )
 
-                           ],
-                         ),
+                             ],
+                           )
 
-                         Column(
-                           crossAxisAlignment: CrossAxisAlignment.start,
-                           children: [
-                             MyText(text: vehicleReg.toString(), fontFamily: 'Gilroy', color: Colors.black, fontSize: 22,),
-                             const SizedBox(height: 5),
-                             Row(
-                               children: [
-                                 MyText(text: vehicleMake.toString(), fontFamily: 'Gilroy',
-                                     color: Colors.black, fontSize: 17),
-                                 const SizedBox(width: 3),
-                                 MyText(text: vehicleModel.toString(), fontFamily: 'Gilroy',
-                                     color: Colors.black, fontSize: 17),
-                               ],
-                             )
-
-                           ],
-                         )
-
-                       ],
-                     ),
-                   ),
-                   Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                     children: [
-                       Padding(
-                         padding: const EdgeInsets.only(left: 25,top: 10),
-                         child: Row(
-                           mainAxisAlignment: MainAxisAlignment.start,
-                           children: [
-                             Text(
-                               driverName.toString(),
-                               style:
-                               TextStyle(fontSize: 16, color: Colors.black, fontFamily: 'Gilroy',
-                                   decoration: TextDecoration.underline),
-                             ),
-                             Padding(
-                               padding: const EdgeInsets.only(left: 3,right: 3),
-                               child: Text("."),
-                             ),
-                             Text(
-                               rating.toString() == "null" ? " " : rating.toString(),
-                               style:
-                               TextStyle(fontSize: 14, color: Colors.black, fontFamily: 'Gilroy',
-                               ),
-                             ),
-                             Icon(
-                               Icons.star_outlined,
-                               color: Colors.blueGrey,
-                               size: 14.0,
-                             ),
-
-                           ],
-                         ),
-                       ),
-                       Row(
-                         mainAxisAlignment: MainAxisAlignment.end,
-                         children: [
-                           Padding(
-                             padding: const EdgeInsets.only(left: 8,right: 8),
-                             child: ClipOval(
-                               child: Material(
-                                 //color:
-                                 //theme.colorScheme.error.withAlpha(28), // button color
-                                 child: InkWell(
-                                   splashColor: theme.colorScheme.error.withAlpha(100),
-                                   highlightColor: theme.colorScheme.error.withAlpha(28),
-                                   child: SizedBox(
-                                       width: 35,
-                                       height: 35,
-                                       child: Image.asset("new_assets/viewRide.png")),
-                                   onTap: (){
-                                     Get.to(StartRide(riderId: riderID.toString(), socketToken: socketoken.toString(), dName: driverName.toString(),
-                                       dMobile: driverMobile.toString(), dPhoto: driverPhoto.toString(),
-                                       model: vehicleModel.toString(), vOwnerName: oName.toString(), vRegNo: vehicleReg.toString(),
-                                       driverLicense: dLicense.toString(), otpRide: riderOtp,));
-                                     print("ViewRide");
-                                     print(StartRide(riderId: riderID.toString(), socketToken: socketoken.toString(), dName: driverName.toString(),
-                                       dMobile: driverMobile.toString(), dPhoto: driverPhoto.toString(),
-                                       model: vehicleModel.toString(), vOwnerName: oName.toString(), vRegNo: vehicleReg.toString(),
-                                       driverLicense: dLicense.toString(), otpRide: riderOtp,));
-
-                                   },
-                                 ),
-                               ),
-                             ),
-                           ),
-                           Padding(
-                             padding: const EdgeInsets.only(left: 8,right: 20),
-                             child: ClipOval(
-                               child: Material(
-                                 //color: CustomColor.lightYellow, // button color
-                                 child: InkWell(
-                                   splashColor: Colors.blue,
-                                   highlightColor:
-                                   theme.colorScheme.primary.withAlpha(28),
-                                   child:  SizedBox(
-                                     width: 32,
-                                     height: 32,
-                                     child: Image.asset('new_assets/stop-sign (2).png'),
-                                   ),
-                                   onTap: (){
-                                     checkUser(userId.toString());
-                                   },
-                                 ),
-                               ),
-                             ),
-                           ),
                          ],
                        ),
-                     ],
-                   ),
+                     ),
+                     Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       children: [
+                         Padding(
+                           padding: const EdgeInsets.only(left: 25,top: 10),
+                           child: Row(
+                             mainAxisAlignment: MainAxisAlignment.start,
+                             children: [
+                               Text(
+                                 driverName.toString(),
+                                 style:
+                                 TextStyle(fontSize: 16, color: Colors.black, fontFamily: 'Gilroy',
+                                     decoration: TextDecoration.underline),
+                               ),
+                               Padding(
+                                 padding: const EdgeInsets.only(left: 3,right: 3),
+                                 child: Text("."),
+                               ),
+                               Text(
+                                 rating.toString() == "null" ? " " : rating.toString(),
+                                 style:
+                                 TextStyle(fontSize: 14, color: Colors.black, fontFamily: 'Gilroy',
+                                 ),
+                               ),
+                               Icon(
+                                 Icons.star_outlined,
+                                 color: Colors.blueGrey,
+                                 size: 14.0,
+                               ),
+
+                             ],
+                           ),
+                         ),
+                         Row(
+                           mainAxisAlignment: MainAxisAlignment.end,
+                           children: [
+                             Padding(
+                               padding: const EdgeInsets.only(left: 8,right: 8),
+                               child: ClipOval(
+                                 child: Material(
+                                   //color:
+                                   //theme.colorScheme.error.withAlpha(28), // button color
+                                   child: InkWell(
+                                     splashColor: theme.colorScheme.error.withAlpha(100),
+                                     highlightColor: theme.colorScheme.error.withAlpha(28),
+                                     child: SizedBox(
+                                         width: 35,
+                                         height: 35,
+                                         child: Image.asset("new_assets/viewRide.png")),
+                                     onTap: (){
+                                       Get.to(StartRide(riderId: riderID.toString(), socketToken: socketoken.toString(), dName: driverName.toString(),
+                                         dMobile: driverMobile.toString(), dPhoto: driverPhoto.toString(),
+                                         model: vehicleModel.toString(), vOwnerName: oName.toString(), vRegNo: vehicleReg.toString(),
+                                         driverLicense: dLicense.toString(), otpRide: riderOtp,));
+                                       print("ViewRide");
+                                       print(StartRide(riderId: riderID.toString(), socketToken: socketoken.toString(), dName: driverName.toString(),
+                                         dMobile: driverMobile.toString(), dPhoto: driverPhoto.toString(),
+                                         model: vehicleModel.toString(), vOwnerName: oName.toString(), vRegNo: vehicleReg.toString(),
+                                         driverLicense: dLicense.toString(), otpRide: riderOtp,));
+
+                                     },
+                                   ),
+                                 ),
+                               ),
+                             ),
+                             Padding(
+                               padding: const EdgeInsets.only(left: 8,right: 20),
+                               child: ClipOval(
+                                 child: Material(
+                                   //color: CustomColor.lightYellow, // button color
+                                   child: InkWell(
+                                     splashColor: Colors.blue,
+                                     highlightColor:
+                                     theme.colorScheme.primary.withAlpha(28),
+                                     child:  SizedBox(
+                                       width: 32,
+                                       height: 32,
+                                       child: Image.asset('new_assets/stop-sign (2).png'),
+                                     ),
+                                     onTap: (){
+                                       checkUser(userId.toString());
+                                     },
+                                   ),
+                                 ),
+                               ),
+                             ),
+                           ],
+                         ),
+                       ],
+                     ),
 
 
 
-                   Divider(thickness: 1,color: Colors.blueGrey,),
-                   Divider(thickness: 2,color: Colors.blueGrey,),
+                     Divider(thickness: 1,color: Colors.blueGrey,),
+                     Divider(thickness: 2,color: Colors.blueGrey,),
 
-                 ],
-               ),
-               //                   ),
-               // ),
-             )
-           ],
+                   ],
+                 ),
+                 //                   ),
+                 // ),
+               )
+             ],
+           ),
          )
         ]
     )
     );
   }
-  Widget googleMap() {
+   googleMap() {
     return locationData == null
         ? Center(
       child: Column(
@@ -676,45 +698,42 @@ else{
       clipBehavior: Clip.none,
       children: [
 
-        Positioned(
-          child: Padding(
-            padding: const EdgeInsets.all(5.0),
+        Padding(
+          padding: const EdgeInsets.all(5.0),
 
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                ),
-                child: GoogleMap(
-                    mapType: MapType.normal,
-                    myLocationEnabled: true,
-                    compassEnabled: true,
-                    zoomControlsEnabled: false,
-                    mapToolbarEnabled: true,
-                    zoomGesturesEnabled: true,
-                    myLocationButtonEnabled: false,
-                    initialCameraPosition: _cameraPosition,
-                    onMapCreated: (GoogleMapController controller) {
-                      _completer.complete(controller);
-                      controller.setMapStyle(permissionController.mapStyle);
-                    },
-
-                ),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
               ),
+              child: GoogleMap(
+                mapType: MapType.normal,
+                myLocationEnabled: true,
+                compassEnabled: true,
+                zoomControlsEnabled: false,
+                mapToolbarEnabled: true,
+                zoomGesturesEnabled: true,
+                myLocationButtonEnabled: true,
+                initialCameraPosition: _cameraPosition,
+                onMapCreated: (GoogleMapController controller) {
+                  _completer.complete(controller);
+                  controller.setMapStyle(permissionController.mapStyle);
+                },
+              )
             ),
-        ),
+          ),
 
 
-        Positioned.fill(
+        /*Positioned.fill(
           child: Align(
             alignment: Alignment.bottomLeft,
               child: actionUi()
           ),
-        ),
+        ),*/
 
-        Positioned(
+        /*Positioned(
           bottom: 350,
 
-              child: vehicleNo()),
+              child: vehicleNo()),*/
 
 
       ],
@@ -839,7 +858,7 @@ else{
 
               child: GestureDetector(
                 onTap: (){
-                  sos();
+                  sosPopUp(context,riderID.toString(), locationData!.latitude.toString(), locationData!.longitude.toString());
                 },
                   child: Image.asset("new_assets/sos_icons.png",height: 50,width: 50,)),
             ),
@@ -870,7 +889,7 @@ else{
     return Padding(
       padding: const EdgeInsets.only(left: 10,right: 30,bottom: 30,top: 10),
       child: Visibility(
-        visible: RegVisibility!,
+        visible: vehicleReg=="null"?false:true,
         child: Container(
             width: 120,
             height: 30,
@@ -997,6 +1016,7 @@ else{
 
     if (response.statusCode == 200) {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
+      print("statussssss"+status.toString());
 
       if (status == true) {
         OverlayLoadingProgress.stop();
@@ -1058,7 +1078,7 @@ else{
     }
   }
 
-  Future<String> checkActiveUser() async {
+  /*Future<String> checkActiveUser() async {
     print(
       "USER" +
           jsonEncode(<String, String>{
@@ -1080,6 +1100,7 @@ else{
       // var otpRide=jsonDecode(response.body)['data'][0]['ride_start_otp'];
 
       String socketToken = jsonDecode(response.body)['token'];
+      print(socketToken);
       if (socketToken != "") {
         OverlayLoadingProgress.stop();
         List<Data> userCheck = jsonDecode(response.body)['data']
@@ -1100,6 +1121,7 @@ else{
             otpRide: riderOtp.toString()));
         var ids = userCheck[0].id.toString();
         print('IDssss: $ids');
+
         print(userCheck[0].driverName.toString());
         print(userCheck[0].driverMobileNumber.toString());
         print(userCheck[0].driverPhoto.toString());
@@ -1119,65 +1141,13 @@ else{
     } else {
       throw Exception('Failed to create.');
     }
-  }
+  }*/
 
-  Future<http.Response> endRide(
-      String riderId, String lat, String lng) async {
 
-    final response = await http.post(
-        Uri.parse(
-            'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/endRide'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: json.encode({
-          'ride_id': riderId,
-          'end_point': {
-            'time': DateTime.now().millisecondsSinceEpoch.toString(),
-            'latitude': lat.toString(),
-            'longitude': lng.toString(),
-            'location': ""
-          }
-        }));
-    print("object");
-    print(json.encode({
-      'ride_id': riderId,
-      'end_point': {
-        'time': DateTime.now().millisecondsSinceEpoch.toString(),
-        'latitude': lat.toString(),
-        'longitude': lng.toString(),
-        'location': ""
-      }
-    }));
-    if (response.statusCode == 200) {
-      bool status = jsonDecode(response.body)[ErrorMessage.status];
-      var msg = jsonDecode(response.body)[ErrorMessage.message];
-      print("response");
-      print("$response");
-      if (status == true) {
-        LoaderUtils.closeLoader();
-        print("END RIDE....."+msg);
-        ToastMessage.toast(msg);
-        floatingVisibility = true;
-        dataVisibility = false;
 
-        Preferences.setRideOtp(''); //MainPage
-        await listController.getServiceList(userId.toString());
-        setState(() {
 
-        });
 
-      } else {
-        LoaderUtils.closeLoader();
-        ToastMessage.toast(msg);
-      }
-      return response;
-    } else {
-      throw Exception('Failed');
-    }
-  }
-
-  void checkUser(String userid) async {
+void checkUser(String userid) async {
     await checkUserController.checkActiveUser(userid).then((value) async {
       if (value != null) {
 
@@ -1191,8 +1161,9 @@ else{
                   () async {
                LoaderUtils.showLoader("Please wait...");
                 Navigator.pop(context, true);
-                await endRide(riderId, locationData!.latitude.toString(),
-                  locationData!.longitude.toString(),);
+                await rideEnd(riderId);
+                    /*endRide(riderId, locationData!.latitude.toString(),
+                  locationData!.longitude.toString(),);*/
               });
          // CheckActiveRideRequest check = CheckActiveRideRequest(userId:userId);
          // await checkActiveRide.checkActiveRideApi(check);
@@ -1200,6 +1171,22 @@ else{
 
     });
   }
+
+
+ rideEnd(String RideId)async{
+  await endRideController.endRide(RideId,  locationData!.latitude.toString(),locationData!.longitude.toString(),).then((value) async {
+    if (value != null) {
+      if (value.status == true) {
+        floatingVisibility = true;
+        dataVisibility = false;
+      }
+      else{
+        dataVisibility = true;
+        floatingVisibility = false;
+      }
+    }
+  });
+}
 
 
   void getCount()async{
@@ -1220,7 +1207,7 @@ else{
     });
   }
 
-void sos(){
+/*void sos(){
   showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -1236,7 +1223,7 @@ void sos(){
                     .start,
                 children: [
                   Text(
-                      "are_you_in_trouble_?_please_select_your_reason_: "),
+                      "are_you_in_trouble_?_please_select_your_reason_: ".tr),
                   SizedBox(height: 15),
                   Column(
                     mainAxisAlignment:
@@ -1276,15 +1263,11 @@ void sos(){
                               isExpanded:
                               true,
 
-                              items: selectedReason
+                              items: getSosMasterController.getSosReasonMasterData
                                   .map((e) {
                                 return DropdownMenuItem(
-                                  value: e[
-                                  'name']
-                                      .toString(),
-                                  child: Text(
-                                      e['name']
-                                          .toString()),
+                                  value: e.name.toString(),
+                                  child: Text(e.name.toString()),
                                 );
                               }).toList(),
                               value: reason,
@@ -1358,9 +1341,9 @@ void sos(){
           );
         });
       });
-}
+}*/
 
-Future<http.Response> SOSNotification() async {
+/*Future<http.Response> SOSNotification() async {
   var loginToken = Preferences.getLoginToken(Preferences.loginToken);
   final response = await http.post(Uri.parse(ApiUrl.SOS_Push_Notification),
       headers: <String, String>{
@@ -1404,7 +1387,63 @@ Future<http.Response> SOSNotification() async {
   } else {
     throw Exception('Failed');
   }
-}
+}*/
+
+  /*Future<http.Response> endRide(
+      String riderId, String lat, String lng) async {
+
+    final response = await http.post(
+        Uri.parse(
+            'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/endRide'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode({
+          'ride_id': riderId,
+          'end_point': {
+            'time': DateTime.now().millisecondsSinceEpoch.toString(),
+            'latitude': lat.toString(),
+            'longitude': lng.toString(),
+            'location': ""
+          }
+        }));
+    print("object");
+    print(json.encode({
+      'ride_id': riderId,
+      'end_point': {
+        'time': DateTime.now().millisecondsSinceEpoch.toString(),
+        'latitude': lat.toString(),
+        'longitude': lng.toString(),
+        'location': ""
+      }
+    }));
+    if (response.statusCode == 200) {
+      bool status = jsonDecode(response.body)[ErrorMessage.status];
+      var msg = jsonDecode(response.body)[ErrorMessage.message];
+      print("response");
+      print("$response");
+      if (status == true) {
+        LoaderUtils.closeLoader();
+        print("END RIDE....."+msg);
+        ToastMessage.toast(msg);
+        floatingVisibility = true;
+        dataVisibility = false;
+
+        Preferences.setRideOtp(''); //MainPage
+        await listController.getServiceList(userId.toString());
+        setState(() {
+
+        });
+
+      } else {
+        LoaderUtils.closeLoader();
+        ToastMessage.toast(msg);
+      }
+      return response;
+    } else {
+      throw Exception('Failed');
+    }
+  }*/
 
 void sosStatus() {
   Timer.periodic(const Duration(minutes: 10), (timers) {
@@ -1456,34 +1495,5 @@ Future<void> sosHelpAlert() async {
   );
 }
 
-Future<SosReasonModel> getSosReason() async {
-  var loginToken = Preferences.getLoginToken(Preferences.loginToken);
-  final response = await http.post(
-    Uri.parse(
-        "https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/sosReasonMaster"),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': loginToken
-    },
-  );
 
-  if (response.statusCode == 200) {
-    var jsonResponse = json.decode(response.body)['data'];
-    bool status = jsonDecode(response.body)[ErrorMessage.status];
-    var msg = jsonDecode(response.body)[ErrorMessage.message];
-    if (status == true) {
-      setState(() {
-        selectedReason = jsonResponse;
-      });
-      print(selectedReason.toString());
-    }
-    return SosReasonModel.fromJson(jsonDecode(response.body));
-  } else {
-    print("----------------------------");
-    print(response.statusCode);
-    print("----------------------------");
-
-    throw Exception('Unexpected error occured!');
-  }
-}
 }
