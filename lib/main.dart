@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
         locale: const Locale('en','US'),
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            inputDecorationTheme:  InputDecorationTheme(
+            inputDecorationTheme:  const InputDecorationTheme(
               focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: appBlue)
               ),

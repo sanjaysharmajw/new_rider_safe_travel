@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -17,14 +18,12 @@ import '../home_page_models/End_ride_model.dart';
 
 class EndRideController extends GetxController{
 
-  final listController = Get.put(MyRiderController());
-
-
   Future<EndRideModel?> endRide(String riderId, String lat, String lng) async {
     try {
-      //LoaderUtils.showLoader("Please wait");
+      LoaderUtils.showLoader("Please wait");
       final response = await http.post(Uri.parse('https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/endRide'),
-        headers: ApiUrl.headerToken, body: jsonEncode(json.encode({
+        headers: ApiUrl.headerToken, body: jsonEncode(
+            {
           'ride_id': riderId,
           'end_point': {
             'time': DateTime.now().millisecondsSinceEpoch.toString(),
@@ -32,7 +31,23 @@ class EndRideController extends GetxController{
             'longitude': lng.toString(),
             'location': ""
           }
-        })),
+        }
+
+        ),
+      );
+      debugPrint("endRide");
+      debugPrint(response.body);
+      debugPrint("bodyResponse");
+      debugPrint(
+          json.encode({
+        'ride_id': riderId,
+        'end_point': {
+          'time': DateTime.now().millisecondsSinceEpoch.toString(),
+          'latitude': lat.toString(),
+          'longitude': lng.toString(),
+          'location': ""
+        }
+      })
       );
       Map<String, dynamic> responseBody = json.decode(response.body);
       if (response.statusCode == 200) {

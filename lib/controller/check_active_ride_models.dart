@@ -1,7 +1,7 @@
 class CheckActiveRideModels {
   CheckActiveRideModels({
       bool? status, 
-      List<Data>? data, 
+      List<CheckData>? data,
       String? token,}){
     _status = status;
     _data = data;
@@ -13,23 +13,23 @@ class CheckActiveRideModels {
     if (json['data'] != null) {
       _data = [];
       json['data'].forEach((v) {
-        _data?.add(Data.fromJson(v));
+        _data?.add(CheckData.fromJson(v));
       });
     }
     _token = json['token'];
   }
   bool? _status;
-  List<Data>? _data;
+  List<CheckData>? _data;
   String? _token;
 CheckActiveRideModels copyWith({  bool? status,
-  List<Data>? data,
+  List<CheckData>? data,
   String? token,
 }) => CheckActiveRideModels(  status: status ?? _status,
   data: data ?? _data,
   token: token ?? _token,
 );
   bool? get status => _status;
-  List<Data>? get data => _data;
+  List<CheckData>? get data => _data;
   String? get token => _token;
 
   Map<String, dynamic> toJson() {
@@ -44,8 +44,8 @@ CheckActiveRideModels copyWith({  bool? status,
 
 }
 
-class Data {
-  Data({
+class CheckData {
+  CheckData({
       String? id, 
       String? userId, 
       String? driverId, 
@@ -139,7 +139,7 @@ class Data {
     _rating = rating;
 }
 
-  Data.fromJson(dynamic json) {
+  CheckData.fromJson(dynamic json) {
     _id = json['_id'];
     _userId = json['user_id'];
     _driverId = json['driver_id'];
@@ -230,7 +230,7 @@ class Data {
   String? _vehicleInsuranceValidity;
   String? _vehiclePhoto;
   double? _rating;
-Data copyWith({  String? id,
+  CheckData copyWith({  String? id,
   String? userId,
   String? driverId,
   String? date,
@@ -275,7 +275,7 @@ Data copyWith({  String? id,
   String? vehicleInsuranceValidity,
   String? vehiclePhoto,
   double? rating,
-}) => Data(  id: id ?? _id,
+}) => CheckData(  id: id ?? _id,
   userId: userId ?? _userId,
   driverId: driverId ?? _driverId,
   date: date ?? _date,

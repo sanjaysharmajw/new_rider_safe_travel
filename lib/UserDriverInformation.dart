@@ -44,7 +44,7 @@ class UserDriverInformation extends StatefulWidget {
   String dPhoto = "";
   String vPhoto = "";
   String totalComment = " ";
-  num rating ;
+  String rating ;
 
 
 
@@ -80,7 +80,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
     sharePre();
     final now = DateTime.now();
     date = DateFormat('yMd').format(now);
-    drating = widget.rating.toDouble();
+    drating = double.parse(widget.rating.toString());
   }
 
 
