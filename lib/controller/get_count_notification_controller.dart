@@ -1,52 +1,71 @@
-
 import 'dart:async';
 import 'dart:convert';
-
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart'as http;
-import '../Error.dart';
 import '../LoginModule/Api_Url.dart';
 import '../LoginModule/preferences.dart';
-import '../LoginModule/riderNewRegisterLoginModel.dart';
 import '../Models/count_notification_model.dart';
 import '../Utils/Loader.dart';
 
 class GetNotificationController extends GetxController{
+  var isLoading = true.obs;
+ // var getNotificationData = <Count>[].obs;
 
+  var myRiderCount="wait...".obs;
+  var trackFamily="wait...".obs;
+  var peopleTrackingMe="wait...".obs;
+  var countNotification="wait...".obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+    getCount();
+  }
 
-  Future<CountNotificationModel?> getCount() async {
-    String mobileNumber = Preferences.getMobileNumber(Preferences.mobileNumber);
-    String  userId = Preferences.getId(Preferences.id);
-    try{
-      final response = await http.post(
-        Uri.parse(ApiUrl.countNotification),
+  Future<dynamic> getCount() async {
+    try {
+      LoaderUtils.showLoader("Please Wait...");
+      final response = await http.post(Uri.parse(ApiUrl.countNotification),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-
         },
         body: jsonEncode(<String, dynamic>{
-          "mobile_number": mobileNumber,
+          "mobile_number": Preferences.getMobileNumber(Preferences.mobileNumber),
           "count":false,
           "unread":false,
-          "user_id":userId
+          "user_id":Preferences.getId(Preferences.id),
         }),
       );
-      print(jsonEncode(<String, dynamic>{
-        "mobile_number": mobileNumber,
+      debugPrint("notification");
+      debugPrint(jsonEncode(<String, dynamic>{
+        "mobile_number": Preferences.getMobileNumber(Preferences.mobileNumber),
         "count":false,
         "unread":false,
-        "user_id":userId
-      }),);
+        "user_id":Preferences.getId(Preferences.id),
+      }));
+      debugPrint(response.body);
       Map<String, dynamic> responseBody = json.decode(response.body);
       if (response.statusCode == 200) {
-        //LoaderUtils.closeLoader();
-        return CountNotificationModel.fromJson(responseBody);
+        LoaderUtils.closeLoader();
+        CountNotificationModel model = CountNotificationModel.fromJson(responseBody);
+        myRiderCount.value=model.count.totalRides.toString();
+        trackFamily.value=model.count.familymemberrides.toString();
+        peopleTrackingMe.value=model.count.trackingmembers.toString();
+        countNotification.value=model.data.length.toString();
       }
-    }
-    on TimeoutException catch (e) {
+    } on TimeoutException catch (e) {
+      LoaderUtils.closeLoader();
       LoaderUtils.showToast(e.message.toString());
-    }  catch (e) {
+    } on SocketException catch (e) {
+      LoaderUtils.closeLoader();
+      LoaderUtils.showToast(e.message.toString());
+    } on Error catch (e) {
+      LoaderUtils.closeLoader();
+      LoaderUtils.showToast(e.toString());
+    } catch (e) {
+      LoaderUtils.closeLoader();
       LoaderUtils.showToast(e.toString());
     }
     return null;

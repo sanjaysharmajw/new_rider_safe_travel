@@ -52,63 +52,43 @@ class HomePageNav extends StatefulWidget {
 
 class _HomePageState extends State<HomePageNav> {
   ServiceTypeData serviceTypeData = ServiceTypeData();
-  String result = "";
-  final listController = Get.put(MyRiderController());
+  String qrCodeResult = "";
   final getCountController = Get.put(GetNotificationController());
   final checkActiveRide = Get.put(CheckActiveRideController());
-  final servicelistController = Get.put(ServiceListController());
-  final getSosMasterController = Get.put(GetSosMasterController());
   final sosPushController = Get.put(SOSController());
   final endRideController = Get.put(EndRideController());
   final driverVehicelListController = Get.put(DriverVehicelListController());
+  final permissionController = Get.put(PermissionController());
+  final locationPermission = Get.put(LocationController());
+
+  final Completer<GoogleMapController> _completer = Completer();
+
   LocationData? locationData;
   late Location location;
-  var stopAlertValue = 'No';
-  var selectedReason = [];
-  var reason;
   bool isSelected = false;
-  var Sos_status = 'Ok';
   Timer? timers;
+  String? sosStatus = 'Ok';
+  String? reason;
+  String? userId;
+  String? riderOtp = "";
+  String? driverPhoto, driverName, driverReg, driverModel, driverRating, token;
+  String? riderIdFromStartRider;
 
-  static const LatLng destinationLocation = LatLng(19.067949048869405, 73.0039520555996);
+  static const LatLng destinationLocation =
+      LatLng(19.067949048869405, 73.0039520555996);
   static const CameraPosition _cameraPosition = CameraPosition(
     target: destinationLocation,
     zoom: 18,
   );
 
-  CheckActiveRideModels? checkActiveRideModels;
- String? driverPhoto,driverName,driverReg,driverModel,driverRating,token;
 
-  var myRiderCount = "wait...";
-  var peopleTrackingMe = "wait...";
-  var trackFamily = "wait...";
-  int? index;
-  bool ridestatus = false;
 
-  String? riderId;
-  String? vehicleId;
-
-  String? riderIdFromStartRider;
-  late int countNitification = 0;
-  final permissionController = Get.put(PermissionController());
-  final locationPermission = Get.put(LocationController());
-  CheckActiveRideRequest checkActiveRideRequest = CheckActiveRideRequest(
-      userId: Preferences.getId(Preferences.id).toString());
-
-  bool isLoading = true;
-  final Completer<GoogleMapController> _completer = Completer();
-  var userId;
-  var riderOtp = "";
   void sharePre() async {
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
     riderOtp = Preferences.getRideOtp();
     setState(() {});
-    if (locationData != null) {
-      await listController.getServiceList(Preferences.getId(Preferences.id).toString());
-    } else {
-      await locationPermission.permissionLocation();
-    }
+    await locationPermission.permissionLocation();
   }
 
   void currentLocation() async {
@@ -123,15 +103,11 @@ class _HomePageState extends State<HomePageNav> {
     setState(() {});
   }
 
-
-
   @override
   void initState() {
     currentLocation();
-    getCount();
     super.initState();
     sharePre();
-    //checkActiveRideApi();
     setState(() {
       sharePreferences();
     });
@@ -169,14 +145,11 @@ class _HomePageState extends State<HomePageNav> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const NotificationScreen()));
-                if (refresh == 'refresh') {
-                  getCount();
-                }
               },
               child: Center(
                 child: badges.Badge(
                   badgeContent: Text(
-                    countNitification.toString(),
+                    getCountController.countNotification.toString().toString(),
                     style: const TextStyle(
                       color: CustomColor.white,
                       fontSize: 13,
@@ -200,7 +173,7 @@ class _HomePageState extends State<HomePageNav> {
           ],
         ),
         backgroundColor: Colors.white,
-        body:Obx((){
+        body: Obx(() {
           return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,7 +182,8 @@ class _HomePageState extends State<HomePageNav> {
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
                     crossAxisCount: 2,
-                    padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, top: 10),
                     mainAxisSpacing: 20,
                     childAspectRatio: 3 / 2,
                     crossAxisSpacing: 15,
@@ -217,7 +191,8 @@ class _HomePageState extends State<HomePageNav> {
                       HomePageItems(
                         backgroundColor: Colors.blue,
                         title: 'ride_history'.tr,
-                        count: myRiderCount == "null" ? '0' : myRiderCount ?? "0",
+                        count:
+                        getCountController.myRiderCount.toString() == "null" ? '0' : getCountController.myRiderCount.toString(),
                         icons: 'new_assets/car_direction.png',
                         click: () {
                           Get.to(MyRidesPage(
@@ -230,9 +205,9 @@ class _HomePageState extends State<HomePageNav> {
                       HomePageItems(
                         backgroundColor: Colors.orange,
                         title: 'tracking'.tr,
-                        count: peopleTrackingMe == "null"
+                        count: getCountController.peopleTrackingMe.toString() == "null"
                             ? '0'
-                            : peopleTrackingMe ?? "0",
+                            : getCountController.peopleTrackingMe.toString() ?? "0",
                         icons: 'new_assets/eye-tracking.png',
                         click: () {
                           //Get.to(const FamilyMemberListScreen(changeUiValue: 'fromClass'));
@@ -244,31 +219,37 @@ class _HomePageState extends State<HomePageNav> {
                     ]),
                 Expanded(child: googleMap()),
                 Visibility(
-                    visible: checkActiveRide.getToken.toString()==""?true:false,
+                    visible: checkActiveRide.getToken.toString() == ""
+                        ? true
+                        : false,
                     child: floatingButton()),
                 Visibility(
-                  visible: checkActiveRide.getToken.toString()==""?false:true,
+                  visible:
+                      checkActiveRide.getToken.toString() == "" ? false : true,
                   child: ListView.builder(
                       shrinkWrap: true,
                       itemCount: 1,
                       itemBuilder: (context, index) {
                         return HomePageDetails(
-                            goRide: () {navigateRide();},
+                            goRide: () {
+                              navigateRide();
+                            },
                             stopRide: () {
                               showExitPopup(
                                   context, "Do you want to stop ride?",
-                                      () async {
-                                    Navigator.pop(context, true);
-                                    rideEnd(checkActiveRide.getCheckRideData[0].id.toString());
-                                  });
-
-                            }, data: checkActiveRide.getCheckRideData[0]);
+                                  () async {
+                                Navigator.pop(context, true);
+                                rideEnd(checkActiveRide.getCheckRideData[0].id
+                                    .toString());
+                              });
+                            },
+                            data: checkActiveRide.getCheckRideData[0]);
                       }),
                 )
               ]);
-        })
-    );
+        }));
   }
+
   googleMap() {
     return locationData == null
         ? Center(
@@ -305,8 +286,9 @@ class _HomePageState extends State<HomePageNav> {
               ),
               Align(alignment: Alignment.bottomCenter, child: actionUi()),
               Visibility(
-                visible:true,
-                  child: Align(alignment: Alignment.topRight, child: vehicleNo())),
+                  visible: checkActiveRide.getToken.toString() == "" ? false : true,
+                  child:
+                      Align(alignment: Alignment.topRight, child: vehicleNo())),
             ],
           );
   }
@@ -314,9 +296,9 @@ class _HomePageState extends State<HomePageNav> {
   Widget actionUi() {
     return HomePageAction(
         sosClick: () {
-          if(checkActiveRide.getToken.isNotEmpty){
+          if (checkActiveRide.getToken.isNotEmpty) {
             sos();
-          }else{
+          } else {
             LoaderUtils.message("Ride not started");
           }
         },
@@ -327,11 +309,12 @@ class _HomePageState extends State<HomePageNav> {
   }
 
   Widget vehicleNo() {
-    return VehicleRound(vehicleReg: vehicleId.toString());
+    return VehicleRound(vehicleReg: checkActiveRide.getCheckRideData.isEmpty?"N/A":
+    checkActiveRide.getCheckRideData[0].vehicleRegistrationNumber.toString()
+    );
   }
 
   Future _scanQR() async {
-    print("_scanQR");
     try {
       String? qrResult = await MajaScan.startScan(
           barColor: appBlue,
@@ -340,10 +323,10 @@ class _HomePageState extends State<HomePageNav> {
           qRCornerColor: appBlue,
           qRScannerColor: appBlue);
       setState(() async {
-        result = qrResult ?? 'null string';
-        if (result != "") {
-          if (result.length == 24) {
-            driverVehicleListApi(result);
+        qrCodeResult = qrResult ?? 'null string';
+        if (qrCodeResult != "") {
+          if (qrCodeResult.length == 24) {
+            driverVehicleListApi(qrCodeResult);
           } else {
             debugPrint("Invalid QR Code");
           }
@@ -357,22 +340,25 @@ class _HomePageState extends State<HomePageNav> {
         });
       } else {
         setState(() {
-          result = "Unknown Error $ex";
+          qrCodeResult = "Unknown Error $ex";
         });
       }
     } on FormatException {
       setState(() {
-        result = "You pressed the back button before scanning anything";
+        qrCodeResult = "You pressed the back button before scanning anything";
       });
     } catch (ex) {
       setState(() {
-        result = "Unknown Error$ex ";
+        qrCodeResult = "Unknown Error$ex ";
       });
     }
   }
 
   rideEnd(String RideId) async {
-    await endRideController.endRide(RideId, locationData!.latitude.toString(),locationData!.longitude.toString()).then((value) async {
+    await endRideController
+        .endRide(RideId, locationData!.latitude.toString(),
+            locationData!.longitude.toString())
+        .then((value) async {
       if (value != null) {
         if (value.status == true) {
           LoaderUtils.message(value.message.toString());
@@ -384,31 +370,20 @@ class _HomePageState extends State<HomePageNav> {
     });
   }
 
-  void getCount() async {
-    await getCountController.getCount().then((value) async {
-      if (value != null) {
-        if (value.status == true) {
-          myRiderCount = value.count.totalRides.toString();
-          trackFamily = value.count.familymemberrides.toString();
-          peopleTrackingMe = value.count.trackingmembers.toString();
-          countNitification = value.data.length;
-          setState(() {});
-        }
-      }
-    });
-  }
-
   void navigateRide() {
     Get.to(StartRide(
       riderId: checkActiveRide.getCheckRideData[0].id.toString(),
       socketToken: checkActiveRide.getToken.toString(),
       dName: checkActiveRide.getCheckRideData[0].driverName.toString(),
-      dMobile: checkActiveRide.getCheckRideData[0].driverMobileNumber.toString(),
+      dMobile:
+          checkActiveRide.getCheckRideData[0].driverMobileNumber.toString(),
       dPhoto: checkActiveRide.getCheckRideData[0].driverPhoto.toString(),
       model: checkActiveRide.getCheckRideData[0].vehicleModel.toString(),
       vOwnerName: checkActiveRide.getCheckRideData[0].ownerName.toString(),
-      vRegNo: checkActiveRide.getCheckRideData[0].vehicleRegistrationNumber.toString(),
-      driverLicense: checkActiveRide.getCheckRideData[0].drivingLicenceNumber.toString(),
+      vRegNo: checkActiveRide.getCheckRideData[0].vehicleRegistrationNumber
+          .toString(),
+      driverLicense:
+          checkActiveRide.getCheckRideData[0].drivingLicenceNumber.toString(),
       otpRide: checkActiveRide.getCheckRideData[0].rideStartOtp.toString(),
     ));
   }
@@ -418,7 +393,7 @@ class _HomePageState extends State<HomePageNav> {
         .driverVehicleListApi(result)
         .then((value) {
       if (value != null) {
-        String? rating=value.data![0].otherInfo!.rating.toString();
+        String? rating = value.data![0].otherInfo!.rating.toString();
         Get.to(UserDriverInformation(
           vehicleId: value.data![0].vehicleId.toString(),
           driverId: value.data![0].driverId.toString(),
@@ -426,17 +401,21 @@ class _HomePageState extends State<HomePageNav> {
           driverMob: value.data![0].driverMobileNumber.toString(),
           driverLicense: value.data![0].drivingLicenceNumber.toString(),
           vOwnerName: value.data![0].ownerName.toString(),
-          vRegNumber: value.data![0].vehicledetails![0].registrationNumber.toString(),
-          vPucvalidity: value.data![0].vehicledetails![0].pucValidity.toString(),
-          vFitnessValidity: value.data![0].vehicledetails![0].fitnessValidity.toString(),
-          vInsurance: value.data![0].vehicledetails![0].insuranceValidity.toString(),
+          vRegNumber:
+              value.data![0].vehicledetails![0].registrationNumber.toString(),
+          vPucvalidity:
+              value.data![0].vehicledetails![0].pucValidity.toString(),
+          vFitnessValidity:
+              value.data![0].vehicledetails![0].fitnessValidity.toString(),
+          vInsurance:
+              value.data![0].vehicledetails![0].insuranceValidity.toString(),
           vModel: value.data![0].vehicledetails![0].model.toString(),
           dPhoto: value.data![0].driverPhoto.toString(),
           vPhoto: value.data![0].vehicledetails![0].photos.toString(),
           rating: rating!.toString(),
           totalComment: value.data![0].otherInfo!.rating.toString(),
         ));
-      }else{
+      } else {
         LoaderUtils.message("Data not available");
       }
     });
@@ -460,98 +439,105 @@ class _HomePageState extends State<HomePageNav> {
         builder: (BuildContext context) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-                return AlertDialog(
-                  content: SizedBox(
-                    height: 190,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("are_you_in_trouble_?_please_select_your_reason_: ".tr),
-                        const SizedBox(height: 15),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            SizedBox(
-                              height: 65,
-                              child: Card(
-                                color: Colors.white,
-                                shape: UnderlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(color: appBlue)),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15),
-                                  child: DropdownButton(
-                                    underline: Container(),
-                                    // hint: Text("Select State"),
-                                    icon: const Icon(Icons.keyboard_arrow_down),
-                                    isDense: true,
-                                    isExpanded: true,
-                                    items: getSosMasterController.getSosReasonMasterData.map((e) {
-                                      return DropdownMenuItem(
-                                        value: e.name.toString(),
-                                        child: Text(e.name.toString()),
-                                      );
-                                    }).toList(),
-                                    value: reason,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        Sos_status = "SOS";
-                                        reason = value;
-                                        isSelected = true;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  sosApi();
+            return AlertDialog(
+              content: SizedBox(
+                height: 190,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                        "are_you_in_trouble_?_please_select_your_reason_: ".tr),
+                    const SizedBox(height: 15),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 65,
+                          child: Card(
+                            color: Colors.white,
+                            shape: UnderlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: appBlue)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: DropdownButton(
+                                underline: Container(),
+                                // hint: Text("Select State"),
+                                icon: const Icon(Icons.keyboard_arrow_down),
+                                isDense: true,
+                                isExpanded: true,
+                                items: getSosMasterController
+                                    .getSosReasonMasterData
+                                    .map((e) {
+                                  return DropdownMenuItem(
+                                    value: e.name.toString(),
+                                    child: Text(e.name.toString()),
+                                  );
+                                }).toList(),
+                                value: reason,
+                                onChanged: (value) {
+                                  setState(() {
+                                    sosStatus = "SOS";
+                                    reason = value;
+                                    isSelected = true;
+                                  });
                                 },
-                                style: ElevatedButton.styleFrom(primary: appBlue),
-                                child: const Text("Yes"),
                               ),
                             ),
-                            const SizedBox(width: 15),
-                            Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.white,
-                                  ),
-                                  child:
-                                  const Text("No", style: TextStyle(color: Colors.black)),
-                                ))
-                          ],
-                        )
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                );
-              });
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              sosApi();
+                            },
+                            style: ElevatedButton.styleFrom(primary: appBlue),
+                            child: const Text("Yes"),
+                          ),
+                        ),
+                        const SizedBox(width: 15),
+                        Expanded(
+                            child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.white,
+                          ),
+                          child: const Text("No",
+                              style: TextStyle(color: Colors.black)),
+                        ))
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
+          });
         });
   }
 
-  void sosApi() async{
-   await sosPushController.SOSNotification(reason.toString(), checkActiveRide.getCheckRideData[0].id.toString(),
-        locationData!.latitude.toString(), locationData!.longitude.toString()).then((value){
-          if(value!=null){
-            Get.back();
-            LoaderUtils.message(value.message.toString());
-          }else{
-            LoaderUtils.message(value!.message.toString());
-          }
-   });
+  void sosApi() async {
+    await sosPushController.SOSNotification(
+            reason.toString(),
+            checkActiveRide.getCheckRideData[0].id.toString(),
+            locationData!.latitude.toString(),
+            locationData!.longitude.toString())
+        .then((value) {
+      if (value != null) {
+        Get.back();
+        LoaderUtils.message(value.message.toString());
+      } else {
+        LoaderUtils.message(value!.message.toString());
+      }
+    });
   }
 }

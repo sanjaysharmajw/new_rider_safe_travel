@@ -13,25 +13,22 @@ class VehicleRound extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 30, top: 30),
-      child: Visibility(
-        visible: vehicleReg == "null" ? false : true,
-        child: Container(
-            width: 120,
-            height: 30,
-            decoration: const BoxDecoration(
-                color: appBlack,
-                borderRadius: BorderRadius.all(Radius.circular(20.0))),
-            child: Center(
-              child: NewMyText(
-                  textValue: vehicleReg.toString() == "null"
-                      ? "vehicle_no.".tr
-                      : vehicleReg.toString(),
-                  fontName: 'Gilroy',
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16),
-            )),
-      ),
+      child: Container(
+          width: 120,
+          height: 30,
+          decoration: const BoxDecoration(
+              color: appBlack,
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          child: Center(
+            child: NewMyText(
+                textValue: vehicleReg.toString() == "null"
+                    ? "vehicle_no.".tr
+                    : vehicleReg.toString(),
+                fontName: 'Gilroy',
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: 16),
+          )),
     );
   }
 }
