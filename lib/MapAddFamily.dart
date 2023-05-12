@@ -13,6 +13,7 @@ import 'package:ride_safe_travel/Models/affFamilyMemberNewModel.dart';
 import 'package:ride_safe_travel/Utils/RiderButton.dart';
 import 'package:ride_safe_travel/color_constant.dart';
 import 'package:ride_safe_travel/custom_button.dart';
+import 'Language/custom_text_input_formatter.dart';
 import 'LoginModule/Error.dart';
 import 'LoginModule/preferences.dart';
 import 'UserFamilyList.dart';
@@ -65,8 +66,9 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
                 padding: const EdgeInsets.all(15),
                 child: TextFormField(
                   inputFormatters: [
-                    FilteringTextInputFormatter.allow(
-                        RegExp("[a-zA-Z\]")),
+                    engHindFormatter,
+                    //FilteringTextInputFormatter.allow(
+                       // RegExp("[a-zA-Z\]")),
                     FilteringTextInputFormatter.deny('  ')
                   ],
                   validator: (value) {
@@ -90,8 +92,9 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
                 padding: const EdgeInsets.all(15),
                 child: TextFormField(
                   inputFormatters: [
-                    FilteringTextInputFormatter.allow(
-                        RegExp("[a-zA-Z\]")),
+                    engHindFormatter,
+                    //FilteringTextInputFormatter.allow(
+                      //  RegExp("[a-zA-Z\]")),
                     FilteringTextInputFormatter.deny('  ')
                   ],
                   validator: (value) {
@@ -193,6 +196,7 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
         'mobile_number': mobile,
       }),
     );
+
     if (response.statusCode == 200) {
       bool status = jsonDecode(response.body)[ErrorMessage.status];
       var msg = jsonDecode(response.body)[ErrorMessage.message];

@@ -1,7 +1,9 @@
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
 
+import '../Language/custom_text_input_formatter.dart';
 import '../LoginModule/custom_color.dart';
 import '../LoginModule/preferences.dart';
 import '../Widgets/my_textfield_with_hint.dart';
@@ -47,7 +49,7 @@ class _AddCoPassangerScreen extends State<AddCoPassangerScreen> {
      if(value!=null){
        if(value.status==true){
          LoaderUtils.message(value.message.toString());
-         Get.back(result: true);
+         Navigator.pop(context);
        }
      }
 
@@ -96,7 +98,30 @@ class _AddCoPassangerScreen extends State<AddCoPassangerScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        TextFieldTheme.buildTextField(hint: 'name'.tr,
+                        TextFormField(
+                          inputFormatters: [
+                            engHindFormatter,
+                            //FilteringTextInputFormatter.allow(
+                            // RegExp("[a-zA-Z\]")),
+                            FilteringTextInputFormatter.deny('  ')
+                          ],
+                          validator: (value) {
+                            if (value == null ||
+                                value.isEmpty ||
+                                value.length < 2) {
+                              return 'enter_co_passanger_name'.tr;
+                            }
+                            return null;
+                          },
+                          controller: controllerName,
+                          style: const TextStyle(fontFamily: 'Gilroy', fontSize: 14),
+                          decoration:  InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'name'.tr,
+                            hintText: 'name'.tr,
+                          ),
+                        ),
+                       /* TextFieldTheme.buildTextField(hint: 'name'.tr,
                             maxLength: null,
                             keyboardType: TextInputType.text,
                             controller: controllerName, validator: (value) {
@@ -105,7 +130,7 @@ class _AddCoPassangerScreen extends State<AddCoPassangerScreen> {
                               }else{
                                 return null;
                               }
-                            }, onTap: (){}),
+                            }, onTap: (){}),*/
 
                         const SizedBox(height: 10),
                         TextFieldTheme.buildTextField(hint: 'age'.tr,

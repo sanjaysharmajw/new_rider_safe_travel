@@ -25,6 +25,7 @@ import '../Models/StateModel.dart';
 import 'Aws/AwsSignedApi.dart';
 import 'Aws/AwsUrlPath.dart';
 import 'Error.dart';
+import 'Language/custom_text_input_formatter.dart';
 import 'LoginModule/Api_Url.dart';
 import 'LoginModule/MainPage.dart';
 import 'LoginModule/custom_button.dart';
@@ -480,8 +481,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                         cursorHeight:30,
                                         cursorWidth: 2.0,
                                         inputFormatters: [
-                                          FilteringTextInputFormatter.allow(
-                                              RegExp("[a-zA-Z\]")),
+                                          engHindFormatter,
+                                          //FilteringTextInputFormatter.allow(
+                                             // RegExp("[a-zA-Z\]")),
                                           FilteringTextInputFormatter.deny('  '),
 
                                         ],
@@ -545,8 +547,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                         cursorHeight:30,
                                         cursorWidth: 2.0,
                                         inputFormatters: [
-                                          FilteringTextInputFormatter.allow(
-                                              RegExp("[a-zA-Z\]")),
+                                          engHindFormatter,
+                                          //FilteringTextInputFormatter.allow(
+                                            //  RegExp("[a-zA-Z\]")),
                                           FilteringTextInputFormatter.deny('  ')
                                         ],
                                         style: TextStyle(
@@ -812,8 +815,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                         cursorHeight:30,
                                         cursorWidth: 2.0,
                                         inputFormatters: [
-                                          FilteringTextInputFormatter.allow(
-                                              RegExp("[A-Za-z]")),
+                                          engHindFormatter,
+                                          //FilteringTextInputFormatter.allow(
+                                            //  RegExp("[A-Za-z]")),
                                           FilteringTextInputFormatter.deny(' '),
 
                                         ],
@@ -878,8 +882,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                         cursorHeight:30,
                                         cursorWidth: 2.0,
                                         inputFormatters: [
-                                          FilteringTextInputFormatter.allow(
-                                              RegExp("[A-Za-z]")),
+                                          engHindFormatter,
+                                          //FilteringTextInputFormatter.allow(
+                                             // RegExp("[A-Za-z]")),
                                           FilteringTextInputFormatter.deny(' '),
 
                                         ],
@@ -1437,8 +1442,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                     height: 45,
                                     child: TextFormField(
                                       inputFormatters: [
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp("[A-Za-z \]")),
+                                        engHindFormatter,
+                                        //FilteringTextInputFormatter.allow(
+                                          //  RegExp("[A-Za-z \]")),
                                         FilteringTextInputFormatter.deny('  '),
                                       ],
                                       style:  TextStyle(
@@ -1595,8 +1601,9 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                     height: 45,
                                     child: TextFormField(
                                       inputFormatters: [
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp("[A-Za-z \]")),
+                                        engHindFormatter,
+                                        //FilteringTextInputFormatter.allow(
+                                           // RegExp("[A-Za-z \]")),
                                         FilteringTextInputFormatter.deny('  '),
                                       ],
                                       style: TextStyle(

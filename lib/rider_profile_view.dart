@@ -1035,7 +1035,9 @@ class _RiderProfileViewState extends State<RiderProfileView> {
    // OverlayLoadingProgress.stop(context);
     if (response.statusCode == 200) {
       print('RES:${response.body}');
-      List<RiderData> loginData = jsonDecode(response.body)['data']
+      const utf8Decoder = Utf8Decoder(allowMalformed: true);
+      final decodedBytes = utf8Decoder.convert(response.bodyBytes);
+      List<RiderData> loginData = jsonDecode(decodedBytes)['data']
           .map<RiderData>((data) => RiderData.fromJson(data))
           .toList();
       setState(() {
@@ -1047,6 +1049,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
       throw Exception('Failed to load');
     }
   }
+
   String formatDate(String date)
   {
     return date;

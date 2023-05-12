@@ -41,8 +41,9 @@ class ServiceListController extends GetxController{
 
       }));
       log(response.body);
-      Map<String, dynamic> responseBody = json.decode(response.body);
-
+      const utf8Decoder = Utf8Decoder(allowMalformed: true);
+      final decodedBytes = utf8Decoder.convert(response.bodyBytes);
+      Map<String, dynamic> responseBody = json.decode(decodedBytes);
       if (response.statusCode == 200) {
         isLoading.value = false;
         SearchServicesModel model = SearchServicesModel.fromJson(responseBody);
