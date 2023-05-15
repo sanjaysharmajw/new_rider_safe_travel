@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:majascan/majascan.dart';
+import 'package:ride_safe_travel/MyText.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/bottom_nav/EmptyScreen.dart';
 import 'package:ride_safe_travel/color_constant.dart';
@@ -24,6 +25,7 @@ import 'package:ride_safe_travel/home_page_controller/sos_controller.dart';
 import 'package:ride_safe_travel/home_page_controller/vehicle_round.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
+import 'package:ride_safe_travel/ride_start_screens/start_ride_with_driverid.dart';
 import '../MyRidesPage.dart';
 import '../Notification/NotificationScreen.dart';
 import '../ServiceTypeModel.dart';
@@ -427,9 +429,64 @@ class _HomePageState extends State<HomePageNav> {
       child: Align(
           alignment: Alignment.topRight,
           child: FloatingButton(click: () {
-            _scanQR();
+            showSheet(context);
           })),
     );
+  }
+
+  showSheet(context) {
+    showModalBottomSheet(context: context, builder: (BuildContext bc) {
+      return Container(
+        color: Colors.white,
+        width: double.infinity,
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children:[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: (){
+                    _scanQR();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 20.0,left: 20,top: 20),
+                    child: Container(
+                      width: double.infinity,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: appBlack,
+                        borderRadius: const  BorderRadius.all(Radius.circular(5)),
+                        border: Border.all(color: Colors.black,width: 1)
+                      ),
+                        child: Center(child: MyText(text: 'By QR Code', fontFamily: 'Gilroy', color: Colors.white, fontSize: 18))),
+                  ),
+                ),
+                InkWell(
+                  onTap: (){
+                    Get.to(const StartRideWithDriverId());
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 20.0,left: 20,top: 20,bottom: 20),
+                    child: Container(
+                        width: double.infinity,
+                        height: 60,
+                        decoration: BoxDecoration(
+                            color: appBlack,
+                            borderRadius: const  BorderRadius.all(Radius.circular(5)),
+                            border: Border.all(color: Colors.black,width: 1)
+                        ),
+                        child: Center(child: MyText(text: 'By Vehicle No', fontFamily: 'Gilroy', color: Colors.white, fontSize: 18))),
+                  ),
+                ),
+              ],
+            )
+
+          ],
+        ),
+      );
+    });
   }
 
   void sos() {
