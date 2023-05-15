@@ -169,25 +169,12 @@ class _SignUpState extends State<StartRide> {
       if (cLoc.speed.toString().length > 5) {
         stopAlertTimer();
       }
-      print('altitude${cLoc.satelliteNumber}');
-      print('speed${cLoc.speed}');
-      print('speedAccuracy${cLoc.speedAccuracy}');
-      print('elapsedRealtimeNanos${cLoc.elapsedRealtimeNanos}');
-      print(
-          'elapsedRealtimeUncertaintyNanos${cLoc.elapsedRealtimeUncertaintyNanos}');
-      print('accuracy${cLoc.accuracy}');
-      print('heading${cLoc.heading}');
-      print('headingAccuracy${cLoc.headingAccuracy}');
-      print('provider${cLoc.provider}');
-      print('satelliteNumber${cLoc.satelliteNumber}');
-      print('verticalAccuracy${cLoc.verticalAccuracy}');
       setState(() {});
       final GoogleMapController controller = await _completer.future;
       if (destinationMarkerLat == 0.0) {
         if (speed > 5) {
           ToastMessage.toast(speed.toString());
-          live_polylineCoordinates.add(
-              LatLng(currentLocation!.latitude!, currentLocation!.longitude!));
+          live_polylineCoordinates.add(LatLng(currentLocation!.latitude!, currentLocation!.longitude!));
         }
         controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
             target: LatLng(cLoc.latitude!, cLoc.longitude!), zoom: 19)));

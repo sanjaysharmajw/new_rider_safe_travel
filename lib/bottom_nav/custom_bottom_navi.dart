@@ -1,17 +1,12 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/bottom_nav/profile_nav.dart';
 import 'package:ride_safe_travel/color_constant.dart';
-
 import '../LoginModule/Map/RiderFamilyList.dart';
 import '../MyRidesPage.dart';
 import '../RejectedServiceList.dart';
-import '../ServiceListPage.dart';
 import '../Utils/exit_alert_dialog.dart';
 import 'home_page_nav.dart';
 
