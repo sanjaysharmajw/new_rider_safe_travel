@@ -4,6 +4,7 @@ import 'package:location/location.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/Utils/my_button.dart';
+import 'package:ride_safe_travel/Utils/utils_class.dart';
 import 'package:ride_safe_travel/body_request/start_ride_request.dart';
 import 'package:ride_safe_travel/controller/demo.dart';
 import 'package:ride_safe_travel/controller/location_controller.dart';
@@ -24,6 +25,16 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
   final driverName=TextEditingController();
   final driverMobile=TextEditingController();
   final vehicleId=TextEditingController();
+  var focusNode = FocusNode();
+  bool? autofocus=false;
+
+
+  final ctrl1=TextEditingController();
+  final ctrl2=TextEditingController();
+  final ctrl3=TextEditingController();
+  final ctrl4=TextEditingController();
+  String? textValue;
+
   final formKey = GlobalKey<FormState>();
 
   LocationData? locationData;
@@ -34,6 +45,7 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
   void initState() {
     super.initState();
     locationFetch();
+
 
   }
   void locationFetch()async{
@@ -94,28 +106,126 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(10),
-                child: MyTextFieldForm(
-                  hintText: 'Vehicle No',
-                  controller: vehicleId,
-                  validator: (value) {
-                    if (value.toString().isEmpty) {
-                      return "Enter Vehicle No";
-                    } else {
-                      return null;
-                    }
-                  },
-                  fontSize: 18,
-                  readOnly: false,
-                  onTap: () {},
-                  keyboardType: TextInputType.text,
-                  inputFormatters: null,
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: TextFormField(
+                        textCapitalization: TextCapitalization.characters,
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.text,
+                        style: const TextStyle(fontFamily: "Gilroy",fontSize: 18),
+                        controller: ctrl1,
+                        autofocus: autofocus!,
+                        validator: (value) {
+                          if (value.toString().isEmpty) {
+                            return "Required";
+                          } else {
+                            return null;
+                          }
+                        },
+                        decoration: const InputDecoration(
+                          hintText: "MH",
+                          hintStyle: TextStyle(fontFamily: "Gilroy",fontSize: 18),
+                          counterText: "",
+                        ),
+                        maxLength: 2,
+
+                      ),
+                    ),
+                    Container(width: 10),
+                    Flexible(
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        validator: (value) {
+                          if (value.toString().isEmpty) {
+                            return "Required";
+                          } else {
+                            return null;
+                          }
+                        },
+                        decoration: const InputDecoration(
+                          hintText: "04",
+                          hintStyle: TextStyle(fontFamily: "Gilroy",fontSize: 18),
+                          counterText: "",
+                        ),
+                        keyboardType: TextInputType.number,
+                        style: const TextStyle(fontFamily: "Gilroy",fontSize: 18),
+                        controller: ctrl2,
+                        autofocus: autofocus!,
+                        maxLength: 2,
+                      ),
+                    ),
+                    Container(width: 10),
+                    Flexible(
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value.toString().isEmpty) {
+                            return "Required";
+                          } else {
+                            return null;
+                          }
+                        },
+                        textCapitalization: TextCapitalization.characters,
+                        maxLength: 3,
+                        textAlign: TextAlign.center,
+                        decoration: const InputDecoration(
+                          hintText: "ABC",
+                          hintStyle: TextStyle(fontFamily: "Gilroy",fontSize: 18),
+                          counterText: "",
+                        ),
+                        keyboardType: TextInputType.text,
+                        style: const TextStyle(fontFamily: "Gilroy",fontSize: 18),
+                        controller: ctrl3,
+                        autofocus: autofocus!,
+                      ),
+                    ),
+                    Container(width: 10),
+                    Flexible(
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value.toString().isEmpty) {
+                            return "Required";
+                          } else {
+                            return null;
+                          }
+                        },
+                        maxLength: 4,
+                        textAlign: TextAlign.center,
+                        decoration: const InputDecoration(
+                          hintText: "1234",
+                          hintStyle: TextStyle(fontFamily: "Gilroy",fontSize: 18),
+                          counterText: "",
+                        ),
+                        keyboardType: TextInputType.number,
+                        style: const TextStyle(fontFamily: "Gilroy",fontSize: 18),
+                        controller: ctrl4,
+                        autofocus: autofocus!,
+                        onChanged: (value){
+                          if(value.length==1){
+                         textValue="000$value";
+                          }else if(value.length==2){
+                            textValue="00$value";
+                          }
+                          else if(value.length==3){
+                            textValue="0$value";
+                          }else if(value.length==4){
+                            textValue=value;
+                          }
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
               MyButton(
                   press: () {
+                    String? controllerValue1=ctrl1.text.toString();
+                    String? controllerValue2=ctrl2.text.toString();
+                    String? controllerValue3=ctrl3.text.toString();
+                    String? vehicleNo="$controllerValue1$controllerValue2$controllerValue3$textValue";
                     if (formKey.currentState!.validate()) {
-                      resendOtpAPi(driverMobile.toString());
+                      resendOtpAPi(driverMobile.toString(),vehicleNo);
                     }
                   },
                   buttonText: 'Next'),
@@ -125,14 +235,14 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
       ),
     ));
   }
-  void resendOtpAPi(String mobile) async {
+  void resendOtpAPi(String mobile,vehicleNo) async {
     final otpApiController = Get.put(SendOtpController());
     await otpApiController.sendOtp(mobile).then((value) async {
       if (value != null) {
         if (value.status == true) {
           LoaderUtils.showToast(value.message);
           Get.to(StartOTPScreen(mobile: driverMobile.value.text.toString(), driverName: driverName.value.text.toString(),
-              vehicleNo: vehicleId.value.text.toString()));
+              vehicleNo: vehicleNo));
         } else {
           LoaderUtils.showToast(value.message);
         }
