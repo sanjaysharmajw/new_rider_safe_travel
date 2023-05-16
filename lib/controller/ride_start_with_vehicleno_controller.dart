@@ -26,6 +26,8 @@ class RideStartWithVehicleNoController extends GetxController{
         headers: header.headerToken,
         body: jsonEncode(requestForVehicle),
       );
+      debugPrint("vehicleNo");
+      debugPrint(jsonEncode(requestForVehicle));
       Map<String, dynamic> responseBody = json.decode(response.body);
       if (response.statusCode == 200) {
         LoaderUtils.closeLoader();
