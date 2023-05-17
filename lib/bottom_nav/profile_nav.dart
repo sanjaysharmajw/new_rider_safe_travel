@@ -28,6 +28,7 @@ import '../MyText.dart';
 import '../Notification/NotificationScreen.dart';
 import '../Utils/logout_dialog_box.dart';
 import '../about_page.dart';
+import '../constant_image.dart';
 import '../controller/permision_controller.dart';
 import '../controller/user_details_controller.dart';
 import '../controller/volunteer_request.dart';
@@ -35,6 +36,7 @@ import '../controller/volunteer_select_controller.dart';
 import '../home_page_controller/get_sos_controller_master.dart';
 import '../new_widgets/profile_notification_with_switch.dart';
 import '../rider_profile_view.dart';
+import '../volunteer_screen_request.dart';
 import '../volunteer_sos_reason_controller.dart';
 import 'custom_bottom_navi.dart';
 import 'home_page_nav.dart';
@@ -62,6 +64,7 @@ class _ProfileNavState extends State<ProfileNav> {
   String? volunteerId;
   List<String> selectedOptions = [];
   List<VolunteerAri> volunteerAri = [];
+  bool volunteerToggle = false;
 
 
   final List locale = [
@@ -138,14 +141,16 @@ class _ProfileNavState extends State<ProfileNav> {
 
   var profileName;
 
+  @override
   void initState(){
+    userDetailsApi();
     profileName = Preferences.getFirstName(Preferences.firstname).toString() +
         " " +
 
         Preferences.getLastName(Preferences.lastname).toString();
     print("ProifleName.."+profileName);
 
-    userDetailsApi();
+
     currentLocation();
 
 
@@ -158,7 +163,29 @@ class _ProfileNavState extends State<ProfileNav> {
 
   void userDetailsApi()async{
     await userDetailsController.updateProfile();
-   // volunteer= userDetailsController.getUserDetailsData[].volunteer;
+
+    // volunteerToggle=true;
+    if(userDetailsController.getUserDetailsData[0].volunteer.toString() != "null") {
+
+      if(userDetailsController.getUserDetailsData[0].volunteer=='Yes')
+      {
+        volunteerStatus=true;
+        volunteerToggle=true;
+      }
+      else
+      {
+        volunteerStatus=false;
+        volunteerToggle=false;
+      }
+    }
+    else
+    {
+      volunteerStatus=false;
+      volunteerToggle=false;
+    }
+    //volunteering="No";
+    print("userdetails....");
+  //  print(volunteering);
 
     if(_selectedReasonNames.isNotEmpty){
       _selectedReasonNames.clear();
@@ -217,13 +244,12 @@ class _ProfileNavState extends State<ProfileNav> {
                 selectedAri.add(ari);
                 debugPrint("selected ari  value : $ari");
               }
-
-
               if(volunteerStatus==true){
                 volunteerApi("Yes");
               }else{
                 volunteerApi("No");
               }
+
             },
             maxChildSize: 0.9,
           ),
@@ -359,8 +385,25 @@ class _ProfileNavState extends State<ProfileNav> {
                       status4: volunteerToggle,
                       title: "volunteer".tr,
                       subTitle: "join_as_a_volunteer?".tr, imageAssets: 'new_assets/volunteer.png',),*/
+                    ProfileNotification(
+                        valueChanged: (values) {
+                          setState(() {
+                            volunteerStatus = values;
+                            if(volunteerStatus == true){
 
-                    Padding(
+                              _showMultiSelect(context);
+
+
+
+                            }else{
+                              volunteerApi("No");
+                            }
+                          });
+                        },
+                        status4: volunteerToggle,
+                        title: "volunteer".tr,
+                        subTitle: "join_as_a_volunteer?".tr, imageAssets: volunteer),
+                   /* Padding(
                       padding: const EdgeInsets.only(left: 10,right: 15,top: 5, bottom: 5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -465,7 +508,12 @@ class _ProfileNavState extends State<ProfileNav> {
                           ),
                         ],
                       ),
-                    ),
+                    ),*/
+                    ProfileText(title: 'Volunteer Request', subTitle: 'Check request', icons: FeatherIcons.logOut,
+                      voidCallback: () {
+                      Get.to(VolunteerRequestList());
+
+                      },),
 
                     ProfileText(title: 'logout'.tr, subTitle: 'exit_from_your_account'.tr, icons: FeatherIcons.logOut,
                       voidCallback: () {
