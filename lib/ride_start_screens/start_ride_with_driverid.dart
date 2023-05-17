@@ -1,33 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
-import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/Utils/my_button.dart';
-import 'package:ride_safe_travel/Utils/utils_class.dart';
-import 'package:ride_safe_travel/body_request/start_ride_request.dart';
-import 'package:ride_safe_travel/controller/demo.dart';
-import 'package:ride_safe_travel/controller/location_controller.dart';
 import 'package:ride_safe_travel/controller/ride_start_with_vehicleno_controller.dart';
 import 'package:ride_safe_travel/controller/send_otp_controller.dart';
 import 'package:ride_safe_travel/ride_start_screens/my_text_fieldform.dart';
 import 'package:ride_safe_travel/ride_start_screens/start_ride_otp.dart';
 
 class StartRideWithDriverId extends StatefulWidget {
+
   const StartRideWithDriverId({Key? key}) : super(key: key);
 
   @override
   State<StartRideWithDriverId> createState() => _StartRideWithDriverIdState();
+
 }
 
 class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
+
   final apiController = Get.put(RideStartWithVehicleNoController());
   final driverName=TextEditingController();
   final driverMobile=TextEditingController();
   final vehicleId=TextEditingController();
   var focusNode = FocusNode();
-  bool? autofocus=false;
-
 
   final ctrl1=TextEditingController();
   final ctrl2=TextEditingController();
@@ -39,15 +35,20 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
 
   LocationData? locationData;
   late Location location;
-
+  late FocusNode myFocusNode;
 
   @override
   void initState() {
     super.initState();
     locationFetch();
-
-
+    myFocusNode = FocusNode();
   }
+  @override
+  void dispose() {
+    myFocusNode.dispose();
+    super.dispose();
+  }
+
   void locationFetch()async{
     location=Location();
     locationData=await location.getLocation();
@@ -116,7 +117,7 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                         keyboardType: TextInputType.text,
                         style: const TextStyle(fontFamily: "Gilroy",fontSize: 18),
                         controller: ctrl1,
-                        autofocus: autofocus!,
+                        autofocus: false,
                         validator: (value) {
                           if (value.toString().isEmpty) {
                             return "Required";
@@ -130,6 +131,13 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                           counterText: "",
                         ),
                         maxLength: 2,
+                        onChanged: (value){
+                          if(value.length==2){
+                            setState(() {
+                              myFocusNode.requestFocus();
+                            });
+                          }
+                        },
 
                       ),
                     ),
@@ -137,6 +145,8 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                     Flexible(
                       child: TextFormField(
                         textAlign: TextAlign.center,
+                        focusNode: myFocusNode,
+                        autofocus: false,
                         validator: (value) {
                           if (value.toString().isEmpty) {
                             return "Required";
@@ -152,8 +162,14 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                         keyboardType: TextInputType.number,
                         style: const TextStyle(fontFamily: "Gilroy",fontSize: 18),
                         controller: ctrl2,
-                        autofocus: autofocus!,
                         maxLength: 2,
+                        onChanged: (value){
+                          if(value.length==2){
+                            setState(() {
+                              myFocusNode.requestFocus();
+                            });
+                          }
+                        },
                       ),
                     ),
                     Container(width: 10),
@@ -169,6 +185,8 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                         textCapitalization: TextCapitalization.characters,
                         maxLength: 3,
                         textAlign: TextAlign.center,
+                        focusNode: myFocusNode,
+                        autofocus: false,
                         decoration: const InputDecoration(
                           hintText: "ABC",
                           hintStyle: TextStyle(fontFamily: "Gilroy",fontSize: 18),
@@ -177,7 +195,13 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                         keyboardType: TextInputType.text,
                         style: const TextStyle(fontFamily: "Gilroy",fontSize: 18),
                         controller: ctrl3,
-                        autofocus: autofocus!,
+                        onChanged: (value){
+                          if(value.length==3){
+                            setState(() {
+                              myFocusNode.requestFocus();
+                            });
+                          }
+                        },
                       ),
                     ),
                     Container(width: 10),
@@ -198,9 +222,10 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                           counterText: "",
                         ),
                         keyboardType: TextInputType.number,
+                        focusNode: myFocusNode,
+                        autofocus: true,
                         style: const TextStyle(fontFamily: "Gilroy",fontSize: 18),
                         controller: ctrl4,
-                        autofocus: autofocus!,
                         onChanged: (value){
                           if(value.length==1){
                          textValue="000$value";
