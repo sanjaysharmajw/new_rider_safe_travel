@@ -36,10 +36,13 @@ import 'MyTextField.dart';
 
 import 'RiderUserListData.dart';
 import 'Sharepreferences.dart';
+import 'Widgets/my_textfield_with_hint.dart';
 import 'bottom_nav/custom_bottom_navi.dart';
 import 'bottom_nav/home_page_nav.dart';
 import 'bottom_nav/profile_nav.dart';
+import 'co_passanger/dummy_data.dart';
 import 'color_constant.dart';
+import 'new_widgets/my_new_text.dart';
 
 
 class RiderProfileEdit extends StatefulWidget {
@@ -120,6 +123,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   var mycities;
   var age;
   var gender;
+  var bloodgroup;
 
 
   final _formKey = GlobalKey<FormState>();
@@ -724,7 +728,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                   child: Icon(Icons.bloodtype_outlined,size: 25,)
                               ),
                               SizedBox(width: 5,),
-                              Container(
+
+                             Container(
                                 width: 90,
                                 child: Text(
                                   "blood_group".tr,
@@ -737,6 +742,50 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               ),
 
                               Expanded(
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: TextFormField(
+                                      // keyboardType: TextInputType.number,
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.normal,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                      maxLines: 1,
+                                      controller: bloodgroupController,
+                                      decoration: InputDecoration(
+                                        border: const UnderlineInputBorder(),
+                                        enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 1, color: Colors.black45)),
+                                        focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 2, color: Colors.black54)),
+                                      ),
+                                      readOnly: true,
+
+                                      onTap: () async {
+                                        bloodGroupDialogBox();
+                                      },
+                                      validator: (value) {
+                                        if (value == null ||
+                                            value.isEmpty) {
+                                          return 'blood_group_is_required !'.tr;
+                                        }
+                                        if(value.length < 4){
+                                          return null;
+                                        }
+                                        return 'blood_group_is_required !'.tr;
+                                      },
+                                      onChanged: (value) {
+                                        bloodgroup = value;
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              /*Expanded(
                                   child: Center(
                                     child: Padding(
                                       padding: const EdgeInsets.only(right: 10),
@@ -782,7 +831,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                         },
                                       ),
                                     ),
-                                  )),
+                                  )),*/
                             ],
                           ),
 
@@ -1719,6 +1768,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             mystates = stateController.text.toString();
                             mycities = cityController.text.toString();
                             emergencyContact0Controller.text.toString();
+                            bloodgroup=bloodgroupController.text.toString();
                             print(userId);
                             print(pinNumber);
                             print(uploadedImage);
@@ -2240,5 +2290,40 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
         throw Exception('Failed.');
       }
     }
+  }
+
+  Widget bloodGroupDialogBox() {
+    return SizedBox(
+      width: 200.0,
+      height: 300,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const NewMyText(textValue: 'Select Blood Group', fontName: 'Gilroy', color: appBlack, fontWeight: FontWeight.w700, fontSize: 16),
+          const Padding(
+            padding:  EdgeInsets.only(right: 10,left: 10,top: 10),
+            child: Divider(),
+          ),
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: bloodGroupData.length,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: (){
+                    bloodgroupController.text=bloodGroupData[index];
+                    Navigator.pop(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: NewMyText(textValue: bloodGroupData[index], fontName: 'Gilroy', color: appBlack, fontWeight: FontWeight.w500, fontSize: 16),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -265,7 +265,7 @@ class _HomePageState extends State<HomePageNav> {
         : Stack(
             children: [
               Padding(
-                padding: const EdgeInsets.all(18.0),
+                padding: const EdgeInsets.all(5.0),
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
                   child: GoogleMap(
@@ -284,7 +284,7 @@ class _HomePageState extends State<HomePageNav> {
                   ),
                 ),
               ),
-              Align(alignment: Alignment.bottomCenter, child: actionUi()),
+              Align(alignment: Alignment.bottomRight, child: actionUi()),
               Visibility(
                   visible: checkActiveRide.getToken.toString() == "" ? false : true,
                   child:

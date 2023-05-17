@@ -8,11 +8,14 @@ import 'package:ride_safe_travel/Utils/Loader.dart';
 class PermissionController extends GetxController{
 
   String? mapStyle;
+  LocationData? locationData;
+  Location? location;
 
   @override
   void onInit() {
     super.onInit();
     mapThemeStyle();
+    getLocation();
   }
 
   Future permissionLocation() async {
@@ -24,14 +27,19 @@ class PermissionController extends GetxController{
       permissionGranted = await location.requestPermission();
       serviceEnabled = await location.requestService();
       LoaderUtils.message("Access Granted");
-      //DriverCustomLoader.message("Access Granted");
     }
   }
 
   Future mapThemeStyle()async{
-      rootBundle.loadString('assets/map_style.json').then((string) {
-        mapStyle = string;
-      });
+    rootBundle.loadString('assets/map_style.json').then((string) {
+      mapStyle = string;
+    });
+  }
+
+  Future<LocationData?> getLocation()async{
+    location=Location();
+    locationData=await location!.getLocation();
+    return locationData;
   }
 
 }

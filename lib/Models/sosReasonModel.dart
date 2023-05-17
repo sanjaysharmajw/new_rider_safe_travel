@@ -3,58 +3,70 @@ SosReasonModel sosReasonModelFromJson(String str) => SosReasonModel.fromJson(jso
 String sosReasonModelToJson(SosReasonModel data) => json.encode(data.toJson());
 class SosReasonModel {
   SosReasonModel({
-      this.status, 
-      this.data,});
+      bool? status, 
+      List<ReasonMasterData>? data,}){
+    _status = status;
+    _data = data;
+}
 
   SosReasonModel.fromJson(dynamic json) {
-    status = json['status'];
+    _status = json['status'];
     if (json['data'] != null) {
-      data = [];
+      _data = [];
       json['data'].forEach((v) {
-        data?.add(sosReasonData.fromJson(v));
+        _data?.add(ReasonMasterData.fromJson(v));
       });
     }
   }
-  bool? status;
-  List<sosReasonData>? data;
+  bool? _status;
+  List<ReasonMasterData>? _data;
 SosReasonModel copyWith({  bool? status,
-  List<sosReasonData>? data,
-}) => SosReasonModel(  status: status ?? this.status,
-  data: data ?? this.data,
+  List<ReasonMasterData>? data,
+}) => SosReasonModel(  status: status ?? _status,
+  data: data ?? _data,
 );
+  bool? get status => _status;
+  List<ReasonMasterData>? get data => _data;
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['status'] = status;
-    if (data != null) {
-      map['data'] = data?.map((v) => v.toJson()).toList();
+    map['status'] = _status;
+    if (_data != null) {
+      map['data'] = _data?.map((v) => v.toJson()).toList();
     }
     return map;
   }
 
 }
 
-sosReasonData dataFromJson(String str) => sosReasonData.fromJson(json.decode(str));
-String dataToJson(sosReasonData data) => json.encode(data.toJson());
-class sosReasonData {
-  sosReasonData({
-      this.id, 
-      this.name,});
+ReasonMasterData dataFromJson(String str) => ReasonMasterData.fromJson(json.decode(str));
+String dataToJson(ReasonMasterData data) => json.encode(data.toJson());
+class ReasonMasterData {
+  ReasonMasterData({
+      String? id, 
+      String? name,}){
+    _id = id;
+    _name = name;
+}
 
-  sosReasonData.fromJson(dynamic json) {
-    id = json['_id'];
-    name = json['name'];
+  ReasonMasterData.fromJson(dynamic json) {
+    _id = json['_id'];
+    _name = json['name'];
   }
-  String? id;
-  String? name;
-  sosReasonData copyWith({  String? id,
+  String? _id;
+  String? _name;
+  ReasonMasterData copyWith({  String? id,
   String? name,
-}) => sosReasonData(  id: id ?? this.id,
-  name: name ?? this.name,
+}) => ReasonMasterData(  id: id ?? _id,
+  name: name ?? _name,
 );
+  String? get id => _id;
+  String? get name => _name;
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['_id'] = id;
-    map['name'] = name;
+    map['_id'] = _id;
+    map['name'] = _name;
     return map;
   }
 

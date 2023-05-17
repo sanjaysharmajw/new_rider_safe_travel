@@ -15,7 +15,7 @@ class FloatingButton extends StatelessWidget {
       child: FloatingActionButton.extended(
         onPressed: click,
         label:  NewMyText(textValue: 'Start Ride'.tr, fontName: 'Gilroy', color: appWhiteColor, fontWeight: FontWeight.w500, fontSize: 14),
-        backgroundColor: appBlack,
+        backgroundColor: appBlue,
       ),
     );
   }

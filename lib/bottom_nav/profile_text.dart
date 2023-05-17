@@ -22,7 +22,7 @@ class ProfileText extends StatelessWidget {
         onTap: voidCallback,
         child: Container(
           height: 55,
-          width: 500,
+          width: 600,
           color: Colors.transparent,
           child: Center(
             child: Row(

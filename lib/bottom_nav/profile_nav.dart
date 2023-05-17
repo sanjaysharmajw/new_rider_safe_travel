@@ -2,21 +2,40 @@
 
 
 
+import 'dart:async';
+import 'dart:convert';
+
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_switch/flutter_switch.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+
+import 'package:multi_select_flutter/bottom_sheet/multi_select_bottom_sheet.dart';
+import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
+import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/bottom_nav/profile_text.dart';
 import 'package:get/get.dart';
 import 'package:ride_safe_travel/chat_bot/ChatScreen.dart';
 import 'package:ride_safe_travel/color_constant.dart';
+import 'package:ride_safe_travel/custom_button.dart';
 import '../LoginModule/custom_color.dart';
+import '../Models/sosReasonModel.dart';
 import '../MyText.dart';
 import '../Notification/NotificationScreen.dart';
 import '../Utils/logout_dialog_box.dart';
 import '../about_page.dart';
+import '../controller/permision_controller.dart';
+import '../controller/user_details_controller.dart';
+import '../controller/volunteer_request.dart';
+import '../controller/volunteer_select_controller.dart';
+import '../home_page_controller/get_sos_controller_master.dart';
 import '../new_widgets/profile_notification_with_switch.dart';
 import '../rider_profile_view.dart';
+import '../volunteer_sos_reason_controller.dart';
 import 'custom_bottom_navi.dart';
 import 'home_page_nav.dart';
 
@@ -30,7 +49,20 @@ class ProfileNav extends StatefulWidget {
 
 class _ProfileNavState extends State<ProfileNav> {
 
-  bool volunteerToggle = false;
+  final volunteerController=Get.put(VolunteerController());
+  final userDetailsController=Get.put(UserDetailsController());
+  final getReason = Get.put(GetSosReasonController());
+  final permissionController = Get.put(PermissionController());
+  late Location location;
+  LocationData? locationData;
+  final Completer<GoogleMapController> _completer = Completer();
+
+  bool? volunteerStatus=false;
+  String? option;
+  String? volunteerId;
+  List<String> selectedOptions = [];
+  List<VolunteerAri> volunteerAri = [];
+
 
   final List locale = [
     {'name': 'English', 'locale': const Locale('en', 'US')},
@@ -41,6 +73,18 @@ class _ProfileNavState extends State<ProfileNav> {
   updateLanguage(Locale locale) {
     Get.back();
     Get.updateLocale(locale);
+  }
+
+  void currentLocation() async {
+    await permissionController.permissionLocation();
+    location = Location();
+    locationData = await location.getLocation();
+    location.onLocationChanged.listen((LocationData cLoc) async {
+      final GoogleMapController controller = await _completer.future;
+      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+          target: LatLng(cLoc.latitude!, cLoc.longitude!), zoom: 15)));
+    });
+    setState(() {});
   }
 
   Future<void> share(String language) async {
@@ -97,9 +141,101 @@ class _ProfileNavState extends State<ProfileNav> {
   void initState(){
     profileName = Preferences.getFirstName(Preferences.firstname).toString() +
         " " +
+
         Preferences.getLastName(Preferences.lastname).toString();
     print("ProifleName.."+profileName);
+
+    userDetailsApi();
+    currentLocation();
+
+
   }
+
+  //String? volunteer;
+  final List<String> _selectedReasonNames= [];
+  List<VolunteerAri> selectedAri = [];
+  final List<String> _reasonNames = [];
+
+  void userDetailsApi()async{
+    await userDetailsController.updateProfile();
+   // volunteer= userDetailsController.getUserDetailsData[].volunteer;
+
+    if(_selectedReasonNames.isNotEmpty){
+      _selectedReasonNames.clear();
+      selectedAri.clear();
+      _reasonNames.clear();
+
+    }
+
+    for(var i = 0; i< userDetailsController.getUserDetailsData[0].volunteerAri!.length;i++){
+      debugPrint("selected reason ${userDetailsController.getUserDetailsData[0].volunteerAri![i].name}");
+      _selectedReasonNames.add(userDetailsController.getUserDetailsData[0].volunteerAri![i].name.toString());
+    }
+    setState(() {});
+    // debugPrint("volunteer ari items ${volunteer[].}");
+  }
+
+  void _showMultiSelect(BuildContext context) async {
+
+
+    List<ReasonMasterData> reasons = getReason.getSosReasonData.value;
+
+
+
+
+    for (var i = 0; i < reasons.length; i++) {
+      _reasonNames.add(reasons[i].name.toString());
+      debugPrint("selected value reason : ${reasons[i].name.toString()}");
+    }
+
+
+
+
+    await showModalBottomSheet(
+      isScrollControlled: true, // required for min/max child size
+      context: context,
+      builder: (ctx) {
+        return getReason.isLoading==true?LoaderUtils.loader():
+
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: MultiSelectBottomSheet(
+            items: _reasonNames.map((e) => MultiSelectItem(e, e)).toList(),
+            initialValue: _selectedReasonNames,
+            selectedColor: Colors.black,
+            cancelText: Text("Cancel", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),),
+            confirmText: Text("Confirm", style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, fontSize: 20),),
+            title: Text("I want to help in following situations", style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
+            onConfirm: (values) {
+              for (var i = 0; i < values.length; i++) {
+                _selectedReasonNames.add(values[i].toString());
+                debugPrint("selected value : ${values[i].toString()}");
+                // make volunteer ari object list
+               // ReasonMasterData rmd=values[i] as ReasonMasterData;
+                VolunteerAri ari = VolunteerAri(id: "", name: values[i]
+                );
+                selectedAri.add(ari);
+                debugPrint("selected ari  value : $ari");
+              }
+
+
+              if(volunteerStatus==true){
+                volunteerApi("Yes");
+              }else{
+                volunteerApi("No");
+              }
+            },
+            maxChildSize: 0.9,
+          ),
+        );
+      },
+    );
+  }
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -215,17 +351,122 @@ class _ProfileNavState extends State<ProfileNav> {
                         Get.to(AboutScreenPage());
                       },),
                     SizedBox(height: 5,),
-                    ProfileNotification(
+                    /*ProfileNotification(
                       valueChanged: (values) {
                         values=volunteerToggle;
-
                         volunteerToggle = true;
-
-
-                      },
+                        },
                       status4: volunteerToggle,
                       title: "volunteer".tr,
-                      subTitle: "join_as_a_volunteer?".tr, imageAssets: 'new_assets/volunteer.png',),
+                      subTitle: "join_as_a_volunteer?".tr, imageAssets: 'new_assets/volunteer.png',),*/
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10,right: 15,top: 5, bottom: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                         /* ProfileText(title: 'volunteer'.tr, subTitle: 'join_as_a_volunteer?'.tr, icons: FeatherIcons.user,
+                            voidCallback: () {
+                              //Get.to(AboutScreenPage());
+                            },),*/
+                          Row(
+
+                            children:  [
+                              Icon(FeatherIcons.user),
+                              const SizedBox(
+                                height: 10,width: 25,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+
+                                children: [
+                                  MyText(text: 'volunteer'.tr,  fontFamily: 'Gilroy', color: Colors.black, fontSize: 16,),
+                                  const SizedBox(height: 5),
+                                  MyText(text: 'join_as_a_volunteer?'.tr,  fontFamily: 'Gilroy', color: Colors.black, fontSize: 12),
+                                ],
+                              ),
+
+                            ],
+                          ),
+                          FlutterSwitch(
+                            width: 50.0,
+                            height: 25.0,
+                            value: volunteerStatus!,
+                            borderRadius: 30.0,
+                            padding: 2.0,
+                            activeColor: appBlue,
+                            onToggle: (val) {
+                              setState(() {
+                                volunteerStatus = val;
+                                if(volunteerStatus==true){
+
+                                  _showMultiSelect(context);
+
+                                  /*showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return StatefulBuilder(
+
+                                        builder: (BuildContext context, StateSetter setState) {
+                                          final getSosMasterController = Get.put(GetSosMasterController());
+                                          return Column(
+                                            children: [
+                                              Container(
+                                                height: 420,
+                                                child: ListView.builder(
+                                                  itemCount: getSosMasterController.getSosReasonMasterData.length,
+                                                  itemBuilder: (BuildContext context, int index) {
+                                                    print("LENGTH..."+getSosMasterController.getSosReasonMasterData.length.toString());
+                                                     option = getSosMasterController.getSosReasonMasterData[index].name.toString();
+                                                     volunteerId = getSosMasterController.getSosReasonMasterData[index].id.toString();
+                                                    final bool isSelected = selectedOptions.contains(option);
+                                                    return ListTile(
+                                                      title: Text(option.toString()),
+                                                      leading: isSelected
+                                                          ? Icon(Icons.check_box)
+                                                          : Icon(Icons.check_box_outline_blank),
+                                                      onTap: () {
+                                                        setState(() {
+                                                          if (isSelected) {
+                                                            print("RemoveOption"+option.toString());
+
+                                                            selectedOptions.remove(option);
+                                                          } else {
+                                                           print("AddOption"+option.toString());
+
+                                                            selectedOptions.add(option.toString());
+                                                            }
+                                                        });
+                                                      },
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 30,right: 30),
+                                                child: CustomButton(press: (){
+                                                  volunteerApi("Yes");
+                                                }, buttonText: 'Submit'),
+                                              )
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+
+                                  );*/
+
+                                }else{
+                                  volunteerApi("No");
+                                }
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+
                     ProfileText(title: 'logout'.tr, subTitle: 'exit_from_your_account'.tr, icons: FeatherIcons.logOut,
                       voidCallback: () {
                         logoutPopup(context);
@@ -239,5 +480,23 @@ class _ProfileNavState extends State<ProfileNav> {
       ),
     );
   }
-  
+
+  void volunteerApi(String status)async{
+    print("volunteerApi..."+status);
+
+
+   VolunteerRequest request = VolunteerRequest(userId:  Preferences.getId(Preferences.id),volunteer: status,
+     volunteerAri: selectedAri,lng: permissionController.locationData?.longitude,lat: permissionController.locationData?.latitude,);
+    volunteerController.volunteerApi(request).then((value) async {
+      final String json = jsonEncode(request.toJson());
+      debugPrint("request body ${json}");
+      if(value!=null){
+        if(value.status==true){
+          userDetailsApi();
+         // await userDetailsController.updateProfile();
+          LoaderUtils.message(value.message.toString());
+        }
+      }
+    });
+  }
 }

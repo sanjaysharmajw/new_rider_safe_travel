@@ -16,7 +16,7 @@ class HomePageAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 25, bottom: 25),
+      padding: const EdgeInsets.only(left: 15, bottom: 25),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -173,15 +173,15 @@ class HomePageAction extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(left: 50),
             child: Row(
               children: [
                 InkWell(
                     onTap: sosClick,
                     child: Image.asset(
                       "new_assets/sos_icons.png",
-                      height: 40,
-                      width: 40,
+                      height: 60,
+                      width: 60,
                     )),
               ],
             ),

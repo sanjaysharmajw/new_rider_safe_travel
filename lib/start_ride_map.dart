@@ -1025,7 +1025,7 @@ class _SignUpState extends State<StartRide> {
     }
   }
 
-  Future<SosReasonModel> getSosReason() async {
+  Future<ReasonMasterData> getSosReason() async {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
       Uri.parse(
@@ -1034,6 +1034,10 @@ class _SignUpState extends State<StartRide> {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': loginToken
       },
+
+        body: jsonEncode({
+          "type":""
+        })
     );
 
     if (response.statusCode == 200) {
@@ -1046,7 +1050,7 @@ class _SignUpState extends State<StartRide> {
         });
         print(selectedReason.toString());
       }
-      return SosReasonModel.fromJson(jsonDecode(response.body));
+      return ReasonMasterData.fromJson(jsonDecode(response.body));
     } else {
       print("----------------------------");
       print(response.statusCode);

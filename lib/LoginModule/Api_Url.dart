@@ -45,6 +45,8 @@ class ApiUrl {
   static var addCoPassenger = "${baseUrl}userRide/coPassengerAdd";
   static var getServiceDetails = "${serviceUrl}user/getServiceRideDetails";
   static var completeServiceRequest = "${serviceUrl}serviceProvider/completeServiceRequest";
+  static var selectVolunteer = "${baseUrl}user/updatevolunteerStatus";
+  static var userDetails = "${baseUrl}user/userList";
 
 
 

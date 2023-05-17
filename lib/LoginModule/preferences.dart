@@ -29,6 +29,7 @@ class Preferences {
   static const String newRiderId = "NEWRIDERID";
   static const String loginToken = 'token';
   static const String language = 'Language';
+  static const String volunteer = 'volunteer';
 
   static Future<void> setPreferences() async {
     instance = await SharedPreferences.getInstance();
@@ -178,6 +179,10 @@ class Preferences {
     return Preferences.instance!.setString(key, value);
   }
 
+  static Future<bool> setVolStatus(String value) {
+    return Preferences.instance!.setString(volunteer, value);
+  }
+
   static dynamic getLoginToken(String key) {
     return Preferences.instance!.get(key);
   }
@@ -247,6 +252,11 @@ class Preferences {
   static dynamic getLanguage() {
     return Preferences.instance!.get(language);
   }
+
+  static dynamic getVolStatus() {
+    return Preferences.instance!.get(volunteer);
+  }
+
 
   ///Singleton factory
   static final Preferences _instance = Preferences._internal();
