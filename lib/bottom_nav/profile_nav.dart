@@ -16,7 +16,6 @@ import 'package:location/location.dart';
 import 'package:multi_select_flutter/bottom_sheet/multi_select_bottom_sheet.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
-import 'package:ride_safe_travel/PromoVideoScreen.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/bottom_nav/profile_text.dart';
 import 'package:get/get.dart';
@@ -29,6 +28,7 @@ import '../MyText.dart';
 import '../Notification/NotificationScreen.dart';
 import '../Utils/logout_dialog_box.dart';
 import '../about_page.dart';
+import '../constant_image.dart';
 import '../controller/permision_controller.dart';
 import '../controller/user_details_controller.dart';
 import '../controller/volunteer_request.dart';
@@ -36,6 +36,7 @@ import '../controller/volunteer_select_controller.dart';
 import '../home_page_controller/get_sos_controller_master.dart';
 import '../new_widgets/profile_notification_with_switch.dart';
 import '../rider_profile_view.dart';
+import '../volunteer_screen_request.dart';
 import '../volunteer_sos_reason_controller.dart';
 import 'custom_bottom_navi.dart';
 import 'home_page_nav.dart';
@@ -62,7 +63,8 @@ class _ProfileNavState extends State<ProfileNav> {
   String? option;
   String? volunteerId;
   List<String> selectedOptions = [];
-  List<String> volunteerAri = [];
+  List<VolunteerAri> volunteerAri = [];
+  bool volunteerToggle = false;
 
 
   final List locale = [
@@ -139,14 +141,16 @@ class _ProfileNavState extends State<ProfileNav> {
 
   var profileName;
 
+  @override
   void initState(){
+    userDetailsApi();
     profileName = Preferences.getFirstName(Preferences.firstname).toString() +
         " " +
 
         Preferences.getLastName(Preferences.lastname).toString();
     print("ProifleName.."+profileName);
 
-    userDetailsApi();
+
     currentLocation();
 
 
@@ -154,12 +158,34 @@ class _ProfileNavState extends State<ProfileNav> {
 
   //String? volunteer;
   final List<String> _selectedReasonNames= [];
-  List<String> selectedAri = [];
+  List<VolunteerAri> selectedAri = [];
   final List<String> _reasonNames = [];
 
   void userDetailsApi()async{
     await userDetailsController.updateProfile();
-   // volunteer= userDetailsController.getUserDetailsData[].volunteer;
+
+    // volunteerToggle=true;
+    if(userDetailsController.getUserDetailsData[0].volunteer.toString() != "null") {
+
+      if(userDetailsController.getUserDetailsData[0].volunteer=='Yes')
+      {
+        volunteerStatus=true;
+        volunteerToggle=true;
+      }
+      else
+      {
+        volunteerStatus=false;
+        volunteerToggle=false;
+      }
+    }
+    else
+    {
+      volunteerStatus=false;
+      volunteerToggle=false;
+    }
+    //volunteering="No";
+    print("userdetails....");
+  //  print(volunteering);
 
     if(_selectedReasonNames.isNotEmpty){
       _selectedReasonNames.clear();
@@ -213,16 +239,17 @@ class _ProfileNavState extends State<ProfileNav> {
                 debugPrint("selected value : ${values[i].toString()}");
                 // make volunteer ari object list
                // ReasonMasterData rmd=values[i] as ReasonMasterData;
-                selectedAri.add(values[i]);
-                debugPrint("selected ari  value : ${values[i]}");
+                VolunteerAri ari = VolunteerAri(id: "", name: values[i]
+                );
+                selectedAri.add(ari);
+                debugPrint("selected ari  value : $ari");
               }
-
-
               if(volunteerStatus==true){
                 volunteerApi("Yes");
               }else{
                 volunteerApi("No");
               }
+
             },
             maxChildSize: 0.9,
           ),
@@ -334,24 +361,20 @@ class _ProfileNavState extends State<ProfileNav> {
                      MyText(text: profileName.toString(),  fontFamily: 'Gilroy', color: Colors.black, fontSize: 14),
                     const SizedBox(height: 60),
                      ProfileText(title: 'language'.tr, subTitle: 'change_your_language'.tr, icons: FeatherIcons.globe,
-                       click: () {
+                       voidCallback: () {
                          buildLanguageDialog(context);
                        },),
                     ProfileText(title: 'notification'.tr, subTitle: 'check_notification'.tr, icons: FeatherIcons.bell,
-                      click: () {
+                      voidCallback: () {
                         Get.to(const NotificationScreen());
                       },),
                     ProfileText(title: 'help'.tr, subTitle: 'contact_us'.tr, icons: FeatherIcons.messageCircle,
-                      click: () {
+                      voidCallback: () {
                         Get.to(ChatBot());
                       },),
                     ProfileText(title: 'about'.tr, subTitle: 'about_the_application'.tr, icons: FeatherIcons.alertCircle,
-                      click: () {
+                      voidCallback: () {
                         Get.to(AboutScreenPage());
-                      },),
-                    ProfileText(title: 'Promo Videos'.tr, subTitle: 'about_the_application'.tr, icons: FeatherIcons.video,
-                      click: () {
-                        Get.to(const PromoVideoScreen());
                       },),
                     SizedBox(height: 5,),
                     /*ProfileNotification(
@@ -362,8 +385,25 @@ class _ProfileNavState extends State<ProfileNav> {
                       status4: volunteerToggle,
                       title: "volunteer".tr,
                       subTitle: "join_as_a_volunteer?".tr, imageAssets: 'new_assets/volunteer.png',),*/
+                    ProfileNotification(
+                        valueChanged: (values) {
+                          setState(() {
+                            volunteerStatus = values;
+                            if(volunteerStatus == true){
 
-                    Padding(
+                              _showMultiSelect(context);
+
+
+
+                            }else{
+                              volunteerApi("No");
+                            }
+                          });
+                        },
+                        status4: volunteerToggle,
+                        title: "volunteer".tr,
+                        subTitle: "join_as_a_volunteer?".tr, imageAssets: volunteer),
+                   /* Padding(
                       padding: const EdgeInsets.only(left: 10,right: 15,top: 5, bottom: 5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -468,10 +508,15 @@ class _ProfileNavState extends State<ProfileNav> {
                           ),
                         ],
                       ),
-                    ),
+                    ),*/
+                    ProfileText(title: 'Volunteer Request', subTitle: 'Check request', icons: FeatherIcons.logOut,
+                      voidCallback: () {
+                      Get.to(VolunteerRequestList());
+
+                      },),
 
                     ProfileText(title: 'logout'.tr, subTitle: 'exit_from_your_account'.tr, icons: FeatherIcons.logOut,
-                      click: () {
+                      voidCallback: () {
                         logoutPopup(context);
                       },),
                   ],
@@ -489,7 +534,7 @@ class _ProfileNavState extends State<ProfileNav> {
 
 
    VolunteerRequest request = VolunteerRequest(userId:  Preferences.getId(Preferences.id),volunteer: status,
-     lng: permissionController.locationData?.longitude.toString(),lat: permissionController.locationData?.latitude.toString(),volunteerAri: selectedAri);
+     volunteerAri: selectedAri,lng: permissionController.locationData?.longitude,lat: permissionController.locationData?.latitude,);
     volunteerController.volunteerApi(request).then((value) async {
       final String json = jsonEncode(request.toJson());
       debugPrint("request body ${json}");

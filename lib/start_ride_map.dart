@@ -1015,13 +1015,8 @@ class _SignUpState extends State<StartRide> {
   Future<ReasonMasterData> getSosReason() async {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
-      Uri.parse(
-          "https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/sosReasonMaster"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': loginToken
-      },
-
+      Uri.parse(ApiUrl.sosReason),
+      headers: ApiUrl.headerToken,
         body: jsonEncode({
           "type":""
         })

@@ -20,12 +20,7 @@ class UserDetailsController extends GetxController{
   var getUserDetailsData = <UserDetailsData>[].obs;
 
 
-  @override
-  void onInit() {
-    super.onInit();
-    updateProfile();
 
-  }
 
   Future<dynamic> updateProfile() async {
     await Preferences.setPreferences();
