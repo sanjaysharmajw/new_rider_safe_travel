@@ -50,7 +50,8 @@ class ApiUrl {
   static var sendOtp = "${baseUrl}user/sendOtpNew";
 
   static var userDetails = "${baseUrl}user/userList";
-
+  static var videoList = "${baseUrl}user/getVideoList";
+  static var videoAttend = "${baseUrl}user/attendSession";
 
 
 

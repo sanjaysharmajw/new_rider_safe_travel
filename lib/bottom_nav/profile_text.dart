@@ -11,15 +11,15 @@ class ProfileText extends StatelessWidget {
   final String title;
   final String subTitle;
   final IconData icons;
-  final VoidCallback voidCallback;
-  const ProfileText({Key? key, required this.title, required this.subTitle, required this.icons,required this.voidCallback}) : super(key: key);
+  final VoidCallback click;
+  const ProfileText({Key? key, required this.title, required this.subTitle, required this.icons,required this.click}) : super(key: key);
 
   @override 
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
       child: GestureDetector(
-        onTap: voidCallback,
+        onTap: click,
         child: Container(
           height: 55,
           width: 600,

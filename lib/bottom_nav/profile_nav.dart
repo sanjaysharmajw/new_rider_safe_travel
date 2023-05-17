@@ -16,6 +16,7 @@ import 'package:location/location.dart';
 import 'package:multi_select_flutter/bottom_sheet/multi_select_bottom_sheet.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
+import 'package:ride_safe_travel/PromoVideoScreen.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/bottom_nav/profile_text.dart';
 import 'package:get/get.dart';
@@ -61,7 +62,7 @@ class _ProfileNavState extends State<ProfileNav> {
   String? option;
   String? volunteerId;
   List<String> selectedOptions = [];
-  List<VolunteerAri> volunteerAri = [];
+  List<String> volunteerAri = [];
 
 
   final List locale = [
@@ -153,7 +154,7 @@ class _ProfileNavState extends State<ProfileNav> {
 
   //String? volunteer;
   final List<String> _selectedReasonNames= [];
-  List<VolunteerAri> selectedAri = [];
+  List<String> selectedAri = [];
   final List<String> _reasonNames = [];
 
   void userDetailsApi()async{
@@ -212,10 +213,8 @@ class _ProfileNavState extends State<ProfileNav> {
                 debugPrint("selected value : ${values[i].toString()}");
                 // make volunteer ari object list
                // ReasonMasterData rmd=values[i] as ReasonMasterData;
-                VolunteerAri ari = VolunteerAri(id: "", name: values[i]
-                );
-                selectedAri.add(ari);
-                debugPrint("selected ari  value : $ari");
+                selectedAri.add(values[i]);
+                debugPrint("selected ari  value : ${values[i]}");
               }
 
 
@@ -335,20 +334,24 @@ class _ProfileNavState extends State<ProfileNav> {
                      MyText(text: profileName.toString(),  fontFamily: 'Gilroy', color: Colors.black, fontSize: 14),
                     const SizedBox(height: 60),
                      ProfileText(title: 'language'.tr, subTitle: 'change_your_language'.tr, icons: FeatherIcons.globe,
-                       voidCallback: () {
+                       click: () {
                          buildLanguageDialog(context);
                        },),
                     ProfileText(title: 'notification'.tr, subTitle: 'check_notification'.tr, icons: FeatherIcons.bell,
-                      voidCallback: () {
+                      click: () {
                         Get.to(const NotificationScreen());
                       },),
                     ProfileText(title: 'help'.tr, subTitle: 'contact_us'.tr, icons: FeatherIcons.messageCircle,
-                      voidCallback: () {
+                      click: () {
                         Get.to(ChatBot());
                       },),
                     ProfileText(title: 'about'.tr, subTitle: 'about_the_application'.tr, icons: FeatherIcons.alertCircle,
-                      voidCallback: () {
+                      click: () {
                         Get.to(AboutScreenPage());
+                      },),
+                    ProfileText(title: 'Promo Videos'.tr, subTitle: 'about_the_application'.tr, icons: FeatherIcons.video,
+                      click: () {
+                        Get.to(const PromoVideoScreen());
                       },),
                     SizedBox(height: 5,),
                     /*ProfileNotification(
@@ -468,7 +471,7 @@ class _ProfileNavState extends State<ProfileNav> {
                     ),
 
                     ProfileText(title: 'logout'.tr, subTitle: 'exit_from_your_account'.tr, icons: FeatherIcons.logOut,
-                      voidCallback: () {
+                      click: () {
                         logoutPopup(context);
                       },),
                   ],
@@ -486,7 +489,7 @@ class _ProfileNavState extends State<ProfileNav> {
 
 
    VolunteerRequest request = VolunteerRequest(userId:  Preferences.getId(Preferences.id),volunteer: status,
-     volunteerAri: selectedAri,lng: permissionController.locationData?.longitude,lat: permissionController.locationData?.latitude,);
+     lng: permissionController.locationData?.longitude.toString(),lat: permissionController.locationData?.latitude.toString(),volunteerAri: selectedAri);
     volunteerController.volunteerApi(request).then((value) async {
       final String json = jsonEncode(request.toJson());
       debugPrint("request body ${json}");
