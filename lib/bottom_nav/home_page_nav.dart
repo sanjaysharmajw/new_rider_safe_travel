@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
+import 'dart:ui' as ui;
+import 'dart:ui' as ui;
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +17,7 @@ import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/bottom_nav/EmptyScreen.dart';
 import 'package:ride_safe_travel/color_constant.dart';
 import 'package:ride_safe_travel/controller/check_active_ride_models.dart';
+import 'package:ride_safe_travel/controller/family_ride_controller.dart';
 import 'package:ride_safe_travel/controller/location_controller.dart';
 import 'package:ride_safe_travel/home_page_controller/driver_vehicle_controller.dart';
 import 'package:ride_safe_travel/home_page_controller/end_ride_controller.dart';
@@ -59,6 +63,7 @@ class _HomePageState extends State<HomePageNav> {
   final checkActiveRide = Get.put(CheckActiveRideController());
   final sosPushController = Get.put(SOSController());
   final endRideController = Get.put(EndRideController());
+  final familyRideDataController = Get.put(FamilyRideController());
   final driverVehicelListController = Get.put(DriverVehicelListController());
   final permissionController = Get.put(PermissionController());
   final locationPermission = Get.put(LocationController());
@@ -75,17 +80,26 @@ class _HomePageState extends State<HomePageNav> {
   String? riderOtp = "";
   String? driverPhoto, driverName, driverReg, driverModel, driverRating, token;
   String? riderIdFromStartRider;
+  Set<Marker> markers = Set();
+  LatLng endLocation = const LatLng(27.6599592, 85.3102498);
+  List<LatLng> latLng = const [
+    LatLng(19.066061903736646, 72.99587200966647),
+    LatLng(19.067234850754655, 72.99596046153762),
+    LatLng(19.06694708274993, 72.99845173691023),
+    LatLng(19.064887930436296, 72.99882765787552),
+    LatLng(19.0671623857176, 73.00372086366819),
+  ];
+  LatLng? carLocation;
 
   static const LatLng destinationLocation =
       LatLng(19.067949048869405, 73.0039520555996);
   static const CameraPosition _cameraPosition = CameraPosition(
     target: destinationLocation,
-    zoom: 18,
   );
 
 
-
   void sharePre() async {
+    loadCustomMarker();
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
     riderOtp = Preferences.getRideOtp();
@@ -93,10 +107,51 @@ class _HomePageState extends State<HomePageNav> {
     await locationPermission.permissionLocation();
   }
 
+  void familyDataLoad()async{
+    for(int i=0;i<=familyRideDataController.getFamilyRideListData.length;i++){
+
+    }
+  }
+
+  loadCustomMarker()async{
+    String imgUrl = "https://images.pexels.com/photos/16392177/pexels-photo-16392177.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
+    Uint8List? image=await loadImage(imgUrl);
+    final ui.Codec markerImageCodec=await ui.instantiateImageCodec(
+      image!.buffer.asUint8List(),
+      targetHeight: 150,
+      targetWidth: 150
+    );
+    final ui.FrameInfo frameInfo=await markerImageCodec.getNextFrame();
+    final ByteData? byteData=await frameInfo.image.toByteData(format: ui.ImageByteFormat.png);
+    final Uint8List resizedImageMarker=byteData!.buffer.asUint8List();
+    for(int i=0;i<latLng.length;i++){
+      markers.add(
+        Marker(
+          icon: BitmapDescriptor.fromBytes(resizedImageMarker),
+            markerId: MarkerId(i.toString()),
+        position: latLng[i],
+          infoWindow: InfoWindow(
+            snippet: "title: $i"
+          )
+        ),
+      );
+    }
+  }
+  Future<Uint8List?> loadImage(String path)async{
+    final completer =Completer<ImageInfo>();
+    var image=NetworkImage(path);
+    image.resolve(const ImageConfiguration()).addListener(ImageStreamListener((info, _) => completer.complete(info)));
+    final imageInfo=await completer.future;
+    final byteData=await imageInfo.image.toByteData(format: ui.ImageByteFormat.png);
+    return byteData!.buffer.asUint8List();
+  }
+
+
   void currentLocation() async {
     await permissionController.permissionLocation();
     location = Location();
     locationData = await location.getLocation();
+    carLocation = LatLng(locationData!.latitude!, locationData!.longitude!);
     location.onLocationChanged.listen((LocationData cLoc) async {
       final GoogleMapController controller = await _completer.future;
       controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -114,6 +169,9 @@ class _HomePageState extends State<HomePageNav> {
       sharePreferences();
     });
   }
+
+
+
 
   void sharePreferences() async {
     setState(() {});
@@ -166,6 +224,30 @@ class _HomePageState extends State<HomePageNav> {
                 ),
               ),
             ),
+            const SizedBox(width: 15),
+            InkWell(
+              onTap: () async {
+                Get.to(const FamilyList());
+              },
+              child: Center(
+                child: badges.Badge(
+                  badgeContent: Text(
+    getCountController.peopleTrackingMe.toString() == "null"
+    ? '0': getCountController.peopleTrackingMe.toString() ?? "",
+                    style: const TextStyle(
+                      color: CustomColor.white,
+                      fontSize: 13,
+                      fontFamily: 'Gilroy',
+                    ),
+                  ),
+                  child: const Icon(
+                    FeatherIcons.compass,
+                    size: 27,
+                    color: CustomColor.white,
+                  ),
+                ),
+              ),
+            ),
             IconButton(
                 icon: const Icon(Icons.chat),
                 color: CustomColor.white,
@@ -180,45 +262,6 @@ class _HomePageState extends State<HomePageNav> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GridView.count(
-                    shrinkWrap: true,
-                    physics: const ClampingScrollPhysics(),
-                    crossAxisCount: 2,
-                    padding:
-                        const EdgeInsets.only(left: 20, right: 20, top: 10),
-                    mainAxisSpacing: 20,
-                    childAspectRatio: 3 / 2,
-                    crossAxisSpacing: 15,
-                    children: [
-                      HomePageItems(
-                        backgroundColor: Colors.blue,
-                        title: 'ride_history'.tr,
-                        count:
-                        getCountController.myRiderCount.toString() == "null" ? '0' : getCountController.myRiderCount.toString(),
-                        icons: 'new_assets/car_direction.png',
-                        click: () {
-                          Get.to(MyRidesPage(
-                            changeAppbar: 'fromClass',
-                          ));
-                        },
-                        width: 28,
-                        height: 28,
-                      ),
-                      HomePageItems(
-                        backgroundColor: Colors.orange,
-                        title: 'tracking'.tr,
-                        count: getCountController.peopleTrackingMe.toString() == "null"
-                            ? '0'
-                            : getCountController.peopleTrackingMe.toString() ?? "0",
-                        icons: 'new_assets/eye-tracking.png',
-                        click: () {
-                          //Get.to(const FamilyMemberListScreen(changeUiValue: 'fromClass'));
-                          Get.to(const FamilyList());
-                        },
-                        width: 28,
-                        height: 28,
-                      ),
-                    ]),
                 Expanded(child: googleMap()),
                 Visibility(
                     visible: checkActiveRide.getToken.toString() == ""
@@ -279,6 +322,7 @@ class _HomePageState extends State<HomePageNav> {
                     zoomGesturesEnabled: false,
                     myLocationButtonEnabled: false,
                     initialCameraPosition: _cameraPosition,
+                    markers: markers,
                     onMapCreated: (GoogleMapController controller) {
                       _completer.complete(controller);
                       // controller.setMapStyle(permissionController.mapStyle);
@@ -482,7 +526,6 @@ class _HomePageState extends State<HomePageNav> {
                 ),
               ],
             )
-
           ],
         ),
       );
@@ -515,7 +558,7 @@ class _HomePageState extends State<HomePageNav> {
                             color: Colors.white,
                             shape: UnderlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(color: appBlue)),
+                                borderSide: const BorderSide(color: appBlue)),
                             child: Padding(
                               padding: const EdgeInsets.all(15),
                               child: DropdownButton(

@@ -16,9 +16,9 @@ class HomePageAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 15, bottom: 25),
+      padding: const EdgeInsets.all(15.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
             decoration: BoxDecoration(
@@ -172,19 +172,16 @@ class HomePageAction extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 50),
-            child: Row(
-              children: [
-                InkWell(
-                    onTap: sosClick,
-                    child: Image.asset(
-                      "new_assets/sos_icons.png",
-                      height: 60,
-                      width: 60,
-                    )),
-              ],
-            ),
+          Row(
+            children: [
+              InkWell(
+                  onTap: sosClick,
+                  child: Image.asset(
+                    "new_assets/sos_icons.png",
+                    height: 60,
+                    width: 60,
+                  )),
+            ],
           ),
         ],
       ),

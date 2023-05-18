@@ -142,9 +142,7 @@ class _SignUpState extends State<StartRide> {
   }
 
   void setCustomMarkerIcon() {
-    BitmapDescriptor.fromAssetImage(
-            ImageConfiguration.empty, 'assets/driver_map_min.png')
-        .then((icon) {
+    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, 'assets/driver_map_min.png').then((icon) {
       sourceIcon = icon;
     });
 

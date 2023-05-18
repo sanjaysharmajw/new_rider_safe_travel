@@ -39,10 +39,10 @@
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
-             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java AIzaSyAmOl-QJnc2Spwuh8GAoqx9Z3Wz-ez73V8   -->
        <activity android:name="com.djgeo.majascan.g_scanner.QrCodeScannerActivity"/>
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAmOl-QJnc2Spwuh8GAoqx9Z3Wz-ez73V8"/>
+            android:value="AIzaSyBBMQWGUxRFkgv4vfcO69V6uULtn2dRY-E"/>
        <meta-data
             android:name="flutterEmbedding"
             android:value="2" />

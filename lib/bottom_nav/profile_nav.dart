@@ -16,6 +16,7 @@ import 'package:location/location.dart';
 import 'package:multi_select_flutter/bottom_sheet/multi_select_bottom_sheet.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
+import 'package:ride_safe_travel/Models/user_details_models.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/bottom_nav/profile_text.dart';
 import 'package:get/get.dart';
@@ -55,8 +56,7 @@ class _ProfileNavState extends State<ProfileNav> {
   final userDetailsController=Get.put(UserDetailsController());
   final getReason = Get.put(GetSosReasonController());
   final permissionController = Get.put(PermissionController());
-  late Location location;
-  LocationData? locationData;
+
   final Completer<GoogleMapController> _completer = Completer();
 
   bool? volunteerStatus=false;
@@ -65,6 +65,7 @@ class _ProfileNavState extends State<ProfileNav> {
   List<String> selectedOptions = [];
   List<VolunteerAri> volunteerAri = [];
   bool volunteerToggle = false;
+
 
 
   final List locale = [
@@ -78,17 +79,6 @@ class _ProfileNavState extends State<ProfileNav> {
     Get.updateLocale(locale);
   }
 
-  void currentLocation() async {
-    await permissionController.permissionLocation();
-    location = Location();
-    locationData = await location.getLocation();
-    location.onLocationChanged.listen((LocationData cLoc) async {
-      final GoogleMapController controller = await _completer.future;
-      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target: LatLng(cLoc.latitude!, cLoc.longitude!), zoom: 15)));
-    });
-    setState(() {});
-  }
 
   Future<void> share(String language) async {
     await Preferences.setPreferences();
@@ -151,7 +141,7 @@ class _ProfileNavState extends State<ProfileNav> {
     print("ProifleName.."+profileName);
 
 
-    currentLocation();
+  //  currentLocation();
 
 
   }
@@ -361,19 +351,19 @@ class _ProfileNavState extends State<ProfileNav> {
                      MyText(text: profileName.toString(),  fontFamily: 'Gilroy', color: Colors.black, fontSize: 14),
                     const SizedBox(height: 60),
                      ProfileText(title: 'language'.tr, subTitle: 'change_your_language'.tr, icons: FeatherIcons.globe,
-                       voidCallback: () {
+                       click: () {
                          buildLanguageDialog(context);
                        },),
                     ProfileText(title: 'notification'.tr, subTitle: 'check_notification'.tr, icons: FeatherIcons.bell,
-                      voidCallback: () {
+                      click: () {
                         Get.to(const NotificationScreen());
                       },),
                     ProfileText(title: 'help'.tr, subTitle: 'contact_us'.tr, icons: FeatherIcons.messageCircle,
-                      voidCallback: () {
+                      click: () {
                         Get.to(ChatBot());
                       },),
                     ProfileText(title: 'about'.tr, subTitle: 'about_the_application'.tr, icons: FeatherIcons.alertCircle,
-                      voidCallback: () {
+                      click: () {
                         Get.to(AboutScreenPage());
                       },),
                     SizedBox(height: 5,),
@@ -510,13 +500,13 @@ class _ProfileNavState extends State<ProfileNav> {
                       ),
                     ),*/
                     ProfileText(title: 'Volunteer Request', subTitle: 'Check request', icons: FeatherIcons.logOut,
-                      voidCallback: () {
+                      click: () {
                       Get.to(VolunteerRequestList());
 
                       },),
 
                     ProfileText(title: 'logout'.tr, subTitle: 'exit_from_your_account'.tr, icons: FeatherIcons.logOut,
-                      voidCallback: () {
+                      click: () {
                         logoutPopup(context);
                       },),
                   ],
@@ -534,7 +524,8 @@ class _ProfileNavState extends State<ProfileNav> {
 
 
    VolunteerRequest request = VolunteerRequest(userId:  Preferences.getId(Preferences.id),volunteer: status,
-     volunteerAri: selectedAri,lng: permissionController.locationData?.longitude,lat: permissionController.locationData?.latitude,);
+  //   volunteerAri: selectedAri,lng: permissionController.locationData!.longitude,lat: permissionController.locationData?.latitude,
+   );
     volunteerController.volunteerApi(request).then((value) async {
       final String json = jsonEncode(request.toJson());
       debugPrint("request body ${json}");
