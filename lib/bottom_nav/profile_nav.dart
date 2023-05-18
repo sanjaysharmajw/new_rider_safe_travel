@@ -36,6 +36,7 @@ import '../controller/volunteer_select_controller.dart';
 import '../home_page_controller/get_sos_controller_master.dart';
 import '../new_widgets/profile_notification_with_switch.dart';
 import '../rider_profile_view.dart';
+import '../volunteer_screen/volunteer_screen_request_tab.dart';
 import '../volunteer_sos_reason_controller.dart';
 import 'custom_bottom_navi.dart';
 import 'home_page_nav.dart';
@@ -217,7 +218,6 @@ class _ProfileNavState extends State<ProfileNav> {
                 debugPrint("selected ari  value : ${values[i]}");
               }
 
-
               if(volunteerStatus==true){
                 volunteerApi("Yes");
               }else{
@@ -341,6 +341,7 @@ class _ProfileNavState extends State<ProfileNav> {
                       click: () {
                         Get.to(const NotificationScreen());
                       },),
+
                     ProfileText(title: 'help'.tr, subTitle: 'contact_us'.tr, icons: FeatherIcons.messageCircle,
                       click: () {
                         Get.to(ChatBot());
@@ -362,7 +363,13 @@ class _ProfileNavState extends State<ProfileNav> {
                       status4: volunteerToggle,
                       title: "volunteer".tr,
                       subTitle: "join_as_a_volunteer?".tr, imageAssets: 'new_assets/volunteer.png',),*/
-
+                    Visibility(
+                      visible: volunteerStatus == true? true : false,
+                      child: ProfileText(title: 'Volunteer Requests'.tr, subTitle: 'Check Requests'.tr, icons: FeatherIcons.user,
+                        click: () {
+                          Get.to(const VolunteerRequestListTabScreen());
+                        },),
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10,right: 15,top: 5, bottom: 5),
                       child: Row(

@@ -53,6 +53,9 @@ class ApiUrl {
   static var videoList = "${baseUrl}user/getVideoList";
   static var videoAttend = "${baseUrl}user/attendSession";
 
+  static var getVolunteerRequests = "${baseUrl}user/getVolunteerRequests";
+  static var updateVolunteerRequest = "${baseUrl}user/updateVolunteerRequest";
+
 
 
 
