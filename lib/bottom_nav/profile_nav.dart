@@ -169,6 +169,11 @@ class _ProfileNavState extends State<ProfileNav> {
     await userDetailsController.updateProfile();
     volunteer = userDetailsController.getUserDetailsData[0].volunteer;
 
+    if(volunteer == "Yes"){
+      volunteerStatus == true;
+    }else{
+      volunteerStatus == false;
+    }
 
     for(var i = 0; i< userDetailsController.getUserDetailsData[0].volunteerAri!.length;i++){
       debugPrint("selected reason from api ${userDetailsController.getUserDetailsData[0].volunteerAri![i].toString()}");
@@ -220,12 +225,10 @@ class _ProfileNavState extends State<ProfileNav> {
                 debugPrint("selected ari  value : ${values[i]}");
               }
 
-
-
               if(volunteerStatus==true){
                 volunteerApi("Yes");
               }else{
-                // volunteerApi("No");
+                volunteerApi("No");
               }
             },
             maxChildSize: 0.9,
@@ -387,8 +390,6 @@ class _ProfileNavState extends State<ProfileNav> {
                             onTap: (){
                               if(volunteer=="Yes"){
                                 _showMultiSelect(context);
-                              }else{
-                                // volunteerApi("No");
                               }
                             },
                             child: Row(
@@ -423,10 +424,7 @@ class _ProfileNavState extends State<ProfileNav> {
                               setState(() {
                                 volunteerStatus = val;
                                 if(volunteerStatus==true){
-
                                   _showMultiSelect(context);
-
-
                                 }else{
                                   volunteerApi("No");
                                 }
