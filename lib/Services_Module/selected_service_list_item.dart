@@ -46,13 +46,13 @@ class ShowSelectedServiceItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children:  [
               NewMyText(
-                  textValue: serviceListData.serviceName==""?"N/A":serviceListData.serviceName.toString(),
+                  textValue: serviceListData.title==""?"N/A":serviceListData.title.toString(),
                   fontName: 'Gilroy',
                   color: Colors.black,
                   fontWeight: FontWeight.w700,
                   fontSize: 16),
               NewMyText(
-                  textValue: serviceListData.dist.toString(),
+                  textValue: serviceListData.dist.toString()+"km",
                   fontName: 'Gilroy',
                   color: Colors.black,
                   fontWeight: FontWeight.w500,

@@ -47,6 +47,8 @@ class ApiUrl {
   static var completeServiceRequest = "${serviceUrl}serviceProvider/completeServiceRequest";
   static var selectVolunteer = "${baseUrl}user/updatevolunteerStatus";
   static var userDetails = "${baseUrl}user/userList";
+  static var searchServiceRequest = "${serviceUrl}serviceProvider/searchServiceProvider";
+
 
 
 

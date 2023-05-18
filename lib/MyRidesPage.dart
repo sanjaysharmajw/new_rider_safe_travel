@@ -98,7 +98,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                       .fromDestination
                                       .toString() ==
                                   "null"
-                              ? "N/A"
+                              ? ""
                               : ridehistoryController
                                   .getRiderHistoryData[index]
                                   .fromDestination

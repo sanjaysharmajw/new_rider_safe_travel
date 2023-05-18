@@ -18,6 +18,7 @@ import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/Utils/SpeedAlert.dart';
 import 'package:ride_safe_travel/Utils/make_a_call.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
+import 'package:ride_safe_travel/color_constant.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -122,14 +123,14 @@ class _RiderMapState extends State<RiderMap> {
               ? "Data Not Available"
               : widget.memberName.toString(),
           style: const TextStyle(
-              color: CustomColor.black, fontFamily: 'transport'),
+              color: appWhiteColor, fontFamily: 'Gilroy'),
         ),
         elevation: 0,
-        backgroundColor: CustomColor.lightYellow,
+        backgroundColor: appBlue,
         actions: [
           IconButton(
               icon: const Icon(Icons.chat),
-              color: CustomColor.black,
+              color: appWhiteColor,
               onPressed: () {
                 Get.to(const ChatScreen());
               }),
@@ -138,7 +139,7 @@ class _RiderMapState extends State<RiderMap> {
           onPressed: () {
             Navigator.pop(context, true);
           },
-          icon: Image.asset('assets/map_back.png'),
+          icon: Image.asset('assets/map_back.png',color: appWhiteColor,),
         ),
       ),
       body: Stack(children: [
@@ -371,7 +372,7 @@ class _RiderMapState extends State<RiderMap> {
                                     SizedBox(height: 10.h),
                                     Text("Contact Driver",
                                         style: TextStyle(
-                                            fontFamily: 'transport',
+                                            fontFamily: 'Gilroy',
                                             fontSize: 16.sp)),
                                   ],
                                 ),
