@@ -26,7 +26,8 @@ class UserDetailsController extends GetxController{
     await Preferences.setPreferences();
     String mobileNo=Preferences.getMobileNumber(Preferences.mobileNumber).toString();
     UserDetailsRequestBody requestBody=UserDetailsRequestBody(
-        mobileNumber: mobileNo
+        mobileNumber: mobileNo,
+        userType: "Rider"
     );
 
 

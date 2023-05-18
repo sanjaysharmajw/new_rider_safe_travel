@@ -60,6 +60,7 @@ class _ProfileNavState extends State<ProfileNav> {
   final Completer<GoogleMapController> _completer = Completer();
 
   bool? volunteerStatus=false;
+  String? volunteer;
   String? option;
   String? volunteerId;
   List<String> selectedOptions = [];
@@ -142,10 +143,9 @@ class _ProfileNavState extends State<ProfileNav> {
 
   void initState(){
     profileName = Preferences.getFirstName(Preferences.firstname).toString() +
-        " " +
-
-        Preferences.getLastName(Preferences.lastname).toString();
+        " " + Preferences.getLastName(Preferences.lastname).toString();
     print("ProifleName.."+profileName);
+
 
     userDetailsApi();
     currentLocation();
@@ -155,23 +155,25 @@ class _ProfileNavState extends State<ProfileNav> {
 
   //String? volunteer;
   final List<String> _selectedReasonNames= [];
-  List<String> selectedAri = [];
+  // final List<String> selectedAri = [];
   final List<String> _reasonNames = [];
 
   void userDetailsApi()async{
-    await userDetailsController.updateProfile();
-   // volunteer= userDetailsController.getUserDetailsData[].volunteer;
+
 
     if(_selectedReasonNames.isNotEmpty){
       _selectedReasonNames.clear();
-      selectedAri.clear();
       _reasonNames.clear();
-
     }
 
+    await userDetailsController.updateProfile();
+    volunteer = userDetailsController.getUserDetailsData[0].volunteer;
+
+
     for(var i = 0; i< userDetailsController.getUserDetailsData[0].volunteerAri!.length;i++){
-      debugPrint("selected reason ${userDetailsController.getUserDetailsData[0].volunteerAri![i].name}");
-      _selectedReasonNames.add(userDetailsController.getUserDetailsData[0].volunteerAri![i].name.toString());
+      debugPrint("selected reason from api ${userDetailsController.getUserDetailsData[0].volunteerAri![i].toString()}");
+      _selectedReasonNames.add(userDetailsController.getUserDetailsData[0].volunteerAri![i].toString());
+
     }
     setState(() {});
     // debugPrint("volunteer ari items ${volunteer[].}");
@@ -180,14 +182,16 @@ class _ProfileNavState extends State<ProfileNav> {
   void _showMultiSelect(BuildContext context) async {
 
 
+
+    if(_reasonNames.isNotEmpty){
+      _reasonNames.clear();
+    }
+
     List<ReasonMasterData> reasons = getReason.getSosReasonData.value;
-
-
-
 
     for (var i = 0; i < reasons.length; i++) {
       _reasonNames.add(reasons[i].name.toString());
-      debugPrint("selected value reason : ${reasons[i].name.toString()}");
+      debugPrint("reason names  : ${reasons[i].name.toString()}");
     }
 
 
@@ -210,18 +214,18 @@ class _ProfileNavState extends State<ProfileNav> {
             title: Text("I want to help in following situations", style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
             onConfirm: (values) {
               for (var i = 0; i < values.length; i++) {
-                _selectedReasonNames.add(values[i].toString());
                 debugPrint("selected value : ${values[i].toString()}");
-                // make volunteer ari object list
-               // ReasonMasterData rmd=values[i] as ReasonMasterData;
-                selectedAri.add(values[i]);
+                // list string
+                _selectedReasonNames.add(values[i]);
                 debugPrint("selected ari  value : ${values[i]}");
               }
+
+
 
               if(volunteerStatus==true){
                 volunteerApi("Yes");
               }else{
-                volunteerApi("No");
+                // volunteerApi("No");
               }
             },
             maxChildSize: 0.9,
@@ -364,7 +368,7 @@ class _ProfileNavState extends State<ProfileNav> {
                       title: "volunteer".tr,
                       subTitle: "join_as_a_volunteer?".tr, imageAssets: 'new_assets/volunteer.png',),*/
                     Visibility(
-                      visible: volunteerStatus == true? true : false,
+                      visible: volunteer == "Yes"? true : volunteer=="No"?false:false,
                       child: ProfileText(title: 'Volunteer Requests'.tr, subTitle: 'Check Requests'.tr, icons: FeatherIcons.user,
                         click: () {
                           Get.to(const VolunteerRequestListTabScreen());
@@ -379,30 +383,39 @@ class _ProfileNavState extends State<ProfileNav> {
                             voidCallback: () {
                               //Get.to(AboutScreenPage());
                             },),*/
-                          Row(
+                          InkWell(
+                            onTap: (){
+                              if(volunteer=="Yes"){
+                                _showMultiSelect(context);
+                              }else{
+                                // volunteerApi("No");
+                              }
+                            },
+                            child: Row(
 
-                            children:  [
-                              Icon(FeatherIcons.user),
-                              const SizedBox(
-                                height: 10,width: 25,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              children:  [
+                                Icon(FeatherIcons.user),
+                                const SizedBox(
+                                  height: 10,width: 25,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
 
-                                children: [
-                                  MyText(text: 'volunteer'.tr,  fontFamily: 'Gilroy', color: Colors.black, fontSize: 16,),
-                                  const SizedBox(height: 5),
-                                  MyText(text: 'join_as_a_volunteer?'.tr,  fontFamily: 'Gilroy', color: Colors.black, fontSize: 12),
-                                ],
-                              ),
+                                  children: [
+                                    MyText(text: 'volunteer'.tr,  fontFamily: 'Gilroy', color: Colors.black, fontSize: 16,),
+                                    const SizedBox(height: 5),
+                                    MyText(text: 'join_as_a_volunteer?'.tr,  fontFamily: 'Gilroy', color: Colors.black, fontSize: 12),
+                                  ],
+                                ),
 
-                            ],
+                              ],
+                            ),
                           ),
                           FlutterSwitch(
                             width: 50.0,
                             height: 25.0,
-                            value: volunteerStatus!,
+                            value: volunteer=="Yes"?true:volunteer=="No"?false:false,
                             borderRadius: 30.0,
                             padding: 2.0,
                             activeColor: appBlue,
@@ -413,59 +426,6 @@ class _ProfileNavState extends State<ProfileNav> {
 
                                   _showMultiSelect(context);
 
-                                  /*showModalBottomSheet(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return StatefulBuilder(
-
-                                        builder: (BuildContext context, StateSetter setState) {
-                                          final getSosMasterController = Get.put(GetSosMasterController());
-                                          return Column(
-                                            children: [
-                                              Container(
-                                                height: 420,
-                                                child: ListView.builder(
-                                                  itemCount: getSosMasterController.getSosReasonMasterData.length,
-                                                  itemBuilder: (BuildContext context, int index) {
-                                                    print("LENGTH..."+getSosMasterController.getSosReasonMasterData.length.toString());
-                                                     option = getSosMasterController.getSosReasonMasterData[index].name.toString();
-                                                     volunteerId = getSosMasterController.getSosReasonMasterData[index].id.toString();
-                                                    final bool isSelected = selectedOptions.contains(option);
-                                                    return ListTile(
-                                                      title: Text(option.toString()),
-                                                      leading: isSelected
-                                                          ? Icon(Icons.check_box)
-                                                          : Icon(Icons.check_box_outline_blank),
-                                                      onTap: () {
-                                                        setState(() {
-                                                          if (isSelected) {
-                                                            print("RemoveOption"+option.toString());
-
-                                                            selectedOptions.remove(option);
-                                                          } else {
-                                                           print("AddOption"+option.toString());
-
-                                                            selectedOptions.add(option.toString());
-                                                            }
-                                                        });
-                                                      },
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left: 30,right: 30),
-                                                child: CustomButton(press: (){
-                                                  volunteerApi("Yes");
-                                                }, buttonText: 'Submit'),
-                                              )
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-
-                                  );*/
 
                                 }else{
                                   volunteerApi("No");
@@ -496,7 +456,7 @@ class _ProfileNavState extends State<ProfileNav> {
 
 
    VolunteerRequest request = VolunteerRequest(userId:  Preferences.getId(Preferences.id),volunteer: status,
-     lng: permissionController.locationData?.longitude.toString(),lat: permissionController.locationData?.latitude.toString(),volunteerAri: selectedAri);
+     lng: permissionController.locationData?.longitude.toString(),lat: permissionController.locationData?.latitude.toString(),volunteerAri: _selectedReasonNames);
     volunteerController.volunteerApi(request).then((value) async {
       final String json = jsonEncode(request.toJson());
       debugPrint("request body ${json}");
