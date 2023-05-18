@@ -24,20 +24,18 @@ class HomePageAction extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Colors.white60,
                 border: Border.all(color: appBlue),
-                borderRadius: const BorderRadius.all(Radius.circular(10.0))),
-            height: MediaQuery.of(context).size.height * 0.10,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 5, top: 3, right: 15),
-                  child: Text(
+                borderRadius: const BorderRadius.all(Radius.circular(5.0))),
+            height: 100,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Text(
                     "road_side_assistance_near_by_you".tr,
                     style: const TextStyle(fontFamily: 'Gilroy', fontSize: 16),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 5, right: 5),
-                  child: Row(
+                  SizedBox(height: 10),
+                  Row(
                     children: [
                       Column(
                         children: [
@@ -71,7 +69,7 @@ class HomePageAction extends StatelessWidget {
                                 ));
                               },
                               imageAssets: 'new_assets/gas-pump-alt.png',
-                              allPadding: 10),
+                              allPadding: 10,),
                           Text(
                             "fuel".tr,
                             style:const   TextStyle(
@@ -168,8 +166,8 @@ class HomePageAction extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Row(

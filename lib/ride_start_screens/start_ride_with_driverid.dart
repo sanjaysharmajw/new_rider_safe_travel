@@ -23,7 +23,6 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
   final driverName=TextEditingController();
   final driverMobile=TextEditingController();
   final vehicleId=TextEditingController();
-  var focusNode = FocusNode();
 
   final ctrl1=TextEditingController();
   final ctrl2=TextEditingController();
@@ -35,18 +34,12 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
 
   LocationData? locationData;
   late Location location;
-  late FocusNode myFocusNode;
+
 
   @override
   void initState() {
     super.initState();
     locationFetch();
-    myFocusNode = FocusNode();
-  }
-  @override
-  void dispose() {
-    myFocusNode.dispose();
-    super.dispose();
   }
 
   void locationFetch()async{
@@ -131,13 +124,6 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                           counterText: "",
                         ),
                         maxLength: 2,
-                        onChanged: (value){
-                          if(value.length==2){
-                            setState(() {
-                              myFocusNode.requestFocus();
-                            });
-                          }
-                        },
 
                       ),
                     ),
@@ -145,7 +131,6 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                     Flexible(
                       child: TextFormField(
                         textAlign: TextAlign.center,
-                        focusNode: myFocusNode,
                         autofocus: false,
                         validator: (value) {
                           if (value.toString().isEmpty) {
@@ -163,13 +148,6 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                         style: const TextStyle(fontFamily: "Gilroy",fontSize: 18),
                         controller: ctrl2,
                         maxLength: 2,
-                        onChanged: (value){
-                          if(value.length==2){
-                            setState(() {
-                              myFocusNode.requestFocus();
-                            });
-                          }
-                        },
                       ),
                     ),
                     Container(width: 10),
@@ -185,7 +163,6 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                         textCapitalization: TextCapitalization.characters,
                         maxLength: 3,
                         textAlign: TextAlign.center,
-                        focusNode: myFocusNode,
                         autofocus: false,
                         decoration: const InputDecoration(
                           hintText: "ABC",
@@ -195,13 +172,6 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                         keyboardType: TextInputType.text,
                         style: const TextStyle(fontFamily: "Gilroy",fontSize: 18),
                         controller: ctrl3,
-                        onChanged: (value){
-                          if(value.length==3){
-                            setState(() {
-                              myFocusNode.requestFocus();
-                            });
-                          }
-                        },
                       ),
                     ),
                     Container(width: 10),
@@ -222,7 +192,6 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                           counterText: "",
                         ),
                         keyboardType: TextInputType.number,
-                        focusNode: myFocusNode,
                         autofocus: true,
                         style: const TextStyle(fontFamily: "Gilroy",fontSize: 18),
                         controller: ctrl4,

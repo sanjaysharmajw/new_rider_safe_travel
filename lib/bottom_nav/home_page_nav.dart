@@ -12,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:majascan/majascan.dart';
+import 'package:ride_safe_travel/Models/family_list_ride_request.dart';
 import 'package:ride_safe_travel/MyText.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/bottom_nav/EmptyScreen.dart';
@@ -82,14 +83,7 @@ class _HomePageState extends State<HomePageNav> {
   String? riderIdFromStartRider;
   Set<Marker> markers = Set();
   LatLng endLocation = const LatLng(27.6599592, 85.3102498);
-  List<LatLng> latLng = const [
-    LatLng(19.066061903736646, 72.99587200966647),
-    LatLng(19.067234850754655, 72.99596046153762),
-    LatLng(19.06694708274993, 72.99845173691023),
-    LatLng(19.064887930436296, 72.99882765787552),
-    LatLng(19.0671623857176, 73.00372086366819),
-  ];
-  LatLng? carLocation;
+
 
   static const LatLng destinationLocation =
       LatLng(19.067949048869405, 73.0039520555996);
@@ -97,46 +91,52 @@ class _HomePageState extends State<HomePageNav> {
     target: destinationLocation,
   );
 
-
   void sharePre() async {
     loadCustomMarker();
+    await getCountController.getCount();
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
     riderOtp = Preferences.getRideOtp();
     setState(() {});
     await locationPermission.permissionLocation();
   }
-
-  void familyDataLoad()async{
-    for(int i=0;i<=familyRideDataController.getFamilyRideListData.length;i++){
-
-    }
-  }
-
   loadCustomMarker()async{
-    String imgUrl = "https://images.pexels.com/photos/16392177/pexels-photo-16392177.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
-    Uint8List? image=await loadImage(imgUrl);
-    final ui.Codec markerImageCodec=await ui.instantiateImageCodec(
-      image!.buffer.asUint8List(),
-      targetHeight: 150,
-      targetWidth: 150
+    FamilyListRideRequest request=FamilyListRideRequest(
+      userId: Preferences.getId(Preferences.id.toString()),
+      mobileNumber:  Preferences.getMobileNumber(Preferences.mobileNumber.toString())
     );
-    final ui.FrameInfo frameInfo=await markerImageCodec.getNextFrame();
-    final ByteData? byteData=await frameInfo.image.toByteData(format: ui.ImageByteFormat.png);
-    final Uint8List resizedImageMarker=byteData!.buffer.asUint8List();
-    for(int i=0;i<latLng.length;i++){
+    await familyRideDataController.familyRideListApi(request);
+    for(int i=0;i<familyRideDataController.getFamilyRideListData.length;i++){
+        double lat=double.parse(familyRideDataController.getFamilyRideListData[i].startPoint!.latitude!.toString());
+        double lng=double.parse(familyRideDataController.getFamilyRideListData[i].startPoint!.longitude!.toString());
+        String? memberName=familyRideDataController.getFamilyRideListData[i].memberName.toString();
+        String memberPhoto=familyRideDataController.getFamilyRideListData[i].memberPhoto.toString();
+        String defaultImage='https://cdn2.iconfinder.com/data/icons/flat-style-svg-icons-part-1/512/user_man_male_profile_account-512.png';
+        Uint8List? image=await loadImage(memberPhoto==""?defaultImage:memberPhoto.toString());
+        final ui.Codec markerImageCodec=await ui.instantiateImageCodec(
+          image!.buffer.asUint8List(),
+          targetHeight: 150,
+          targetWidth: 150,
+        );
+        final ui.FrameInfo frameInfo=await markerImageCodec.getNextFrame();
+        final ByteData? byteData=await frameInfo.image.toByteData(format: ui.ImageByteFormat.png);
+        final Uint8List resizedImageMarker=byteData!.buffer.asUint8List();
       markers.add(
         Marker(
           icon: BitmapDescriptor.fromBytes(resizedImageMarker),
             markerId: MarkerId(i.toString()),
-        position: latLng[i],
+        position: LatLng(lat, lng),
           infoWindow: InfoWindow(
-            snippet: "title: $i"
+            title: "Member Name: $memberName"
           )
         ),
       );
+      setState(() {
+
+      });
     }
   }
+
   Future<Uint8List?> loadImage(String path)async{
     final completer =Completer<ImageInfo>();
     var image=NetworkImage(path);
@@ -151,12 +151,9 @@ class _HomePageState extends State<HomePageNav> {
     await permissionController.permissionLocation();
     location = Location();
     locationData = await location.getLocation();
-    carLocation = LatLng(locationData!.latitude!, locationData!.longitude!);
-    location.onLocationChanged.listen((LocationData cLoc) async {
-      final GoogleMapController controller = await _completer.future;
-      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target: LatLng(cLoc.latitude!, cLoc.longitude!), zoom: 15)));
-    });
+    final GoogleMapController controller = await _completer.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(locationData!.latitude!, locationData!.longitude!), zoom: 15)));
     setState(() {});
   }
 
@@ -169,9 +166,6 @@ class _HomePageState extends State<HomePageNav> {
       sharePreferences();
     });
   }
-
-
-
 
   void sharePreferences() async {
     setState(() {});
@@ -315,12 +309,12 @@ class _HomePageState extends State<HomePageNav> {
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
                   child: GoogleMap(
                     mapType: MapType.normal,
-                    myLocationEnabled: false,
-                    compassEnabled: false,
+                    myLocationEnabled: true,
+                    compassEnabled: true,
                     zoomControlsEnabled: false,
                     mapToolbarEnabled: false,
-                    zoomGesturesEnabled: false,
-                    myLocationButtonEnabled: false,
+                    zoomGesturesEnabled: true,
+                    myLocationButtonEnabled: true,
                     initialCameraPosition: _cameraPosition,
                     markers: markers,
                     onMapCreated: (GoogleMapController controller) {
@@ -330,7 +324,7 @@ class _HomePageState extends State<HomePageNav> {
                   ),
                 ),
               ),
-              Align(alignment: Alignment.bottomRight, child: actionUi()),
+              Align(alignment: Alignment.bottomCenter, child: actionUi()),
               Visibility(
                   visible: checkActiveRide.getToken.toString() == "" ? false : true,
                   child:

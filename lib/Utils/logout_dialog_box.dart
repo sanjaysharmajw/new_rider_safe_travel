@@ -57,6 +57,8 @@ Future<bool> logoutPopup(context) async {
 }
 
 Future logout() async {
-  //await Preferences.setPreferences();
-  Preferences.clear();
+  await Preferences.setPreferences();
+  await Preferences.clear();
+  Preferences.setId(Preferences.id, "");
+  Preferences.setMobileNumber(Preferences.mobileNumber, "");
 }

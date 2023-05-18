@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/Models/family_list_ride_request.dart';
@@ -17,24 +18,17 @@ class FamilyRideController extends GetxController{
   var isLoading = true.obs;
   var getFamilyRideListData = <FamilyData>[].obs;
 
-
-  @override
-  void onInit() {
-    FamilyListRideRequest request=FamilyListRideRequest(
-      userId: Preferences.getId(Preferences.id),
-      mobileNumber:  Preferences.getMobileNumber(Preferences.mobileNumber),
-    );
-    familyRideListApi(request);
-    super.onInit();
-  }
-
   Future<dynamic> familyRideListApi(FamilyListRideRequest request) async {
     try {
       //DriverCustomLoader.showLoader("Please wait");
-      final response = await http.post(Uri.parse(ApiUrl.getMyTripApi),
+      final response = await http.post(Uri.parse(ApiUrl.familymemberRideList),
         headers: header.headerToken,
         body: jsonEncode(request),
       );
+      debugPrint('Damily');
+      debugPrint(response.body);
+      debugPrint( jsonEncode(request));
+      debugPrint('Damily');
       Map<String, dynamic> responseBody = json.decode(response.body);
       if (response.statusCode == 200) {
         isLoading.value = false;

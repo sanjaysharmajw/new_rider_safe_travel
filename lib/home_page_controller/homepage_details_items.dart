@@ -18,7 +18,7 @@ class HomePageDetails extends StatelessWidget {
     return Visibility(
       visible: true,
       child: Padding(
-        padding: const EdgeInsets.only(right: 17.0,left: 17.0),
+        padding: const EdgeInsets.only(right: 5.0,left: 5.0),
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(color: Colors.black),
@@ -113,12 +113,7 @@ class HomePageDetails extends StatelessWidget {
                           const  TextStyle(fontSize: 16, color: Colors.black, fontFamily: 'Gilroy',
                               decoration: TextDecoration.underline),
                         ),
-                        const Padding(
-                          padding:  EdgeInsets.only(left: 3,right: 3),
-                          child: Text("."),
-                        ),
-                         Text(
-                           data.rating.toString(),
+                         Text(data.rating==null?"":data.rating.toString(),
                           style:
                           const TextStyle(fontSize: 14, color: Colors.black, fontFamily: 'Gilroy',
                           ),
