@@ -79,8 +79,8 @@ class FamilyListItems extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 10),
-                        child: NewMyText(textValue: memberDataModel.memberEmailId.toString() == "" ?
-                        "Email: N/A" : memberDataModel.memberEmailId.toString(), fontName: 'Gilroy', color: Colors.black, fontWeight: FontWeight.w500,
+                        child: NewMyText(textValue: memberDataModel.memberEmailId.toString() == "null" ?
+                        "Email: " : memberDataModel.memberEmailId.toString(), fontName: 'Gilroy', color: Colors.black, fontWeight: FontWeight.w500,
                             fontSize: 14),
                       ),
                     ],

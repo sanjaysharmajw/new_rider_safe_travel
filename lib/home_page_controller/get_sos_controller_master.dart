@@ -15,7 +15,6 @@ class GetSosMasterController extends GetxController{
   @override
   void onInit() {
     super.onInit();
-
     getSopsReason();
   }
 

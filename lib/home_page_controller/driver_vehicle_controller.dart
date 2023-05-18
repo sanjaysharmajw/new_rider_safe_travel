@@ -25,7 +25,10 @@ class DriverVehicelListController extends GetxController{
       debugPrint(response.body);
       debugPrint(jsonEncode(
           <String, String>{'driver_id': result.toString(), "status": "Active"}));
-      Map<String, dynamic> responseBody = json.decode(response.body);
+      const utf8Decoder = Utf8Decoder(allowMalformed: true);
+      final decodedBytes = utf8Decoder.convert(response.bodyBytes);
+      Map<String, dynamic> responseBody = json.decode(decodedBytes);
+
       if (response.statusCode == 200) {
         LoaderUtils.closeLoader();
         return DriverVehicleList.fromJson(responseBody);

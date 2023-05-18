@@ -159,6 +159,7 @@ class _HomePageState extends State<HomePageNav> {
 
   @override
   void initState() {
+
     currentLocation();
     super.initState();
     sharePre();
