@@ -5,6 +5,9 @@ import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/MyText.dart';
 import 'package:ride_safe_travel/controller/check_active_ride_models.dart';
 import 'package:ride_safe_travel/controller/check_active_rider.dart';
+import 'package:ride_safe_travel/my_textfield_with_hint.dart';
+
+import '../Widgets/my_textfield_with_hint.dart';
 
 class HomePageDetails extends StatelessWidget {
   final VoidCallback goRide;
@@ -119,17 +122,20 @@ class HomePageDetails extends StatelessWidget {
                             padding:  EdgeInsets.only(left: 3,right: 3),
                             child: Text("."),
                           ),
-                           Text(
-                             data.rating.toString(),
+                          MyTextFieldWithIcon(icon: , controller: controller, validator: validator,
+                              fontSize: fontSize, readOnly: readOnly, onTap: onTap, keyboardType: keyboardType, inputFormatters: inputFormatters, textCapitalization: textCapitalization)
+
+                          /* Text(
+                             data.rating.toString() == "null" ? " " : data.rating.toString(),
                             style:
                             const TextStyle(fontSize: 14, color: Colors.black, fontFamily: 'Gilroy',
                             ),
                           ),
-                          const Icon(
+                           Icon(
                             Icons.star_outlined,
                             color: Colors.blueGrey,
                             size: 14.0,
-                          ),
+                          ),*/
                         ],
                       ),
                     ),
