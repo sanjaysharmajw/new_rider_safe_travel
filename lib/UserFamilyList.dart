@@ -60,7 +60,8 @@ class _FamilyListState extends State<FamilyList> {
         leading: IconButton(
           color:  appWhiteColor,
           onPressed: () {
-            Get.back();
+            Navigator.pop(context);
+           // Get.back();
           },
           icon: const Icon(Icons.arrow_back_outlined),
         ),

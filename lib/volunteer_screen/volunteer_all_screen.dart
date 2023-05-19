@@ -71,6 +71,7 @@ class _VolunteerAllScreenState extends State<VolunteerAllScreen> {
                     itemCount: volunteerRequestController
                         .getRequestVolunteerData.length,
                     itemBuilder: (context, index) {
+
                       return VolunteerRequestItems(volunteerData: volunteerRequestController.getRequestVolunteerData[index],
                         readyClick: () {
                           confirmationDialog(index,"Accept","Ready to go");

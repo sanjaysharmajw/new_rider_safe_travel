@@ -27,8 +27,10 @@ import '../LoginModule/custom_color.dart';
 import '../Models/sosReasonModel.dart';
 import '../MyText.dart';
 import '../Notification/NotificationScreen.dart';
+import '../Utils/CustomLoader.dart';
 import '../Utils/logout_dialog_box.dart';
 import '../about_page.dart';
+import '../constant_image.dart';
 import '../controller/permision_controller.dart';
 import '../controller/user_details_controller.dart';
 import '../controller/volunteer_request.dart';
@@ -65,6 +67,13 @@ class _ProfileNavState extends State<ProfileNav> {
   String? volunteerId;
   List<String> selectedOptions = [];
   List<String> volunteerAri = [];
+  List<ReasonMasterData>? reasons;
+
+  String? userId;
+  String? Name;
+  String? firstname;
+  String? lastname;
+  String? getUserType;
 
 
   final List locale = [
@@ -161,79 +170,75 @@ class _ProfileNavState extends State<ProfileNav> {
   void userDetailsApi()async{
 
 
+    await userDetailsController.updateProfile();
+
+    volunteer = userDetailsController.getUserDetailsData[0].volunteer!.toString();
+
+    debugPrint("profile details api volunteer value: ${volunteer}");
+
+    if(volunteer=="Yes"){
+      volunteerStatus = true;
+    }else {
+      volunteerStatus=false;
+    }
+
     if(_selectedReasonNames.isNotEmpty){
+      reasons!.clear();
       _selectedReasonNames.clear();
       _reasonNames.clear();
     }
 
-    await userDetailsController.updateProfile();
-    volunteer = userDetailsController.getUserDetailsData[0].volunteer;
+    debugPrint("profile details api ${volunteerStatus}");
 
-    if(volunteer == "Yes"){
-      volunteerStatus == true;
-    }else{
-      volunteerStatus == false;
-    }
 
-    for(var i = 0; i< userDetailsController.getUserDetailsData[0].volunteerAri!.length;i++){
-      debugPrint("selected reason from api ${userDetailsController.getUserDetailsData[0].volunteerAri![i].toString()}");
-      _selectedReasonNames.add(userDetailsController.getUserDetailsData[0].volunteerAri![i].toString());
+    getUserType=Preferences.getUserType(Preferences.userType).toString();
+    userId = Preferences.getId(Preferences.id).toString();
+    firstname = Preferences.getFirstName(Preferences.firstname).toString();
+    lastname = Preferences.getLastName(Preferences.lastname).toString();
+    profileName = "$firstname $lastname";
 
-    }
+
     setState(() {});
-    // debugPrint("volunteer ari items ${volunteer[].}");
   }
 
+
+
   void _showMultiSelect(BuildContext context) async {
-
-
-
-    if(_reasonNames.isNotEmpty){
-      _reasonNames.clear();
+    reasons = getReason.getSosReasonData.value;
+    for (var i = 0; i < reasons!.length; i++) {
+      _reasonNames.add(reasons![i].name.toString());
+      debugPrint("reason ${i} ${_reasonNames[i]}");
     }
-
-    List<ReasonMasterData> reasons = getReason.getSosReasonData.value;
-
-    for (var i = 0; i < reasons.length; i++) {
-      _reasonNames.add(reasons[i].name.toString());
-      debugPrint("reason names  : ${reasons[i].name.toString()}");
-    }
-
-
-
 
     await showModalBottomSheet(
-      isScrollControlled: true, // required for min/max child size
+      isScrollControlled: true,
       context: context,
       builder: (ctx) {
-        return getReason.isLoading==true?LoaderUtils.loader():
-
+        return getReason.isLoading==true?CustomLoader.loader():
         Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: MultiSelectBottomSheet(
-            items: _reasonNames.map((e) => MultiSelectItem(e, e)).toList(),
-            initialValue: _selectedReasonNames,
-            selectedColor: Colors.black,
-            cancelText: Text("Cancel", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),),
-            confirmText: Text("Confirm", style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, fontSize: 20),),
-            title: Text("I want to help in following situations", style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
-            onConfirm: (values) {
-              for (var i = 0; i < values.length; i++) {
-                debugPrint("selected value : ${values[i].toString()}");
-                // list string
-                _selectedReasonNames.add(values[i]);
-                debugPrint("selected ari  value : ${values[i]}");
-              }
+            padding: const EdgeInsets.all(15.0),
+            child: MultiSelectBottomSheet(
+              items: _reasonNames.map((e) => MultiSelectItem(e, e)).toList(),
+              initialValue: _selectedReasonNames,
+              selectedColor: Colors.black,
+              cancelText: const Text("Cancel", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20,fontFamily: "Gilroy"),),
+              confirmText: const Text("Confirm", style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, fontSize: 20,fontFamily: "Gilroy")),
+              title: const Text("I want to help in following situations", style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold,fontFamily: "Gilroy"),),
+              onConfirm: (values) {
+                for (var i = 0; i < values.length; i++) {
+                  _selectedReasonNames.add(values[i].toString());
+                  debugPrint("selected value : ${values[i].toString()}");
+                  // make volunteer ari object list-
+                }
 
-              if(volunteerStatus==true){
-                volunteerApi("Yes");
-              }else{
-                volunteerApi("No");
-              }
-            },
-            maxChildSize: 0.9,
-          ),
-        );
+                if(volunteerStatus==true){
+                  volunteerApi("No");
+                }else{
+                  volunteerApi("Yes");
+                }
+              },
+              maxChildSize: 0.9,
+            ));
       },
     );
   }
@@ -377,7 +382,28 @@ class _ProfileNavState extends State<ProfileNav> {
                           Get.to(const VolunteerRequestListTabScreen());
                         },),
                     ),
-                    Padding(
+                    ProfileNotification(
+                        valueChanged: (values) {
+                          setState(() {
+
+                            if(volunteerStatus== false){
+                              _showMultiSelect(context);
+                            }else{
+                              volunteerApi("No");
+                            }
+
+                            // volunteerToggle = values;
+                            // if(volunteerToggle==true){
+                            //   volunteerStatusApi("Yes");
+                            // }else{
+                            //   volunteerStatusApi("No");
+                            // }
+                          });
+                        },
+                        status4: volunteerStatus!,
+                        title: "volunteer".tr,
+                        subTitle: "join_as_a_volunteer?".tr, imageAssets:familyList ),
+                    /*Padding(
                       padding: const EdgeInsets.only(left: 10,right: 15,top: 5, bottom: 5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -433,7 +459,7 @@ class _ProfileNavState extends State<ProfileNav> {
                           ),
                         ],
                       ),
-                    ),
+                    ),*/
 
                     ProfileText(title: 'logout'.tr, subTitle: 'exit_from_your_account'.tr, icons: FeatherIcons.logOut,
                       click: () {

@@ -22,17 +22,12 @@ class UserDetailsController extends GetxController{
 
 
 
+
   Future<dynamic> updateProfile() async {
-    await Preferences.setPreferences();
-    String mobileNo=Preferences.getMobileNumber(Preferences.mobileNumber).toString();
     UserDetailsRequestBody requestBody=UserDetailsRequestBody(
-        mobileNumber: mobileNo,
+        mobileNumber: Preferences.getMobileNumber(Preferences.mobileNumber),
         userType: "Rider"
     );
-
-
-
-
     try {
       final response = await http.post(Uri.parse(ApiUrl.userDetails),
         headers: ApiUrl.headerToken,
