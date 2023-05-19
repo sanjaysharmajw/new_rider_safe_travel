@@ -10,7 +10,12 @@ class HomePageDetails extends StatelessWidget {
   final VoidCallback goRide;
   final VoidCallback stopRide;
   final CheckData data;
-  const HomePageDetails({Key? key, required this.goRide, required this.stopRide, required this.data}) : super(key: key);
+  const HomePageDetails(
+      {Key? key,
+      required this.goRide,
+      required this.stopRide,
+      required this.data})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,19 +23,21 @@ class HomePageDetails extends StatelessWidget {
     return Visibility(
       visible: true,
       child: Padding(
-        padding: const EdgeInsets.only(right: 17.0,left: 17.0),
+        padding: const EdgeInsets.only(right: 17.0, left: 17.0),
         child: GestureDetector(
           onTap: goRide,
           child: Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              borderRadius: const BorderRadius.all(Radius.circular(5))
-            ),
+                border: Border.all(color: Colors.black),
+                borderRadius: const BorderRadius.all(Radius.circular(5))),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 25,right: 20,),
+                  padding: const EdgeInsets.only(
+                    left: 25,
+                    right: 20,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -39,16 +46,24 @@ class HomePageDetails extends StatelessWidget {
                           Center(
                             child: Stack(
                               clipBehavior: Clip.none,
-                              children:  [
+                              children: [
                                 ClipRRect(
                                   child: CachedNetworkImage(
                                       imageUrl: '',
                                       width: 80,
                                       height: 60,
-                                      progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                          CircularProgressIndicator(value: downloadProgress.progress),
-                                      errorWidget: (context, url, error) => const Image(image: AssetImage("assets/carImage.png",),height: 50,width: 50,)
-                                  ),
+                                      progressIndicatorBuilder: (context, url,
+                                              downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              value: downloadProgress.progress),
+                                      errorWidget: (context, url, error) =>
+                                          const Image(
+                                            image: AssetImage(
+                                              "assets/carImage.png",
+                                            ),
+                                            height: 50,
+                                            width: 50,
+                                          )),
                                 ),
                                 Positioned(
                                   bottom: 0,
@@ -64,13 +79,22 @@ class HomePageDetails extends StatelessWidget {
                                         aspectRatio: 1,
                                         child: ClipOval(
                                           child: CachedNetworkImage(
-                                              imageUrl: data.driverPhoto.toString(),
+                                              imageUrl:
+                                                  data.driverPhoto.toString(),
                                               width: 25,
                                               height: 25,
-                                              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                                  CircularProgressIndicator(value: downloadProgress.progress),
-                                              errorWidget: (context, url, error) =>const  Image(image: AssetImage("assets/user_avatar.png"))
-                                          ),
+                                              progressIndicatorBuilder:
+                                                  (context, url,
+                                                          downloadProgress) =>
+                                                      CircularProgressIndicator(
+                                                          value:
+                                                              downloadProgress
+                                                                  .progress),
+                                              errorWidget: (context, url,
+                                                      error) =>
+                                                  const Image(
+                                                      image: AssetImage(
+                                                          "assets/user_avatar.png"))),
                                         ),
                                       ),
                                     ),
@@ -81,19 +105,28 @@ class HomePageDetails extends StatelessWidget {
                           ),
                         ],
                       ),
-
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          MyText(text:data.vehicleRegistrationNumber.toString(), fontFamily: 'Gilroy', color: Colors.black, fontSize: 16),
+                          MyText(
+                              text: data.vehicleRegistrationNumber.toString(),
+                              fontFamily: 'Gilroy',
+                              color: Colors.black,
+                              fontSize: 16),
                           const SizedBox(height: 5),
                           Row(
                             children: [
-                              MyText(text: data.vehicleMake.toString(), fontFamily: 'Gilroy',
-                                  color: Colors.black, fontSize: 14),
+                              MyText(
+                                  text: data.vehicleMake.toString(),
+                                  fontFamily: 'Gilroy',
+                                  color: Colors.black,
+                                  fontSize: 14),
                               const SizedBox(width: 3),
-                              MyText(text: data.vehicleModel.toString(), fontFamily: 'Gilroy',
-                                  color: Colors.black, fontSize: 14),
+                              MyText(
+                                  text: data.vehicleModel.toString(),
+                                  fontFamily: 'Gilroy',
+                                  color: Colors.black,
+                                  fontSize: 14),
                             ],
                           )
                         ],
@@ -105,27 +138,31 @@ class HomePageDetails extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 25,top: 10),
+                      padding: const EdgeInsets.only(left: 25, top: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children:  [
-                           Text(
-                             data.driverName.toString(),
-                            style:
-                            const  TextStyle(fontSize: 16, color: Colors.black, fontFamily: 'Gilroy',
+                        children: [
+                          Text(
+                            data.driverName.toString(),
+                            style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontFamily: 'Gilroy',
                                 decoration: TextDecoration.underline),
                           ),
                           const Padding(
-                            padding:  EdgeInsets.only(left: 3,right: 3),
+                            padding: EdgeInsets.only(left: 3, right: 3),
                             child: Text("."),
                           ),
-                           Text(
-                             data.rating.toString(),
-                            style:
-                            const TextStyle(fontSize: 14, color: Colors.black, fontFamily: 'Gilroy',
+                          Text(
+                            data.rating.toString(),
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                              fontFamily: 'Gilroy',
                             ),
                           ),
-                          const Icon(
+                          Icon(
                             Icons.star_outlined,
                             color: Colors.blueGrey,
                             size: 14.0,
@@ -136,7 +173,7 @@ class HomePageDetails extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                       /* Padding(
+                        /* Padding(
                           padding: const EdgeInsets.only(left: 8,right: 8),
                           child: ClipOval(
                             child: Material(
@@ -155,19 +192,20 @@ class HomePageDetails extends StatelessWidget {
                           ),
                         ),*/
                         Padding(
-                          padding: const EdgeInsets.only(left: 8,right: 20),
+                          padding: const EdgeInsets.only(left: 8, right: 20),
                           child: ClipOval(
                             child: Material(
                               //color: CustomColor.lightYellow, // button color
                               child: InkWell(
                                 splashColor: Colors.blue,
                                 highlightColor:
-                                theme.colorScheme.primary.withAlpha(28),
+                                    theme.colorScheme.primary.withAlpha(28),
                                 onTap: stopRide,
-                                child:   SizedBox(
+                                child: SizedBox(
                                   width: 32,
                                   height: 32,
-                                  child: Image.asset('new_assets/stop-sign (2).png'),
+                                  child: Image.asset(
+                                      'new_assets/stop-sign (2).png'),
                                 ),
                               ),
                             ),

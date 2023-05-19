@@ -15,6 +15,7 @@ class FamilyStatusController extends GetxController{
 
   Future<dynamic> getFamilyStatus(String userId,String memberId, String status) async {
     try {
+      print(userId +" "+ memberId +" "+status);
       LoaderUtils.showLoader("Please wait");
       final response = await http.post(Uri.parse(
           "https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/deleteblockFamilyMember"),

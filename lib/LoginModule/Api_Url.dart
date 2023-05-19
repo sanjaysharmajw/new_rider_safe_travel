@@ -51,7 +51,6 @@ class ApiUrl {
 
   static var userDetails = "${baseUrl}user/userList";
   static var searchServiceRequest = "${serviceUrl}serviceProvider/searchServiceProvider";
-  static var searchServiceRequest = "${serviceUrl}serviceProvider/searchServiceProvider";
 
 
   static var videoList = "${baseUrl}user/getVideoList";
