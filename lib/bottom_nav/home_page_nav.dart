@@ -528,7 +528,9 @@ class _HomePageState extends State<HomePageNav> {
   }
 
   void sos() {
+  void sos()async {
     final getSosMasterController = Get.put(GetSosMasterController());
+   await getSosMasterController.getSopsReason();
     showDialog(
         context: context,
         builder: (BuildContext context) {

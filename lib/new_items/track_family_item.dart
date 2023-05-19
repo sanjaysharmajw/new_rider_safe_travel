@@ -65,8 +65,7 @@ class TrackFamilyItem extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children:  [
-                            NewMyText(textValue: familyListDataModel.memberName.toString() == "null" ? " " : familyListDataModel.memberName.toString(),
-                                fontName: 'Gilroy', color: Colors.black, fontWeight: FontWeight.w700,
+                            NewMyText(textValue: familyListDataModel.memberName.toString(), fontName: 'Gilroy', color: Colors.black, fontWeight: FontWeight.w700,
                                 fontSize: 16),
                             const SizedBox(height: 5),
                             NewMyText(textValue: "Relation: ${familyListDataModel.memberRelation.toString()}", fontName: 'Gilroy', color: Colors.black, fontWeight: FontWeight.w500,
