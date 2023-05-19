@@ -49,7 +49,7 @@ class HomePageDetails extends StatelessWidget {
                               children: [
                                 ClipRRect(
                                   child: CachedNetworkImage(
-                                      imageUrl: '',
+                                      imageUrl: data.vehiclePhoto.toString(),
                                       width: 80,
                                       height: 60,
                                       progressIndicatorBuilder: (context, url,
@@ -109,7 +109,8 @@ class HomePageDetails extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           MyText(
-                              text: data.vehicleRegistrationNumber.toString(),
+                              text: data.vehicleRegistrationNumber.toString().isEmpty || data.vehicleRegistrationNumber.toString() == "null" ?
+                              " " : data.vehicleRegistrationNumber.toString(),
                               fontFamily: 'Gilroy',
                               color: Colors.black,
                               fontSize: 16),
@@ -117,13 +118,15 @@ class HomePageDetails extends StatelessWidget {
                           Row(
                             children: [
                               MyText(
-                                  text: data.vehicleMake.toString(),
+                                  text: data.vehicleMake.toString().isEmpty || data.vehicleMake.toString() == "null" ? " "
+                                      : data.vehicleMake.toString(),
                                   fontFamily: 'Gilroy',
                                   color: Colors.black,
                                   fontSize: 14),
                               const SizedBox(width: 3),
                               MyText(
-                                  text: data.vehicleModel.toString(),
+                                  text: data.vehicleModel.toString().isEmpty || data.vehicleMake.toString() == "null" ? " " :
+                                  data.vehicleModel.toString(),
                                   fontFamily: 'Gilroy',
                                   color: Colors.black,
                                   fontSize: 14),
@@ -143,6 +146,7 @@ class HomePageDetails extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
+                            data.driverName.toString().isEmpty || data.driverName.toString() == "null" ? " " :
                             data.driverName.toString(),
                             style: const TextStyle(
                                 fontSize: 16,
@@ -150,23 +154,30 @@ class HomePageDetails extends StatelessWidget {
                                 fontFamily: 'Gilroy',
                                 decoration: TextDecoration.underline),
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(left: 3, right: 3),
-                            child: Text("."),
-                          ),
-                          Text(
-                            data.rating.toString(),
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontFamily: 'Gilroy',
+                          Visibility(
+                            visible:  data.rating==null?false:true,
+                            child: Row(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 3, right: 3),
+                                  child: Text("."),
+                                ),
+                                Text(
+                                  data.rating.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                    fontFamily: 'Gilroy',
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.star_outlined,
+                                  color: Colors.blueGrey,
+                                  size: 14.0,
+                                ),
+                              ],
                             ),
-                          ),
-                          Icon(
-                            Icons.star_outlined,
-                            color: Colors.blueGrey,
-                            size: 14.0,
-                          ),
+                          )
                         ],
                       ),
                     ),

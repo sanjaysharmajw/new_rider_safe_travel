@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:ride_safe_travel/Services_Module/service_details_screen.dart';
 
@@ -20,9 +21,14 @@ class RequestedServiceListItems extends StatelessWidget {
 
   const RequestedServiceListItems({Key? key, required this.requestedList, required this.feedBackClick}) : super(key: key);
 
+
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    DateFormat formatter = DateFormat.yMMMd(); // use any format
+    String formatted = formatter.format(DateTime.parse(requestedList.date.toString()));
+    print(formatted);
     return Container(
 
       margin: const EdgeInsets.only(top: 10, bottom: 10,left: 10,right:10),
@@ -52,7 +58,7 @@ class RequestedServiceListItems extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               NewMyText(
-                  textValue: requestedList.date.toString(),
+                  textValue: formatted.toString(),
                   fontName: 'Gilroy',
                   color: Colors.black,
                   fontWeight: FontWeight.w500,
