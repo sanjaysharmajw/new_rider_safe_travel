@@ -21,7 +21,6 @@ class TrackFamilyListController extends GetxController{
   void onInit() {
     super.onInit();
     trackFamilyListApi(Preferences.getId(Preferences.id), Preferences.getMobileNumber(Preferences.mobileNumber));
-
   }
 
   Future<dynamic> trackFamilyListApi(String userId, String mobileNumber) async {

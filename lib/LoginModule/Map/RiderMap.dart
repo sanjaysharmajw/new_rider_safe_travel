@@ -19,9 +19,11 @@ import 'package:ride_safe_travel/Utils/SpeedAlert.dart';
 import 'package:ride_safe_travel/Utils/make_a_call.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:ride_safe_travel/color_constant.dart';
+import 'package:ride_safe_travel/controller/multi_marker_controller.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
+import '../../Models/multi_marker_request.dart';
 import '../../Utils/exit_alert_dialog.dart';
 import '../../Widgets/round_text_widgets.dart';
 import '../../chat_bot/ChatScreen.dart';
@@ -38,11 +40,13 @@ class RiderMap extends StatefulWidget {
     required this.dMobile,
     required this.dImage,
     required this.memberName,
+    required this.userId,
   }) : super(key: key);
 
   @override
   State<RiderMap> createState() => _RiderMapState();
   String riderId;
+  String userId;
   String memberName;
   String dName;
   String dLicenseNo;
@@ -65,6 +69,14 @@ class _RiderMapState extends State<RiderMap> {
   var getSpeed;
   late Map<MarkerId, Marker> _markers;
   List<LatLng> polylineCoordinates = [];
+  Set<Marker> multiMarkers ={};
+  BitmapDescriptor multipleIcon = BitmapDescriptor.defaultMarker;
+  List<LatLng> multipleMarker = const[
+    LatLng(19.0656231624977, 72.99566886052496),
+    LatLng(19.066162801494606, 72.99652046110008),
+    LatLng(19.06537880183591, 72.99513207915365),
+    LatLng(19.065472216466784, 72.99677107700037),
+  ];
   late LatLng center;
   Completer<GoogleMapController> _completer = Completer();
   static const CameraPosition _cameraPosition = CameraPosition(
@@ -72,7 +84,10 @@ class _RiderMapState extends State<RiderMap> {
     zoom: 14,
   );
 
+
+
   final TextEditingController destinationController = TextEditingController();
+  final multiMarkerController=Get.put(MultiMarkerController());
   final TextEditingController fieldTextEditingController =
       TextEditingController();
   final ScrollController scrollController = ScrollController();
@@ -80,8 +95,11 @@ class _RiderMapState extends State<RiderMap> {
   void initState() {
     super.initState();
     sharePre();
-    _markers = <MarkerId, Marker>{};
-    _markers.clear();
+    setCustomMarkerIcon();
+    multipleMarkerList();
+
+    //_markers = <MarkerId, Marker>{};
+    //_markers.clear();
     //getRideData();
     //_initUser();
     final now = DateTime.now();
@@ -91,6 +109,35 @@ class _RiderMapState extends State<RiderMap> {
     } else {
       visibility = true;
     }
+  }
+  void setCustomMarkerIcon() {
+    BitmapDescriptor.fromAssetImage(ImageConfiguration.empty, 'images/stop_marker_icons.png').then((icon) {
+      multipleIcon = icon;
+    });
+  }
+
+  void multipleMarkerList() async {
+    MultiMarkerRequest request=MultiMarkerRequest(
+      userId: widget.userId.toString(),
+      rideId: widget.riderId.toString(),
+      showstops: true
+    );
+
+    await multiMarkerController.multiMarkerApi(request);
+    for(int i=0;i<multiMarkerController.getMultipleMarkerData.length;i++){
+      double lat=double.parse(multiMarkerController.getMultipleMarkerData[i].locationdetails!.lat.toString());
+      double lng=double.parse(multiMarkerController.getMultipleMarkerData[i].locationdetails!.lng.toString());
+      multiMarkers.add(
+        Marker(
+          icon: multipleIcon,
+          markerId: MarkerId(i.toString()),
+          position: LatLng(lat, lng),
+        ),
+      );
+    }
+
+    setState(() {});
+
   }
 
   void sharePre() async {
@@ -166,10 +213,11 @@ class _RiderMapState extends State<RiderMap> {
               onMapCreated: (GoogleMapController controller) {
                 _completer.complete(controller);
               },
-              markers: Set<Marker>.of(_markers.values),
+              markers: multiMarkers,
             ),
           );
         }),
+
         DraggableScrollableSheet(
             initialChildSize: 0.15,
             minChildSize: 0.10,
@@ -516,12 +564,19 @@ class _RiderMapState extends State<RiderMap> {
         controller.animateCamera(CameraUpdate.newCameraPosition(
             CameraPosition(target: LatLng(lat, lng), zoom: 19)));
         var image = await BitmapDescriptor.fromAssetImage(
-            const ImageConfiguration(), "images/map_marker.png");
-        Marker marker = Marker(
-            markerId: MarkerId('ID'), icon: image, position: LatLng(lat, lng));
-        setState(() {
-          _markers[MarkerId('ID')] = marker;
-        });
+            const ImageConfiguration(), "images/top_front_car.png");
+        multiMarkers.add(Marker(
+            anchor: const Offset(0.5, 0.5),
+            markerId: const MarkerId('ID'),
+            position: LatLng(lat, lng),
+            icon: image
+        ));
+
+        // Marker marker = Marker(
+        //     markerId: MarkerId('ID'), icon: image, position: LatLng(lat, lng));
+        // setState(() {
+        //   multiMarkers[MarkerId('ID')] = marker;
+        // });
 
         if (getSpeed.toString().length > 80) {
           speedAlertDialogBoc();

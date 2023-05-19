@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:ride_safe_travel/Models/family_member_ride_list_model.dart';
 
 import '../DeleteButton.dart';
 import '../LoginModule/Map/FamilyListDataModel.dart';
@@ -11,7 +12,7 @@ import '../Utils/view_image.dart';
 import '../new_widgets/my_new_text.dart';
 
 class TrackFamilyItem extends StatelessWidget {
-  FamilyListDataModel familyListDataModel;
+  FamilyData familyListDataModel;
   final VoidCallback deleteClick;
 
    TrackFamilyItem({Key? key, required this.familyListDataModel, required this.deleteClick}) : super(key: key);
@@ -37,7 +38,7 @@ class TrackFamilyItem extends StatelessWidget {
               dMobile: familyListDataModel.driverMobileNumber.toString() == "null" ? "" : familyListDataModel.driverMobileNumber.toString(),
               dImage: familyListDataModel.driverPhoto.toString() == "null" ? "" : familyListDataModel.driverPhoto.toString(),
               memberName:
-              familyListDataModel.memberName.toString() == "null" ? "" : familyListDataModel.memberName.toString(),
+              familyListDataModel.memberName.toString() == "null" ? "" : familyListDataModel.memberName.toString(), userId: familyListDataModel.userId.toString(),
             ));
           },
           child: Card(
@@ -65,11 +66,15 @@ class TrackFamilyItem extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children:  [
-                            NewMyText(textValue: familyListDataModel.memberName.toString() == "null" ? "" : familyListDataModel.memberName.toString(),
+                            NewMyText(textValue: familyListDataModel.memberName.toString().substring(0,30),
                                 fontName: 'Gilroy', color: Colors.black, fontWeight: FontWeight.w700,
                                 fontSize: 16),
                             const SizedBox(height: 5),
-                            NewMyText(textValue: "Relation: ${familyListDataModel.memberRelation.toString() == "null" ? "" : familyListDataModel.memberRelation.toString()}",
+                            NewMyText(textValue: "Relation: ${familyListDataModel.memberRelation.toString()}",
+                                fontName: 'Gilroy', color: Colors.black, fontWeight: FontWeight.w500,
+                                fontSize: 14),
+                            const SizedBox(height: 5),
+                            NewMyText(textValue: familyListDataModel.vehicleRegistrationNumber.toString(),
                                 fontName: 'Gilroy', color: Colors.black, fontWeight: FontWeight.w500,
                                 fontSize: 14),
                           ],
@@ -82,11 +87,14 @@ class TrackFamilyItem extends StatelessWidget {
                   Row(
                     mainAxisAlignment:  MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: NewMyText(textValue: familyListDataModel.memberMobileNumber.toString() == "null" ? "" : familyListDataModel.memberMobileNumber.toString(),
-                            fontName: 'Gilroy', color: Colors.black, fontWeight: FontWeight.w500,
-                            fontSize: 14),
+                      Visibility(
+                        visible: familyListDataModel.memberMobileNumber==""?false:true,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: NewMyText(textValue: familyListDataModel.memberMobileNumber.toString(),
+                              fontName: 'Gilroy', color: Colors.black, fontWeight: FontWeight.w500,
+                              fontSize: 14),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 10),
@@ -96,15 +104,17 @@ class TrackFamilyItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      DeleteButtonWidget(userId: familyListDataModel.userId.toString(), memberId: familyListDataModel.memberId.toString(),
-                        status: familyListDataModel.memberStatus.toString(),
-                        click: deleteClick, onTap: () {  },
-
-                      )
-                    ],
+                  Visibility(
+                    visible: familyListDataModel.memberId==""?false:true,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        DeleteButtonWidget(userId: familyListDataModel.userId.toString(), memberId: familyListDataModel.memberId.toString(),
+                          status: familyListDataModel.memberStatus.toString(),
+                          click: deleteClick, onTap: () {  },
+                        )
+                      ],
+                    ),
                   ),
 
                 ],

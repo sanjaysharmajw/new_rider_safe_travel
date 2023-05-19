@@ -59,6 +59,7 @@ class ApiUrl {
 
   static var getVolunteerRequests = "${baseUrl}user/getVolunteerRequests";
   static var updateVolunteerRequest = "${baseUrl}user/updateVolunteerRequest";
+  static var multiMarker = "${baseUrl}userRide/getRideToken";
 
 
 

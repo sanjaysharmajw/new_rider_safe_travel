@@ -45,18 +45,19 @@ class FamilyData {
       dynamic fromDestination, 
       dynamic toDestination, 
       StartPoint? startPoint, 
-      dynamic distance, 
-      dynamic totalTime, 
+      String? distance, 
+      String? totalTime, 
       String? rideId, 
       String? vehicleId, 
+      String? groupId, 
+      String? memberPhoto, 
       String? memberId, 
-      String? memberName, 
-      String? drivingLicenceNumber, 
+      String? memberStatus, 
       String? memberRelation, 
       String? memberMobileNumber, 
       String? memberEmailId, 
-      String? memberPhoto, 
-      String? memberStatus, 
+      String? memberName, 
+      String? drivingLicenceNumber, 
       String? driverName, 
       String? ownerName, 
       String? driverMobileNumber, 
@@ -64,7 +65,7 @@ class FamilyData {
       String? driverPhoto, 
       String? ownerMobileNumber, 
       String? ownerEmailId, 
-      String? ownerPhoto, 
+      dynamic ownerPhoto, 
       String? vehicleRegistrationNumber, 
       String? vehicleRcNumber, 
       String? vehicleMake, 
@@ -86,14 +87,15 @@ class FamilyData {
     _totalTime = totalTime;
     _rideId = rideId;
     _vehicleId = vehicleId;
+    _groupId = groupId;
+    _memberPhoto = memberPhoto;
     _memberId = memberId;
-    _memberName = memberName;
-    _drivingLicenceNumber = drivingLicenceNumber;
+    _memberStatus = memberStatus;
     _memberRelation = memberRelation;
     _memberMobileNumber = memberMobileNumber;
     _memberEmailId = memberEmailId;
-    _memberPhoto = memberPhoto;
-    _memberStatus = memberStatus;
+    _memberName = memberName;
+    _drivingLicenceNumber = drivingLicenceNumber;
     _driverName = driverName;
     _ownerName = ownerName;
     _driverMobileNumber = driverMobileNumber;
@@ -126,14 +128,15 @@ class FamilyData {
     _totalTime = json['total_time'];
     _rideId = json['ride_id'];
     _vehicleId = json['vehicle_id'];
+    _groupId = json['group_id'];
+    _memberPhoto = json['member_photo'];
     _memberId = json['member_id'];
-    _memberName = json['member_name'];
-    _drivingLicenceNumber = json['driving_licence_number'];
+    _memberStatus = json['member_status'];
     _memberRelation = json['member_relation'];
     _memberMobileNumber = json['member_mobile_number'];
     _memberEmailId = json['member_email_id'];
-    _memberPhoto = json['member_photo'];
-    _memberStatus = json['member_status'];
+    _memberName = json['member_name'];
+    _drivingLicenceNumber = json['driving_licence_number'];
     _driverName = json['driver_name'];
     _ownerName = json['owner_name'];
     _driverMobileNumber = json['driver_mobile_number'];
@@ -160,18 +163,19 @@ class FamilyData {
   dynamic _fromDestination;
   dynamic _toDestination;
   StartPoint? _startPoint;
-  dynamic _distance;
-  dynamic _totalTime;
+  String? _distance;
+  String? _totalTime;
   String? _rideId;
   String? _vehicleId;
+  String? _groupId;
+  String? _memberPhoto;
   String? _memberId;
-  String? _memberName;
-  String? _drivingLicenceNumber;
+  String? _memberStatus;
   String? _memberRelation;
   String? _memberMobileNumber;
   String? _memberEmailId;
-  String? _memberPhoto;
-  String? _memberStatus;
+  String? _memberName;
+  String? _drivingLicenceNumber;
   String? _driverName;
   String? _ownerName;
   String? _driverMobileNumber;
@@ -179,7 +183,7 @@ class FamilyData {
   String? _driverPhoto;
   String? _ownerMobileNumber;
   String? _ownerEmailId;
-  String? _ownerPhoto;
+  dynamic _ownerPhoto;
   String? _vehicleRegistrationNumber;
   String? _vehicleRcNumber;
   String? _vehicleMake;
@@ -197,18 +201,19 @@ class FamilyData {
   dynamic fromDestination,
   dynamic toDestination,
   StartPoint? startPoint,
-  dynamic distance,
-  dynamic totalTime,
+  String? distance,
+  String? totalTime,
   String? rideId,
   String? vehicleId,
+  String? groupId,
+  String? memberPhoto,
   String? memberId,
-  String? memberName,
-  String? drivingLicenceNumber,
+  String? memberStatus,
   String? memberRelation,
   String? memberMobileNumber,
   String? memberEmailId,
-  String? memberPhoto,
-  String? memberStatus,
+  String? memberName,
+  String? drivingLicenceNumber,
   String? driverName,
   String? ownerName,
   String? driverMobileNumber,
@@ -216,7 +221,7 @@ class FamilyData {
   String? driverPhoto,
   String? ownerMobileNumber,
   String? ownerEmailId,
-  String? ownerPhoto,
+  dynamic ownerPhoto,
   String? vehicleRegistrationNumber,
   String? vehicleRcNumber,
   String? vehicleMake,
@@ -238,14 +243,15 @@ class FamilyData {
   totalTime: totalTime ?? _totalTime,
   rideId: rideId ?? _rideId,
   vehicleId: vehicleId ?? _vehicleId,
+  groupId: groupId ?? _groupId,
+  memberPhoto: memberPhoto ?? _memberPhoto,
   memberId: memberId ?? _memberId,
-  memberName: memberName ?? _memberName,
-  drivingLicenceNumber: drivingLicenceNumber ?? _drivingLicenceNumber,
+  memberStatus: memberStatus ?? _memberStatus,
   memberRelation: memberRelation ?? _memberRelation,
   memberMobileNumber: memberMobileNumber ?? _memberMobileNumber,
   memberEmailId: memberEmailId ?? _memberEmailId,
-  memberPhoto: memberPhoto ?? _memberPhoto,
-  memberStatus: memberStatus ?? _memberStatus,
+  memberName: memberName ?? _memberName,
+  drivingLicenceNumber: drivingLicenceNumber ?? _drivingLicenceNumber,
   driverName: driverName ?? _driverName,
   ownerName: ownerName ?? _ownerName,
   driverMobileNumber: driverMobileNumber ?? _driverMobileNumber,
@@ -272,18 +278,19 @@ class FamilyData {
   dynamic get fromDestination => _fromDestination;
   dynamic get toDestination => _toDestination;
   StartPoint? get startPoint => _startPoint;
-  dynamic get distance => _distance;
-  dynamic get totalTime => _totalTime;
+  String? get distance => _distance;
+  String? get totalTime => _totalTime;
   String? get rideId => _rideId;
   String? get vehicleId => _vehicleId;
+  String? get groupId => _groupId;
+  String? get memberPhoto => _memberPhoto;
   String? get memberId => _memberId;
-  String? get memberName => _memberName;
-  String? get drivingLicenceNumber => _drivingLicenceNumber;
+  String? get memberStatus => _memberStatus;
   String? get memberRelation => _memberRelation;
   String? get memberMobileNumber => _memberMobileNumber;
   String? get memberEmailId => _memberEmailId;
-  String? get memberPhoto => _memberPhoto;
-  String? get memberStatus => _memberStatus;
+  String? get memberName => _memberName;
+  String? get drivingLicenceNumber => _drivingLicenceNumber;
   String? get driverName => _driverName;
   String? get ownerName => _ownerName;
   String? get driverMobileNumber => _driverMobileNumber;
@@ -291,7 +298,7 @@ class FamilyData {
   String? get driverPhoto => _driverPhoto;
   String? get ownerMobileNumber => _ownerMobileNumber;
   String? get ownerEmailId => _ownerEmailId;
-  String? get ownerPhoto => _ownerPhoto;
+  dynamic get ownerPhoto => _ownerPhoto;
   String? get vehicleRegistrationNumber => _vehicleRegistrationNumber;
   String? get vehicleRcNumber => _vehicleRcNumber;
   String? get vehicleMake => _vehicleMake;
@@ -318,14 +325,15 @@ class FamilyData {
     map['total_time'] = _totalTime;
     map['ride_id'] = _rideId;
     map['vehicle_id'] = _vehicleId;
+    map['group_id'] = _groupId;
+    map['member_photo'] = _memberPhoto;
     map['member_id'] = _memberId;
-    map['member_name'] = _memberName;
-    map['driving_licence_number'] = _drivingLicenceNumber;
+    map['member_status'] = _memberStatus;
     map['member_relation'] = _memberRelation;
     map['member_mobile_number'] = _memberMobileNumber;
     map['member_email_id'] = _memberEmailId;
-    map['member_photo'] = _memberPhoto;
-    map['member_status'] = _memberStatus;
+    map['member_name'] = _memberName;
+    map['driving_licence_number'] = _drivingLicenceNumber;
     map['driver_name'] = _driverName;
     map['owner_name'] = _ownerName;
     map['driver_mobile_number'] = _driverMobileNumber;
@@ -354,15 +362,11 @@ class StartPoint {
       String? time, 
       num? latitude, 
       num? longitude, 
-      String? location, 
-      bool? detailsMatchCheck, 
-      String? detailsMatchComment,}){
+      String? location,}){
     _time = time;
     _latitude = latitude;
     _longitude = longitude;
     _location = location;
-    _detailsMatchCheck = detailsMatchCheck;
-    _detailsMatchComment = detailsMatchComment;
 }
 
   StartPoint.fromJson(dynamic json) {
@@ -370,34 +374,24 @@ class StartPoint {
     _latitude = json['latitude'];
     _longitude = json['longitude'];
     _location = json['location'];
-    _detailsMatchCheck = json['details_match_check'];
-    _detailsMatchComment = json['details_match_comment'];
   }
   String? _time;
   num? _latitude;
   num? _longitude;
   String? _location;
-  bool? _detailsMatchCheck;
-  String? _detailsMatchComment;
 StartPoint copyWith({  String? time,
   num? latitude,
   num? longitude,
   String? location,
-  bool? detailsMatchCheck,
-  String? detailsMatchComment,
 }) => StartPoint(  time: time ?? _time,
   latitude: latitude ?? _latitude,
   longitude: longitude ?? _longitude,
   location: location ?? _location,
-  detailsMatchCheck: detailsMatchCheck ?? _detailsMatchCheck,
-  detailsMatchComment: detailsMatchComment ?? _detailsMatchComment,
 );
   String? get time => _time;
   num? get latitude => _latitude;
   num? get longitude => _longitude;
   String? get location => _location;
-  bool? get detailsMatchCheck => _detailsMatchCheck;
-  String? get detailsMatchComment => _detailsMatchComment;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -405,8 +399,6 @@ StartPoint copyWith({  String? time,
     map['latitude'] = _latitude;
     map['longitude'] = _longitude;
     map['location'] = _location;
-    map['details_match_check'] = _detailsMatchCheck;
-    map['details_match_comment'] = _detailsMatchComment;
     return map;
   }
 

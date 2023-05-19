@@ -83,6 +83,7 @@ class _TrackFamilyMemberListScreenState extends State<TrackFamilyMemberListScree
                                 .toString(),
                             memberName:
                                 snapshot.data![index].memberName.toString() == "null" ? "Data Not Available" : snapshot.data![index].memberName.toString(),
+                            userId:  snapshot.data![index].userId.toString(),
                           ));
                         } else {
                           const Center(child: CircularProgressIndicator());

@@ -402,7 +402,7 @@ class _ProfileNavState extends State<ProfileNav> {
                         },
                         status4: volunteerStatus!,
                         title: "volunteer".tr,
-                        subTitle: "join_as_a_volunteer?".tr, imageAssets:familyList ),
+                        subTitle: "join_as_a_volunteer?".tr, imageAssets:'new_assets/family_icon.png'),
                     /*Padding(
                       padding: const EdgeInsets.only(left: 10,right: 15,top: 5, bottom: 5),
                       child: Row(
@@ -477,8 +477,6 @@ class _ProfileNavState extends State<ProfileNav> {
 
   void volunteerApi(String status)async{
     print("volunteerApi..."+status);
-
-
    VolunteerRequest request = VolunteerRequest(userId:  Preferences.getId(Preferences.id),volunteer: status,
      lng: permissionController.locationData?.longitude.toString(),lat: permissionController.locationData?.latitude.toString(),volunteerAri: _selectedReasonNames);
     volunteerController.volunteerApi(request).then((value) async {

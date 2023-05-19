@@ -20,6 +20,7 @@ import '../../Utils/Loader.dart';
 import '../../bottom_nav/EmptyScreen.dart';
 import '../../bottom_nav/custom_bottom_navi.dart';
 import '../../color_constant.dart';
+import '../../controller/family_ride_controller.dart';
 import '../../controller/family_status_controller.dart';
 import '../../controller/track_family_controller.dart';
 import '../../familydatamodel.dart';
@@ -44,6 +45,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
 
   final trackFamilyController = Get.put(TrackFamilyListController());
   final familystatusController = Get.put(FamilyStatusController());
+  final familyRideDataController = Get.put(FamilyRideController());
 
   /*Future<List<FamilyListDataModel>> getFamilyList() async {
     setState(() {});
@@ -131,23 +133,23 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
           ),
         ),
         body: Obx(() {
-          return trackFamilyController.isLoading.value
+          return familyRideDataController.isLoading.value
               ? LoaderUtils.loader()
-              : trackFamilyController.getTrackData.isEmpty
+              : familyRideDataController.getFamilyRideListData.isEmpty
                   ? Center(
                       child: EmptyScreen(
                         text: 'family_list_not_found'.tr,
                       ),
                     )
                   : ListView.builder(
-                      itemCount: trackFamilyController.getTrackData.length,
+                      itemCount: familyRideDataController.getFamilyRideListData.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return TrackFamilyItem(
                           familyListDataModel:
-                              trackFamilyController.getTrackData[index],
+                          familyRideDataController.getFamilyRideListData[index],
                           deleteClick: () {
-                            familyStatusApi(index, userId, trackFamilyController.getTrackData[index].memberId.toString(), 'Deleted');
+                            familyStatusApi(index, userId, familyRideDataController.getFamilyRideListData[index].memberId.toString(), 'Deleted');
                           },
                         );
                       });

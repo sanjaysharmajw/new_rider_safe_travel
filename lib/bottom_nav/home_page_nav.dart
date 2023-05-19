@@ -12,7 +12,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:majascan/majascan.dart';
+import 'package:ride_safe_travel/LoginModule/Map/RiderMap.dart';
 import 'package:ride_safe_travel/Models/family_list_ride_request.dart';
+import 'package:ride_safe_travel/Models/family_member_ride_list_model.dart';
 import 'package:ride_safe_travel/MyText.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/bottom_nav/EmptyScreen.dart';
@@ -138,6 +140,9 @@ class _HomePageState extends State<HomePageNav> {
             markerId: MarkerId(i.toString()),
             position: LatLng(lat, lng),
             infoWindow: InfoWindow(
+              onTap: (){
+                mapNavigate(familyRideDataController.getFamilyRideListData[i]);
+              },
                 title: "Member Name: $memberName"
             )
         ),
@@ -146,6 +151,25 @@ class _HomePageState extends State<HomePageNav> {
 
       });
     }
+  }
+
+  void mapNavigate(FamilyData familyRideListData){
+    Get.to(RiderMap(
+      riderId: familyRideListData.rideId.toString(),
+      dName:
+      familyRideListData.driverName.toString() == "null" ? "" : familyRideListData.driverName.toString(),
+      dLicenseNo: familyRideListData.drivingLicenceNumber.toString() == "null" ?
+      "" :  familyRideListData.drivingLicenceNumber.toString(),
+      vModel: familyRideListData.vehicleModel.toString() == "null" ? "e" : familyRideListData.vehicleModel.toString(),
+      vOwnerName:
+      familyRideListData.ownerName.toString() == "null" ? "" : familyRideListData.ownerName.toString(),
+      vRegistration: familyRideListData.vehicleRegistrationNumber.toString() == "null" ?
+      "" : familyRideListData.vehicleRegistrationNumber.toString(),
+      dMobile: familyRideListData.driverMobileNumber.toString() == "null" ? "" : familyRideListData.driverMobileNumber.toString(),
+      dImage: familyRideListData.driverPhoto.toString() == "null" ? "" : familyRideListData.driverPhoto.toString(),
+      memberName:
+      familyRideListData.memberName.toString() == "null" ? "" : familyRideListData.memberName.toString(), userId: familyRideListData.userId.toString(),
+    ));
   }
 
   Future<Uint8List?> loadImage(String path) async {
@@ -185,6 +209,10 @@ class _HomePageState extends State<HomePageNav> {
     setState(() {});
     await Preferences.setPreferences();
     riderIdFromStartRider = Preferences.getNewRiderId().toString();
+    debugPrint('LoginToken');
+    debugPrint(Preferences.getLoginToken(Preferences.loginToken));
+    debugPrint('UserId');
+    debugPrint(Preferences.getId(Preferences.id));
   }
 
   @override
@@ -650,7 +678,6 @@ class _HomePageState extends State<HomePageNav> {
                 });
           });
     }
-
 
     void sosApi() async {
       await sosPushController.SOSNotification(
