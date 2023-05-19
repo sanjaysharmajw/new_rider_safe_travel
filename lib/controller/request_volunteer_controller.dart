@@ -28,8 +28,8 @@ class RequestVolunteerController extends GetxController{
     GetVolunteerRequestBody volunteerRequestBody=GetVolunteerRequestBody(
       userId: Preferences.getId(Preferences.id).toString(),
       status: status.toString(),
-      lat: locationController.locationData!.latitude.toString(),
-      lng: locationController.locationData!.longitude.toString(),
+      lat: locationController.locationData?.latitude.toString(),
+      lng: locationController.locationData?.longitude.toString(),
     );
     try {
       //DriverCustomLoader.showLoader("Please wait");
