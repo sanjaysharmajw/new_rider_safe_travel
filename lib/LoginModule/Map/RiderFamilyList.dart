@@ -112,6 +112,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(

@@ -217,7 +217,8 @@ class _HomePageState extends State<HomePageNav> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(375, 812));
+
+   // ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
         appBar: AppBar(
           titleSpacing: 35,

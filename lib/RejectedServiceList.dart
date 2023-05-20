@@ -4,6 +4,8 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:ride_safe_travel/color_constant.dart';
+import 'package:ride_safe_travel/controller/permision_controller.dart';
+import 'package:ride_safe_travel/users_status_controller.dart';
 
 import 'LoginModule/custom_color.dart';
 import 'LoginModule/preferences.dart';
@@ -14,8 +16,12 @@ import 'Services_Module/complete_service_request_contoller.dart';
 import 'Services_Module/requested_servicelists_item.dart';
 import 'Services_Module/service_requestlist_controller.dart';
 import 'Services_Module/service_types.dart';
+import 'Utils/CustomLoader.dart';
 import 'Utils/Loader.dart';
+import 'Utils/exit_dialog.dart';
 import 'Widgets/add_custom_btn.dart';
+import 'accept_reject_controller.dart';
+import 'body_request/accept_reject_body_request.dart';
 import 'bottom_nav/EmptyScreen.dart';
 import 'bottom_nav/custom_bottom_navi.dart';
 import 'new_widgets/my_new_text.dart';
@@ -30,6 +36,7 @@ class RejectedServiceList extends StatefulWidget {
 
 class _RejectedServiceListState extends State<RejectedServiceList> {
   final requestedservicelist = Get.put(ServiceRequestListController());
+  final permissionController = Get.put(PermissionController());
 
   LocationData? currenctLoaction;
   Location? location;
@@ -46,7 +53,7 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
 
     if(currenctLoaction!=null){
 
-      requestedServiceList(currenctLoaction!.longitude!, currenctLoaction!.latitude!);
+      requestedServiceListApi(currenctLoaction!.longitude!, currenctLoaction!.latitude!);
       print("requestedServiceList....."+currenctLoaction!.longitude.toString());
       print("requestedServiceList....."+currenctLoaction!.latitude.toString());
     }
@@ -105,6 +112,16 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
                                           .id
                                           .toString());
 
+                                }, deleteUser: () {
+                                    print("REJECT");
+                                    exitShowDialog(context, 'Confirmation', 'No', 'Yes',
+                                        'Do you really want to cancel a request ?', () {
+                                          Get.back();
+                                        }, () {
+                                      print("on process to delete");
+                                          acceptRejectApi(
+                                              index,requestedservicelist.requestedList[index].id.toString(), 'Cancel');
+                                        });
                                 },
                                 );
                               });
@@ -132,14 +149,8 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
     );
   }
 
-  void requestedServiceList(
-      double lng, double lat,)async{
-    await requestedservicelist.getRequestedServicesList(lng, lat).then((value) async {
-      if (value != null) {
-
-        LoaderUtils.message(value.message.toString());
-      }
-    });
+  void requestedServiceListApi(double lng, double lat,)async{
+    await requestedservicelist.getRequestedServicesList(lng, lat);
   }
 
   Future commentDialogBox(BuildContext context, String serviceId) {
@@ -235,4 +246,48 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
       }
     });
   }
+
+ /* void dialog(int index, String status) {
+    exitShowDialog(context, 'Confirmation', 'No', 'Yes',
+        'Are you sure you want to $status?', () {
+          Get.back();
+        }, () {
+          acceptRejectApi(
+              requestedservicelist.requestedList[index].id.toString(), status);
+        });
+  }*/
+
+  void acceptRejectApi(int index,String id, String status) async {
+    var userid = Preferences.getId(Preferences.id);
+    print(id+"acceptReject"+status+"  "+userid);
+
+    final controllerApi = Get.put(ServiceAcceptRejectController());
+    AcceptRejectBodyRequest request = AcceptRejectBodyRequest(
+        id: id.toString(),
+        userId: Preferences.getId(Preferences.id).toString(),
+        status: status.toString());
+    print("RequestBody..."+request.toString());
+    await controllerApi.acceptRejectApi(request).then((value) async {
+
+        if (value?.status == true) {
+         // print(value?.message.toString());
+
+          CustomLoader.message(value!.message.toString());
+          Get.back();
+            //requestedservicelist.requestedList.removeAt(index);
+
+          requestedServiceListApi(currenctLoaction!.longitude!, currenctLoaction!.latitude!);
+
+
+        } else {
+          CustomLoader.message(value!.message.toString());
+
+      }
+    });
+  }
+
+
+
+
+
 }

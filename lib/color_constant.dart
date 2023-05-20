@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 const appBlue =  Color(0xFF3380F3);
 const appBlack =  Color(0xFF000000);
 const appWhiteColor =  Color(0xFFFFFFFF);
@@ -8,3 +10,5 @@ const appLightGrey =  Color(0xFFE6E6E6);
 const appLightBlue =  Color(0x1A005DCA);
 const borderLine =  Color(0xFF484848);
 const lightText =  Color(0xFF686868);
+const appRed = Color(0xDBFF2A3F);
+const lightAppRed = Color(0x1ACA0036);

@@ -5,11 +5,15 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:ride_safe_travel/Services_Module/service_details_screen.dart';
+import 'package:ride_safe_travel/Services_Module/service_requestlist_controller.dart';
 
 import '../LoginModule/custom_color.dart';
+import '../LoginModule/preferences.dart';
+import '../Utils/Loader.dart';
 import '../Widgets/add_custom_btn.dart';
 import '../color_constant.dart';
 import '../new_widgets/my_new_text.dart';
+import '../users_status_controller.dart';
 import 'RequestedListModel.dart';
 import 'ServiceTrackingMap.dart';
 import 'get_servic_detail_controller.dart';
@@ -18,8 +22,9 @@ class RequestedServiceListItems extends StatelessWidget {
 
   final requestedListData requestedList;
   final VoidCallback feedBackClick;
+  final VoidCallback deleteUser;
 
-  const RequestedServiceListItems({Key? key, required this.requestedList, required this.feedBackClick}) : super(key: key);
+  const RequestedServiceListItems({Key? key, required this.requestedList, required this.feedBackClick, required this.deleteUser}) : super(key: key);
 
 
 
@@ -97,6 +102,31 @@ class RequestedServiceListItems extends StatelessWidget {
                             fontSize: 14),
                         Row(
                           children: [
+                            Visibility(
+                              visible: requestedList.serviceStatus=="Pending"?true:false,
+                              child: Container(
+                                margin: const EdgeInsets.only(left: 10,right: 10),
+                                child: ClipOval(
+                                  child: Material(
+                                    color: lightAppRed, // button color
+                                    child: InkWell(
+                                      splashColor: appBlue,
+                                      highlightColor:
+                                      theme.colorScheme.primary.withAlpha(28),
+                                      onTap: deleteUser,
+                                      child: const SizedBox(
+                                          width: 40,
+                                          height: 40,
+                                          child: Icon(
+                                            MdiIcons.delete,
+                                            color: appRed,
+                                            size: 20,
+                                          )),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                             Visibility(
                               visible: requestedList.serviceStatus=="Completed"?true:false,
                               child: Container(
@@ -307,4 +337,6 @@ class RequestedServiceListItems extends StatelessWidget {
       }
     });
   }
+
+
 }
