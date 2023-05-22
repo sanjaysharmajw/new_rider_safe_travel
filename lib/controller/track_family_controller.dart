@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart'as http;
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -20,29 +21,33 @@ class TrackFamilyListController extends GetxController{
   @override
   void onInit() {
     super.onInit();
-    trackFamilyListApi(Preferences.getId(Preferences.id), Preferences.getMobileNumber(Preferences.mobileNumber));
+    trackFamilyListApi();
+    // trackFamilyListApi(Preferences.getId(Preferences.id), Preferences.getMobileNumber(Preferences.mobileNumber));
+
   }
 
-  Future<dynamic> trackFamilyListApi(String userId, String mobileNumber) async {
+  Future<dynamic> trackFamilyListApi() async {
     try {
       LoaderUtils.showLoader("Please wait");
       final response = await http.post(Uri.parse(
           'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/familymemberRideList'),
         headers: ApiUrl.headerToken,
         body: jsonEncode(<String, String>{
-          'mobile_number': mobileNumber,
-          "user_id": userId
+          "mobile_number": Preferences.getMobileNumber(Preferences.mobileNumber),
+          "user_id": Preferences.getId(Preferences.id),
         }),
       );
       print( jsonEncode(<String, String>{
-        'mobile_number': mobileNumber,
-        "user_id": userId
+        "mobile_number": Preferences.getMobileNumber(Preferences.mobileNumber),
+        "user_id": Preferences.getId(Preferences.id),
       }),);
       log(response.body);
       const utf8Decoder = Utf8Decoder(allowMalformed: true);
       final decodedBytes = utf8Decoder.convert(response.bodyBytes);
       Map<String, dynamic> responseBody = json.decode(decodedBytes);
       if (response.statusCode == 200) {
+
+        debugPrint("family list api callled");
         isLoading.value = false;
         LoaderUtils.closeLoader();
         Familydatamodel model = Familydatamodel.fromJson(responseBody);

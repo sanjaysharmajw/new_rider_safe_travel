@@ -41,11 +41,22 @@ class FamilyMemberListScreen extends StatefulWidget {
 class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
   var _future;
   var status;
-  var userId;
+  //var userId;
 
   final trackFamilyController = Get.put(TrackFamilyListController());
-  final familystatusController = Get.put(FamilyStatusController());
+  final familystatusController = Get.put(UserStatusController());
   final familyRideDataController = Get.put(FamilyRideController());
+
+  @override
+  void initState() {
+    super.initState();
+    callFamilyList();
+  }
+
+  void callFamilyList() async {
+   await trackFamilyController.trackFamilyListApi();
+
+  }
 
   /*Future<List<FamilyListDataModel>> getFamilyList() async {
     setState(() {});
@@ -83,10 +94,10 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
     }
   }*/
 
-  @override
+ /* @override
   void initState() {
     super.initState();
-    setState(() {});
+   
     //_future = getFamilyList();
 
     /*if(widget.changeUiValue=='bottomNav'){
@@ -97,7 +108,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
 
     }*/
     userId = Preferences.getId(Preferences.id);
-  }
+  }*/
 
   var image;
 
@@ -150,7 +161,8 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
                           familyListDataModel:
                           familyRideDataController.getFamilyRideListData[index],
                           deleteClick: () {
-                            familyStatusApi(index, userId, familyRideDataController.getFamilyRideListData[index].memberId.toString(), 'Deleted');
+                            familyStatusApi(index, Preferences.getId(Preferences.id),
+                                familyRideDataController.getFamilyRideListData[index].memberId.toString(), 'Deleted');
                           },
                         );
                       });
@@ -1347,15 +1359,19 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
   void familyStatusApi(
       int index, String userId, String memberId, String status) async {
     await familystatusController
-        .getFamilyStatus(userId, memberId, status)
+        .getUserStatus(userId, memberId, status)
         .then((value) async {
       if (value != null) {
         if (value.status == true) {
-          trackFamilyController.getTrackData.removeAt(index);
-          trackFamilyController.trackFamilyListApi(
-              Preferences.getId(Preferences.id),
-              Preferences.getMobileNumber(Preferences.mobileNumber));
-          Get.back();
+
+            trackFamilyController.getTrackData.removeAt(index);
+
+          callFamilyList();
+          Navigator.push(context, MaterialPageRoute(builder: (context) => CustomBottomNav()));
+            //Get.back();
+            // Get.to(CustomBottomNav());
+
+
         } else {
           LoaderUtils.showToast(value.message.toString());
         }

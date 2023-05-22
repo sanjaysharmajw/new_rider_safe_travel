@@ -193,11 +193,13 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     if(response_date.toString() == "null" || response_date.toString().isEmpty) {
       var agedate = widget.birthdate.toString().split('-');
       var date = agedate[0];
-       agedate[0]=agedate[0] == null ? " " : agedate[0];
-      var month = (int.parse(agedate[1]) < 10 ? '0' +
-          int.parse(agedate[1]).toString() : agedate[1]);
-      var year = (int.parse(agedate[2]) < 10 ? '0' +
-          int.parse(agedate[2]).toString() : agedate[2]);
+      agedate[0] = agedate[0];
+      var month = (int.parse(agedate[1]) < 10
+          ? '0${int.parse(agedate[1])}'
+          : agedate[1]);
+      var year = (int.parse(agedate[2]) < 10
+          ? '0${int.parse(agedate[2])}'
+          : agedate[2]);
       response_date = date + "-" + month + "-" + year;
       dobController.text = response_date.toString();
       print(dobController.text.toString());

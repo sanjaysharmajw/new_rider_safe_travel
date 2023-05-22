@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePageNav> {
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
     riderOtp = Preferences.getRideOtp();
-    setState(() {});
+
     await locationPermission.permissionLocation();
   }
 
@@ -147,9 +147,7 @@ class _HomePageState extends State<HomePageNav> {
             )
         ),
       );
-      setState(() {
 
-      });
     }
   }
 
