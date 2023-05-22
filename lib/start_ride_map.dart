@@ -525,17 +525,12 @@ class _SignUpState extends State<StartRide> {
                                                                 (BuildContext
                                                                         context,
                                                                     int index) {
-                                                              final Result
-                                                                  option =
-                                                                  options
-                                                                      .elementAt(
-                                                                          index);
+                                                              final Result option = options.elementAt(index);
 
                                                               return GestureDetector(
                                                                 onTap:
                                                                     () async {
-                                                                  onSelected(
-                                                                      option);
+                                                                  onSelected(option);
                                                                   destinationController
                                                                           .text =
                                                                       option
@@ -544,9 +539,7 @@ class _SignUpState extends State<StartRide> {
                                                                   OverlayLoadingProgress
                                                                       .start(
                                                                           context);
-                                                                  await getDestination(
-                                                                      option
-                                                                          .placeId);
+                                                                  await getDestination(option.placeId);
 
                                                                   Navigator.pop(
                                                                       context);
