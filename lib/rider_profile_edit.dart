@@ -42,6 +42,7 @@ import 'bottom_nav/home_page_nav.dart';
 import 'bottom_nav/profile_nav.dart';
 import 'co_passanger/dummy_data.dart';
 import 'color_constant.dart';
+import 'controller/view_profile_controller.dart';
 import 'new_widgets/my_new_text.dart';
 
 
@@ -63,6 +64,7 @@ class RiderProfileEdit extends StatefulWidget {
   String contactPerson;
   String contactPerson1;
   String bloodgroup;
+  String remark;
 
   RiderProfileEdit(
       {Key? key,
@@ -82,7 +84,8 @@ class RiderProfileEdit extends StatefulWidget {
       required this.contactPerson,
       required this.emergencyContact1,
       required this.contactPerson1,
-      required this.backbutton})
+      required this.backbutton,
+      required this.remark})
       : super(key: key);
 
   @override
@@ -90,6 +93,8 @@ class RiderProfileEdit extends StatefulWidget {
 }
 
 class _RiderProfileEditState extends State<RiderProfileEdit> {
+
+  final viewProfile = Get.put(ViewProfileController());
   // final TextEditingController _dateController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController pinController = TextEditingController();
@@ -110,6 +115,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   final TextEditingController contactPersonController = TextEditingController();
   final TextEditingController contactPerson1Controller = TextEditingController();
   final TextEditingController bloodgroupController = TextEditingController();
+  final TextEditingController remarkController = TextEditingController();
 
 
   var firstname;
@@ -124,6 +130,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   var age;
   var gender;
   var bloodgroup;
+  var remark;
 
 
   final _formKey = GlobalKey<FormState>();
@@ -188,12 +195,12 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     print(widget.gender);
 
     print("********************************888");
-    response_date=widget.birthdate.toString();
+    response_date=viewProfile.getViewProfileData[0].dob.toString();
     print(response_date);
     if(response_date.toString() == "null" || response_date.toString().isEmpty) {
-      var agedate = widget.birthdate.toString().split('-');
+      var agedate = viewProfile.getViewProfileData[0].dob.toString().split('-');
       var date = agedate[0];
-      agedate[0] = agedate[0];
+      agedate[1] = agedate[1];
       var month = (int.parse(agedate[1]) < 10
           ? '0${int.parse(agedate[1])}'
           : agedate[1]);
@@ -222,6 +229,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     contactPerson1Controller.text = widget.contactPerson1.toString();
     contactPersonController.text = widget.contactPerson.toString();
     bloodgroupController.text = widget.bloodgroup.toString();
+    remarkController.text = widget.remark.toString();
     if(radioButtonItem=='Female')
     {
       id=1;
@@ -1810,6 +1818,74 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               ],
                             ),
                           ),
+                          const SizedBox(
+                            height: 25,
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.only(left: 20.sp),
+                                  child: Icon(Icons.location_on_outlined)
+                              ),
+                              SizedBox(width: 5,),
+
+                              Text(
+                                "remark".tr,
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Gilroy",
+                                    color: CustomColor.riderprofileColor),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15, left: 15),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 2,
+                                  child: SizedBox(
+                                    height: 45,
+                                    child: TextFormField(
+                                      showCursor: true,
+                                      cursorHeight:30,
+                                      cursorWidth: 2.0,
+
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp("[A-Za-z0-9'\.\-\s\,\ ]")),
+                                        FilteringTextInputFormatter.deny('  ')
+                                      ],
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.normal,
+                                          fontFamily: "Gilroy",
+                                          color: CustomColor.riderprofileColor),
+                                      controller: remarkController,
+                                      textCapitalization: TextCapitalization.words,
+                                      keyboardType: TextInputType.multiline,
+                                      maxLines: 2,
+
+                                      decoration: InputDecoration(
+                                        border: const UnderlineInputBorder(),
+                                        enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 1, color: Colors.black45)),
+                                        focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 2, color: Colors.black54)),
+                                      ),
+                                      onChanged: (value) {
+                                        remark = value;
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
                           SizedBox(
                             height: 60,
                           ),
@@ -1837,6 +1913,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             mycities = cityController.text.toString();
                             emergencyContact0Controller.text.toString();
                             bloodgroup=bloodgroupController.text.toString();
+                            remark=remarkController.text.toString();
                             print(userId);
                             print(pinNumber);
                             print(uploadedImage);
@@ -2321,6 +2398,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
         "alternate_contact_no": "",
         "profile_image": uploadedImage,
         "marital_status": "",
+        "remark":remarkController.text.toString(),
         "city": mycities,
         "state": mystates,
         "permanent_address": {

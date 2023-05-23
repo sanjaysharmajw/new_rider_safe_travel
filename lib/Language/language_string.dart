@@ -84,6 +84,7 @@ class LanguageString extends Translations{
       'camera':'Camera',
       'gallery':'Gallery',
       'remove':'Remove',
+      'remark':'Remark',
 
       /////////////////////////////////////////////////HOME/////////////////////////////////////////////////////////
 
@@ -267,6 +268,7 @@ class LanguageString extends Translations{
       'camera':'कॅमेरा',
       'gallery':'गॅलरी',
       'remove':'काढून टाकणे',
+      'remark':'नोंद',
 
       /////////////////////////////////////////////////HOME/////////////////////////////////////////////////////////
 
@@ -425,6 +427,7 @@ class LanguageString extends Translations{
       'camera':'कैमरा',
       'gallery':'गेलरी',
       'remove':'हटा दो',
+      'remark':'टिप्पणी',
 
       /////////////////////////////////////////////////HOME/////////////////////////////////////////////////////////
 

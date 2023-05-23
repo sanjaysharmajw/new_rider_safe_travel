@@ -17,7 +17,7 @@ class ProfileWidget extends StatelessWidget {
   final String profileMobile;
   final String assetsPath;
   final VoidCallback onPress;
-  final int progressIndicator;
+  final num progressIndicator;
   final String progressValue;
 
   const ProfileWidget(
