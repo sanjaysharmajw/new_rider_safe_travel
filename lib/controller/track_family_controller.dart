@@ -30,7 +30,7 @@ class TrackFamilyListController extends GetxController{
     try {
       LoaderUtils.showLoader("Please wait");
       final response = await http.post(Uri.parse(
-          'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/familymemberRideList'),
+          ApiUrl.familyMember),
         headers: ApiUrl.headerToken,
         body: jsonEncode(<String, String>{
           "mobile_number": Preferences.getMobileNumber(Preferences.mobileNumber),

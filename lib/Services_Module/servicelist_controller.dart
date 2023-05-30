@@ -36,7 +36,7 @@ class ServiceListController extends GetxController{
       );
       print(jsonEncode({
         "service_id": serviceId,
-        "searchServiceProvider": 'fkkf',
+
         "lng": 72.998993,
         "lat":19.077065
 

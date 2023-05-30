@@ -72,34 +72,19 @@ class DrawerInfo extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(right: 35.h),
-                          child: Text(dInfoName,
-                              style: TextStyle(
-                                  fontFamily: 'transport', fontSize: 16.sp)),
-                        ),
-                        Text(dInfoMobile,
-                            style: TextStyle(
-                                fontFamily: 'transport', fontSize: 16.sp)),
-                      ],
+                    Padding(
+                      padding: EdgeInsets.only(right: 35.h),
+                      child: Text(dInfoName,
+                          style: TextStyle(
+                              fontFamily: 'transport', fontSize: 16.sp)),
                     ),
+                    Text(dInfoMobile,
+                        style: TextStyle(
+                            fontFamily: 'transport', fontSize: 16.sp)),
                     SizedBox(
                       height: 5.h,
                     ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    //   children: [
-                    //     //   Text("Mobile No: ",
-                    //     //     style: TextStyle(
-                    //     //         fontFamily: 'transport', fontSize: 16)),
-                    //     // Text(dInfoMobile,
-                    //     //     style:   TextStyle(
-                    //     //         fontFamily: 'transport', fontSize: 16)),
-                    //   ],
-                    // ),
+
 
                     Visibility(
                       visible: visibility,

@@ -7,6 +7,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
+import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
 import 'package:ride_safe_travel/LoginModule/Map/RiderFamilyList.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/Models/affFamilyMemberNewModel.dart';
@@ -157,20 +158,7 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
                   }
                 }, buttonText: "add_member".tr),
               )
-             /* RiderButton(
-                  click: () {
-                    if (_formKey.currentState!.validate()) {
-                      OverlayLoadingProgress.start(context);
-                      addFamilyMember(
-                          controllerName.text.toString(),
-                          userId,
-                          controllerRelation.text.toString(),
-                          controllerMobile.text.toString());
 
-                    }
-
-                  },
-                  textBtn: 'Add') */
             ],
           ),
         ),
@@ -184,7 +172,7 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
 
     final response = await http.post(
       Uri.parse(
-          'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/addFamilyMemberNew'),
+          ApiUrl.addFamilyMemberNew),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': loginToken

@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
 import 'package:ride_safe_travel/Models/sosReasonModel.dart';
 import 'package:http/http.dart'as http;
 import '../Error.dart';
@@ -22,7 +23,7 @@ class GetSosReasonController extends GetxController{
   Future<dynamic> getSosReason() async {
     final response = await http.post(
         Uri.parse(
-            "https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/sosReasonMaster"),
+            ApiUrl.sosReason),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': Preferences.getLoginToken(Preferences.loginToken)

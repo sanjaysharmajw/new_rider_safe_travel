@@ -50,12 +50,7 @@ class _ServiceListsScreenState extends State<ServiceListsScreen> {
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-               /* IconButton(onPressed: (){
-                  Get.back();
-                }, icon: Icon(Icons.arrow_back_outlined)),
-                  const SizedBox(height: 20),
-                  const Text('Services',style: TextStyle(fontFamily: 'Gilroy', color: appBlack, fontWeight: FontWeight.w100,fontSize: 20),
-                  ),*/
+
                   const SizedBox(height: 60),
 
                   Expanded(
@@ -77,31 +72,9 @@ class _ServiceListsScreenState extends State<ServiceListsScreen> {
                           return ServiceTypeListItem(serviceTypeData: controller.serviceTypeList[index],);
                         }),
                       )
-                      /*GridView.builder(
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            mainAxisSpacing: 10.0,
-                              childAspectRatio: 2.5,
-                              crossAxisCount: 2),
-                          itemCount: controller.serviceTypeList.length,
-                          itemBuilder: (BuildContext ctx, index) {
-                            return ServiceTypeListItem(serviceTypeData: controller.serviceTypeList[index],);
 
-
-                          }),*/
                     ),
-                    /* GridView.count(
-                      crossAxisCount: 2,
 
-                      children: List.generate( controller.serviceTypeList.length, (index) {
-                        return ServiceTypeListItem(serviceTypeData: controller.serviceTypeList[index],);
-                      }),
-                    )*/
-                    /*ListView.builder(
-                        itemCount: controller.serviceTypeList.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return ServiceTypeListItem(serviceTypeData: controller.serviceTypeList[index],);
-                        }),*/
                   )
 
                 ],

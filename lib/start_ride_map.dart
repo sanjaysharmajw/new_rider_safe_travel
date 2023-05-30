@@ -98,12 +98,7 @@ class _SignUpState extends State<StartRide> {
     zoom: 10,
   );
 
-  // void getCurrentLocation()async{
-  //   Location location=Location();
-  //   location.getLocation().then((location) {
-  //     currentLocationsPolyline=location;
-  //   });
-  // }
+ 
 
   @override
   void initState() {
@@ -240,14 +235,7 @@ class _SignUpState extends State<StartRide> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
-    return /* WillPopScope(
-      onWillPop: () =>
-          showExitPopup(context, "Do you want to stop ride?", () async {
-        OverlayLoadingProgress.start(context);
-        Navigator.pop(context, true);
-        await endRide();
-      }),
-      child:*/
+    return 
         Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -263,11 +251,7 @@ class _SignUpState extends State<StartRide> {
             OverlayLoadingProgress.stop();
             Get.offAll(CustomBottomNav());
 
-            /* showExitPopup(context, "Do you want to stop ride?", () async {
-                // OverlayLoadingProgress.start(context);
-                //Navigator.pop(context, true);
-                await endRide();
-              });*/
+          
           },
           icon: Image.asset(
             'assets/map_back.png',
@@ -651,13 +635,18 @@ class _SignUpState extends State<StartRide> {
                             Column(
                               children: [
                                 Container(
-                                  decoration: const BoxDecoration(
-                                      shape: BoxShape.circle, color: appBlue),
+                                  height: 35,
+                                  width: 35,
+                                  decoration:  BoxDecoration(
+                                   // borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                      shape: BoxShape.circle, color: appBlue,),
                                   child: Center(
                                     child: IconButton(
                                       icon: const Icon(
                                         Icons.navigation_outlined,
                                         color: Colors.black,
+                                        size: 20,
+
                                       ),
                                       onPressed: () async {
                                         await launchUrl(Uri.parse(
@@ -790,7 +779,7 @@ class _SignUpState extends State<StartRide> {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
         Uri.parse(
-            'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/endRide'),
+            ApiUrl.endRide),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': loginToken

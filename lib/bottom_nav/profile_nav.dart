@@ -1,7 +1,4 @@
 
-
-
-
 import 'dart:async';
 import 'dart:convert';
 
@@ -223,7 +220,7 @@ class _ProfileNavState extends State<ProfileNav> {
               selectedColor: Colors.black,
               cancelText: const Text("Cancel", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20,fontFamily: "Gilroy"),),
               confirmText: const Text("Confirm", style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, fontSize: 20,fontFamily: "Gilroy")),
-              title: const Text("I want to help in following situations", style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold,fontFamily: "Gilroy"),),
+              title: Flexible(child: const Text("I want to help in following situations", style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold,fontFamily: "Gilroy"),)),
               onConfirm: (values) {
                 for (var i = 0; i < values.length; i++) {
                   _selectedReasonNames.add(values[i].toString());
@@ -270,11 +267,7 @@ class _ProfileNavState extends State<ProfileNav> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-               /* const SizedBox(height: 10),
-                 Padding(
-                  padding:  EdgeInsets.only(left: 10,right: 10),
-                  child:  MyText(text: 'Profile',  fontFamily: 'Gilroy', color: Colors.black, fontSize: 22),
-                ),*/
+
                 const SizedBox(height: 30),
                 Column(
                   children: [
@@ -282,16 +275,7 @@ class _ProfileNavState extends State<ProfileNav> {
                       child: Stack(
                         clipBehavior: Clip.none,
                         children:  [
-                         /* InkWell(
-                            onTap: (){
-                              Get.to(const RiderProfileView());
-                            },
-                            child:  ClipRRect(
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              borderRadius: BorderRadius.all(Radius.circular(60)),
-                              child: Image.network(Preferences.getProfileImage().toString(),fit: BoxFit.cover,width: 100,height: 100,)
-                            ),
-                          ),*/
+
                           CircleAvatar(
                             backgroundColor: CustomColor.black,
                             radius: 50,
@@ -367,14 +351,7 @@ class _ProfileNavState extends State<ProfileNav> {
                         Get.to(const PromoVideoScreen());
                       },),
                     SizedBox(height: 5,),
-                    /*ProfileNotification(
-                      valueChanged: (values) {
-                        values=volunteerToggle;
-                        volunteerToggle = true;
-                        },
-                      status4: volunteerToggle,
-                      title: "volunteer".tr,
-                      subTitle: "join_as_a_volunteer?".tr, imageAssets: 'new_assets/volunteer.png',),*/
+
                     Visibility(
                       visible: volunteer == "Yes"? true : volunteer=="No"?false:false,
                       child: ProfileText(title: 'Volunteer Requests'.tr, subTitle: 'Check Requests'.tr, icons: FeatherIcons.user,
@@ -392,74 +369,13 @@ class _ProfileNavState extends State<ProfileNav> {
                               volunteerApi("No");
                             }
 
-                            // volunteerToggle = values;
-                            // if(volunteerToggle==true){
-                            //   volunteerStatusApi("Yes");
-                            // }else{
-                            //   volunteerStatusApi("No");
-                            // }
+
                           });
                         },
                         status4: volunteerStatus!,
                         title: "volunteer".tr,
                         subTitle: "join_as_a_volunteer?".tr, imageAssets:'new_assets/family_icon.png'),
-                    /*Padding(
-                      padding: const EdgeInsets.only(left: 10,right: 15,top: 5, bottom: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                         /* ProfileText(title: 'volunteer'.tr, subTitle: 'join_as_a_volunteer?'.tr, icons: FeatherIcons.user,
-                            voidCallback: () {
-                              //Get.to(AboutScreenPage());
-                            },),*/
-                          InkWell(
-                            onTap: (){
-                              if(volunteer=="Yes"){
-                                _showMultiSelect(context);
-                              }
-                            },
-                            child: Row(
 
-                              children:  [
-                                Icon(FeatherIcons.user),
-                                const SizedBox(
-                                  height: 10,width: 25,
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-
-                                  children: [
-                                    MyText(text: 'volunteer'.tr,  fontFamily: 'Gilroy', color: Colors.black, fontSize: 16,),
-                                    const SizedBox(height: 5),
-                                    MyText(text: 'join_as_a_volunteer?'.tr,  fontFamily: 'Gilroy', color: Colors.black, fontSize: 12),
-                                  ],
-                                ),
-
-                              ],
-                            ),
-                          ),
-                          FlutterSwitch(
-                            width: 50.0,
-                            height: 25.0,
-                            value: volunteer=="Yes"?true:volunteer=="No"?false:false,
-                            borderRadius: 30.0,
-                            padding: 2.0,
-                            activeColor: appBlue,
-                            onToggle: (val) {
-                              setState(() {
-                                volunteerStatus = val;
-                                if(volunteerStatus==true){
-                                  _showMultiSelect(context);
-                                }else{
-                                  volunteerApi("No");
-                                }
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),*/
 
                     ProfileText(title: 'logout'.tr, subTitle: 'exit_from_your_account'.tr, icons: FeatherIcons.logOut,
                       click: () {

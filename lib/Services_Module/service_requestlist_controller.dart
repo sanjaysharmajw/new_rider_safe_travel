@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
 
 import '../LoginModule/preferences.dart';
 import 'RequestedListModel.dart';
@@ -25,7 +26,7 @@ class ServiceRequestListController extends GetxController{
     print("USERID...."+userId.toString());
     try {
       final response = await http.post(
-          Uri.parse("https://24txld2sb5.execute-api.ap-south-1.amazonaws.com/dev/api/serviceProvider/serviceRequestList"),
+          Uri.parse(ApiUrl.serviceRequestList),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': loginToken

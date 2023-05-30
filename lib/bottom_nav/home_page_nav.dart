@@ -158,7 +158,7 @@ class _HomePageState extends State<HomePageNav> {
       familyRideListData.driverName.toString() == "null" ? "" : familyRideListData.driverName.toString(),
       dLicenseNo: familyRideListData.drivingLicenceNumber.toString() == "null" ?
       "" :  familyRideListData.drivingLicenceNumber.toString(),
-      vModel: familyRideListData.vehicleModel.toString() == "null" ? "e" : familyRideListData.vehicleModel.toString(),
+      vModel: familyRideListData.vehicleModel.toString() == "null" ? " " : familyRideListData.vehicleModel.toString(),
       vOwnerName:
       familyRideListData.ownerName.toString() == "null" ? "" : familyRideListData.ownerName.toString(),
       vRegistration: familyRideListData.vehicleRegistrationNumber.toString() == "null" ?
@@ -371,7 +371,7 @@ class _HomePageState extends State<HomePageNav> {
         Visibility(
             visible: checkActiveRide.getToken.toString() == "" ? false : true,
             child:
-            Align(alignment: Alignment.topRight, child: vehicleNo())),
+            Align(alignment: Alignment.topLeft, child: vehicleNo())),
       ],
     );
   }
@@ -393,7 +393,7 @@ class _HomePageState extends State<HomePageNav> {
 
   Widget vehicleNo() {
     return VehicleRound(
-        vehicleReg: checkActiveRide.getCheckRideData.isEmpty ? "N/A" :
+        vehicleReg: checkActiveRide.getCheckRideData.isEmpty ? " " :
         checkActiveRide.getCheckRideData[0].vehicleRegistrationNumber.toString()
     );
   }

@@ -49,24 +49,22 @@ class ProfileWidget extends StatelessWidget {
             SizedBox(
               width: 14.w,
             ),
-            Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    MyText(
-                        text: profileName,
-                        fontFamily: 'Gilroy',
-                        color: CustomColor.black,
-                        fontSize: 16.sp),
-                    MyText(
-                        text: profileMobile,
-                        fontFamily: 'Gilroy',
-                        color: CustomColor.black,
-                        fontSize: 16.sp),
-                  ],
-                ),
-              ],
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  MyText(
+                      text: profileName,
+                      fontFamily: 'Gilroy',
+                      color: CustomColor.black,
+                      fontSize: 16.sp),
+                  MyText(
+                      text: profileMobile,
+                      fontFamily: 'Gilroy',
+                      color: CustomColor.black,
+                      fontSize: 16.sp),
+                ],
+              ),
             ),
 
             Padding(

@@ -116,7 +116,7 @@ class _AddCoPassangerScreen extends State<AddCoPassangerScreen> {
                           controller: controllerName,
                           style: const TextStyle(fontFamily: 'Gilroy', fontSize: 14),
                           decoration:  InputDecoration(
-                            border: OutlineInputBorder(),
+                           
                             labelText: 'name'.tr,
                             hintText: 'name'.tr,
                           ),
@@ -163,7 +163,7 @@ class _AddCoPassangerScreen extends State<AddCoPassangerScreen> {
                               });
 
                         }, keyboardType: TextInputType.text, inputFormatters: null),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 20),
                         genderWidget(),
                       ],
                     ),
@@ -221,68 +221,76 @@ class _AddCoPassangerScreen extends State<AddCoPassangerScreen> {
   }
 
   Widget genderWidget(){
-    return  Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return  Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const NewMyText(textValue: 'Gender', fontName: 'Gilroy', color: appBlack,
+        const NewMyText(textValue: 'Gender : ', fontName: 'Gilroy', color: appBlack,
             fontWeight: FontWeight.w700, fontSize: 16),
         Row(
+         mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment:  CrossAxisAlignment.start,
           children: [
-            Radio(
-              fillColor: MaterialStateColor.resolveWith((states) => appBlue),
-              focusColor:
-              MaterialStateColor.resolveWith((states) => appBlue),
-              value: 1,
-              groupValue: id,
-              onChanged: (val) {
-                setState(() {
-                  radioButtonItem = 'Female';
-                  id = 1;
-                });
-              },
+
+            Row(
+              children: [
+                Radio(
+                  fillColor: MaterialStateColor.resolveWith((states) => appBlue),
+                  focusColor:
+                  MaterialStateColor.resolveWith((states) => appBlue),
+                  value: 1,
+                  groupValue: id,
+                  onChanged: (val) {
+                    setState(() {
+                      radioButtonItem = 'Female';
+                      id = 1;
+                    });
+                  },
+                ),
+                const NewMyText(textValue: 'Female', fontName: 'Gilroy', color: appBlack, fontWeight: FontWeight.w500, fontSize: 16)
+              ],
             ),
-            const NewMyText(textValue: 'Female', fontName: 'Gilroy', color: appBlack, fontWeight: FontWeight.w500, fontSize: 16)
+            Row(
+              children: [
+                Radio(
+                  fillColor: MaterialStateColor.resolveWith(
+                          (states) => appBlue),
+                  focusColor:
+                  MaterialStateColor.resolveWith(
+                          (states) => appBlue),
+                  value: 2,
+                  groupValue: id,
+                  onChanged: (val) {
+                    setState(() {
+                      radioButtonItem = 'Male';
+                      id = 2;
+                    });
+                  },
+                ),
+                const NewMyText(textValue: 'Male', fontName: 'Gilroy', color: appBlack, fontWeight: FontWeight.w500, fontSize: 16)
+              ],
+            ),
+            Row(
+              children: [
+                Radio(
+                  fillColor: MaterialStateColor.resolveWith((states) => appBlue),
+                  focusColor:
+                  MaterialStateColor.resolveWith((states) => appBlue),
+                  value: 3,
+                  groupValue: id,
+                  onChanged: (val) {
+                    setState(() {
+                      radioButtonItem = 'Other';
+                      id = 3;
+                    });
+                  },
+                ),
+                const NewMyText(textValue: 'Other', fontName: 'Gilroy', color: appBlack,
+                    fontWeight: FontWeight.w500, fontSize: 16)
+              ],
+            )
           ],
         ),
-        Row(
-          children: [
-            Radio(
-              fillColor: MaterialStateColor.resolveWith(
-                      (states) => appBlue),
-              focusColor:
-              MaterialStateColor.resolveWith(
-                      (states) => appBlue),
-              value: 2,
-              groupValue: id,
-              onChanged: (val) {
-                setState(() {
-                  radioButtonItem = 'Male';
-                  id = 2;
-                });
-              },
-            ),
-            const NewMyText(textValue: 'Male', fontName: 'Gilroy', color: appBlack, fontWeight: FontWeight.w500, fontSize: 16)
-          ],
-        ),
-        Row(
-          children: [
-            Radio(
-              fillColor: MaterialStateColor.resolveWith((states) => appBlue),
-              focusColor:
-              MaterialStateColor.resolveWith((states) => appBlue),
-              value: 3,
-              groupValue: id,
-              onChanged: (val) {
-                setState(() {
-                  radioButtonItem = 'Other';
-                  id = 3;
-                });
-              },
-            ),
-            const NewMyText(textValue: 'Other', fontName: 'Gilroy', color: appBlack,
-                fontWeight: FontWeight.w500, fontSize: 16)
-          ],
-        )
       ],
     );
   }

@@ -32,13 +32,13 @@ class ApiUrl {
   static var socketUrl = 'http://65.1.73.254:8090';
   static var getRideDetails = '${baseUrl}user/getRideData';
   //static var socketUrl = 'http://192.168.1.25:3000';
-  static var endRide = 'userRide/endRide';
+  static var endRide = '${baseUrl}userRide/endRide';
   static var checkActiveUserRide = '${baseUrl}userRide/checkActiveUserRide';
   static var geolocatelist = '${baseUrl}user/geocodelats';
   static var geolocationDetails = '${baseUrl}user/geocodelocationdetails';
   static var sosReason = '${baseUrl}user/sosReasonMaster';
   static var getserviceType = '${baseUrl}serviceProvider/serviceTypeMasterList';
-  static var serviceRequest = '${baseUrl}serviceProvider/sendServiceRequest';
+  static var sendServiceRequest = '${serviceUrl}serviceProvider/sendServiceRequest';
   static var myFamilyList = '${baseUrl}user/myFamilyList';
   static var userStatus = '${baseUrl}userRide/deleteblockFamilyMember';
   static var coPassengerList = '${baseUrl}userRide/coPassengerList';
@@ -51,6 +51,7 @@ class ApiUrl {
 
   static var userDetails = "${baseUrl}user/userList";
   static var searchServiceRequest = "${serviceUrl}serviceProvider/searchServiceProvider";
+  static var serviceRequestList = "${serviceUrl}serviceProvider/serviceRequestList";
 
 
   static var videoList = "${baseUrl}user/getVideoList";
@@ -60,6 +61,9 @@ class ApiUrl {
   static var getVolunteerRequests = "${baseUrl}user/getVolunteerRequests";
   static var updateVolunteerRequest = "${baseUrl}user/updateVolunteerRequest";
   static var multiMarker = "${baseUrl}userRide/getRideToken";
+  static var addFamilyMemberNew = "${baseUrl}user/addFamilyMemberNew";
+  static var userFamilyList = "${baseUrl}user/userFamilyList";
+  static var updateUserProfile = "${baseUrl}user/updateUserProfile";
 
   static var acceptRejectApi = "${serviceUrl}serviceProvider/acceptrejectServiceRequest";
 

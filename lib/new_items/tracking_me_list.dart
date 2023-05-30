@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
+import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
 import 'package:ride_safe_travel/color_constant.dart';
 import 'package:ride_safe_travel/custom_button.dart';
 import 'package:ride_safe_travel/switchbutton.dart';
@@ -41,7 +43,7 @@ class _UserFamilyListState extends State<TrackingMeList> {
     String userId = Preferences.getId(Preferences.id).toString();
     final response = await http.post(
       (Uri.parse(
-          'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/myFamilyList')), //old end url: userFamilyList
+          ApiUrl.myFamilyList)), //old end url: userFamilyList
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -105,34 +107,7 @@ class _UserFamilyListState extends State<TrackingMeList> {
               )),
 
         ),
-        // floatingActionButton: Container(
-        //   height: 60,
-        //   width: 60,
-        //   child: Material(
-        //     type: MaterialType
-        //         .transparency,
-        //     child: Ink(
-        //       decoration: BoxDecoration(
-        //         border: Border.all(color: CustomColor.black, width: 2.0),
-        //         color: CustomColor.yellow,
-        //         shape: BoxShape.circle,
-        //       ),
-        //       child: InkWell(
-        //
-        //         borderRadius: BorderRadius.circular(
-        //             500.0),
-        //         onTap: () {
-        //           Get.to(const FamilyMemberAddOtherTrack());
-        //         },
-        //         child: Icon(
-        //           Icons.add,
-        //           color: CustomColor.black,
-        //           size: 38,
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ),
+
 
         body: Container(
           child: Column(
@@ -202,49 +177,29 @@ class _UserFamilyListState extends State<TrackingMeList> {
                                                 shape: BoxShape.circle,
                                                 color: CustomColor.white,
                                               ),
-                                              child: CircleAvatar(
-                                                radius: 70.r,
-                                                backgroundColor: Colors.black,
-                                                child: CircleAvatar(
-                                                  radius: 70.r,
-                                                  backgroundColor: Colors.white,
-                                                  child: ClipOval(
-                                                    child: (snapshot.data![index]
-                                                                .memberProfileImage
-                                                                .toString() !=
-                                                            null)
-                                                        ? Image.network(
-                                                            snapshot.data![index]
-                                                                        .memberProfileImage
-                                                                        .toString() ==
-                                                                    null
-                                                                ? " "
-                                                                : snapshot
-                                                                    .data![index]
-                                                                    .memberProfileImage
-                                                                    .toString(),
-                                                            width: 70,
-                                                            height: 70,
-                                                            fit: BoxFit.cover,
-                                                          )
-                                                        : Image.asset(
-                                                            'assets/user_avatar.png'),
-                                                  ),
-                                                ),
+                                              child:  ClipRRect(
+                                                child: CachedNetworkImage(
+                                                    imageUrl: snapshot.data![index].memberProfileImage
+                                                        .toString(),
+                                                    width: 80,
+                                                    height: 60,
+                                                    progressIndicatorBuilder: (context, url,
+                                                        downloadProgress) =>
+                                                        CircularProgressIndicator(
+                                                            value: downloadProgress.progress),
+                                                    errorWidget: (context, url, error) =>
+                                                    const Image(
+                                                      image: AssetImage(
+                                                        "assets/user_avatar.png",
+                                                      ),
+                                                      height: 50,
+                                                      width: 50,
+                                                    )),
                                               ),
+
                                             ),
                                           ),
-                                         /* Positioned(
-                                            top: 30,
-                                            left: 40,
-                                            child: Text(
-                                                memberStatus.toString() == "null"
-                                                    ? " "
-                                                    : memberStatus.toString(),
-                                                style: TextStyle(
-                                                    fontFamily: 'Gilroy',
-                                                    fontSize: 16)),
-                                          ),*/
+
                                           Positioned(
                                             top: 30,
                                             left: 40,
@@ -411,251 +366,7 @@ class _UserFamilyListState extends State<TrackingMeList> {
                             ),
                           ),
 
-                      /*Container(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Container(
-                                height: 210,
-                                width: 370,
-                                child: Stack(
-                                  children: [
-                                    Center(
-                                      child: Container(
-                                        height: 170,
-                                        width: 350,
-                                        decoration: BoxDecoration(
-                                            color: CustomColor.yellow,
-                                            borderRadius:
-                                            BorderRadius.circular(
-                                                18.0)),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      top: 40,
-                                      right: 20,
-                                      child: Container(
-                                        height: 60,
-                                        width: 60,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: CustomColor.white,
-                                        ),
-                                        child: CircleAvatar(
-                                          radius: 90.r,
-                                          backgroundColor: Colors.black,
-                                          child: CircleAvatar(
-                                            radius: 90.r,
-                                            backgroundColor: Colors.white,
-                                            child: ClipOval(
-                                              child: (snapshot.data![index]
-                                                  .memberProfileImage
-                                                  .toString() !=
-                                                  null)
-                                                  ? Image.network(
-                                                snapshot.data![index]
-                                                    .memberProfileImage
-                                                    .toString() ==
-                                                    null
-                                                    ? " "
-                                                    : snapshot
-                                                    .data![index]
-                                                    .memberProfileImage
-                                                    .toString(),
-                                                width: 100,
-                                                height: 100,
-                                                fit: BoxFit.cover,
-                                              )
-                                                  : Image.asset(
-                                                  'assets/user_avatar.png'),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      top: 30,
-                                      left: 40,
-                                      child: Text(
-                                          memberStatus.toString() == "null"
-                                              ? " "
-                                              : memberStatus.toString(),
-                                          style: TextStyle(
-                                              fontFamily: 'transport',
-                                              fontSize: 16)),
-                                    ),
-                                    Positioned(
-                                      top: 50,
-                                      left: 40,
-                                      child: Text(
-                                          memberName.toString() == "null"
-                                              ? " "
-                                              : memberName.toString(),
-                                          style: const TextStyle(
-                                              fontFamily: 'transport',
-                                              fontSize: 20)),
-                                    ),
-                                    Positioned(
-                                      top: 80,
-                                      left: 40,
-                                      child: Text(
-                                          snapshot.data![index]
-                                              .memberEmailId
-                                              .toString() ==
-                                              "null"
-                                              ? " "
-                                              : snapshot.data![index]
-                                              .memberEmailId
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontFamily: 'transport',
-                                              fontSize: 15)),
-                                    ),
-                                    Positioned(
-                                      top: 100,
-                                      left: 40,
-                                      child: Text(
-                                          snapshot.data![index]
-                                              .memberMobileNumber
-                                              .toString() ==
-                                              "null"
-                                              ? " "
-                                              : snapshot.data![index]
-                                              .memberMobileNumber
-                                              .toString(),
-                                          style: TextStyle(
-                                            fontFamily: 'transport',
-                                            fontSize: 15,
-                                          )),
-                                    ),
-                                    Positioned(
-                                      top: 120,
-                                      left: 40,
-                                      child: Text(
-                                          snapshot.data![index].relation
-                                              .toString()
-                                              .toString() ==
-                                              "null"
-                                              ? " "
-                                              : snapshot
-                                              .data![index].relation
-                                              .toString()
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontFamily: 'transport',
-                                              fontSize: 14)),
-                                    ),
-                                    Positioned(
-                                      top: 140,
-                                      left: 40,
-                                      child: ToggleSwitchButton(
-                                        mstatus: memberStatus.toString(),
-                                        memberId: snapshot
-                                            .data![index].memberId
-                                            .toString(), userId: snapshot
-                                          .data![index].userId
-                                          .toString(),
-                                      ),
-                                    ),
-                                    Positioned(
-                                        top: 135,
-                                        right: 20,
-                                        child: IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                print("Deleted");
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (BuildContext
-                                                    context) {
-                                                      return StatefulBuilder(
-                                                          builder: (BuildContext
-                                                          context,
-                                                              StateSetter
-                                                              setState) {
-                                                            return AlertDialog(
-                                                              content:
-                                                              Container(
-                                                                height: 120,
-                                                                child: Column(
-                                                                  crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                                  children: [
-                                                                    const SizedBox(
-                                                                      height:
-                                                                      10,
-                                                                    ),
-                                                                    Text("Do you really want to delete ${snapshot
-                                                                        .data![index]
-                                                                        .memberMobileNumber} ?"),
-                                                                    const SizedBox(
-                                                                        height:
-                                                                        15),
-                                                                    Row(
-                                                                      children: [
-                                                                        Expanded(
-                                                                          child:
-                                                                          ElevatedButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              // OverlayLoadingProgress.start(context);
-                                                                              getMembersStatus("Deleted");
-                                                                              setState(() {});
-                                                                              Get.back();
-                                                                              snapshot.data!.removeAt(index);
-                                                                              //getUserFamilyList();
-                                                                            },
-                                                                            child:
-                                                                            Text("Yes"),
-                                                                            style:
-                                                                            ElevatedButton.styleFrom(primary: CustomColor.yellow),
-                                                                          ),
-                                                                        ),
-                                                                        SizedBox(
-                                                                            width:
-                                                                            15),
-                                                                        Expanded(
-                                                                            child:
-                                                                            ElevatedButton(
-                                                                              onPressed:
-                                                                                  () {
-                                                                                print('no selected');
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              child: Text(
-                                                                                  "No",
-                                                                                  style: TextStyle(color: Colors.black)),
-                                                                              style:
-                                                                              ElevatedButton.styleFrom(
-                                                                                primary:
-                                                                                Colors.white,
-                                                                              ),
-                                                                            ))
-                                                                      ],
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            );
-                                                          });
-                                                    });
-                                              });
-                                            },
-                                            icon: const Icon(
-                                              Icons.delete_rounded,
-                                              size: 40,
-                                              color: CustomColor.red,
-                                            )))
-                                  ],
-                                )),
-                          ],
-                        ),
-                      ), */
+
                     );
                   },
                 );
@@ -671,33 +382,19 @@ class _UserFamilyListState extends State<TrackingMeList> {
                   Get.to(
                       StartRide(
                           riderId: widget.riderId.toString(),
-                          dName: widget.dName.toString() == 'null' ? "Data not available" : widget.dName.toString(),
-                          dMobile: widget.dMobile.toString() == 'null' ? "Data not available" : widget.dMobile.toString(),
-                          dPhoto: widget.dPhoto.toString() == 'null' ? "Data not available" :  widget.dPhoto.toString(),
-                          model: widget.model.toString() == 'null' ? "Data not available" : widget.model.toString(),
-                          vOwnerName: widget.vOwnerName.toString() == 'null' ? "Data not available" : widget.vOwnerName.toString(),
-                          vRegNo: widget.vRegNo.toString() == 'null' ? "Data not available" : widget.vRegNo.toString(),
+                          dName: widget.dName.toString() == 'null' ? "" : widget.dName.toString(),
+                          dMobile: widget.dMobile.toString() == 'null' ? "" : widget.dMobile.toString(),
+                          dPhoto: widget.dPhoto.toString() == 'null' ? "" :  widget.dPhoto.toString(),
+                          model: widget.model.toString() == 'null' ? "" : widget.model.toString(),
+                          vOwnerName: widget.vOwnerName.toString() == 'null' ? "" : widget.vOwnerName.toString(),
+                          vRegNo: widget.vRegNo.toString() == 'null' ? "" : widget.vRegNo.toString(),
                           socketToken: widget.socketToken.toString(), driverLicense: widget.driverLicense.toString(),otpRide: widget.otpRide.toString())
                   );
 
                   Preferences.setNewRiderId(widget.riderId.toString());
                 }, buttonText: "Start Ride"),
               )
-              /*NewButton(BtnName: 'Start ride', press: () {
-                Get.to(
-                    StartRide(
-                        riderId: widget.riderId.toString(),
-                        dName: widget.dName.toString() == 'null' ? "Data not available" : widget.dName.toString(),
-                        dMobile: widget.dMobile.toString() == 'null' ? "Data not available" : widget.dMobile.toString(),
-                        dPhoto: widget.dPhoto.toString() == 'null' ? "Data not available" :  widget.dPhoto.toString(),
-                        model: widget.model.toString() == 'null' ? "Data not available" : widget.model.toString(),
-                        vOwnerName: widget.vOwnerName.toString() == 'null' ? "Data not available" : widget.vOwnerName.toString(),
-                        vRegNo: widget.vRegNo.toString() == 'null' ? "Data not available" : widget.vRegNo.toString(),
-                        socketToken: widget.socketToken.toString(), driverLicense: widget.driverLicense.toString(),otpRide: widget.otpRide.toString())
-                );
 
-                Preferences.setNewRiderId(widget.riderId.toString());
-              }),*/
             ],
           ),
         ));
@@ -724,7 +421,7 @@ class _UserFamilyListState extends State<TrackingMeList> {
     String userId = Preferences.getId(Preferences.id).toString();
     final response = await http.post(
       Uri.parse(
-          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/deleteblockFamilyMember'),
+          ApiUrl.userStatus),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

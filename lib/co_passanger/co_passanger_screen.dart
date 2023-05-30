@@ -73,45 +73,7 @@ class _DriverCoPassScreenState extends State<DriverCoPassScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-             /* InkWell( onTap: (){
-                Get.back();
-              },child: Image.asset('new_assets/new_back.png',width: 17,height: 17)),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const NewMyText(textValue: 'Co-Passanger Lists', fontName: 'Gilroy',
-                      color: appBlack, fontWeight: FontWeight.w700, fontSize: 20),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.only(left: 20),
-                        child: Material(
-                          color: appLightBlue, // button color
-                          child: InkWell(
-                            splashColor: appBlue,
-                            //highlightColor:
-                            //theme.colorScheme.primary.withAlpha(28),
-                            child:  SizedBox(
-                                width: 100,
-                                height: 30,
-                                child: AddCustomButton(press: (){
-                                  Get.to(AddCoPassangerScreen(rideId: widget.rideId.toString()))!.then((value){
-                                    if(value==true){
-                                      coPassanger();
-                                    }
-                                  });
-                                }, buttonText: 'Add ')
-                            ),
-                            onTap: () {
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),*/
+
 
               const SizedBox(height: 20),
               Obx(() {

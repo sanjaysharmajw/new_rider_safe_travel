@@ -97,7 +97,7 @@ class _SelectedServiceListsState extends State<SelectedServiceLists> {
                     itemBuilder: (context, index) {
                         return  ShowSelectedServiceItem(
                           serviceListData: servicelist.servicesList[index],
-                          voidCallback: () {
+                          voidCallback: () async {
                            requestService(servicelist.servicesList[index].serviceId.toString(),
                                 servicelist.servicesList[index].id.toString(),
                               servicelist.servicesList[index].serviceProviderId.toString(),
@@ -122,7 +122,10 @@ class _SelectedServiceListsState extends State<SelectedServiceLists> {
       double lng, double lat)async{
     await request.sendRequest(serviceId, id, serviceProviderId, lng, lat).then((value) async {
       if (value != null) {
+        print("Click on request");
+        LoaderUtils.closeLoader();
         Get.offAll(const RejectedServiceList());
+        print("RequestSend");
         requestedServiceList();
         LoaderUtils.message(value.message.toString());
       }

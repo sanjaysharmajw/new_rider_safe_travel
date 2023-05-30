@@ -150,46 +150,19 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /*Padding(
-                          padding: EdgeInsets.only(left: 20.sp, top: 30.sp),
-                          child: Text(
-                            "Your profile",
-                            style: TextStyle(
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Gilroy",
-                                color: CustomColor.black),
-                          ),
-                        ),*/
+
                     const SizedBox(
                       height: 40,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10,),
                       child: ProfileWidget(profileName:"${viewProfileController.getViewProfileData[index].firstName.toString()} ${viewProfileController.getViewProfileData[index].lastName.toString()}"  == "null" ? " " :
-                      "${viewProfileController.getViewProfileData[index].firstName.toString()} ${viewProfileController.getViewProfileData[index].lastName.toString()}",
+                      "${viewProfileController.getViewProfileData[index].firstName.toString()} ${viewProfileController.getViewProfileData[index].lastName.toString()} ",
                         profileMobile:  '${viewProfileController.getViewProfileData[index].mobileNumber.toString()}' == "null" ? " " : '${viewProfileController.getViewProfileData[index].mobileNumber.toString()}',
                         onPress: () async {
                           OverlayLoadingProgress.start(context);
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                              RiderProfileEdit(birthdate: '${viewProfileController.getViewProfileData[index].dob.toString()}' == "null" ? " " : '${viewProfileController.getViewProfileData[index].dob}',
-                                address: '${viewProfileController.getViewProfileData[index].presentAddress?.address.toString()}' == "null" ? " " : '${viewProfileController.getViewProfileData[index].presentAddress?.address.toString()}',
-                                pincode: '${viewProfileController.getViewProfileData[index].presentAddress?.pincode.toString()}' == "null" ? " " : '${viewProfileController.getViewProfileData[index].presentAddress?.pincode.toString()}',
-                                city: '${viewProfileController.getViewProfileData[index].presentAddress?.city.toString()}' == "null" ? " " : '${viewProfileController.getViewProfileData[index].presentAddress?.city.toString()}',
-                                state:'${viewProfileController.getViewProfileData[index].presentAddress?.state.toString()}' == "null" ? " " : '${viewProfileController.getViewProfileData[index].presentAddress?.state.toString()}',
-                                emailId: '${viewProfileController.getViewProfileData[index].emailId.toString()}' == "null" ? " " : '${viewProfileController.getViewProfileData[index].emailId.toString()}',
-                                lastname: '${viewProfileController.getViewProfileData[index].lastName.toString()}' == "null" ? " " : '${viewProfileController.getViewProfileData[index].lastName.toString()}',
-                                firstname: '${viewProfileController.getViewProfileData[index].firstName.toString()}' == "null" ? " " : '${viewProfileController.getViewProfileData[index].firstName.toString()}',
-                                mobileNumber: '${viewProfileController.getViewProfileData[index].mobileNumber.toString()}' == "null" ? " " : '${viewProfileController.getViewProfileData[index].mobileNumber.toString()}',
-                                imageProfile: profileImage,
-                                gender: '${viewProfileController.getViewProfileData[index].gender.toString()}' == "null" ? " " : '${viewProfileController.getViewProfileData[index].gender.toString()}',
-                                emergencyContact:  '${viewProfileController.getViewProfileData[index].emergencyContactNo.toString()}' == "null" ? " " : '${viewProfileController.getViewProfileData[index].emergencyContactNo.toString()}',
-                                bloodgroup: '${viewProfileController.getViewProfileData[index].bloodGroup.toString()}' == "null" ? " " : '${viewProfileController.getViewProfileData[index].bloodGroup.toString()}',
-                                contactPerson: '${viewProfileController.getViewProfileData[index].emergencyContactPerson.toString()}' == "null" ? " " : '${viewProfileController.getViewProfileData[index].emergencyContactPerson.toString()}',
-                                emergencyContact1: '${viewProfileController.getViewProfileData[index].emergencyContactNo1.toString()}' == "null" ? " " : '${viewProfileController.getViewProfileData[index].emergencyContactNo1.toString()}',
-                                contactPerson1: '${viewProfileController.getViewProfileData[index].emergencyContactPerson1.toString()}' == "null" ? " " : '${viewProfileController.getViewProfileData[index].emergencyContactPerson1.toString()}',
-                                backbutton: '',
-                                remark: '${viewProfileController.getViewProfileData[index].remark.toString()}' == "null" ? " " : '${viewProfileController.getViewProfileData[index].remark.toString()}', )
+                              RiderProfileEdit()
                           ))
                               .then((value) {
 
@@ -204,85 +177,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
 
                       ),
                     ),
-                    // const Padding(
-                    //   padding: EdgeInsets.only(left: 20,top: 10),
-                    //   child: Text(
-                    //     "Rider Profile",
-                    //     style: TextStyle(
-                    //         fontSize: 18,
-                    //         fontWeight: FontWeight.bold,
-                    //         color: CustomColor.riderprofileColor),
-                    //   ),
-                    // ),
-                    // const SizedBox(
-                    //   height: 12,
-                    // ),
-                    // Row(
-                    //   children: [
-                    //     Padding(
-                    //       padding: EdgeInsets.only(left: 20),
-                    //       child: CircleAvatar(
-                    //         backgroundImage: AssetImage('assets/Ellipse 1.png'),
-                    //       ),
-                    //     ),
-                    //     SizedBox(
-                    //       width: 14,
-                    //     ),
-                    //     Column(
-                    //       mainAxisAlignment: MainAxisAlignment.start,
-                    //       crossAxisAlignment: CrossAxisAlignment.start,
-                    //       children: [
-                    //         Text(
-                    //           "Vaishali Tanna",
-                    //           style: TextStyle(
-                    //               fontWeight: FontWeight.bold,
-                    //               fontSize: 15,
-                    //               color: CustomColor.riderprofileColor),
-                    //         ),
-                    //         SizedBox(
-                    //           height: 5,
-                    //         ),
-                    //         Text(
-                    //           "+91 -9356432543",
-                    //           style: TextStyle(
-                    //               fontWeight: FontWeight.bold,
-                    //               fontSize: 15,
-                    //               color: CustomColor.text),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //     SizedBox(
-                    //       width: 64,
-                    //     ),
-                    //     Container(
-                    //       width: 110.0,
-                    //       height: 40.0,
-                    //       child: ElevatedButton(
-                    //         onPressed: () {
-                    //           Get.to(RiderProfile());
-                    //         },
-                    //         style: ElevatedButton.styleFrom(
-                    //           shape: StadiumBorder(),
-                    //           backgroundColor: CustomColor.yellow,
-                    //         ),
-                    //         child: Row(
-                    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //           children: const <Widget>[
-                    //             Text(
-                    //               'Edit Profile',
-                    //               textAlign: TextAlign.start,
-                    //               style: TextStyle(
-                    //                   fontWeight: FontWeight.bold,
-                    //                   fontSize:12,
-                    //                   color: CustomColor.riderprofileColor),
-                    //             ),
-                    //             Image(image: AssetImage('assets/Union (1).png'),width: 10,height: 12,)
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
+
                     const SizedBox(
                       height: 10,
                     ),
@@ -810,7 +705,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 15, left: 15),
+                      padding: const EdgeInsets.only(right: 15, left: 20),
                       child: Row(
                         children: <Widget>[
                           Expanded(
@@ -825,7 +720,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                   fontWeight: FontWeight.bold,
                                   fontFamily: "Gilroy",
                                   color: CustomColor.riderprofileColor),
-                              maxLines: 2,
+                              maxLines: 5,
                               controller:
                               addressController,
                               decoration:  InputDecoration(
@@ -968,20 +863,20 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.only(
-                                      left: 20,),
+                                      left: 16,),
                                     child: MyText(
                                         text:
-                                        viewProfileController.getViewProfileData[index].emergencyContactPerson.toString() == "null" ? " " :  viewProfileController.getViewProfileData[index].emergencyContactPerson.toString(),
+                                        viewProfileController.getViewProfileData[index].emergencyContactPerson.toString() == "null" ? " " :  '${viewProfileController.getViewProfileData[index].emergencyContactPerson.toString()}  :-  ',
                                         fontFamily: 'Gilroy',
                                         color:
                                         Color(0xff48422B),
                                         fontSize: 13.sp),
                                   ),
 
-                                  Container(
+                                  /*Container(
                                       width: 15.w,
                                       height: 38.h,
-                                      child: VerticalDivider()),
+                                      child: VerticalDivider()),*/
                                   Expanded(
                                       child: TextField(
                                         decoration: InputDecoration(
@@ -1020,17 +915,17 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                     child: MyText(
                                         text: viewProfileController.getViewProfileData[index].emergencyContactPerson1.toString() == "null"
                                             ? " "
-                                            : viewProfileController.getViewProfileData[index].emergencyContactPerson1.toString() ,
+                                            : '${viewProfileController.getViewProfileData[index].emergencyContactPerson1.toString()+" :- "}' ,
                                         fontFamily: 'Gilroy',
                                         color:
                                         Color(0xff48422B),
                                         fontSize: 13.sp),
                                   ),
 
-                                  Container(
+                                 /* Container(
                                       width: 15.w,
                                       height: 38.h,
-                                      child: VerticalDivider()),
+                                      child: VerticalDivider()),*/
                                   Expanded(
                                       child: TextField(
                                           decoration:
@@ -1097,96 +992,14 @@ class _RiderProfileViewState extends State<RiderProfileView> {
     }
   }
 
-  /*Future<List<RiderDetails>>? getRiderData() async {
-   // OverlayLoadingProgress.start(context);
-    await Preferences.setPreferences();
-    var loginToken = Preferences.getLoginToken(Preferences.loginToken);
-    String mobileNumber = Preferences.getMobileNumber(Preferences.mobileNumber).toString();
-    final response = await http.post(
-      (Uri.parse('https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userList')),
-      headers: ApiUrl.headerToken,
-      body: jsonEncode(<String, String>{
-        'mobile_number': mobileNumber,
-      }),
-    );
-   // OverlayLoadingProgress.stop(context);
-    if (response.statusCode == 200) {
-      print('RES:${response.body}');
-      const utf8Decoder = Utf8Decoder(allowMalformed: true);
-      final decodedBytes = utf8Decoder.convert(response.bodyBytes);
-      List<RiderDetails> loginData = jsonDecode(decodedBytes)['data']
-          .map<RiderDetails>((data) => RiderDetails.fromJson(data)).toList;
-      setState(() {
 
-      });
-      return loginData;
-    } else {
-
-      throw Exception('Failed to load');
-    }
-  }*/
 
   String formatDate(String date)
   {
     return date;
   }
 
- /* Future<StateModel> statesList() async {
-    final response = await http.post(
-      Uri.parse(ApiUrl.stateApi),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
 
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body)['data'];
-      bool status = jsonDecode(response.body)[ErrorMessage.status];
-      var msg = jsonDecode(response.body)[ErrorMessage.message];
-      if (status == true) {
-        setState(() {
-          selectedState = jsonResponse;
-        });
-        print(selectedState.toString());
-      }
-      return StateModel.fromJson(jsonDecode(response.body));
-    } else {
-      print("----------------------------");
-      print(response.statusCode);
-      print("----------------------------");
-
-      throw Exception('Unexpected error occured!');
-    }
-  }   */
-
- /* Future<CityModel> citiesList(String states) async {
-    final response = await http.post(
-      Uri.parse(ApiUrl.cityApi),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode({"state_id": states}),
-    );
-
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body)['data'];
-      bool status = jsonDecode(response.body)[ErrorMessage.status];
-      var msg = jsonDecode(response.body)[ErrorMessage.message];
-      if (status == true) {
-        setState(() {
-          selectedCity = jsonResponse;
-        });
-        print(selectedCity.toString());
-      }
-      return CityModel.fromJson(jsonDecode(response.body));
-    } else {
-      print("City: ----------------------------");
-      print(response.statusCode);
-      print("----------------------------");
-
-      throw Exception('Unexpected error occured!');
-    }
-  }  */
 
   buttonSelection(String gender, int idd){
 

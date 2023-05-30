@@ -61,7 +61,7 @@ class ProfileNotification extends StatelessWidget {
             ],
           ),
         ),
-        const  Divider(color: lightText),
+
       ],
     );
   }

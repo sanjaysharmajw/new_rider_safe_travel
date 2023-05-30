@@ -23,7 +23,7 @@ class ServiceRequestController extends GetxController{
     try {
       LoaderUtils.showLoader('Please Wait...');
       final response = await http.post(
-          Uri.parse("https://24txld2sb5.execute-api.ap-south-1.amazonaws.com/dev/api/serviceProvider/sendServiceRequest"),
+          Uri.parse(ApiUrl.sendServiceRequest),
           headers: ApiUrl.headerToken,
           body: jsonEncode({
             "service_id":serviceId,
@@ -51,21 +51,27 @@ class ServiceRequestController extends GetxController{
       const utf8Decoder = Utf8Decoder(allowMalformed: true);
       final decodedBytes = utf8Decoder.convert(response.bodyBytes);
       Map<String, dynamic> responseBody = json.decode(decodedBytes);
+      print("sendrequest"+responseBody.toString());
       if (response.statusCode == 200) {
+        print(responseBody);
         LoaderUtils.closeLoader();
         return ServiceRequestModel.fromJson(responseBody);
       }
 
     } on TimeoutException catch (e) {
+      debugPrint(e.message.toString());
       LoaderUtils.closeLoader();
        LoaderUtils.showToast(e.message.toString());
     } on SocketException catch (e) {
+      debugPrint(e.message.toString());
       LoaderUtils.closeLoader();
        LoaderUtils.showToast(e.message.toString());
     } on Error catch (e) {
+      debugPrint(e.toString());
       LoaderUtils.closeLoader();
        LoaderUtils.showToast(e.toString());
     } catch (e) {
+      debugPrint(e.toString());
        LoaderUtils.closeLoader();
        LoaderUtils.showToast(e.toString());
     }

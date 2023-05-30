@@ -84,7 +84,7 @@ class RequestedServiceListItems extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     NewMyText(
-                        textValue: requestedList.providername == null ? "N/A" : requestedList.providername!,
+                        textValue: requestedList.providername == null ? " " : requestedList.providername!,
                         fontName: 'Gilroy',
                         color: Colors.black,
                         fontWeight: FontWeight.w700,
@@ -95,7 +95,7 @@ class RequestedServiceListItems extends StatelessWidget {
                       children: [
                         NewMyText(
                             textValue:
-                            requestedList.providermobilenumber == null ? "N/A" : requestedList.providermobilenumber!,
+                            requestedList.providermobilenumber == null ? "" : requestedList.providermobilenumber!,
                             fontName: 'Gilroy',
                             color: Colors.black,
                             fontWeight: FontWeight.w500,
@@ -188,142 +188,10 @@ class RequestedServiceListItems extends StatelessWidget {
           ),
         ],
       )
-      /*
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              NewMyText(
-                  textValue: requestedList.date.toString(),
-                  fontName: 'Gilroy',
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14),
-              NewMyText(
-                  textValue: requestedList.serviceStatus.toString(),
-                  fontName: 'Gilroy',
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    NewMyText(
-                        textValue: requestedList.providername == null ? "N/A" : requestedList.providername!,
-                        fontName: 'Gilroy',
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16),
-                    const SizedBox(height: 5),
-                    NewMyText(
-                        textValue:
-                        requestedList.providermobilenumber == null ? "N/A" : requestedList.providermobilenumber!,
-                        fontName: 'Gilroy',
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),*/
+      
     );
 
-    /*Card(
-        elevation: 15,
-        margin: EdgeInsets.all(20),
-        child:  Container(
-          padding: EdgeInsets.all(15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Padding(
-                    padding:  EdgeInsets.all(8.0),
-                    child: Text("Rx Service",style: TextStyle(color: CustomColor.black,fontSize: 20),),
-                  ),
-                  Padding(
-                    padding:  const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      onPressed: () {  },
-                      child:  Text("Requested"),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children:  [
-                  Padding(
-                    padding:  EdgeInsets.all(8.0),
-                    child: Text(requestedList.servicetype.toString(),style: TextStyle(fontSize: 17),),
-                  ),
-                ],
-              ),
-              Divider(thickness: 2,),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children:  [
-                        Text("Distance",style: TextStyle(color: Colors.black54,fontSize: 18),),
-                        SizedBox(height: 10,),
-                        Text(requestedList.dist!.toStringAsFixed(2),style: TextStyle(color: Colors.black87,fontSize: 16),),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children:  [
-                        Text("Requested on",style: TextStyle(color: Colors.black54,fontSize: 18),),
-                        SizedBox(height: 10,),
-                        Text(requestedList.date.toString(),style: TextStyle(color: Colors.black87,fontSize: 16),),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {  }, child: Text("Location"),
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFD3ACAD),
-                          side: BorderSide(color: CustomColor.yellow, width: 1),
-                        ),
-
-                      ),
-
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-        )
-    );*/
+   
   }
 
   void getServiceRideDetailsAPi(String serviceId)async{

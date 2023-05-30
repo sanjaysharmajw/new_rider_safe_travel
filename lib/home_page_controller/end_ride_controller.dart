@@ -21,7 +21,8 @@ class EndRideController extends GetxController{
   Future<EndRideModel?> endRide(String riderId, String lat, String lng) async {
     try {
       LoaderUtils.showLoader("Please wait");
-      final response = await http.post(Uri.parse('https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/endRide'),
+      final response = await http.post(Uri.parse(
+          ApiUrl.endRide),
         headers: ApiUrl.headerToken, body: jsonEncode(
             {
           'ride_id': riderId,
@@ -64,59 +65,7 @@ class EndRideController extends GetxController{
     return null;
   }
 
-  // Future<http.Response> endRide(
-  //     String riderId, String lat, String lng) async {
-  //   var userId = Preferences.getId(Preferences.id);
-  //
-  //   final response = await http.post(
-  //       Uri.parse(
-  //           'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/userRide/endRide'),
-  //       headers: <String, String>{
-  //         'Content-Type': 'application/json; charset=UTF-8',
-  //       },
-  //       body: json.encode({
-  //         'ride_id': riderId,
-  //         'end_point': {
-  //           'time': DateTime.now().millisecondsSinceEpoch.toString(),
-  //           'latitude': lat.toString(),
-  //           'longitude': lng.toString(),
-  //           'location': ""
-  //         }
-  //       }));
-  //   print("object");
-  //   print(json.encode({
-  //     'ride_id': riderId,
-  //     'end_point': {
-  //       'time': DateTime.now().millisecondsSinceEpoch.toString(),
-  //       'latitude': lat.toString(),
-  //       'longitude': lng.toString(),
-  //       'location': ""
-  //     }
-  //   }));
-  //   if (response.statusCode == 200) {
-  //     bool status = jsonDecode(response.body)[ErrorMessage.status];
-  //     var msg = jsonDecode(response.body)[ErrorMessage.message];
-  //     print("response");
-  //     print("$response");
-  //     if (status == true) {
-  //       LoaderUtils.closeLoader();
-  //       print("END RIDE....."+msg);
-  //       ToastMessage.toast(msg);
-  //       floatingVisibility = true;
-  //       dataVisibility = false;
-  //
-  //       Preferences.setRideOtp(''); //MainPage
-  //       await listController.getServiceList(userId.toString());
-  //
-  //     } else {
-  //       LoaderUtils.closeLoader();
-  //       ToastMessage.toast(msg);
-  //     }
-  //     return response;
-  //   } else {
-  //     throw Exception('Failed');
-  //   }
-  // }
+
 
 
 }

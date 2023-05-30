@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
+import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/Models/affFamilyMemberNewModel.dart';
 import 'package:ride_safe_travel/Utils/RiderButton.dart';
@@ -165,17 +166,7 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
                     controllerMobile.text.toString());
               }, buttonText: "Add Family Member"),
             ),
-            /*RiderButton(
-                click: () {
 
-                  OverlayLoadingProgress.start(context);
-                  addFamilyMember(
-                      controllerName.text.toString(),
-                      userId,
-                      controllerRelation.text.toString(),
-                      controllerMobile.text.toString());
-                },
-                textBtn: 'Add')*/
           ],
         ),
       ),
@@ -187,7 +178,7 @@ class _FamilyMemberAddScreenState extends State<FamilyMemberAddScreen> {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
       Uri.parse(
-          'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/addFamilyMemberNew'),
+          ApiUrl.addFamilyMemberNew),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': loginToken

@@ -72,6 +72,10 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
   double? lat;
   double? lng;
   double drating = 0.0;
+  String? insurance;
+  String? puc;
+  String? fitness;
+
 
   @override
   void initState() {
@@ -101,8 +105,17 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
   bool checkBoxValue = false;
   final TextEditingController commentController = TextEditingController();
 
+
+
   @override
   Widget build(BuildContext context) {
+    /*DateFormat formatter = DateFormat.yMMMd(); // use any format
+     insurance = formatter.format(DateTime.parse(widget.vInsurance));
+    print(insurance);
+    puc = formatter.format(DateTime.parse(widget.vPucvalidity));
+    print(puc);
+     fitness = formatter.format(DateTime.parse(widget.vFitnessValidity));
+    print(fitness);*/
 
     return SafeArea(
 
@@ -193,26 +206,24 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                                   child: Stack(
                                     alignment: Alignment.bottomRight,
                                     children: [
-                                      CircleAvatar(
-                                        backgroundColor: CustomColor.black,
-                                        radius: 30,
-                                        child: CircleAvatar(
-                                          radius: 30,
-                                          backgroundColor: Colors.white,
-                                          child: ClipOval(
-                                            child: (widget.dPhoto != null)
-                                                ? Image.network(
-                                              widget.dPhoto,
-                                              width: 80,
-                                              height: 80,
-                                              fit: BoxFit.cover,
-                                            )
-                                                : Image.asset('assets/user_avatar.png'),
+
+                                        ClipRRect(
+                                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                                          borderRadius: const BorderRadius.all(Radius.circular(60)),
+                                          child: CachedNetworkImage(
+                                            width: 60,
+                                            height: 60,
+                                            fit: BoxFit.fill,
+                                            imageUrl: widget.dPhoto,
+                                            placeholder: (context, url) => const CircularProgressIndicator(
+                                                color: appBlue,strokeWidth: 2),
+                                            errorWidget: (context, url, error) =>
+                                                Image.asset('assets/user_avatar.png',width: 100,height: 100,fit: BoxFit.fill),
                                           ),
 
 
                                         ),
-                                      ),
+
                                     ],
                                   ),
                                 ),
@@ -223,14 +234,12 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
                                         Text(widget.driverName,
                                             style: const TextStyle(
-                                                fontSize: 16, fontWeight: FontWeight.w400)),
-                                        // Text(dInfoMobile,
-                                        //     style: const TextStyle(
-                                        //         fontFamily: 'transport', fontSize: 16)),
+                                                fontSize: 16, fontWeight: FontWeight.w400),
+                                        overflow: TextOverflow.ellipsis,),
+
                                       ],
                                     ),
                                     const SizedBox(
@@ -240,7 +249,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
 
-                                        Text(widget.driverMob,
+                                        Text(widget.driverMob.toString() == "null" ? " " : widget.driverMob,
                                             style: const TextStyle(
                                                 fontSize: 16,fontWeight: FontWeight.w400)),
                                       ],
@@ -251,7 +260,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                                         const Text("License No: ",
                                             style: TextStyle(
                                                  fontSize: 17,fontWeight: FontWeight.bold)),
-                                        Text(widget.driverLicense,
+                                        Text(widget.driverLicense.toString() == "null" ? " " : widget.driverLicense,
                                             style: const TextStyle(
                                                 fontSize: 16, fontWeight: FontWeight.w400)),
                                       ],
@@ -305,26 +314,12 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
 
 
                                         ),
+
                                       ),
                                     ],
                                   ),
                                 ),
-                               /* CircleAvatar(
-                                  backgroundColor: CustomColor.black,
-                                  radius: 30.0,
-                                  child: CircleAvatar(
-                                    radius: 29.0,
-                                    backgroundColor: Colors.white,
-                                    child: ClipOval(
-                                      child: (widget.vPhoto.toString() != null)
-                                          ? Image.network(
-                                        widget.vPhoto.toString(),
-                                        fit: BoxFit.cover,
-                                      )
-                                          : Image.asset('assets/car.png'),
-                                    ),
-                                  ),
-                                ),*/
+
                                 const SizedBox(
                                   width: 20,
                                 ),
@@ -357,9 +352,12 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                                 Text("Registration Number: ",
                                     style:
                                     TextStyle( fontSize: 16,fontWeight: FontWeight.bold)),
-                                Text(widget.vRegNumber,
-                                    style:
-                                    TextStyle( fontSize: 16,fontWeight: FontWeight.w400)),
+                                Flexible(
+                                  child: Text(widget.vRegNumber,
+                                      style:
+                                      TextStyle( fontSize: 16,fontWeight: FontWeight.w400)),
+                                )
+
                               ],
                             ),
                             const SizedBox(
@@ -371,7 +369,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                                 const Text("PUC Validity: ",
                                     style:
                                     TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                Text(widget.vPucvalidity,
+                                Text(widget.vPucvalidity.toString(),
                                     style: const TextStyle(
                                          fontSize: 16, fontWeight: FontWeight.w400)),
                               ],
@@ -382,7 +380,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                                 const Text("Fitness Validity: ",
                                     style:
                                     TextStyle( fontSize: 16,fontWeight: FontWeight.bold)),
-                                Text(widget.vFitnessValidity,
+                                Text(widget.vFitnessValidity.toString(),
                                     style: const TextStyle(
                                          fontSize: 16,fontWeight: FontWeight.w400)),
                               ],
@@ -393,7 +391,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                                 const Text("Insurance Validity: ",
                                     style:
                                     TextStyle( fontSize: 16,fontWeight: FontWeight.bold)),
-                                Text(widget.vInsurance,
+                                Text(widget.vInsurance.toString(),
                                     style: const TextStyle(
                                         fontSize: 16,fontWeight: FontWeight.w400)),
                               ],
@@ -470,27 +468,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
 
                             ),
 
-                            /*TextFormField(
-                              controller: commentController,
 
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-
-                                hintText: 'Write a Comment',
-                              ),
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              validator: (text) {
-                                if (text == null || text.isEmpty) {
-                                  return 'Can\'t be empty';
-                                }
-                                if (text.length < 4) {
-                                  return 'Too short';
-                                }
-                                return null;
-                              },
-                              // update the state variable when the text changes
-
-                            ),*/
 
                           ),
                         ],
@@ -513,18 +491,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                               setState(() {});
                             },
                                 buttonText: "Cancel Ride")
-                           /* ElevatedButton(onPressed: () async{
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>const CustomBottomNav())); //MainPage
-                              setState(() {});
-                            }, child: Text("Cancel Ride", style:
-                            TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16),),
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  backgroundColor: CustomColor.yellow,
-                                  foregroundColor: CustomColor.black),),*/
+
                           ),
                         ),
                         SizedBox(
@@ -538,105 +505,17 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
                                 setState(() {});
                               },
                                   buttonText: "Next")
-                            /* ElevatedButton(onPressed: () async{
-                              OverlayLoadingProgress.start(context);
-                              await userRideAdd(userId, widget.vehicleId.toString(), widget.driverId.toString());
-                              setState(() {});
-                            }, child: Text("Next", style: const
-                            TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16),),
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  backgroundColor: CustomColor.yellow,
-                                  foregroundColor: CustomColor.black),),*/
+
                           ),
                         )
                       ],
                     ),
-                   /* Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 65,
-                        child: Padding(
-                          padding: const EdgeInsets.all(5),
-                          child: ElevatedButton(
-                            onPressed: () async{
-                              OverlayLoadingProgress.start(context);
-                              await userRideAdd(userId, widget.vehicleId.toString(), widget.driverId.toString());
-                              setState(() {});
-                            },
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                backgroundColor: CustomColor.yellow,
-                                foregroundColor: CustomColor.black),
-                            child: Text(
-                              "Start Ride",
-                              style: const TextStyle(
-                                  fontFamily: "transport",
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 65,
-                        child: Padding(
-                          padding: const EdgeInsets.all(5),
-                          child: ElevatedButton(
-                            onPressed: () async{
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>MainPage()));
-                              setState(() {});
-                            },
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                backgroundColor: CustomColor.yellow,
-                                foregroundColor: CustomColor.black),
-                            child: Text(
-                              "Cancel Ride",
-                              style: const TextStyle(
-                                  fontFamily: "transport",
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ), */
+
                   ],
                 ),
               ),
             ),
-           /* UserVehicleInfo(
-            dInfoName: widget.driverName.toString() == 'null' ? "Data not available" : widget.driverName.toString(),
-                dInfoImage: widget.dPhoto.toString() == 'null' ? "Data not available" : widget.dPhoto.toString(),
-                dInfoMobile: widget.driverMob.toString() == 'null' ? "Data not available" : widget.driverMob.toString(),
-                dInfoLicense: widget.driverLicense.toString() == 'null' ? "Data not available" : widget.driverLicense.toString(),
-                vInfoImage: widget.vPhoto.toString() == 'null' ? "Data not available" : widget.vPhoto.toString(),
-                vInfoModel:  widget.vModel.toString() == 'null' ? "Data not available" : widget.vModel.toString(),
-                vInfoOwnerName: widget.vOwnerName.toString() == 'null' ? "Data not available" : widget.vOwnerName.toString(),
-                vInfoRegNo: widget.vRegNumber.toString() == 'null' ? "Data not available" : widget.vRegNumber.toString(),
-                vInfoPuc: formatDate(widget.vPucvalidity.toString()) == 'null' ? "Data not available" : formatDate(widget.vPucvalidity.toString()),
-    vInfoFitness: formatDate(widget.vFitnessValidity.toString()) == 'null' ? "Data not available" : formatDate(widget.vFitnessValidity.toString()),
-    vInfoInsurance: formatDate(widget.vInsurance.toString()) == 'null' ? "Data not available" : formatDate(widget.vInsurance.toString()),
-    press:  () {
-    Get.to(MainPage());
-    },
-    pressBtn: () async {
-        OverlayLoadingProgress.start(context);
-        await userRideAdd(userId, widget.vehicleId.toString(), widget.driverId.toString());
-        setState(() {});
-    },
-    pressBtnText: 'Start Ride',) */
+
 
           ],
         ),
@@ -655,7 +534,7 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
       String userId, rideId, socketToken, rideOtp) async {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     final response = await http.post(
-      Uri.parse('https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userFamilyList'),
+      Uri.parse(ApiUrl.userFamilyList),
       headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8', 'Authorization': loginToken},
       body: jsonEncode(<String, String>{
         'user_id': userId,
@@ -668,39 +547,29 @@ class _UserDriverInformationState extends State<UserDriverInformation> {
         Get.to(
             TrackingMeList(
                 riderId: rideId.toString(),
-                dName: widget.driverName.toString() == 'null' ? "Data not available" : widget.driverName.toString(),
-                dMobile: widget.driverMob.toString() == 'null' ? "Data not available" : widget.driverMob.toString(),
-                dPhoto: widget.dPhoto.toString() == 'null' ? "Data not available" :  widget.dPhoto.toString(),
-                model: widget.vModel.toString() == 'null' ? "Data not available" : widget.vModel.toString(),
-                vOwnerName: widget.vOwnerName.toString() == 'null' ? "Data not available" : widget.vOwnerName.toString(),
-                vRegNo: widget.vRegNumber.toString() == 'null' ? "Data not available" : widget.vRegNumber.toString(),
+                dName: widget.driverName.toString() == 'null' ? "" : widget.driverName.toString(),
+                dMobile: widget.driverMob.toString() == 'null' ? "" : widget.driverMob.toString(),
+                dPhoto: widget.dPhoto.toString() == 'null' ? "" :  widget.dPhoto.toString(),
+                model: widget.vModel.toString() == 'null' ? "" : widget.vModel.toString(),
+                vOwnerName: widget.vOwnerName.toString() == 'null' ? "" : widget.vOwnerName.toString(),
+                vRegNo: widget.vRegNumber.toString() == 'null' ? "" : widget.vRegNumber.toString(),
                 socketToken: socketToken, driverLicense: widget.driverLicense.toString(),otpRide: rideOtp.toString())
         );
 
-        // Get.to(
-        //     StartRide(
-        //     riderId: rideId.toString(),
-        //     dName: widget.driverName.toString() == 'null' ? "Data not available" : widget.driverName.toString(),
-        //     dMobile: widget.driverMob.toString() == 'null' ? "Data not available" : widget.driverMob.toString(),
-        //     dPhoto: widget.dPhoto.toString() == 'null' ? "Data not available" :  widget.dPhoto.toString(),
-        //     model: widget.vModel.toString() == 'null' ? "Data not available" : widget.vModel.toString(),
-        //     vOwnerName: widget.vOwnerName.toString() == 'null' ? "Data not available" : widget.vOwnerName.toString(),
-        //     vRegNo: widget.vRegNumber.toString() == 'null' ? "Data not available" : widget.vRegNumber.toString(),
-        //     socketToken: socketToken, driverLicense: widget.driverLicense.toString(),otpRide: rideOtp.toString())
-        // );
+
         OverlayLoadingProgress.stop();
         print("Userinformation" + widget.driverId + widget.vehicleId);
       } else {
         Get.to(FamilyMemberAddScreen(
-            driverId: widget.driverId == 'null' ? "Data not available" : widget.driverId,
-            vehicleId: widget.vehicleId == 'null' ? "Data not available" :  widget.vehicleId,
+            driverId: widget.driverId == 'null' ? "" : widget.driverId,
+            vehicleId: widget.vehicleId == 'null' ? "" :  widget.vehicleId,
             riderId: rideId.toString(),
-            dName: widget.driverName.toString() == 'null' ? "Data not available" : widget.driverName.toString(),
-            dMobile: widget.driverMob.toString() == 'null' ? "Data not available" : widget.driverMob.toString(),
-            dPhoto: widget.dPhoto.toString() == 'null' ? "Data not available" : widget.dPhoto.toString(),
-            model: widget.vModel.toString() == 'null' ? "Data not available" : widget.vModel.toString(),
-            vOwnerName: widget.vOwnerName.toString() == 'null' ? "Data not available" : widget.vOwnerName.toString(),
-            vRegNo: widget.vRegNumber.toString() == 'null' ? "Data not available" : widget.vRegNumber.toString(),
+            dName: widget.driverName.toString() == 'null' ? "" : widget.driverName.toString(),
+            dMobile: widget.driverMob.toString() == 'null' ? "" : widget.driverMob.toString(),
+            dPhoto: widget.dPhoto.toString() == 'null' ? "" : widget.dPhoto.toString(),
+            model: widget.vModel.toString() == 'null' ? "" : widget.vModel.toString(),
+            vOwnerName: widget.vOwnerName.toString() == 'null' ? "" : widget.vOwnerName.toString(),
+            vRegNo: widget.vRegNumber.toString() == 'null' ? "" : widget.vRegNumber.toString(),
             socketToken: socketToken, driverLicense: widget.driverLicense.toString(),otpRide: rideOtp.toString()));
         OverlayLoadingProgress.stop();
       }

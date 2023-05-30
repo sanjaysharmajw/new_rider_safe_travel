@@ -42,7 +42,7 @@ class LanguageString extends Translations{
       /////////////////////////////////////////////////BOTTOM NAVIGATION/////////////////////////////////////////////////////////
 
       'home':'Home',
-      'track_family':'Track Family',
+      'track_family':'Tracking',
       'my_rides':'My Rides',
       'services':'Services',
       'profile':'Profile',
@@ -225,7 +225,7 @@ class LanguageString extends Translations{
       /////////////////////////////////////////////////BOTTOM NAVIGATION/////////////////////////////////////////////////////////
 
       'home':'होम',
-      'track_family':'ट्रॅक फॅमिली',
+      'track_family':'ट्रॅकिंग',
       'my_rides':'माझ्या राइड्स',
       'services':'सेवा',
       'profile':'प्रोफाइल',
@@ -384,7 +384,7 @@ class LanguageString extends Translations{
       /////////////////////////////////////////////////BOTTOM NAVIGATION/////////////////////////////////////////////////////////
 
       'home':'होम ',
-      'track_family':'ट्रैक परिवार',
+      'track_family':'ट्रैकिंग',
       'my_rides':'मेरी राइड्स',
       'services':'सेवा',
       'profile':'प्रोफ़ाइल',

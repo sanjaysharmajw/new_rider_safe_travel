@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/Notification/NotificationDialogBox.dart';
@@ -45,6 +46,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   return ListView.builder(
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
+                      //DateFormat formatter = DateFormat.yMMMd(); // use any format
+                      //String formatted = formatter.format(DateTime.parse(snapshot.data![index].date.toString()));
+                      //print("NotificationDate..."+formatted);
                       if (snapshot.data![index].type == 'ride sos alert') {
                         status = Colors.red;
                       } else {
@@ -86,7 +90,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     String userId = Preferences.getId(Preferences.id).toString();
     final response = await http.post(
       (Uri.parse(
-          'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userNotification')), //old end url: userFamilyList
+          ApiUrl.countNotification)), //old end url: userFamilyList
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': loginToken

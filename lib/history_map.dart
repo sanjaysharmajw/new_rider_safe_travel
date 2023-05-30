@@ -200,17 +200,17 @@ class _HistoryMapState extends State<HistoryMap> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children:  [
               MyText(
-                  text: widget.riderData!.driverMobileNumber.toString() == "null" ? " " : widget.riderData!.driverMobileNumber.toString(),
+                  text: widget.riderData!.drivingLicenceNumber.toString() == "null" ? " " : widget.riderData!.drivingLicenceNumber.toString(),
                   fontFamily: 'Gilroy',
                   fontSize: 14,
 
                   color: Colors.black),
-              MyText(
-                  text: widget.riderData!.driverEmailId.toString() == "null" ? " " : widget.riderData!.driverMobileNumber.toString(),
+             /* MyText(
+                  text: widget.riderData!.driverEmailId.toString() == "null" ? " " : widget.riderData!.driverEmailId.toString(),
                   fontFamily: 'Gilroy',
                   fontSize: 14,
 
-                  color: Colors.black),
+                  color: Colors.black),*/
             ],
           ),
         ),
@@ -252,30 +252,6 @@ class _HistoryMapState extends State<HistoryMap> {
         markerId: const MarkerId('source'),
         position: source!,
         icon: sourceIcon));
-    // markers.add(Marker(
-    //     anchor: const Offset(0.5, 0.5),
-    //     markerId: const MarkerId('destination'),
-    //     position: destination!,
-    //     icon: endSourceIcon));
-
-
-    // markers.add(Marker(
-    //     rotation: currentLocation!.heading!,
-    //     anchor: const Offset(0.5, 0.5),
-    //     markerId: MarkerId(source.toString()),
-    //     position: source!,
-    //     icon: sourceIcon
-    // ));
-
-    // for(int i=0;i<listLocations.length;i++){
-    //   markers.add(Marker(
-    //     markerId: MarkerId(listLocations[i].toString()),
-    //     icon: stopIcons,
-    //     anchor: const Offset(0.5, 0.5),
-    //     position: listLocations[i],
-    //   ));
-    //   markers.remove(listLocations.last);
-    // }
 
     markers.add(Marker(
         anchor: const Offset(0.5, 0.5),
@@ -322,15 +298,7 @@ class _HistoryMapState extends State<HistoryMap> {
       }
     }
 
-    // for(int i=0;i<listLocations.length;i++){
-    //   markers.add(Marker(
-    //     markerId: MarkerId(listLocations[i].toString()),
-    //     icon: stopIcons,
-    //     anchor: const Offset(0.5, 0.5),
-    //     position: listLocations[i],
-    //   ));
-    //   markers.remove(listLocations.last);
-    // }
+
 
     final Polyline polyline = Polyline(
         polylineId: PolylineId(id),

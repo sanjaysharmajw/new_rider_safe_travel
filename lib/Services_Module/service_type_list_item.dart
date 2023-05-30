@@ -54,28 +54,7 @@ class ServiceTypeListItem extends StatelessWidget {
       ),
     );
 
-    /*Card(
-      elevation: 10.0,
-      shape: RoundedRectangleBorder( //<-- SEE HERE
-        side: BorderSide(
-          color: appBlue,
-        ),
-        borderRadius: BorderRadius.circular(10.0)
-      ),
-      child: ListTile(
 
-        minLeadingWidth: 5,
-        horizontalTitleGap: 1,
-        leading: Padding(
-          padding: const EdgeInsets.only(right: 5),
-          child: Icon(Icons.car_repair_outlined,size: 14,color: appBlack,),
-        ),
-        title:  Text(serviceTypeData.name.toString(),style: TextStyle(fontFamily: 'Gilroy',fontSize: 14,color: appBlack),),
-        trailing: IconButton(onPressed: (){
-          Get.to(SelectedServiceLists(serviceId: serviceTypeData.id.toString(),));
-        }, icon: Icon(Icons.arrow_forward_ios_sharp,size: 14,color: appBlack,))
-      ),
-    );*/
 
 
 

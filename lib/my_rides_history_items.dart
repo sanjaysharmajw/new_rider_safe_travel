@@ -65,12 +65,7 @@ class MyRidesHistoryItems extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 5),
-                   /* Padding(
-                      padding: const EdgeInsets.only(bottom: 5),
-                      child: NewMyText(textValue: fromdestination.toString() +todestination.toString() == "null" ? " " :
-                      fromdestination.toString() +todestination.toString(),
-                          fontName: 'Gilroy', color: lightText, fontWeight: FontWeight.w400, fontSize: 14),
-                    ),*/
+
                   ],
                 ),
               ),

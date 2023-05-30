@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:age_calculator/age_calculator.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,45 +48,9 @@ import 'new_widgets/my_new_text.dart';
 
 
 class RiderProfileEdit extends StatefulWidget {
-  String backbutton;
-  String birthdate;
-  String state;
-  String city;
-  String pincode;
-  String address;
-  String firstname;
-  String lastname;
-  String emailId;
-  String imageProfile;
-  String mobileNumber;
-  String gender;
-  String emergencyContact;
-  String emergencyContact1;
-  String contactPerson;
-  String contactPerson1;
-  String bloodgroup;
-  String remark;
 
   RiderProfileEdit(
-      {Key? key,
-        required this.birthdate,
-        required this.address,
-        required this.pincode,
-        required this.city,
-        required this.state,
-        required this.emailId,
-        required this.lastname,
-        required this.firstname,
-        required this.mobileNumber,
-        required this.imageProfile,
-        required this.gender,
-      required this.emergencyContact,
-      required this.bloodgroup,
-      required this.contactPerson,
-      required this.emergencyContact1,
-      required this.contactPerson1,
-      required this.backbutton,
-      required this.remark})
+      {Key? key,})
       : super(key: key);
 
   @override
@@ -94,7 +59,7 @@ class RiderProfileEdit extends StatefulWidget {
 
 class _RiderProfileEditState extends State<RiderProfileEdit> {
 
-  final viewProfile = Get.put(ViewProfileController());
+  final viewController = Get.put(ViewProfileController());
   // final TextEditingController _dateController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController pinController = TextEditingController();
@@ -143,16 +108,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   String date = "";
   String from = "";
 
-  // var selectedState = [];
 
-  //var states;
-  //var statName;
-  //bool isStateSelected = false;
-
-  // var selectedCity = [];
-  //var citiesname;
-  //var stateid;
-  //bool isCitySelected = false;
 
   DateTime selectedDate = DateTime.now();
   DateTime fromDate = DateTime.now();
@@ -185,20 +141,20 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   @override
   initState() {
     OverlayLoadingProgress.stop();
-    print(widget.birthdate);
+   /* print(widget.birthdate);
 
     print("###################");
     print(widget.pincode);
     print(widget.city);
     print(widget.state);
     print(widget.imageProfile);
-    print(widget.gender);
+    print(widget.gender);*/
 
     print("********************************888");
-    response_date=viewProfile.getViewProfileData[0].dob.toString();
+    response_date=viewController.getViewProfileData[0].dob.toString();
     print(response_date);
-    if(response_date.toString() == "null" || response_date.toString().isEmpty) {
-      var agedate = viewProfile.getViewProfileData[0].dob.toString().split('-');
+    if(response_date.toString() == "null" || response_date.toString() != "") {
+      var agedate = viewController.getViewProfileData[0].dob.toString().split('-');
       var date = agedate[0];
       agedate[1] = agedate[1];
       var month = (int.parse(agedate[1]) < 10
@@ -214,22 +170,22 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     }
 
     dobController.text = response_date.toString();
-    firstNameController.text = widget.firstname.toString();
-    lastNameController.text = widget.lastname.toString();
-    profile = widget.imageProfile.toString();
-    addressController.text = widget.address.toString();
-    stateController.text=widget.state.toString();
-    cityController.text=widget.city.toString();
-    pinController.text = widget.pincode.toString();
-    emailController.text = widget.emailId.toString();
-    mobileNumberController.text = widget.mobileNumber.toString();
-    emergencyContact0Controller.text = widget.emergencyContact.toString();
-    radioButtonItem = widget.gender.toString();
-    emergencyContact1Controller.text = widget.emergencyContact1.toString();
-    contactPerson1Controller.text = widget.contactPerson1.toString();
-    contactPersonController.text = widget.contactPerson.toString();
-    bloodgroupController.text = widget.bloodgroup.toString();
-    remarkController.text = widget.remark.toString();
+    firstNameController.text = viewController.getViewProfileData[0].firstName.toString()??"";
+    lastNameController.text = viewController.getViewProfileData[0].lastName.toString()??"";
+    profile = viewController.getViewProfileData[0].profileImage.toString()??"";
+    addressController.text = viewController.getViewProfileData[0].address.toString() == "null" ? " " : viewController.getViewProfileData[0].address.toString();
+    stateController.text=viewController.getViewProfileData[0].state.toString() == "null" ? " " : viewController.getViewProfileData[0].state.toString();
+    cityController.text=viewController.getViewProfileData[0].city.toString() == "null" ? " " : viewController.getViewProfileData[0].city.toString();
+    pinController.text = viewController.getViewProfileData[0].pincode.toString() == "null" ? " " : viewController.getViewProfileData[0].pincode.toString();
+    emailController.text = viewController.getViewProfileData[0].emailId.toString()??"";
+    mobileNumberController.text = viewController.getViewProfileData[0].mobileNumber.toString()??"";
+    emergencyContact0Controller.text = viewController.getViewProfileData[0].emergencyContactNo.toString()??"";
+    radioButtonItem = viewController.getViewProfileData[0].gender.toString()??"";
+    emergencyContact1Controller.text = viewController.getViewProfileData[0].emergencyContactNo1.toString()??"";
+    contactPerson1Controller.text = viewController.getViewProfileData[0].emergencyContactPerson1.toString()??"";
+    contactPersonController.text = viewController.getViewProfileData[0].emergencyContactPerson.toString()??"";
+    bloodgroupController.text = viewController.getViewProfileData[0].bloodGroup.toString()??"";
+    remarkController.text = viewController.getViewProfileData[0].remark.toString()??"";
     if(radioButtonItem=='Female')
     {
       id=1;
@@ -316,7 +272,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: (widget.backbutton == 'bottomNav') ? CustomColor.white : appBlue,
+          backgroundColor:  appBlue,
           elevation: 0,
           leading: Padding(
             padding: EdgeInsets.only(left: 10.sp, right: 10.sp),
@@ -346,17 +302,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          /* Padding(
-                            padding: EdgeInsets.only(left: 20.sp, top: 30.sp),
-                            child: Text(
-                              "Edit your profile",
-                              style: TextStyle(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Gilroy",
-                                  color: CustomColor.black),
-                            ),
-                          ),*/
+
                           SizedBox(
                             height: 40.h,
                           ),
@@ -383,24 +329,20 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                                 children: [
                                                   CircleAvatar(
                                                     backgroundColor: CustomColor.black,
-                                                    radius: 45.0,
+                                                    radius: 50,
                                                     child: CircleAvatar(
-                                                      radius: 43.0,
+                                                      radius: 48,
                                                       backgroundColor: Colors.white,
-                                                      //backgroundImage: NetworkImage(),
                                                       child: AspectRatio(
                                                         aspectRatio: 1,
                                                         child: ClipOval(
-                                                          child: (image != null)
-                                                              ? Image.file(
-                                                            image!,
-                                                            width: 100,
-                                                            height: 100,
-                                                            fit: BoxFit.fill,
-                                                          )
-                                                              : Image.network(
-                                                            widget.imageProfile,
-                                                            fit: BoxFit.fill,
+                                                          child: CachedNetworkImage(
+                                                              imageUrl: viewController.getViewProfileData[0].profileImage.toString(),
+                                                              fit: BoxFit.cover,width: 100,height: 100,
+
+                                                              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                                                  CircularProgressIndicator(value: downloadProgress.progress),
+                                                              errorWidget: (context, url, error) => Image(image: AssetImage("assets/user_avatar.png"))
                                                           ),
                                                         ),
                                                       ),
@@ -799,117 +741,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                               ),
                             ],
                           ),
-                         /* Row(
-                            children: [
-                              Padding(
-                                  padding: EdgeInsets.only(left: 20.sp),
-                                  child: Icon(Icons.bloodtype_outlined,size: 25,)
-                              ),
-                              SizedBox(width: 5,),
 
-                             Container(
-                                width: 90,
-                                child: Text(
-                                  "blood_group".tr,
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: "Gilroy",
-                                      color: CustomColor.riderprofileColor),
-                                ),
-                              ),
-
-                              Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: TextFormField(
-                                    // keyboardType: TextInputType.number,
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.normal,
-                                        fontFamily: "Gilroy",
-                                        color: CustomColor.riderprofileColor),
-                                    maxLines: 1,
-                                    controller: bloodgroupController,
-                                    decoration: InputDecoration(
-                                      border: const UnderlineInputBorder(),
-                                      enabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 1, color: Colors.black45)),
-                                      focusedBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 2, color: Colors.black54)),
-                                    ),
-                                    readOnly: true,
-
-                                    onTap: ()  {
-                                      bloodGroupDialogBox();
-                                    },
-                                    validator: (value) {
-                                      if (value == null ||
-                                          value.isEmpty) {
-                                        return 'blood_group_is_required !'.tr;
-                                      }
-                                      if(value.length < 4){
-                                        return null;
-                                      }
-                                      return 'blood_group_is_required !'.tr;
-                                    },
-                                    onChanged: (value) {
-                                      bloodgroup = value;
-                                    },
-                                  ),
-                                ),
-                              ),
-                              /*Expanded(
-                                  child: Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(right: 10),
-                                      child: TextFormField(
-
-                                        showCursor: true,
-                                        cursorHeight:30,
-                                        cursorWidth: 2.0,
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter.allow(
-                                            RegExp("[A|B|AB|O\+|\-]")),
-                                          FilteringTextInputFormatter.deny(' '),
-
-                                        ],
-                                        style:TextStyle(
-                                            fontSize: 13.sp,
-                                            fontWeight: FontWeight.normal,
-                                            fontFamily: "Gilroy",
-                                            color: CustomColor.riderprofileColor),
-                                        controller: bloodgroupController,
-                                        textCapitalization: TextCapitalization.words,
-                                        keyboardType: TextInputType.text,
-
-                                        decoration: InputDecoration(
-                                          border: const UnderlineInputBorder(),
-                                          enabledBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  width: 1, color: Colors.black45)),
-                                          focusedBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  width: 2, color: Colors.black54)),
-                                        ),
-
-                                        validator: (value) {
-                                          if (value == null ||
-                                              value.isEmpty) {
-                                            return 'blood_group_is_required !'.tr;
-                                          }
-                                          if(value.length < 4){
-                                            return null;
-                                          }
-                                          return 'blood_group_is_required !'.tr;
-                                        },
-                                      ),
-                                    ),
-                                  )),*/
-                            ],
-                          ),*/
 
                           Row(
                             children: [
@@ -1236,211 +1068,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           const SizedBox(
                             height: 20,
                           ),
-                         /* const SizedBox(
-                            height: 25,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20, left: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Container(width: 2),
-                                Expanded(
-                                  flex: 2,
-                                  child: Row(
-                                    children: [
 
-                                      const Text("State",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: "Gilroy",
-                                              color: CustomColor.riderprofileColor),),
-                                    ],
-                                  ),
-                                ),
-
-                                Expanded(
-                                  flex: 2,
-                                  child: Row(
-                                    children: [
-                                      Container(width: 15),
-                                      const Text("City",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: "Gilroy",
-                                              color: CustomColor.riderprofileColor),),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20, left: 20),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: SizedBox(
-                                    height: 45,
-                                    child: TextFormField(
-                                      showCursor: true,
-                                      cursorHeight:30,
-                                      cursorWidth: 2.0,
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter your state name';
-                                        }
-                                        return null;
-                                      },
-                                      inputFormatters: [
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp("[A-Za-z]")),
-                                        FilteringTextInputFormatter.deny('  ')
-                                      ],
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Gilroy",
-                                          color: CustomColor.riderprofileColor),
-                                      controller: stateController,
-                                      textCapitalization: TextCapitalization.words,
-                                      keyboardType: TextInputType.text,
-
-                                      decoration: InputDecoration(
-                                        border: const UnderlineInputBorder(),
-                                        enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                width: 1, color: Colors.black45)),
-                                        focusedBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                width: 2, color: Colors.black54)),
-                                      ),
-                                      onChanged: (value) {
-                                        mystates = value;
-                                      },
-                                    ),
-                                  ),
-                                ),
-                                Container(width: 15),
-                                Expanded(
-
-                                  flex: 2,
-                                  child: SizedBox(
-                                    height: 45,
-                                    child: TextFormField(
-                                      showCursor: true,
-                                      cursorHeight:30,
-                                      cursorWidth: 2.0,
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter your city name';
-                                        }
-                                        return null;
-                                      },
-                                      inputFormatters: [
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp("[A-Za-z]")),
-                                        FilteringTextInputFormatter.deny('  ')
-                                      ],
-                                      style:TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Gilroy",
-                                          color: CustomColor.riderprofileColor),
-                                      controller: cityController,
-                                      textCapitalization: TextCapitalization.words,
-                                      keyboardType: TextInputType.text,
-
-                                      decoration: InputDecoration(
-                                        border: const UnderlineInputBorder(),
-                                        enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                width: 1, color: Colors.black45)),
-                                        focusedBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                width: 2, color: Colors.black54)),
-                                      ),
-                                      onChanged: (value) {
-                                        mycities = value;
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 25,
-                          ),
-                          Row(
-                            children: [
-
-                              Padding(
-                                padding: const EdgeInsets.only(left: 20),
-                                child: const Text(
-                                  "PinCode",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: "Gilroy",
-                                      color: CustomColor.riderprofileColor),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 15, left: 15),
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                  flex: 2,
-                                  child: SizedBox(
-                                    height: 45,
-                                    child: Center(
-                                      child: TextFormField(
-                                        showCursor: true,
-                                        cursorHeight:30,
-                                        cursorWidth: 2.0,
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty || value.length != 6) {
-                                            return 'Please enter 6 pincode.';
-                                          }
-                                          return null;
-                                        },
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter.allow(
-                                              RegExp("[0-9]")),
-                                          LengthLimitingTextInputFormatter(6),
-                                        ],
-                                        style:TextStyle(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Gilroy",
-                                            color: CustomColor.riderprofileColor),
-                                        controller: pinController,
-                                        keyboardType: TextInputType.number,
-                                        decoration: InputDecoration(
-                                          border: const UnderlineInputBorder(),
-                                          enabledBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  width: 1, color: Colors.black45)),
-                                          focusedBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  width: 2, color: Colors.black54)),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 25,
-                          ),*/
                           Row(
                             children: [
                               Padding(
@@ -1466,7 +1094,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 Expanded(
                                   flex: 2,
                                   child: SizedBox(
-                                    height: 45,
+                                    height: 60,
                                     child: TextFormField(
                                       showCursor: true,
                                       cursorHeight:30,
@@ -1490,7 +1118,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       controller: addressController,
                                       textCapitalization: TextCapitalization.words,
                                       keyboardType: TextInputType.multiline,
-                                      maxLines: 2,
+                                      maxLines: 5,
 
                                       decoration: InputDecoration(
                                         border: const UnderlineInputBorder(),
@@ -1582,16 +1210,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       textCapitalization: TextCapitalization.words,
                                       keyboardType: TextInputType.text,
 
-                                        // suffixIcon:
-                                        //GestureDetector(
-                                        //  onTap: (){
-                                        // },
-                                        //child: Image(
-                                        // image: AssetImage("images/circle_checked.png"),
-                                        //width: 0,
-                                        //height: 0,
-                                        //)
-                                        //),
+
                                         decoration: InputDecoration(
                                           border: const UnderlineInputBorder(),
                                           enabledBorder: UnderlineInputBorder(
@@ -1933,44 +1552,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           }
                         }, buttonText: "update_profile".tr)
 
-                      /*Button(
-                              textColor: CustomColor.black,
-                              size: 80,
-                              buttonTitle: "Update Profile",
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  await Preferences.setPreferences();
-                                  String userId = Preferences.getId(Preferences.id);
-                                  firstname = firstNameController.text.toString();
-                                  lastname = lastNameController.text.toString();
-                                  dob = dobController.text.toString();
-                                  email = emailController.text.toString();
-                                  myaddress = addressController.text.toString();
-                                  pinNumber = pinController.text.toString();
-                                  mobilenumber = mobileNumberController.text.toString();
-                                  gender=radioButtonItem.toString();
-                                  uploadedImage = imageFilePath.toString();
-                                  mystates = stateController.text.toString();
-                                  mycities = cityController.text.toString();
-                                  emergencyContact0Controller.text.toString();
-                                  print(userId);
-                                  print(pinNumber);
-                                  print(uploadedImage);
-                                  print(mycities);
-                                  print(mystates);
-                                  print(myaddress);
-                                  print(gender);
-                                  print("**************************");
 
-                                  // if (age < 6) {
-                                  //   openAndCloseLoadingDialog();
-                                  // } else {
-
-                                  updateProfile(userId);
-                                  // OverlayLoadingProgress.start(context);
-                                  // }
-                                }
-                              }),*/
                     )
                   ],
                 ),
@@ -2197,7 +1779,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     print("______________________________________");
     final response = await http.post(
       (Uri.parse(
-          'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/userList')),
+          ApiUrl.userDetails)),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': loginToken
@@ -2271,63 +1853,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
   }
 
 
-  /* Future<StateModel> statesList() async {
 
-    final response = await http.post(
-      Uri.parse(ApiUrl.stateApi),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
-    OverlayLoadingProgress.stop();
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body)['data'];
-      bool status = jsonDecode(response.body)[ErrorMessage.status];
-      var msg = jsonDecode(response.body)[ErrorMessage.message];
-      if (status == true) {
-        setState(() {
-          selectedState = jsonResponse;
-        });
-        print(selectedState.toString());
-      }
-      return StateModel.fromJson(jsonDecode(response.body));
-    } else {
-      print("----------------------------");
-      print(response.statusCode);
-      print("----------------------------");
-
-      throw Exception('Unexpected error occured!');
-    }
-  }
-
-  Future<CityModel> citiesList(String states) async {
-    final response = await http.post(
-      Uri.parse(ApiUrl.cityApi),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode({"state_id": states}),
-    );
-
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body)['data'];
-      bool status = jsonDecode(response.body)[ErrorMessage.status];
-      var msg = jsonDecode(response.body)[ErrorMessage.message];
-      if (status == true) {
-        setState(() {
-          selectedCity = jsonResponse;
-        });
-        print(selectedCity.toString());
-      }
-      return CityModel.fromJson(jsonDecode(response.body));
-    } else {
-      print("City: ----------------------------");
-      print(response.statusCode);
-      print("----------------------------");
-
-      throw Exception('Unexpected error occured!');
-    }
-  }  */
 
   Future<http.Response?> updateProfile(String userId) async {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
@@ -2434,7 +1960,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
       };
       final response = await http.post(
         Uri.parse(
-            'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/user/updateUserProfile'),
+            ApiUrl.updateUserProfile),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': loginToken

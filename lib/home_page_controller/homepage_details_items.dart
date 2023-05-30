@@ -184,24 +184,7 @@ class HomePageDetails extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        /* Padding(
-                          padding: const EdgeInsets.only(left: 8,right: 8),
-                          child: ClipOval(
-                            child: Material(
-                              //color:
-                              //theme.colorScheme.error.withAlpha(28), // button color
-                              child: InkWell(
-                                splashColor: theme.colorScheme.error.withAlpha(100),
-                                highlightColor: theme.colorScheme.error.withAlpha(28),
-                                onTap: goRide,
-                                child: SizedBox(
-                                    width: 35,
-                                    height: 35,
-                                    child: Image.asset("new_assets/viewRide.png")),
-                              ),
-                            ),
-                          ),
-                        ),*/
+
                         Padding(
                           padding: const EdgeInsets.only(left: 8, right: 20),
                           child: ClipOval(
