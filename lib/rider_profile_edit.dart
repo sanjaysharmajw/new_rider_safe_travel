@@ -1863,40 +1863,17 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     //  var updatedAge= Preferences.getAge(Preferences.age);
     OverlayLoadingProgress.start(context);
-    /* mystates = statename.toString();
-    if (statName.toString() != null) {
-      mystates = statName.toString();
-      Get.snackbar("change mystate", mystates);
-    }
-
-   mycities = cityname.toString();
-    if (citiesname.toString() != null) {
-      mycities = citiesname.toString();
-      Get.snackbar("change mycity", mycities);
-    }*/
-
-
-
 
     uploadedImage = profile.toString();
     //Get.snackbar("image", uploadedImage);
     if (imageFilePath.toString() != "") {
       uploadedImage = imageFilePath.toString();
-
-
     }
-
     email = emailController.text.toString();
     //Get.snackbar("image", email);
     if (emailController.text.toString() != "") {
       email = emailController.text.toString();
     }
-
-
-
-
-
-
     myaddress = addressController.text.toString();
     if (addressController.text.toString() == "") {
       myaddress = addressController.text.toString();
