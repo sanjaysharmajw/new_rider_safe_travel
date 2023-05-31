@@ -329,20 +329,24 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                                 children: [
                                                   CircleAvatar(
                                                     backgroundColor: CustomColor.black,
-                                                    radius: 50,
+                                                    radius: 45.0,
                                                     child: CircleAvatar(
-                                                      radius: 48,
+                                                      radius: 43.0,
                                                       backgroundColor: Colors.white,
+                                                      //backgroundImage: NetworkImage(),
                                                       child: AspectRatio(
                                                         aspectRatio: 1,
                                                         child: ClipOval(
-                                                          child: CachedNetworkImage(
-                                                              imageUrl: viewController.getViewProfileData[0].profileImage.toString(),
-                                                              fit: BoxFit.cover,width: 100,height: 100,
-
-                                                              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                                                  CircularProgressIndicator(value: downloadProgress.progress),
-                                                              errorWidget: (context, url, error) => Image(image: AssetImage("assets/user_avatar.png"))
+                                                          child: (image != null)
+                                                              ? Image.file(
+                                                            image!,
+                                                            width: 100,
+                                                            height: 100,
+                                                            fit: BoxFit.fill,
+                                                          )
+                                                              : Image.network(
+                                                            viewController.getViewProfileData[0].profileImage.toString(),
+                                                            fit: BoxFit.fill,
                                                           ),
                                                         ),
                                                       ),

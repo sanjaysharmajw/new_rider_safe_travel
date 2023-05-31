@@ -37,7 +37,7 @@ class ApiUrl {
   static var geolocatelist = '${baseUrl}user/geocodelats';
   static var geolocationDetails = '${baseUrl}user/geocodelocationdetails';
   static var sosReason = '${baseUrl}user/sosReasonMaster';
-  static var getserviceType = '${baseUrl}serviceProvider/serviceTypeMasterList';
+  static var getserviceType = '${serviceUrl}serviceProvider/serviceTypeMasterList';
   static var sendServiceRequest = '${serviceUrl}serviceProvider/sendServiceRequest';
   static var myFamilyList = '${baseUrl}user/myFamilyList';
   static var userStatus = '${baseUrl}userRide/deleteblockFamilyMember';
