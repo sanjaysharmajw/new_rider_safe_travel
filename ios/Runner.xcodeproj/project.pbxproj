@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
-		3C5FD0462969586E009E3BA5 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 3C5FD0452969586E009E3BA5 /* Algorithms */; };
+		3C7FD94C2A277D9B007B2016 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 3C7FD94B2A277D9B007B2016 /* Algorithms */; };
 		3CA577CB297BF7450044B4C2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CA577CA297BF7450044B4C2 /* GoogleService-Info.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
@@ -58,7 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3C5FD0462969586E009E3BA5 /* Algorithms in Frameworks */,
+				3C7FD94C2A277D9B007B2016 /* Algorithms in Frameworks */,
 				BBF5FAE6D24FA33F3622C5E6 /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -154,7 +154,7 @@
 			);
 			name = Runner;
 			packageProductDependencies = (
-				3C5FD0452969586E009E3BA5 /* Algorithms */,
+				3C7FD94B2A277D9B007B2016 /* Algorithms */,
 			);
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
@@ -185,8 +185,7 @@
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
 			packageReferences = (
-				3C5FD0442969586E009E3BA5 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
-				3C5FD04729695B32009E3BA5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				3C7FD94A2A277D9B007B2016 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
 			);
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
 			projectDirPath = "";
@@ -397,7 +396,7 @@
 				DEVELOPMENT_TEAM = 4B3FZ5MN3Z;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "New Travel App";
+				INFOPLIST_KEY_CFBundleDisplayName = Kite;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -533,7 +532,7 @@
 				DEVELOPMENT_TEAM = 4B3FZ5MN3Z;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "New Travel App";
+				INFOPLIST_KEY_CFBundleDisplayName = Kite;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -563,7 +562,7 @@
 				DEVELOPMENT_TEAM = 4B3FZ5MN3Z;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "New Travel App";
+				INFOPLIST_KEY_CFBundleDisplayName = Kite;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -605,7 +604,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		3C5FD0442969586E009E3BA5 /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
+		3C7FD94A2A277D9B007B2016 /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-algorithms.git";
 			requirement = {
@@ -613,20 +612,12 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		3C5FD04729695B32009E3BA5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 9.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		3C5FD0452969586E009E3BA5 /* Algorithms */ = {
+		3C7FD94B2A277D9B007B2016 /* Algorithms */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3C5FD0442969586E009E3BA5 /* XCRemoteSwiftPackageReference "swift-algorithms" */;
+			package = 3C7FD94A2A277D9B007B2016 /* XCRemoteSwiftPackageReference "swift-algorithms" */;
 			productName = Algorithms;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -14,6 +14,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:ride_safe_travel/LoginModule/MainPage.dart';
 import 'package:ride_safe_travel/LoginModule/RiderLoginPage.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
+import 'package:ride_safe_travel/MyText.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/bottom_nav/custom_bottom_navi.dart';
 import 'package:ride_safe_travel/start_ride_map.dart';
@@ -100,9 +101,6 @@ class MyHomePage extends StatefulWidget {
 
 class MyHomePageState extends State<MyHomePage> {
   late Location location;
-
-
-
 
   void _instanceId() async {
     await Firebase.initializeApp();
@@ -241,18 +239,19 @@ class MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: const <Widget>[
-        Positioned.fill(
-          child: Image(
-            image: AssetImage('assets/splash_image.png'),
-            fit: BoxFit.fill,
-          ),
+    return Scaffold(
+      backgroundColor: appBlue,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset('assets/rider_launcher.png',width: 140,height: 140),
+          ],
         ),
-      ],
+      ),
     );
   }
-
 
   // @override
   // Widget build(BuildContext context) {
