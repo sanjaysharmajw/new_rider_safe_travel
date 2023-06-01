@@ -31,9 +31,9 @@ class RequestedServiceListItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    DateFormat formatter = DateFormat.yMMMd(); // use any format
-    String formatted = formatter.format(DateTime.parse(requestedList.date.toString()));
-    print(formatted);
+    //DateFormat formatter = DateFormat.yMMMd(); // use any format
+    //String formatted = formatter.format(DateTime.parse(requestedList.date.toString()));
+    //print(formatted);
     return Container(
 
       margin: const EdgeInsets.only(top: 10, bottom: 10,left: 10,right:10),
@@ -63,7 +63,7 @@ class RequestedServiceListItems extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               NewMyText(
-                  textValue: formatted.toString(),
+                  textValue: requestedList.date.toString(),
                   fontName: 'Gilroy',
                   color: Colors.black,
                   fontWeight: FontWeight.w500,
