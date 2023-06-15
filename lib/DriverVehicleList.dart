@@ -275,7 +275,7 @@ OtherInfo copyWith({  num? totalRides,
 /// updated_at : ""
 /// created_by : ""
 /// updated_by : ""
-/// photos : []
+
 /// owner_id : "6386f83ba2d80074cbcfb903"
 /// documents : {"pancard":["https://tse2.mm.bing.net/th?id=OIP.ia_iuOqb_9uvUC60EHhccQHaEM&pid=Api&P=0"],"aadharcard":["http://2.bp.blogspot.com/-pAcTdofDRq0/UMuCyQl8LzI/AAAAAAAAAKs/cghycsf-f6g/s1600/UIACardDetails1.png","http://2.bp.blogspot.com/-pAcTdofDRq0/UMuCyQl8LzI/AAAAAAAAAKs/cghycsf-f6g/s1600/UIACardDetails1.png"],"rc":["https://tse3.mm.bing.net/th?id=OIP.Mg6c2Up38NAyxu28upE0fwHaEK&pid=Api&P=0"],"insurance":["https://imgv2-2-f.scribdassets.com/img/document/414046126/original/742f544042/1583247596?v=1"],"puc":["http://www.team-bhp.com/forum/attachments/technical-stuff/1083107d1368457312-mahindra-scorpio-issues-solutions-puc.jpg"],"vehicle_photos":["https://wallpapercave.com/wp/wp6205942.jpg","https://wallpapercave.com/wp/wp6205942.jpg","https://wallpapercave.com/wp/wp6205942.jpg"]}
 /// vehicle_type : "SUV"

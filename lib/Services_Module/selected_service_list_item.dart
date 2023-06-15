@@ -20,7 +20,7 @@ class ShowSelectedServiceItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 5, bottom: 10,left: 20,right: 20),
+      margin: const EdgeInsets.only(top: 10,bottom: 10,left: 20,right: 20),
       width: double.infinity,
       decoration: BoxDecoration(
         boxShadow: [
@@ -69,7 +69,7 @@ class ShowSelectedServiceItem extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              NewMyText(textValue: serviceListData.address.toString(), fontName: 'Gilroy', color: appBlack, fontWeight: FontWeight.w500, fontSize: 16),
+              Flexible(child: NewMyText(textValue: serviceListData.address.toString(), fontName: 'Gilroy', color: appBlack, fontWeight: FontWeight.w500, fontSize: 16)),
               Row(
                 children: <Widget>[
                   Container(

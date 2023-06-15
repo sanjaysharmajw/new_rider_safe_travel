@@ -416,7 +416,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             children: [
                               Padding(
                                 padding: EdgeInsets.only(left: 20.sp),
-                                child: Icon(Icons.person_2_outlined,size: 20,)
+                                child: Icon(Icons.person_outlined,size: 20,)
                               ),
                               SizedBox(width: 5,),
                               Container(
@@ -483,7 +483,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             children: [
                               Padding(
                                   padding: EdgeInsets.only(left: 20.sp,),
-                                  child: Icon(Icons.person_2_outlined,size: 20,)
+                                  child: Icon(Icons.person_outlined,size: 20,)
                               ),
                               SizedBox(width: 5,),
                               Container(
@@ -953,7 +953,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             children: [
                               Padding(
                                   padding: EdgeInsets.only(left: 20.sp,right: 10),
-                                  child: Icon(Icons.person_3_outlined,size: 20,)
+                                  child: Icon(Icons.person_outlined,size: 20,)
                               ),
                               SizedBox(width: 5,),
                               Padding(
@@ -1111,7 +1111,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                       },
                                       inputFormatters: [
                                         FilteringTextInputFormatter.allow(
-                                            RegExp("[A-Za-z0-9'\.\-\s\,\ ]")),
+                                            RegExp("[0-9a-zA-Zऀ-ॿ'\.\-\s\,\ ]")),
                                         FilteringTextInputFormatter.deny('  ')
                                       ],
                                       style: TextStyle(

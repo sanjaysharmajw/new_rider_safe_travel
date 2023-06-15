@@ -80,39 +80,35 @@ class _SelectedServiceListsState extends State<SelectedServiceLists> {
             ),
           ),
 
-          body: Obx((){
-            return  Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 60),
-                servicelist.isLoading.value
-                    ? LoaderUtils.loader()
-                    : servicelist.servicesList.isEmpty
-                    ? Center(
-                  child: EmptyScreen(text: 'service_list_not_found'.tr,),
-                ) :
-                ListView.builder(
-                    itemCount: servicelist.servicesList.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                        return  ShowSelectedServiceItem(
-                          serviceListData: servicelist.servicesList[index],
-                          voidCallback: () async {
-                           requestService(servicelist.servicesList[index].serviceId.toString(),
-                                servicelist.servicesList[index].id.toString(),
-                              servicelist.servicesList[index].serviceProviderId.toString(),
-                             currenctLoaction!.longitude!,
-                             currenctLoaction!.latitude!,
+          body: Container(
+            child: Obx((){
+              return  servicelist.isLoading.value
+                      ? LoaderUtils.loader()
+                      : servicelist.servicesList.isEmpty
+                      ? Center(
+                    child: EmptyScreen(text: 'service_list_not_found'.tr,),
+                  ) :
+                  ListView.builder(
+                      itemCount: servicelist.servicesList.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                          return  ShowSelectedServiceItem(
+                            serviceListData: servicelist.servicesList[index],
+                            voidCallback: () async {
+                             requestService(servicelist.servicesList[index].serviceId.toString(),
+                                  servicelist.servicesList[index].id.toString(),
+                                servicelist.servicesList[index].serviceProviderId.toString(),
+                               currenctLoaction!.longitude!,
+                               currenctLoaction!.latitude!,
 
-                            );
-                          },
-                        );
+                              );
+                            },
+                          );
 
 
-                    })
-              ],
-            );
-          })
+                      });
+            }),
+          )
         ),
       );
 

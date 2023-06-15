@@ -37,7 +37,7 @@ dependencies:
   get: ^4.6.5
   majascan: ^0.5.0
   location: ^4.4.0
-  pinput: ^2.2.21
+  pinput:
   passwordfield: ^0.1.0
   otp_timer_button: ^1.1.0
   flutter_otp_text_field: ^1.1.1

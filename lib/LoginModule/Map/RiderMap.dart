@@ -236,172 +236,7 @@ class _RiderMapState extends State<RiderMap> {
                       padding: EdgeInsets.symmetric(horizontal: 20.0.w),
                       child: Column(
                         children: [
-                          /*  Card(
-                    child: ListTile(
-                      title: TextFormField(
-                        controller: destinationController,
-                        decoration: InputDecoration(
-                         hintText: "Destination",
-                       hintStyle: TextStyle(fontSize: 18,color: Colors.black),
-                       border: InputBorder.none
-                     ),
-                        readOnly: true,
-                      onTap: (){
-                        showModalBottomSheet(
-                 isScrollControlled: true,
-                            context: context,
 
-                            builder: (context) {
-                              return ListView(
-                                 controller: scrollController,
-                                children: <Widget>[
-                                  SizedBox(
-                                    height: 12.0,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Container(
-                                        width: 30,
-                                        height: 5,
-                                        decoration: BoxDecoration(
-                                            color: Colors.grey[300],
-                                            borderRadius: BorderRadius.all(Radius.circular(12.0))),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 18.0,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 15),
-                                        child: Text(
-                                          "Select a location",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 20.0,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 30.0,
-                                  ),
-                                  Padding(
-                                      padding: EdgeInsets.all(15.0),
-                                      child:
-                                      Autocomplete<Country>(
-                                          optionsBuilder:
-                                              (TextEditingValue textEditingValue) {
-                                            return countryOptions
-                                                .where((Country county) => county.name
-                                                .toLowerCase()
-                                                .startsWith(textEditingValue.text
-                                                .toLowerCase()))
-                                                .toList();
-                                          },
-                                          displayStringForOption: (Country option) =>
-                                          option.name,
-                                          fieldViewBuilder: (BuildContext context,
-                                              TextEditingController
-                                              fieldTextEditingController,
-                                              FocusNode fieldFocusNode,
-                                              VoidCallback onFieldSubmitted) {
-                                            return Card(
-                                              child: ListTile(
-                                                //leading: Icon(Icons.search),
-                                                title: TextFormField(
-
-
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      searchString = value.toString();
-                                                    });
-                                                  },
-                                                  controller: fieldTextEditingController,
-                                                  focusNode: fieldFocusNode,
-                                                  decoration: InputDecoration(
-                                                      hintText: "Search",
-                                                      border: InputBorder.none,
-                                                      prefixIcon: IconButton(
-                                                          onPressed: (){
-                                                            // searchMemberApi(mobileController.text,widget.userId);
-                                                          }, icon:  Icon(Icons.search,))
-                                                  ),
-                                                ),
-                                                trailing: IconButton(onPressed: (){
-                                                  fieldTextEditingController.clear();
-                                                }, icon: Icon(Icons.clear)),
-                                              ),
-                                            );
-                                          },
-
-                                          onSelected: (Country selection) {
-                                            print('Selected: ${selection.name}');
-                                            fieldTextEditingController.text=selection.name;
-                                          },
-                                          optionsViewBuilder: (BuildContext context,
-                                              AutocompleteOnSelected<Country>
-                                              onSelected,
-                                              Iterable<Country> options) {
-                                            return Align(
-                                              alignment: Alignment.topLeft,
-                                              child: Material(
-                                                child: Container(
-                                                  width: 365,
-                                                  //color: Colors.grey,
-                                                  child: ListView.builder(
-                                                    padding: EdgeInsets.all(10.0),
-                                                    itemCount: options.length,
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                        int index) {
-                                                      final Country option =
-                                                      options.elementAt(index);
-
-                                                      return GestureDetector(
-                                                        onTap: () {
-                                                          onSelected(option);
-                                                          destinationController.text=option.name.toString();
-                                                          Navigator.pop(context);
-
-                                                        },
-                                                        child: Card(
-                                                          elevation: 1,
-                                                          margin: EdgeInsets.symmetric(vertical: 2),
-                                                          child: ListTile(
-                                                            leading: Icon(Icons.location_on_rounded,color: Colors.red,),
-                                                            title: Text(option.name,
-                                                                style: const TextStyle(
-                                                                    color:
-                                                                    Colors.black)
-                                                            ),
-                                                            subtitle: Text(option.address.toString()),
-
-                                                          ),
-                                                        ),
-                                            );
-                                          })
-                                  )
-
-                                ],
-                              );
-                            });
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-
-                      },
-                  ),
-
-                ),
-                ),*/
 
                           SizedBox(
                             height: 15,
@@ -436,7 +271,7 @@ class _RiderMapState extends State<RiderMap> {
                                     SizedBox(height: 10.h),
                                     Text("Ride Details",
                                         style: TextStyle(
-                                            fontFamily: 'transport',
+                                            fontFamily: 'Gilroy',
                                             fontSize: 16.sp)),
                                   ],
                                 ),
@@ -457,7 +292,7 @@ class _RiderMapState extends State<RiderMap> {
                                     SizedBox(height: 10.h),
                                     const Text("100",
                                         style: TextStyle(
-                                            fontFamily: 'transport',
+                                            fontFamily: 'Gilroy',
                                             fontSize: 16)),
                                   ],
                                 ),

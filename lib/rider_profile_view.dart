@@ -558,7 +558,7 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                             Padding(
                                 padding: const EdgeInsets.only(
                                     left: 15, right: 5, top: 0, bottom: 0),
-                                child: Icon(Icons.person_3_outlined)
+                                child: Icon(Icons.person_outlined)
                             ),
 
                             Container(
