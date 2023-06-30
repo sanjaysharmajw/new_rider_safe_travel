@@ -12,17 +12,19 @@ class MyTextFieldForm extends StatelessWidget {
   final int? maxLength;
   final TextInputType keyboardType;
   List<TextInputFormatter>? inputFormatters;
+  final TextCapitalization? textCapitalization;
   MyTextFieldForm(
       {Key? key,
         required this.hintText,
         required this.controller,
         required this.validator, required this.fontSize, required this.readOnly, required this.onTap,
-        required this.keyboardType, this.maxLength, required this.inputFormatters})
+        required this.keyboardType, this.maxLength, required this.inputFormatters, this.textCapitalization})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       inputFormatters: inputFormatters,
+
 
       readOnly: readOnly,
       controller: controller,

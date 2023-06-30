@@ -67,6 +67,9 @@ class ApiUrl {
 
   static var acceptRejectApi = "${serviceUrl}serviceProvider/acceptrejectServiceRequest";
 
+  static var updateMedicalDetails= "${baseUrl}user/updateMedicalCondition";
+  static var getMedicalDetails= "${baseUrl}user/getUserMedicalCondition";
+
 
 
 

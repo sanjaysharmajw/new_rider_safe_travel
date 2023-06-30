@@ -33,6 +33,7 @@ import '../controller/user_details_controller.dart';
 import '../controller/volunteer_request.dart';
 import '../controller/volunteer_select_controller.dart';
 import '../home_page_controller/get_sos_controller_master.dart';
+import '../medical_details/medical_details_screen.dart';
 import '../new_widgets/profile_notification_with_switch.dart';
 import '../rider_profile_view.dart';
 import '../volunteer_screen/volunteer_screen_request_tab.dart';
@@ -336,6 +337,10 @@ class _ProfileNavState extends State<ProfileNav> {
                     ProfileText(title: 'notification'.tr, subTitle: 'check_notification'.tr, icons: FeatherIcons.bell,
                       click: () {
                         Get.to(const NotificationScreen());
+                      },),
+                    ProfileText(title: 'Medical Details', subTitle: 'Check your medical details', icons: FeatherIcons.bell,
+                      click: () {
+                        Get.to(const MedicalDetailsScreen());
                       },),
 
                     ProfileText(title: 'help'.tr, subTitle: 'contact_us'.tr, icons: FeatherIcons.messageCircle,
