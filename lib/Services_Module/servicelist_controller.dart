@@ -7,15 +7,17 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
 import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
+import 'package:ride_safe_travel/controller/permision_controller.dart';
 import '../LoginModule/preferences.dart';
 import '../SearchServicesModel.dart';
 
 class ServiceListController extends GetxController{
   var isLoading = true.obs;
   var servicesList = <ServiceListData>[].obs;
+  final permission=Get.put(PermissionController());
 
 
-  Future<dynamic> getServicesList(String serviceId) async {
+  Future<dynamic> getServicesList(String serviceId,double lat,double lng) async {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     try {
       final response = await http.post(
@@ -26,8 +28,8 @@ class ServiceListController extends GetxController{
           },
           body: jsonEncode({
             "service_id": serviceId,
-            "lng": 72.998993,
-            "lat":19.077065
+            "lng": lng,
+            "lat":lat
 
           }));
       print(

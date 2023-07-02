@@ -1,6 +1,3 @@
-import 'dart:convert';
-SearchServicesModel searchServicesModelFromJson(String str) => SearchServicesModel.fromJson(json.decode(str));
-String searchServicesModelToJson(SearchServicesModel data) => json.encode(data.toJson());
 class SearchServicesModel {
   SearchServicesModel({
       bool? status, 
@@ -39,8 +36,6 @@ SearchServicesModel copyWith({  bool? status,
 
 }
 
-ServiceListData dataFromJson(String str) => ServiceListData.fromJson(json.decode(str));
-String dataToJson(ServiceListData data) => json.encode(data.toJson());
 class ServiceListData {
   ServiceListData({
       String? id, 
@@ -188,8 +183,6 @@ class ServiceListData {
 
 }
 
-Avaibility avaibilityFromJson(String str) => Avaibility.fromJson(json.decode(str));
-String avaibilityToJson(Avaibility data) => json.encode(data.toJson());
 class Avaibility {
   Avaibility({
       AvaibilityDays? avaibilityDays, 
@@ -255,8 +248,6 @@ Avaibility copyWith({  AvaibilityDays? avaibilityDays,
 
 }
 
-AvaibilityDays avaibilityDaysFromJson(String str) => AvaibilityDays.fromJson(json.decode(str));
-String avaibilityDaysToJson(AvaibilityDays data) => json.encode(data.toJson());
 class AvaibilityDays {
   AvaibilityDays({
       bool? sunday, 
@@ -328,8 +319,6 @@ AvaibilityDays copyWith({  bool? sunday,
 
 }
 
-AddressDetails addressDetailsFromJson(String str) => AddressDetails.fromJson(json.decode(str));
-String addressDetailsToJson(AddressDetails data) => json.encode(data.toJson());
 class AddressDetails {
   AddressDetails({
       num? lat, 

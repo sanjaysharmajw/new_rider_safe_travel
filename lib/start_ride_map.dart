@@ -250,8 +250,6 @@ class _SignUpState extends State<StartRide> {
           onPressed: () {
             OverlayLoadingProgress.stop();
             Get.offAll(CustomBottomNav());
-
-          
           },
           icon: Image.asset(
             'assets/map_back.png',

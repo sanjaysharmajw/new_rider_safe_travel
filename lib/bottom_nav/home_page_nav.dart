@@ -16,6 +16,7 @@ import 'package:ride_safe_travel/LoginModule/Map/RiderMap.dart';
 import 'package:ride_safe_travel/Models/family_list_ride_request.dart';
 import 'package:ride_safe_travel/Models/family_member_ride_list_model.dart';
 import 'package:ride_safe_travel/MyText.dart';
+import 'package:ride_safe_travel/Utils/CustomLoader.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/bottom_nav/EmptyScreen.dart';
 import 'package:ride_safe_travel/color_constant.dart';
@@ -99,7 +100,6 @@ class _HomePageState extends State<HomePageNav> {
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
     riderOtp = Preferences.getRideOtp();
-
     await locationPermission.permissionLocation();
   }
 
@@ -185,7 +185,16 @@ class _HomePageState extends State<HomePageNav> {
   void currentLocation() async {
     await permissionController.permissionLocation();
     location = Location();
-    locationData = await location.getLocation();
+   // locationData = await location.getLocation();
+    location.onLocationChanged.listen((LocationData cLoc) async {
+      locationData = cLoc;
+       CustomLoader.message(locationData!.longitude.toString());
+       CustomLoader.message(locationData!.latitude.toString());
+       setState(() {
+
+       });
+    });
+
     final GoogleMapController controller = await _completer.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(locationData!.latitude!, locationData!.longitude!),
@@ -195,8 +204,11 @@ class _HomePageState extends State<HomePageNav> {
 
   @override
   void initState() {
-    currentLocation();
     super.initState();
+
+    setState(() {
+      currentLocation();
+    });
     sharePre();
     setState(() {
       sharePreferences();
@@ -215,7 +227,6 @@ class _HomePageState extends State<HomePageNav> {
 
   @override
   Widget build(BuildContext context) {
-
    // ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
         appBar: AppBar(
@@ -334,11 +345,11 @@ class _HomePageState extends State<HomePageNav> {
 
   googleMap() {
     return locationData == null
-        ? Center(
+        ? const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: const [
+        children: [
           Text('Please Wait...\nMap is loading',
               style: TextStyle(fontSize: 16))
         ],

@@ -11,6 +11,7 @@ import 'package:ride_safe_travel/Services_Module/service_type_list_item.dart';
 import 'package:ride_safe_travel/Services_Module/service_types.dart';
 import 'package:ride_safe_travel/Services_Module/servicelist_controller.dart';
 import 'package:ride_safe_travel/Services_Module/selected_service_list_item.dart';
+import 'package:ride_safe_travel/Utils/CustomLoader.dart';
 import 'package:ride_safe_travel/controller/location_controller.dart';
 
 import '../Utils/Loader.dart';
@@ -39,32 +40,34 @@ class _SelectedServiceListsState extends State<SelectedServiceLists> {
 
   void initState(){
     getCurrentLocation();
-    getList();
     super.initState();
   }
   void getCurrentLocation()async{
     location=Location();
     currenctLoaction=await location!.getLocation();
+    CustomLoader.message(currenctLoaction!.latitude.toString());
+    print('currenctLoaction!.latitude.toString()');
+    print(currenctLoaction!.latitude.toString());
+    print(currenctLoaction!.longitude.toString());
+    print('object');
     if(currenctLoaction!=null){
       getList();
     }
-
   }
 
   void getList()async{
-
-   await servicelist.getServicesList(widget.serviceId);
+   await servicelist.getServicesList(widget.serviceId,currenctLoaction!.latitude!,currenctLoaction!.longitude!);
    setState(() {});
    debugPrint('widget.serviceId');
    debugPrint(widget.serviceId);
   }
+
   @override
   Widget build(BuildContext context) {
   return SafeArea(
         child: Scaffold(
           backgroundColor: appWhiteColor,
           appBar: AppBar(
-
             backgroundColor: appBlue,
             elevation: 10,
             title: Text("services".tr,
@@ -104,8 +107,6 @@ class _SelectedServiceListsState extends State<SelectedServiceLists> {
                               );
                             },
                           );
-
-
                       });
             }),
           )
