@@ -368,195 +368,189 @@ class _SignUpState extends State<StartRide> {
                                       return ListView(
                                         controller: scrollController,
                                         children: <Widget>[
-                                          SizedBox(
-                                            height: 12.0,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Container(
-                                                width: 30,
-                                                height: 5,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.grey[300],
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(
-                                                                12.0))),
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                height: 30.0,
                                               ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 30.0,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: const <Widget>[
-                                              Text(
-                                                "Select a location",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 20.0,
-                                                    fontFamily: 'Gilroy'),
+
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 15),
+                                                child: IconButton(onPressed: (){
+                                                  Get.back();
+                                                }, icon: Icon(Icons.arrow_back_outlined)),
                                               ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 30.0,
-                                          ),
-                                          Padding(
-                                              padding: EdgeInsets.all(15.0),
-                                              child: Autocomplete<Result>(
-                                                  optionsBuilder:
-                                                      (TextEditingValue
-                                                          textEditingValue) {
-                                                    return getSuggestions(
-                                                        textEditingValue);
-                                                  },
-                                                  displayStringForOption:
-                                                      (Result option) =>
+                                              Padding(
+                                                padding: const EdgeInsets.only(left:30 ),
+                                                child: Text(
+                                                  "Select a location",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                      FontWeight.normal,
+                                                      fontSize: 20.0,
+                                                      fontFamily: 'Gilroy'),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 30.0,
+                                              ),
+                                              Padding(
+                                                  padding: EdgeInsets.all(15.0),
+                                                  child: Autocomplete<Result>(
+                                                      optionsBuilder:
+                                                          (TextEditingValue
+                                                      textEditingValue) {
+                                                        return getSuggestions(
+                                                            textEditingValue);
+                                                      },
+                                                      displayStringForOption:
+                                                          (Result option) =>
                                                           option
                                                               .text
                                                               .toString(),
-                                                  fieldViewBuilder: (BuildContext
-                                                          context,
-                                                      TextEditingController
+                                                      fieldViewBuilder: (BuildContext
+                                                      context,
+                                                          TextEditingController
                                                           fieldTextEditingController,
-                                                      FocusNode fieldFocusNode,
-                                                      VoidCallback
+                                                          FocusNode fieldFocusNode,
+                                                          VoidCallback
                                                           onFieldSubmitted) {
-                                                    return Card(
-                                                      child: ListTile(
-                                                        //leading: Icon(Icons.search),
-                                                        title: TextFormField(
-                                                          onChanged: (value) {
-                                                            setState(() {
-                                                              searchString = value
-                                                                  .toString();
-                                                            });
-                                                          },
-                                                          controller:
+                                                        return Card(
+                                                          child: ListTile(
+                                                            //leading: Icon(Icons.search),
+                                                            title: TextFormField(
+                                                              onChanged: (value) {
+                                                                setState(() {
+                                                                  searchString = value
+                                                                      .toString();
+                                                                });
+                                                              },
+                                                              controller:
                                                               fieldTextEditingController,
-                                                          focusNode:
+                                                              focusNode:
                                                               fieldFocusNode,
-                                                          decoration:
+                                                              decoration:
                                                               InputDecoration(
                                                                   hintText:
-                                                                      "Search",
+                                                                  "Search",
                                                                   hintStyle: TextStyle(
                                                                       fontFamily:
-                                                                          'Gilroy'),
+                                                                      'Gilroy'),
                                                                   border:
-                                                                      InputBorder
-                                                                          .none,
+                                                                  InputBorder
+                                                                      .none,
                                                                   prefixIcon:
-                                                                      IconButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            // searchMemberApi(mobileController.text,widget.userId);
-                                                                          },
-                                                                          icon:
-                                                                              Icon(
-                                                                            Icons.search,
-                                                                          ))),
-                                                        ),
-                                                        trailing: IconButton(
-                                                            onPressed: () {
-                                                              fieldTextEditingController
-                                                                  .clear();
-                                                            },
-                                                            icon: Icon(
-                                                                Icons.clear)),
-                                                      ),
-                                                    );
-                                                  },
-                                                  onSelected:
-                                                      (Result selection) {
-                                                    print(
-                                                        'Selected: ${selection.text}');
-                                                    fieldTextEditingController
+                                                                  IconButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        // searchMemberApi(mobileController.text,widget.userId);
+                                                                      },
+                                                                      icon:
+                                                                      Icon(
+                                                                        Icons.search,
+                                                                      ))),
+                                                            ),
+                                                            trailing: IconButton(
+                                                                onPressed: () {
+                                                                  fieldTextEditingController
+                                                                      .clear();
+                                                                },
+                                                                icon: Icon(
+                                                                    Icons.clear)),
+                                                          ),
+                                                        );
+                                                      },
+                                                      onSelected:
+                                                          (Result selection) {
+                                                        print(
+                                                            'Selected: ${selection.text}');
+                                                        fieldTextEditingController
                                                             .text =
-                                                        selection.text
-                                                            .toString();
-                                                  },
-                                                  optionsViewBuilder:
-                                                      (BuildContext context,
+                                                            selection.text
+                                                                .toString();
+                                                      },
+                                                      optionsViewBuilder:
+                                                          (BuildContext context,
                                                           AutocompleteOnSelected<
-                                                                  Result>
-                                                              onSelected,
+                                                              Result>
+                                                          onSelected,
                                                           Iterable<Result>
-                                                              options) {
-                                                    return Align(
-                                                      alignment:
+                                                          options) {
+                                                        return Align(
+                                                          alignment:
                                                           Alignment.topLeft,
-                                                      child: Material(
-                                                        child: Container(
-                                                          width: 365,
-                                                          //color: Colors.grey,
-                                                          child:
+                                                          child: Material(
+                                                            child: Container(
+                                                              width: 365,
+                                                              //color: Colors.grey,
+                                                              child:
                                                               ListView.builder(
-                                                            padding:
+                                                                padding:
                                                                 EdgeInsets.all(
                                                                     10.0),
-                                                            itemCount:
+                                                                itemCount:
                                                                 options.length,
-                                                            itemBuilder:
-                                                                (BuildContext
-                                                                        context,
+                                                                itemBuilder:
+                                                                    (BuildContext
+                                                                context,
                                                                     int index) {
-                                                              final Result option = options.elementAt(index);
+                                                                  final Result option = options.elementAt(index);
 
-                                                              return GestureDetector(
-                                                                onTap:
-                                                                    () async {
-                                                                  onSelected(option);
-                                                                  destinationController
+                                                                  return GestureDetector(
+                                                                    onTap:
+                                                                        () async {
+                                                                      onSelected(option);
+                                                                      destinationController
                                                                           .text =
-                                                                      option
-                                                                          .text
-                                                                          .toString();
-                                                                  OverlayLoadingProgress
-                                                                      .start(
+                                                                          option
+                                                                              .text
+                                                                              .toString();
+                                                                      OverlayLoadingProgress
+                                                                          .start(
                                                                           context);
-                                                                  await getDestination(option.placeId);
+                                                                      await getDestination(option.placeId);
 
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
-                                                                child: Card(
-                                                                  elevation: 1,
-                                                                  margin: EdgeInsets
-                                                                      .symmetric(
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                    child: Card(
+                                                                      elevation: 1,
+                                                                      margin: EdgeInsets
+                                                                          .symmetric(
                                                                           vertical:
-                                                                              2),
-                                                                  child:
+                                                                          2),
+                                                                      child:
                                                                       ListTile(
-                                                                    leading:
+                                                                        leading:
                                                                         Icon(
-                                                                      Icons
-                                                                          .location_on_rounded,
-                                                                      color: Colors
-                                                                          .red,
-                                                                    ),
-                                                                    title: Text(
-                                                                        option
-                                                                            .text
-                                                                            .toString(),
-                                                                        style: const TextStyle(
-                                                                            color:
+                                                                          Icons
+                                                                              .location_on_rounded,
+                                                                          color: Colors
+                                                                              .red,
+                                                                        ),
+                                                                        title: Text(
+                                                                            option
+                                                                                .text
+                                                                                .toString(),
+                                                                            style: const TextStyle(
+                                                                                color:
                                                                                 Colors.black)),
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            },
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }))
+                                                        );
+                                                      }))
+                                            ],
+                                          )
+
+
+
                                         ],
                                       );
                                     });

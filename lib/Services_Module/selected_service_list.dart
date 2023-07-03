@@ -45,7 +45,7 @@ class _SelectedServiceListsState extends State<SelectedServiceLists> {
   void getCurrentLocation()async{
     location=Location();
     currenctLoaction=await location!.getLocation();
-    CustomLoader.message(currenctLoaction!.latitude.toString());
+   // CustomLoader.message(currenctLoaction!.latitude.toString());
     print('currenctLoaction!.latitude.toString()');
     print(currenctLoaction!.latitude.toString());
     print(currenctLoaction!.longitude.toString());

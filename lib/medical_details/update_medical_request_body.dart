@@ -8,7 +8,10 @@ class UpdateMedicalRequestBody {
       String? organDonar, 
       String? weight, 
       String? height, 
-      String? primaryLanguage,}){
+      String? primaryLanguage,
+    String? dob,
+
+  }){
     _userId = userId;
     _medicalCondition = medicalCondition;
     _medicalNotes = medicalNotes;
@@ -18,6 +21,7 @@ class UpdateMedicalRequestBody {
     _weight = weight;
     _height = height;
     _primaryLanguage = primaryLanguage;
+    _dob = dob;
 }
 
   UpdateMedicalRequestBody.fromJson(dynamic json) {
@@ -30,6 +34,7 @@ class UpdateMedicalRequestBody {
     _weight = json['weight'];
     _height = json['height'];
     _primaryLanguage = json['primary_language'];
+    _dob = json['dob'];
   }
   String? _userId;
   String? _medicalCondition;
@@ -40,6 +45,7 @@ class UpdateMedicalRequestBody {
   String? _weight;
   String? _height;
   String? _primaryLanguage;
+  String? _dob;
 UpdateMedicalRequestBody copyWith({  String? userId,
   String? medicalCondition,
   String? medicalNotes,
@@ -49,6 +55,7 @@ UpdateMedicalRequestBody copyWith({  String? userId,
   String? weight,
   String? height,
   String? primaryLanguage,
+  String? dob,
 }) => UpdateMedicalRequestBody(  userId: userId ?? _userId,
   medicalCondition: medicalCondition ?? _medicalCondition,
   medicalNotes: medicalNotes ?? _medicalNotes,
@@ -58,6 +65,7 @@ UpdateMedicalRequestBody copyWith({  String? userId,
   weight: weight ?? _weight,
   height: height ?? _height,
   primaryLanguage: primaryLanguage ?? _primaryLanguage,
+    dob: dob ?? _dob,
 );
   String? get userId => _userId;
   String? get medicalCondition => _medicalCondition;
@@ -68,6 +76,7 @@ UpdateMedicalRequestBody copyWith({  String? userId,
   String? get weight => _weight;
   String? get height => _height;
   String? get primaryLanguage => _primaryLanguage;
+  String? get dob => _dob;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -80,6 +89,7 @@ UpdateMedicalRequestBody copyWith({  String? userId,
     map['weight'] = _weight;
     map['height'] = _height;
     map['primary_language'] = _primaryLanguage;
+    map['dob'] = _dob;
     return map;
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:ride_safe_travel/color_constant.dart';
@@ -27,7 +28,6 @@ import 'bottom_nav/custom_bottom_navi.dart';
 import 'new_widgets/my_new_text.dart';
 
 class RejectedServiceList extends StatefulWidget {
-
   const RejectedServiceList({Key? key}) : super(key: key);
 
   @override
@@ -40,24 +40,25 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
 
   LocationData? currenctLoaction;
   Location? location;
-
-  void initState(){
-
+   double? _rating;
+  void initState() {
     getCurrentLocation();
 
     super.initState();
   }
-  void getCurrentLocation()async{
-    location=Location();
-    currenctLoaction=await location!.getLocation();
 
-    if(currenctLoaction!=null){
+  void getCurrentLocation() async {
+    location = Location();
+    currenctLoaction = await location!.getLocation();
 
-      requestedServiceListApi(currenctLoaction!.longitude!, currenctLoaction!.latitude!);
-      print("requestedServiceList....."+currenctLoaction!.longitude.toString());
-      print("requestedServiceList....."+currenctLoaction!.latitude.toString());
+    if (currenctLoaction != null) {
+      requestedServiceListApi(
+          currenctLoaction!.longitude!, currenctLoaction!.latitude!);
+      print(
+          "requestedServiceList....." + currenctLoaction!.longitude.toString());
+      print(
+          "requestedServiceList....." + currenctLoaction!.latitude.toString());
     }
-
   }
 
   @override
@@ -91,7 +92,9 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
                       ? LoaderUtils.loader()
                       : requestedservicelist.requestedList.isEmpty
                           ? Center(
-                              child: EmptyScreen(text: 'reqquested_list_not_found'.tr,),
+                              child: EmptyScreen(
+                                text: 'reqquested_list_not_found'.tr,
+                              ),
                             )
                           : ListView.builder(
                               itemCount:
@@ -104,25 +107,34 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
 
                                 return RequestedServiceListItems(
                                   requestedList:
-                                      requestedservicelist.requestedList[index], feedBackClick: () {
-                                  commentDialogBox(
-                                      context,
-                                      requestedservicelist
-                                          .requestedList[index]
-                                          .id
-                                          .toString());
-
-                                }, deleteUser: () {
+                                      requestedservicelist.requestedList[index],
+                                  feedBackClick: () {
+                                    commentDialogBox(
+                                        context,
+                                        requestedservicelist
+                                            .requestedList[index].id
+                                            .toString());
+                                  },
+                                  deleteUser: () {
                                     print("REJECT");
-                                    exitShowDialog(context, 'Confirmation', 'No', 'Yes',
-                                        'Do you really want to cancel a request ?', () {
-                                          Get.back();
-                                        }, () {
+                                    exitShowDialog(
+                                        context,
+                                        'Confirmation',
+                                        'No',
+                                        'Yes',
+                                        'Do you really want to cancel a request ?',
+                                        () {
+                                      Get.back();
+                                    }, () {
                                       print("on process to delete");
-                                          acceptRejectApi(
-                                              index,requestedservicelist.requestedList[index].id.toString(), 'Cancel');
-                                        });
-                                },
+                                      acceptRejectApi(
+                                          index,
+                                          requestedservicelist
+                                              .requestedList[index].id
+                                              .toString(),
+                                          'Cancel');
+                                    });
+                                  },
                                 );
                               });
                 }),
@@ -149,7 +161,10 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
     );
   }
 
-  void requestedServiceListApi(double lng, double lat,)async{
+  void requestedServiceListApi(
+    double lng,
+    double lat,
+  ) async {
     await requestedservicelist.getRequestedServicesList(lng, lat);
   }
 
@@ -162,66 +177,90 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
       builder: (BuildContext context) {
         return AlertDialog(
           content: SizedBox(
-            height: 280,
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const NewMyText(
-                        textValue: 'Comment',
-                        fontName: 'Gilroy',
-                        color: appBlack,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18),
-                    IconButton(
-                        padding: const EdgeInsets.only(left: 30.0),
-                        onPressed: () {
-                          Get.back();
-                        },
-                        icon: const Icon(Icons.close_outlined)),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextField(
-                      controller: commentTextController,
-                      style: textStyle,
-                      cursorColor: appBlack,
-                      maxLines: 4,
-                      minLines: 4,
-                      decoration: InputDecoration(
-                        hintText: 'Type your message',
-                        hintStyle: const TextStyle(color: appBlack),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide:
-                          const BorderSide(color: appBlack, width: 1),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide:
-                          const BorderSide(color: appBlack, width: 1),
+            height: 325,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const NewMyText(
+                          textValue: 'Comment',
+                          fontName: 'Gilroy',
+                          color: appBlack,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18),
+                      IconButton(
+                          padding: const EdgeInsets.only(left: 30.0),
+                          onPressed: () {
+                            Get.back();
+                          },
+                          icon: const Icon(Icons.close_outlined)),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextField(
+                        controller: commentTextController,
+                        style: textStyle,
+                        cursorColor: appBlack,
+                        maxLines: 4,
+                        minLines: 4,
+                        decoration: InputDecoration(
+                          hintText: 'Type your message',
+                          hintStyle: const TextStyle(color: appBlack),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide:
+                                const BorderSide(color: appBlack, width: 1),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide:
+                                const BorderSide(color: appBlack, width: 1),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 30),
-                    AddCustomButton(
-                        press: () {
-                          if (commentTextController.text
-                              .toString()
-                              .isNotEmpty) {
-                            completeService(serviceId,commentTextController);
-                          } else {
-                            LoaderUtils.showToast(
-                                'Write something in the comment box.');
-                          }
-                        },
-                        buttonText: 'Submit')
-                  ],
-                ),
-              ],
+                      const SizedBox(height: 20),
+                      Text("Rate Service : "),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5,left: 15,right: 10),
+                        child: RatingBar.builder(
+                          initialRating: 3,
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemPadding: EdgeInsets.symmetric(horizontal: 0.5,vertical: 0.5),
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                            size: 5,
+                          ),
+                          onRatingUpdate: (rating) {
+                            _rating = rating;
+                            print(_rating);
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 25),
+                      AddCustomButton(
+                          press: () {
+                            if (commentTextController.text
+                                .toString()
+                                .isNotEmpty) {
+                              completeService(serviceId, commentTextController,_rating!);
+                            } else {
+                              LoaderUtils.showToast(
+                                  'Write something in the comment box.');
+                            }
+                          },
+                          buttonText: 'Submit')
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -229,12 +268,15 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
     );
   }
 
-  void completeService(String serviceId, TextEditingController commentTextController) async {
+  void completeService(
+      String serviceId, TextEditingController commentTextController, double rating) async {
     final completeService = Get.put(CompleteServiceRequestController());
     CompleteServiceRequestBody requestBody = CompleteServiceRequestBody(
         serviceId: serviceId.toString(),
         feedback: commentTextController.text.toString(),
-        userId: Preferences.getId(Preferences.id).toString());
+        userId: Preferences.getId(Preferences.id).toString(),
+      rating: rating
+    );
     await completeService.completeServiceApi(requestBody).then((value) {
       if (value != null) {
         if (value.status == true) {
@@ -247,7 +289,7 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
     });
   }
 
- /* void dialog(int index, String status) {
+  /* void dialog(int index, String status) {
     exitShowDialog(context, 'Confirmation', 'No', 'Yes',
         'Are you sure you want to $status?', () {
           Get.back();
@@ -257,37 +299,29 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
         });
   }*/
 
-  void acceptRejectApi(int index,String id, String status) async {
+  void acceptRejectApi(int index, String id, String status) async {
     var userid = Preferences.getId(Preferences.id);
-    print(id+"acceptReject"+status+"  "+userid);
+    print(id + "acceptReject" + status + "  " + userid);
 
     final controllerApi = Get.put(ServiceAcceptRejectController());
     AcceptRejectBodyRequest request = AcceptRejectBodyRequest(
         id: id.toString(),
         userId: Preferences.getId(Preferences.id).toString(),
         status: status.toString());
-    print("RequestBody..."+request.toString());
+    print("RequestBody..." + request.toString());
     await controllerApi.acceptRejectApi(request).then((value) async {
+      if (value?.status == true) {
+        // print(value?.message.toString());
 
-        if (value?.status == true) {
-         // print(value?.message.toString());
+        CustomLoader.message(value!.message.toString());
+        Get.back();
+        //requestedservicelist.requestedList.removeAt(index);
 
-          CustomLoader.message(value!.message.toString());
-          Get.back();
-            //requestedservicelist.requestedList.removeAt(index);
-
-          requestedServiceListApi(currenctLoaction!.longitude!, currenctLoaction!.latitude!);
-
-
-        } else {
-          CustomLoader.message(value!.message.toString());
-
+        requestedServiceListApi(
+            currenctLoaction!.longitude!, currenctLoaction!.latitude!);
+      } else {
+        CustomLoader.message(value!.message.toString());
       }
     });
   }
-
-
-
-
-
 }
