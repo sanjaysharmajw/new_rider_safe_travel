@@ -26,6 +26,7 @@ class MedicalConditionController extends GetxController{
   final weight=TextEditingController().obs;
   final height=TextEditingController().obs;
   final priparyLanguage = TextEditingController().obs;
+  final dobController = TextEditingController().obs;
 
 
   @override
@@ -41,7 +42,10 @@ class MedicalConditionController extends GetxController{
     medications: medication.value.text,
     weight: weight.value.text,
     height: height.value.text,
-    primaryLanguage: priparyLanguage.value.text);
+    primaryLanguage: priparyLanguage.value.text,
+      dob: dobController.value.text,
+      organDonar: organDonor.value.text,
+    );
     try {
       CustomLoader.showLoader("Please wait");
       final response = await http.post(Uri.parse(ApiUrl.updateMedicalDetails),

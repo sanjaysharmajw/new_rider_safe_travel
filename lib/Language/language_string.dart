@@ -152,7 +152,7 @@ class LanguageString extends Translations{
 
       /////////////////////////////////////////////////ADD FAMILY/////////////////////////////////////////////////////////
 
-      'family_list':'Family List',
+      'family_list':'People Tracking Me',
       'add_family':'Add Family',
       'family_list_not_found':'Family List Not Found',
       'add_family_member':'Add Family Member',
@@ -325,7 +325,7 @@ class LanguageString extends Translations{
 
       /////////////////////////////////////////////////ADD FAMILY/////////////////////////////////////////////////////////
 
-      'family_list':'फॅमिली लिस्ट',
+      'family_list':'People Tracking Me',
       'add_family':'ऍड फॅमिली ',
       'family_list_not_found':'फॅमिली लिस्ट उपलब्ध नाही',
       'add_family_member':'ऍड फॅमिली मेंबर ',
@@ -484,7 +484,7 @@ class LanguageString extends Translations{
 
       /////////////////////////////////////////////////ADD FAMILY/////////////////////////////////////////////////////////
 
-      'family_list':'परिवार सूची',
+      'family_list':'People Tracking Me',
       'add_family':'परिवार जोड़ें',
       'family_list_not_found':'परिवार सूची उपलब्ध नहीं है',
       'add_family_member':'परिवार के सदस्य जोड़ें',

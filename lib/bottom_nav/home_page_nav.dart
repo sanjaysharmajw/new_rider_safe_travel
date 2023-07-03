@@ -188,11 +188,9 @@ class _HomePageState extends State<HomePageNav> {
    // locationData = await location.getLocation();
     location.onLocationChanged.listen((LocationData cLoc) async {
       locationData = cLoc;
-       CustomLoader.message(locationData!.longitude.toString());
-       CustomLoader.message(locationData!.latitude.toString());
-       setState(() {
+       //CustomLoader.message(locationData!.longitude.toString());
+       //CustomLoader.message(locationData!.latitude.toString());
 
-       });
     });
 
     final GoogleMapController controller = await _completer.future;
@@ -345,7 +343,7 @@ class _HomePageState extends State<HomePageNav> {
 
   googleMap() {
     return locationData == null
-        ? const Center(
+        ? Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:ride_safe_travel/color_constant.dart';
 
 class MyTextFieldForm extends StatelessWidget {
-  final String hintText;
+  final String? hintText;
+  final String? labelText;
   final TextEditingController controller;
   final FormFieldValidator validator;
   final double fontSize;
@@ -15,17 +16,15 @@ class MyTextFieldForm extends StatelessWidget {
   final TextCapitalization? textCapitalization;
   MyTextFieldForm(
       {Key? key,
-        required this.hintText,
+         this.hintText,
         required this.controller,
         required this.validator, required this.fontSize, required this.readOnly, required this.onTap,
-        required this.keyboardType, this.maxLength, required this.inputFormatters, this.textCapitalization})
+        required this.keyboardType, this.maxLength, required this.inputFormatters, this.textCapitalization, this.labelText})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       inputFormatters: inputFormatters,
-
-
       readOnly: readOnly,
       controller: controller,
       onTap: onTap,
@@ -34,12 +33,13 @@ class MyTextFieldForm extends StatelessWidget {
       TextStyle(fontFamily: 'Gilroy', fontWeight: FontWeight.w500,fontSize: fontSize),
       keyboardType: keyboardType,
       decoration: InputDecoration(
+        labelText: labelText,
         counterText: '',
         hintText: hintText,
         hintStyle:
         const TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Gilroy'),
         labelStyle: const TextStyle(
-            color: appBlue, fontFamily: 'Gilroy', fontWeight: FontWeight.w500),
+            color: appBlack, fontFamily: 'Gilroy', fontWeight: FontWeight.w500),
       ),
       validator: validator,
     );

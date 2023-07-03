@@ -46,7 +46,8 @@ class MedicalData {
       String? organDonar, 
       String? weight, 
       String? height, 
-      String? primaryLanguage,}){
+      String? primaryLanguage, 
+      String? dob,}){
     _id = id;
     _medicalCondition = medicalCondition;
     _medicalNotes = medicalNotes;
@@ -56,6 +57,7 @@ class MedicalData {
     _weight = weight;
     _height = height;
     _primaryLanguage = primaryLanguage;
+    _dob = dob;
 }
 
   MedicalData.fromJson(dynamic json) {
@@ -68,6 +70,7 @@ class MedicalData {
     _weight = json['weight'];
     _height = json['height'];
     _primaryLanguage = json['primary_language'];
+    _dob = json['dob'];
   }
   String? _id;
   String? _medicalCondition;
@@ -78,6 +81,7 @@ class MedicalData {
   String? _weight;
   String? _height;
   String? _primaryLanguage;
+  String? _dob;
   MedicalData copyWith({  String? id,
   String? medicalCondition,
   String? medicalNotes,
@@ -87,6 +91,7 @@ class MedicalData {
   String? weight,
   String? height,
   String? primaryLanguage,
+  String? dob,
 }) => MedicalData(  id: id ?? _id,
   medicalCondition: medicalCondition ?? _medicalCondition,
   medicalNotes: medicalNotes ?? _medicalNotes,
@@ -96,6 +101,7 @@ class MedicalData {
   weight: weight ?? _weight,
   height: height ?? _height,
   primaryLanguage: primaryLanguage ?? _primaryLanguage,
+  dob: dob ?? _dob,
 );
   String? get id => _id;
   String? get medicalCondition => _medicalCondition;
@@ -106,6 +112,7 @@ class MedicalData {
   String? get weight => _weight;
   String? get height => _height;
   String? get primaryLanguage => _primaryLanguage;
+  String? get dob => _dob;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -118,6 +125,7 @@ class MedicalData {
     map['weight'] = _weight;
     map['height'] = _height;
     map['primary_language'] = _primaryLanguage;
+    map['dob'] = _dob;
     return map;
   }
 
