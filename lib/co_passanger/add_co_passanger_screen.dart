@@ -2,7 +2,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
-
 import '../Language/custom_text_input_formatter.dart';
 import '../LoginModule/custom_color.dart';
 import '../LoginModule/preferences.dart';
@@ -49,7 +48,7 @@ class _AddCoPassangerScreen extends State<AddCoPassangerScreen> {
      if(value!=null){
        if(value.status==true){
          LoaderUtils.message(value.message.toString());
-         Navigator.pop(context);
+         Get.back(result: true);
        }
      }
 
@@ -66,7 +65,7 @@ class _AddCoPassangerScreen extends State<AddCoPassangerScreen> {
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: IconButton(
                 onPressed: () {
-                  Get.back(canPop: true);
+                  Get.back(result: true);
                 },
                 icon: const Icon(
                   Icons.arrow_back_sharp,

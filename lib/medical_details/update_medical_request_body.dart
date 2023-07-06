@@ -1,17 +1,16 @@
 class UpdateMedicalRequestBody {
   UpdateMedicalRequestBody({
-      String? userId, 
-      String? medicalCondition, 
-      String? medicalNotes, 
-      String? allergiesAndReactions, 
-      String? medications, 
-      String? organDonar, 
-      String? weight, 
-      String? height, 
-      String? primaryLanguage,
+    String? userId,
+    String? medicalCondition,
+    String? medicalNotes,
+    String? allergiesAndReactions,
+    String? medications,
+    String? organDonar,
+    String? weight,
+    String? height,
+    String? primaryLanguage,
     String? dob,
-
-  }){
+    String? bloodGroup,}){
     _userId = userId;
     _medicalCondition = medicalCondition;
     _medicalNotes = medicalNotes;
@@ -22,7 +21,8 @@ class UpdateMedicalRequestBody {
     _height = height;
     _primaryLanguage = primaryLanguage;
     _dob = dob;
-}
+    _bloodGroup = bloodGroup;
+  }
 
   UpdateMedicalRequestBody.fromJson(dynamic json) {
     _userId = json['user_id'];
@@ -35,6 +35,7 @@ class UpdateMedicalRequestBody {
     _height = json['height'];
     _primaryLanguage = json['primary_language'];
     _dob = json['dob'];
+    _bloodGroup = json['blood_group'];
   }
   String? _userId;
   String? _medicalCondition;
@@ -46,27 +47,30 @@ class UpdateMedicalRequestBody {
   String? _height;
   String? _primaryLanguage;
   String? _dob;
-UpdateMedicalRequestBody copyWith({  String? userId,
-  String? medicalCondition,
-  String? medicalNotes,
-  String? allergiesAndReactions,
-  String? medications,
-  String? organDonar,
-  String? weight,
-  String? height,
-  String? primaryLanguage,
-  String? dob,
-}) => UpdateMedicalRequestBody(  userId: userId ?? _userId,
-  medicalCondition: medicalCondition ?? _medicalCondition,
-  medicalNotes: medicalNotes ?? _medicalNotes,
-  allergiesAndReactions: allergiesAndReactions ?? _allergiesAndReactions,
-  medications: medications ?? _medications,
-  organDonar: organDonar ?? _organDonar,
-  weight: weight ?? _weight,
-  height: height ?? _height,
-  primaryLanguage: primaryLanguage ?? _primaryLanguage,
+  String? _bloodGroup;
+  UpdateMedicalRequestBody copyWith({  String? userId,
+    String? medicalCondition,
+    String? medicalNotes,
+    String? allergiesAndReactions,
+    String? medications,
+    String? organDonar,
+    String? weight,
+    String? height,
+    String? primaryLanguage,
+    String? dob,
+    String? bloodGroup,
+  }) => UpdateMedicalRequestBody(  userId: userId ?? _userId,
+    medicalCondition: medicalCondition ?? _medicalCondition,
+    medicalNotes: medicalNotes ?? _medicalNotes,
+    allergiesAndReactions: allergiesAndReactions ?? _allergiesAndReactions,
+    medications: medications ?? _medications,
+    organDonar: organDonar ?? _organDonar,
+    weight: weight ?? _weight,
+    height: height ?? _height,
+    primaryLanguage: primaryLanguage ?? _primaryLanguage,
     dob: dob ?? _dob,
-);
+    bloodGroup: bloodGroup ?? _bloodGroup,
+  );
   String? get userId => _userId;
   String? get medicalCondition => _medicalCondition;
   String? get medicalNotes => _medicalNotes;
@@ -77,6 +81,7 @@ UpdateMedicalRequestBody copyWith({  String? userId,
   String? get height => _height;
   String? get primaryLanguage => _primaryLanguage;
   String? get dob => _dob;
+  String? get bloodGroup => _bloodGroup;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -90,6 +95,7 @@ UpdateMedicalRequestBody copyWith({  String? userId,
     map['height'] = _height;
     map['primary_language'] = _primaryLanguage;
     map['dob'] = _dob;
+    map['blood_group'] = _bloodGroup;
     return map;
   }
 

@@ -267,7 +267,7 @@ class _HomePageState extends State<HomePageNav> {
               ),
             ),
             const SizedBox(width: 15),
-            InkWell(
+           /* InkWell(
               onTap: () async {
                 Get.to(const FamilyList());
               },
@@ -290,7 +290,7 @@ class _HomePageState extends State<HomePageNav> {
                   ),
                 ),
               ),
-            ),
+            ),*/
             IconButton(
                 icon: const Icon(Icons.chat),
                 color: CustomColor.white,
@@ -341,7 +341,7 @@ class _HomePageState extends State<HomePageNav> {
 
   googleMap() {
     return locationData == null
-        ? const Center(
+        ?  Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

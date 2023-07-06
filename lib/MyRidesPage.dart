@@ -40,7 +40,8 @@ class _MyRidesPageState extends State<MyRidesPage> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
-    return Scaffold(
+    return SafeArea(child:
+      Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: appBlue,
@@ -117,7 +118,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
                           },
                         );
                       });
-        }));
+        })));
 
   }
 

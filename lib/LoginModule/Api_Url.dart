@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 
 class ApiUrl {
- // static var baseUrl = 'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/';
+ //static var baseUrl = 'https://w7rplf4xbj.execute-api.ap-south-1.amazonaws.com/dev/api/';
   static var baseUrl = 'https://l8olgbtnbj.execute-api.ap-south-1.amazonaws.com/dev/api/';
   static const googleMapGetDirection="AIzaSyBvMbj8bSuQ3W2e0ILvvby9d3UTjpxD9KI";
   static var awsImagePathUrl = 'https://travelsafe-docs.s3.ap-south-1.amazonaws.com/';
@@ -69,6 +69,7 @@ class ApiUrl {
 
   static var updateMedicalDetails= "${baseUrl}user/updateMedicalCondition";
   static var getMedicalDetails= "${baseUrl}user/getUserMedicalCondition";
+  static var medicalDropDownList = "${serviceUrl}user/getmedicaldropdownlist";
 
 
 

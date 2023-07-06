@@ -53,20 +53,7 @@ class _FamilyListState extends State<FamilyList> {
   Widget build(BuildContext context) {
     return  SafeArea(child: Scaffold(
       backgroundColor: appWhiteColor,
-      appBar: AppBar(
 
-        backgroundColor:  appBlue,
-        elevation: 15,
-        leading: IconButton(
-          color:  appWhiteColor,
-          onPressed: () {
-            Navigator.pop(context);
-           // Get.back();
-          },
-          icon: const Icon(Icons.arrow_back_outlined),
-        ),
-        title: Text("family_list".tr,style: TextStyle(fontFamily: 'Gilroy',fontSize: 22,color: Colors.white ),),
-      ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: appBlue,
           onPressed: (){

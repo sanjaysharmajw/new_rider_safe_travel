@@ -26,6 +26,7 @@ import '../MyText.dart';
 import '../Notification/NotificationScreen.dart';
 import '../Utils/CustomLoader.dart';
 import '../Utils/logout_dialog_box.dart';
+import '../Widgets/profile_widget_page.dart';
 import '../about_page.dart';
 import '../constant_image.dart';
 import '../controller/permision_controller.dart';
@@ -202,6 +203,7 @@ class _ProfileNavState extends State<ProfileNav> {
 
 
   void _showMultiSelect(BuildContext context) async {
+await getReason.getSosReason();
     reasons = getReason.getSosReasonData.value;
     for (var i = 0; i < reasons!.length; i++) {
       _reasonNames.add(reasons![i].name.toString());
@@ -212,7 +214,8 @@ class _ProfileNavState extends State<ProfileNav> {
       isScrollControlled: true,
       context: context,
       builder: (ctx) {
-        return getReason.isLoading==true?CustomLoader.loader():
+        return
+          //getReason.isLoading==true?CustomLoader.loader():
         Padding(
             padding: const EdgeInsets.all(15.0),
             child: MultiSelectBottomSheet(
@@ -358,6 +361,38 @@ class _ProfileNavState extends State<ProfileNav> {
                     SizedBox(height: 5,),
 
                     Visibility(
+                        visible:  volunteerStatus!,
+                        child: Column(
+                          children: [
+                            ProfileWidgetPage(
+                                title: "Volunteer Requests".tr,
+                                subtitle: 'View volunteering requests'.tr,
+                                click: () {
+                                  Get.to(const VolunteerRequestListTabScreen());
+                                },
+                                iconData: FeatherIcons.user),
+
+                            const Divider(color: lightText),
+                          ],
+                        )
+                    ),
+                    ProfileNotification(
+                        valueChanged: (values) {
+                          setState(() {
+                            if(volunteerStatus== false){
+                              _reasonNames.clear();
+                              _showMultiSelect(context);
+                              reasons=getReason.getSosReasonData;
+                            }else{
+                              volunteerApi("No");
+                            }
+                          });
+                        },
+                        status4: volunteerStatus!,
+                        title: "volunteer".tr,
+                        subTitle: "join_as_a_volunteer?".tr, imageAssets:familyList ),
+
+                   /* Visibility(
                       visible: volunteer == "Yes"? true : volunteer=="No"?false:false,
                       child: ProfileText(title: 'Volunteer Requests'.tr, subTitle: 'Check Requests'.tr, icons: FeatherIcons.user,
                         click: () {
@@ -379,7 +414,7 @@ class _ProfileNavState extends State<ProfileNav> {
                         },
                         status4: volunteerStatus!,
                         title: "volunteer".tr,
-                        subTitle: "join_as_a_volunteer?".tr, imageAssets:'new_assets/family_icon.png'),
+                        subTitle: "join_as_a_volunteer?".tr, imageAssets:'new_assets/family_icon.png'),*/
 
 
                     ProfileText(title: 'logout'.tr, subTitle: 'exit_from_your_account'.tr, icons: FeatherIcons.logOut,
@@ -396,7 +431,7 @@ class _ProfileNavState extends State<ProfileNav> {
     );
   }
 
-  void volunteerApi(String status)async{
+  void  volunteerApi(String status)async{
     print("volunteerApi..."+status);
    VolunteerRequest request = VolunteerRequest(userId:  Preferences.getId(Preferences.id),volunteer: status,
      lng: permissionController.locationData?.longitude.toString(),lat: permissionController.locationData?.latitude.toString(),volunteerAri: _selectedReasonNames);

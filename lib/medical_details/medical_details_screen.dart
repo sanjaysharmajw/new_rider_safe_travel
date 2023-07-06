@@ -16,6 +16,7 @@ import '../ride_start_screens/my_text_fieldform.dart';
 import '../utils/CustomLoader.dart';
 
 import 'medical_condition_controller.dart';
+import 'medical_controller.dart';
 
 class MedicalDetailsScreen extends StatefulWidget {
   const MedicalDetailsScreen({super.key});
@@ -27,11 +28,13 @@ class MedicalDetailsScreen extends StatefulWidget {
 class _MedicalDetailsScreenState extends State<MedicalDetailsScreen> {
 
   final medicalDetailsController=Get.put(MedicalConditionController());
+  final medicalBottomController = Get.put(MedicalController());
   MedicalConditionController getDetails=Get.find();
   final formKey = GlobalKey<FormState>();
   var dob;
   DateTime selectedDate = DateTime.now();
   var birthDate;
+  int selectedItems = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -110,6 +113,23 @@ class _MedicalDetailsScreenState extends State<MedicalDetailsScreen> {
                                     FilteringTextInputFormatter.deny('  '),
                                   ], ),
                                 const SizedBox(height: 25),
+                                MyTextFieldForm(labelText: 'Date of Birth',
+                                  controller: medicalDetailsController.dobController.value,
+                                  validator: (value) {
+                                    if (value.toString().isEmpty) {
+                                      return "Enter your birth date";
+                                    }else{
+                                      return null;
+                                    }
+                                  }, fontSize: 16, readOnly: true, onTap: () {
+                                    _selectDate(context);
+                                  },
+                                  textCapitalization: TextCapitalization.none,
+                                  keyboardType: TextInputType.datetime,
+                                  inputFormatters: [
+
+                                  ], ),
+                                const SizedBox(height: 25),
                                 MyTextFieldForm(labelText: 'Medical Notes',
                                   controller: medicalDetailsController.medicalNotes.value,
                                   validator: (value) {
@@ -172,7 +192,10 @@ class _MedicalDetailsScreenState extends State<MedicalDetailsScreen> {
                                     }else{
                                       return null;
                                     }
-                                  }, fontSize: 16, readOnly: false, onTap: () {  },
+                                  }, fontSize: 16, readOnly: true,
+                                  onTap: () {
+                                    medicalApiBottom('organ_type',1);
+                                  },
                                   textCapitalization: TextCapitalization.words,
                                   keyboardType: TextInputType.text,
                                   inputFormatters: [
@@ -182,6 +205,32 @@ class _MedicalDetailsScreenState extends State<MedicalDetailsScreen> {
                                     FilteringTextInputFormatter.deny('  '),
                                   ], ),
                                 const SizedBox(height: 25),
+                                MyTextFieldForm(labelText: 'Blood Group',
+                                  controller: medicalDetailsController
+                                      .bloodGroup.value,
+                                  validator: (value) {
+                                    if (value
+                                        .toString()
+                                        .isEmpty) {
+                                      return "Enter Blood Group";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  fontSize: 16,
+                                  readOnly: true,
+                                  onTap: () {
+                                    medicalApiBottom('blood_group',4);
+                                  },
+                                  textCapitalization: TextCapitalization.words,
+                                  keyboardType: TextInputType.text,
+                                  inputFormatters: [
+                                    engHindFormatter,
+                                    //FilteringTextInputFormatter.allow(
+                                    //  RegExp("[a-zA-Z\]")),
+                                    FilteringTextInputFormatter.deny('  '),
+                                  ],),
+                                const SizedBox(height: 25),
                                 MyTextFieldForm(labelText: 'Weight',
                                   controller: medicalDetailsController.weight.value,
                                   validator: (value) {
@@ -190,7 +239,10 @@ class _MedicalDetailsScreenState extends State<MedicalDetailsScreen> {
                                     }else{
                                       return null;
                                     }
-                                  }, fontSize: 16, readOnly: false, onTap: () {  },
+                                  }, fontSize: 16, readOnly: true,
+                                  onTap: () {
+                                    medicalApiBottom('weight',2);
+                                  },
                                   textCapitalization: TextCapitalization.words,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: [
@@ -209,7 +261,10 @@ class _MedicalDetailsScreenState extends State<MedicalDetailsScreen> {
                                     }else{
                                       return null;
                                     }
-                                  }, fontSize: 16, readOnly: false, onTap: () {  },
+                                  }, fontSize: 16, readOnly: true,
+                                  onTap: () {
+                                    medicalApiBottom('height',3);
+                                  },
                                   textCapitalization: TextCapitalization.words,
                                   keyboardType: TextInputType.numberWithOptions( decimal: true,
                                     signed: false,),
@@ -219,23 +274,7 @@ class _MedicalDetailsScreenState extends State<MedicalDetailsScreen> {
                                     FilteringTextInputFormatter.deny('  '),
                                     FilteringTextInputFormatter.deny('..'),
                                   ], ),
-                                const SizedBox(height: 25),
-                                MyTextFieldForm(labelText: 'Date of Birth',
-                                  controller: medicalDetailsController.dobController.value,
-                                  validator: (value) {
-                                    if (value.toString().isEmpty) {
-                                      return "Enter your birth date";
-                                    }else{
-                                      return null;
-                                    }
-                                  }, fontSize: 16, readOnly: true, onTap: () {
-                                    _selectDate(context);
-                                  },
-                                  textCapitalization: TextCapitalization.none,
-                                  keyboardType: TextInputType.datetime,
-                                  inputFormatters: [
 
-                                  ], ),
                                 /*Center(
                                   child: Padding(
                                     padding: const EdgeInsets.only(right: 10),
@@ -287,7 +326,10 @@ class _MedicalDetailsScreenState extends State<MedicalDetailsScreen> {
                                     }else{
                                       return null;
                                     }
-                                  }, fontSize: 16, readOnly: false, onTap: () {  },
+                                  }, fontSize: 16, readOnly: true,
+                                  onTap: () {
+                                    medicalApiBottom('primary_language',5);
+                                  },
                                   textCapitalization: TextCapitalization.words,
                                   keyboardType: TextInputType.text,
                                   inputFormatters: [
@@ -330,6 +372,80 @@ class _MedicalDetailsScreenState extends State<MedicalDetailsScreen> {
               })
               ),
         ));
+  }
+
+  void medicalApiBottom(String type,int fieldValue) async {
+    await medicalBottomController.getMedicalBottomList(type);
+    if(medicalBottomController.getMedicalData.isNotEmpty){
+      settingModalBottomSheet(context,fieldValue);
+    }
+  }
+
+  void settingModalBottomSheet(context,int fieldValue){
+    showCupertinoModalPopup<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return _buildBottomPicker(
+              buildCupertinoPicker(fieldValue)
+          );
+        });
+  }
+
+  Widget buildCupertinoPicker(int fieldValue) {
+    return Obx(() {
+      return CupertinoPicker(
+        magnification: 1,
+        backgroundColor: Colors.white,
+        itemExtent:45,
+        children: List<Widget>.generate(
+            medicalBottomController.getMedicalData.length, (int index) {
+          return Center(child: MyText(text: medicalBottomController.getMedicalData[index].value
+              .toString(), fontFamily: 'Gilroy', fontSize: 16,  color: Colors.black)
+          );
+        }),
+        onSelectedItemChanged: (int selectedItem) {
+          setState(() {
+            selectedItems = selectedItem;
+            if(fieldValue==1){
+              medicalDetailsController.organDonor.value.text = medicalBottomController.getMedicalData[selectedItems].value.toString();
+            }
+            if(fieldValue==2){
+              medicalDetailsController.weight.value.text =
+                  medicalBottomController.getMedicalData[selectedItems].value.toString();
+            }
+            if(fieldValue==3){
+              medicalDetailsController.height.value.text = medicalBottomController.getMedicalData[selectedItems].value.toString();
+            } if(fieldValue==4){
+              medicalDetailsController.bloodGroup.value.text = medicalBottomController.getMedicalData[selectedItems].value.toString();
+            }
+            if(fieldValue==5){
+              medicalDetailsController.priparyLanguage.value.text = medicalBottomController.getMedicalData[selectedItems].value.toString();
+            }
+          });
+        },
+      );
+    });
+  }
+
+  Widget _buildBottomPicker(Widget picker) {
+    return Container(
+      height: 216.0,
+      padding: const EdgeInsets.only(top: 6.0),
+      color: CupertinoColors.white,
+      child: DefaultTextStyle(
+        style: const TextStyle(
+          color: CupertinoColors.black,
+          fontSize: 22.0,
+        ),
+        child: GestureDetector(
+          onTap: () {},
+          child: SafeArea(
+            top: false,
+            child: picker,
+          ),
+        ),
+      ),
+    );
   }
 
   _selectDate(BuildContext context) async {

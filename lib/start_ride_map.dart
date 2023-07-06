@@ -627,8 +627,8 @@ class _SignUpState extends State<StartRide> {
                             Column(
                               children: [
                                 Container(
-                                  height: 35,
-                                  width: 35,
+                                  height: 50,
+                                  width: 50,
                                   decoration:  BoxDecoration(
                                    // borderRadius: BorderRadius.all(Radius.circular(20.0)),
                                       shape: BoxShape.circle, color: appBlue,),
@@ -653,8 +653,7 @@ class _SignUpState extends State<StartRide> {
                                         fontFamily: 'Gilroy', fontSize: 12.sp)),
                               ],
                             ),
-                            Column(
-                              children: [
+
                                 InkWell(
                                   onTap: () {
                                     sos();
@@ -666,12 +665,18 @@ class _SignUpState extends State<StartRide> {
                                   },
                                   child: Column(
                                     children: [
+                                      
                                       Image.asset("images/SOS.png",
                                           width: 50.w, height: 50.h),
+                                      SizedBox(height: 10.h),
+                                      Text("SOS",
+                                          style: TextStyle(
+                                              fontFamily: 'Gilroy',
+                                              fontSize: 12.sp))
                                     ],
                                   ),
-                                ),
-                              ],
+
+
                             ),
                           ],
                         ),
@@ -1150,6 +1155,7 @@ class _SignUpState extends State<StartRide> {
                             onPressed: () {
                               OverlayLoadingProgress.start(context);
                               SOSNotification();
+                              Get.back();
                             },
                             child: Text("Yes"),
                             style: ElevatedButton.styleFrom(primary: appBlue),

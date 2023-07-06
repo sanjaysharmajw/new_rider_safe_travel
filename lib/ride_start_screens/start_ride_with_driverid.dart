@@ -105,12 +105,13 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                   children: [
                     Flexible(
                       child: TextFormField(
+                        textInputAction: TextInputAction.next,
                         textCapitalization: TextCapitalization.characters,
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.text,
                         style: const TextStyle(fontFamily: "Gilroy",fontSize: 18),
                         controller: ctrl1,
-                        autofocus: false,
+                        autofocus: true,
                         validator: (value) {
                           if (value.toString().isEmpty) {
                             return "Required";
@@ -130,8 +131,9 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                     Container(width: 10),
                     Flexible(
                       child: TextFormField(
+                        textInputAction: TextInputAction.next,
                         textAlign: TextAlign.center,
-                        autofocus: false,
+                        autofocus: true,
                         validator: (value) {
                           if (value.toString().isEmpty) {
                             return "Required";
@@ -140,6 +142,7 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                           }
                         },
                         decoration: const InputDecoration(
+
                           hintText: "04",
                           hintStyle: TextStyle(fontFamily: "Gilroy",fontSize: 18),
                           counterText: "",
@@ -153,6 +156,7 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                     Container(width: 10),
                     Flexible(
                       child: TextFormField(
+                        textInputAction: TextInputAction.next,
                         validator: (value) {
                           if (value.toString().isEmpty) {
                             return "Required";
@@ -163,7 +167,7 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                         textCapitalization: TextCapitalization.characters,
                         maxLength: 3,
                         textAlign: TextAlign.center,
-                        autofocus: false,
+                        autofocus: true,
                         decoration: const InputDecoration(
                           hintText: "ABC",
                           hintStyle: TextStyle(fontFamily: "Gilroy",fontSize: 18),
@@ -177,6 +181,7 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                     Container(width: 10),
                     Flexible(
                       child: TextFormField(
+                        textInputAction: TextInputAction.next,
                         validator: (value) {
                           if (value.toString().isEmpty) {
                             return "Required";
@@ -219,7 +224,7 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                     String? controllerValue3=ctrl3.text.toString();
                     String? vehicleNo="$controllerValue1$controllerValue2$controllerValue3$textValue";
                     if (formKey.currentState!.validate()) {
-                      resendOtpAPi(driverMobile.toString(),vehicleNo);
+                      resendOtpAPi(driverMobile.text.toString(),vehicleNo);
                     }
                   },
                   buttonText: 'Next'),

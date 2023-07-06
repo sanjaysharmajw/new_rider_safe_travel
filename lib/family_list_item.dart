@@ -29,7 +29,7 @@ class FamilyListItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 15,),
+        SizedBox(height: 30,),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Card(

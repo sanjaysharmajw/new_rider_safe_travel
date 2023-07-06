@@ -8,6 +8,7 @@ import '../LoginModule/Map/RiderFamilyList.dart';
 import '../MyRidesPage.dart';
 import '../RejectedServiceList.dart';
 import '../Utils/exit_alert_dialog.dart';
+import '../tracking/tracking_tabs.dart';
 import 'home_page_nav.dart';
 
 class CustomBottomNav extends StatefulWidget {
@@ -23,7 +24,7 @@ class UserDashBoardScreenState extends State<CustomBottomNav> {
 
   List<Widget> page = [
     const HomePageNav(),
-    const FamilyMemberListScreen(changeUiValue: 'bottomNav'),
+      TrackingTabPage(),
      MyRidesPage(changeAppbar: 'bottomNav',),
      RejectedServiceList(),
      ProfileNav(backbutton: 'bottomNav',),

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:ride_safe_travel/Utils/CustomLoader.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
 
 import '../LoginModule/custom_color.dart';
@@ -27,10 +28,16 @@ class _DriverCoPassScreenState extends State<DriverCoPassScreen> {
   void initState() {
     super.initState();
     coPassanger();
+    setState(() {
+
+    });
   }
   void coPassanger()async{
     ListCoPassanagerRequestBody requestBody=ListCoPassanagerRequestBody(rideId: widget.rideId.toString());
     await driverCoPassController.coPassangerListApi(requestBody);
+    setState(() {
+
+    });
   }
 
   @override
@@ -60,23 +67,16 @@ class _DriverCoPassScreenState extends State<DriverCoPassScreen> {
           onPressed: (){
             Get.to(AddCoPassangerScreen(rideId: widget.rideId.toString()))!.then((value){
               if(value==true){
-                coPassanger();
+                setState(() {
+                  coPassanger();
+                });
+
               }
             });
           },
           label: Text("add_co_passanger".tr)),
 
-      body: Padding(
-        padding: const EdgeInsets.only(right: 25,left: 25,top: 25),
-        child: SizedBox(
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-
-              const SizedBox(height: 20),
-              Obx(() {
+      body: Obx(() {
                 return driverCoPassController.isLoading.value
                     ? LoaderUtils.loader()
                     : driverCoPassController.getCoPassangerListData.isEmpty
@@ -89,10 +89,7 @@ class _DriverCoPassScreenState extends State<DriverCoPassScreen> {
                       return CoPassangerItems(passangerListData: driverCoPassController.getCoPassangerListData[index]);
                     });
               }),
-            ],
-          ),
-        ),
-      ),
+
     ));
   }
 }

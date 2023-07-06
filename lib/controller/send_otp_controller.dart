@@ -20,6 +20,7 @@ class SendOtpController extends GetxController{
         headers: header.headerToken,
         body: jsonEncode(<String, String>{"mobile_number": mobile}),
       );
+      print( "sendOTPtoDriver: "+jsonEncode({"mobile_number": mobile}));
       Map<String, dynamic> responseBody = json.decode(response.body);
       if (response.statusCode == 200) {
         LoaderUtils.closeLoader();

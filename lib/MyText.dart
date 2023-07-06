@@ -5,13 +5,14 @@ class MyText extends StatelessWidget {
   final String fontFamily;
   final Color color;
   final double fontSize;
+  final FontWeight? fontWeight;
 
    MyText(
       {Key? key,
       required this.text,
       required this.fontFamily,
       required this.color,
-      required this.fontSize})
+      required this.fontSize, this.fontWeight})
       : super(key: key);
 
   @override
@@ -19,7 +20,7 @@ class MyText extends StatelessWidget {
     return Text(
       text,
       style:
-          TextStyle(fontSize: fontSize, color: color, fontFamily: fontFamily),
+          TextStyle(fontSize: fontSize, color: color, fontFamily: fontFamily, fontWeight: fontWeight),
     );
   }
 }

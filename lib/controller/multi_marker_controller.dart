@@ -25,6 +25,7 @@ class MultiMarkerController extends GetxController{
         headers: headerController.headerToken,
         body: jsonEncode(requestBody),
       );
+      debugPrint("requestBody: "+jsonEncode(requestBody));
       debugPrint("multipleMArker");
       debugPrint(response.body);
       debugPrint(jsonEncode(requestBody));

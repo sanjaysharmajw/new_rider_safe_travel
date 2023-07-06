@@ -76,24 +76,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: appBlue,
-          elevation: 5,
-          title: Text("other's_live_rides".tr,
-              style: TextStyle(
-                color: CustomColor.white,
-                fontSize: 20,
-                fontFamily: 'Gilroy',
-              )),
-          leading: IconButton(
-            color: appWhiteColor,
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CustomBottomNav()));
-            },
-            icon: const Icon(Icons.arrow_back_outlined),
-          ),
-        ),
+
         body: Obx(() {
           return familyRideDataController.isLoading.value
               ? LoaderUtils.loader()
