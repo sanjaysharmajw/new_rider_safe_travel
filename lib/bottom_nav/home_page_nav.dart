@@ -188,11 +188,7 @@ class _HomePageState extends State<HomePageNav> {
    // locationData = await location.getLocation();
     location.onLocationChanged.listen((LocationData cLoc) async {
       locationData = cLoc;
-       CustomLoader.message(locationData!.longitude.toString());
-       CustomLoader.message(locationData!.latitude.toString());
-       setState(() {
-
-       });
+       setState(() {});
     });
 
     final GoogleMapController controller = await _completer.future;
