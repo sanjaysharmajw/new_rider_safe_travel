@@ -74,11 +74,14 @@ class _FamilyListState extends State<FamilyList> {
             ? Center(
           child: EmptyScreen(text: 'family_list_not_found'.tr,),
         ) : ListView.builder(
+          scrollDirection: Axis.vertical,
             itemCount: familyListController.getFamilyListData.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              return FamilyListItems(memberDataModel: familyListController.getFamilyListData[index], deleteClick: () {
-                userStatusApi(index,familyListController.getFamilyListData[index].userId.toString(), familyListController.getFamilyListData[index].memberId.toString(), 'Deleted');
+              return FamilyListItems(memberDataModel: familyListController.getFamilyListData[index],
+                deleteClick: () {
+                userStatusApi(index,familyListController.getFamilyListData[index].userId.toString(),
+                familyListController.getFamilyListData[index].memberId.toString(), 'Deleted');
               }, blockClick: () {
                 userStatusApi(index,familyListController.getFamilyListData[index].userId.toString(),
                     familyListController.getFamilyListData[index].memberId.toString(), 'Blocked');
@@ -89,7 +92,7 @@ class _FamilyListState extends State<FamilyList> {
     ));
   }
   void userStatusApi(int index,String userId, String memberId, String status) async {
-    await userstatusController.getUserStatus(userId, memberId, status)
+    await userstatusController.getUserStatus(index,userId, memberId, status)
         .then((value) async {
       if (value != null) {
         if (value.status == true) {

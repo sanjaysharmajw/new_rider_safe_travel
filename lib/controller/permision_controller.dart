@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 import 'package:get/get.dart';
+import 'package:ride_safe_travel/Utils/CustomLoader.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
 
 
@@ -39,6 +40,7 @@ class PermissionController extends GetxController{
   Future<LocationData?> getLocation()async{
     location=Location();
     locationData=await location!.getLocation();
+    CustomLoader.message(locationData!.latitude.toString());
     return locationData;
   }
 

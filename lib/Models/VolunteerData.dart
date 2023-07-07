@@ -1,10 +1,10 @@
 class GetVolunteerModels {
   GetVolunteerModels({
-    bool? status,
-    List<VolunteerData>? data,}){
+      bool? status, 
+      List<VolunteerData>? data,}){
     _status = status;
     _data = data;
-  }
+}
 
   GetVolunteerModels.fromJson(dynamic json) {
     _status = json['status'];
@@ -18,10 +18,10 @@ class GetVolunteerModels {
   bool? _status;
   List<VolunteerData>? _data;
   GetVolunteerModels copyWith({  bool? status,
-    List<VolunteerData>? data,
-  }) => GetVolunteerModels(  status: status ?? _status,
-    data: data ?? _data,
-  );
+  List<VolunteerData>? data,
+}) => GetVolunteerModels(  status: status ?? _status,
+  data: data ?? _data,
+);
   bool? get status => _status;
   List<VolunteerData>? get data => _data;
 
@@ -38,22 +38,24 @@ class GetVolunteerModels {
 
 class VolunteerData {
   VolunteerData({
-    String? id,
-    String? reason,
-    String? lat,
-    String? lng,
-    String? userName,
-    String? userMobile,
-    String? driverName,
-    String? driverMobile,
-    String? vehicleNumber,
-    String? color,
-    String? vehicleType,
-    String? vehicleModel,
-    String? date,
-    String? status,}){
+      String? id, 
+      String? reason, 
+      num? distance, 
+      String? lat, 
+      String? lng, 
+      String? userName, 
+      String? userMobile, 
+      String? driverName, 
+      String? driverMobile, 
+      String? vehicleNumber, 
+      String? color, 
+      String? vehicleType, 
+      String? vehicleModel, 
+      String? date, 
+      String? status,}){
     _id = id;
     _reason = reason;
+    _distance = distance;
     _lat = lat;
     _lng = lng;
     _userName = userName;
@@ -66,11 +68,12 @@ class VolunteerData {
     _vehicleModel = vehicleModel;
     _date = date;
     _status = status;
-  }
+}
 
   VolunteerData.fromJson(dynamic json) {
     _id = json['_id'];
     _reason = json['reason'];
+    _distance = json['distance'];
     _lat = json['lat'];
     _lng = json['lng'];
     _userName = json['user_name'];
@@ -86,6 +89,7 @@ class VolunteerData {
   }
   String? _id;
   String? _reason;
+  num? _distance;
   String? _lat;
   String? _lng;
   String? _userName;
@@ -99,36 +103,39 @@ class VolunteerData {
   String? _date;
   String? _status;
   VolunteerData copyWith({  String? id,
-    String? reason,
-    String? lat,
-    String? lng,
-    String? userName,
-    String? userMobile,
-    String? driverName,
-    String? driverMobile,
-    String? vehicleNumber,
-    String? color,
-    String? vehicleType,
-    String? vehicleModel,
-    String? date,
-    String? status,
-  }) => VolunteerData(  id: id ?? _id,
-    reason: reason ?? _reason,
-    lat: lat ?? _lat,
-    lng: lng ?? _lng,
-    userName: userName ?? _userName,
-    userMobile: userMobile ?? _userMobile,
-    driverName: driverName ?? _driverName,
-    driverMobile: driverMobile ?? _driverMobile,
-    vehicleNumber: vehicleNumber ?? _vehicleNumber,
-    color: color ?? _color,
-    vehicleType: vehicleType ?? _vehicleType,
-    vehicleModel: vehicleModel ?? _vehicleModel,
-    date: date ?? _date,
-    status: status ?? _status,
-  );
+  String? reason,
+  num? distance,
+  String? lat,
+  String? lng,
+  String? userName,
+  String? userMobile,
+  String? driverName,
+  String? driverMobile,
+  String? vehicleNumber,
+  String? color,
+  String? vehicleType,
+  String? vehicleModel,
+  String? date,
+  String? status,
+}) => VolunteerData(  id: id ?? _id,
+  reason: reason ?? _reason,
+  distance: distance ?? _distance,
+  lat: lat ?? _lat,
+  lng: lng ?? _lng,
+  userName: userName ?? _userName,
+  userMobile: userMobile ?? _userMobile,
+  driverName: driverName ?? _driverName,
+  driverMobile: driverMobile ?? _driverMobile,
+  vehicleNumber: vehicleNumber ?? _vehicleNumber,
+  color: color ?? _color,
+  vehicleType: vehicleType ?? _vehicleType,
+  vehicleModel: vehicleModel ?? _vehicleModel,
+  date: date ?? _date,
+  status: status ?? _status,
+);
   String? get id => _id;
   String? get reason => _reason;
+  num? get distance => _distance;
   String? get lat => _lat;
   String? get lng => _lng;
   String? get userName => _userName;
@@ -146,6 +153,7 @@ class VolunteerData {
     final map = <String, dynamic>{};
     map['_id'] = _id;
     map['reason'] = _reason;
+    map['distance'] = _distance;
     map['lat'] = _lat;
     map['lng'] = _lng;
     map['user_name'] = _userName;

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
@@ -39,6 +40,7 @@ class FamilyListController extends GetxController{
         "user_id": userId
       }),);
       log(response.body);
+
       const utf8Decoder = Utf8Decoder(allowMalformed: true);
       final decodedBytes = utf8Decoder.convert(response.bodyBytes);
       Map<String, dynamic> responseBody = json.decode(decodedBytes);

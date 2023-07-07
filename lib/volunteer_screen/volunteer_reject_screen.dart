@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:location/location.dart';
 
 
 import '../Models/VolunteerStatusRequestBody.dart';
@@ -23,7 +24,8 @@ class VolunteerRejectScreen extends StatefulWidget {
 
 class _VolunteerRejectScreenState extends State<VolunteerRejectScreen> {
   final volunteerRequestController=Get.put(RequestVolunteerController());
-
+  LocationData? locationData;
+  Location? location;
   @override
   void initState() {
     api();
@@ -31,7 +33,10 @@ class _VolunteerRejectScreenState extends State<VolunteerRejectScreen> {
   }
 
   void api()async{
-    await volunteerRequestController.requestVolunteerApi(widget.status.toString());
+    location=Location();
+    locationData=await location!.getLocation();
+    await volunteerRequestController.requestVolunteerApi(widget.status.toString(),locationData!.latitude!,locationData!.longitude!);
+    setState(() {});
   }
 
 

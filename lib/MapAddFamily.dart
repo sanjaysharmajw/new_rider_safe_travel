@@ -14,6 +14,7 @@ import 'package:ride_safe_travel/Models/affFamilyMemberNewModel.dart';
 import 'package:ride_safe_travel/Utils/RiderButton.dart';
 import 'package:ride_safe_travel/color_constant.dart';
 import 'package:ride_safe_travel/custom_button.dart';
+import 'package:ride_safe_travel/tracking/tracking_tabs.dart';
 import 'Language/custom_text_input_formatter.dart';
 import 'LoginModule/Error.dart';
 import 'LoginModule/preferences.dart';
@@ -192,7 +193,8 @@ class _MapFamilyAdd extends State<MapFamilyAdd> {
         OverlayLoadingProgress.stop();
         ToastMessage.toast(msg);
         //Get.back();
-        Get.offAll(const FamilyList());
+        Get.offAll(TrackingTabPage());
+       // Get.offAll(const FamilyList());
         print(userId + msg);
       } else {
         OverlayLoadingProgress.stop();

@@ -101,6 +101,7 @@ class _HomePageState extends State<HomePageNav> {
     userId = Preferences.getId(Preferences.id).toString();
     riderOtp = Preferences.getRideOtp();
     await locationPermission.permissionLocation();
+    await checkActiveRide.checkActiveRideApi();
   }
 
   loadCustomMarker() async {
@@ -201,7 +202,6 @@ class _HomePageState extends State<HomePageNav> {
   @override
   void initState() {
     super.initState();
-
     setState(() {
       currentLocation();
     });

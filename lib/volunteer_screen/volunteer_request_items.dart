@@ -44,7 +44,9 @@ class VolunteerRequestItems extends StatelessWidget {
               const SizedBox(
                 height: 8,
               ),
-              const MyText(text: '10 Km', fontName: 'Gilroy', fontSize: 14, fontWeight: FontWeight.w500, textColor: Colors.black),
+               MyText(text: volunteerData.reason.toString(), fontName: 'Gilroy', fontSize: 14, fontWeight: FontWeight.w500, textColor: Colors.black),
+              const SizedBox(height: 8),
+              MyText(text: '${volunteerData.distance.toString()} Km', fontName: 'Gilroy', fontSize: 14, fontWeight: FontWeight.w500, textColor: Colors.black),
               const SizedBox(height: 15),
               Visibility(
                   visible: volunteerData.status=="Accept"?true:false,

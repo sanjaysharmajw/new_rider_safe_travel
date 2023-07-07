@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart'as http;
 import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
@@ -13,7 +14,7 @@ class UserStatusController extends GetxController{
 
 
 
-  Future<dynamic> getUserStatus(String userId,String memberId, String status) async {
+  Future<dynamic> getUserStatus(int indeex, String userId,String memberId, String status) async {
     try {
       LoaderUtils.showLoader("Please wait");
       final response = await http.post(Uri.parse(ApiUrl.userStatus),
@@ -30,6 +31,7 @@ class UserStatusController extends GetxController{
         "status": status.toString()
       }),);
       Map<String, dynamic> responseBody = json.decode(response.body);
+      debugPrint("userStatus: "+responseBody.toString());
       if (response.statusCode == 200) {
         LoaderUtils.closeLoader();
         return MemberBlockDeleteModel.fromJson(responseBody);

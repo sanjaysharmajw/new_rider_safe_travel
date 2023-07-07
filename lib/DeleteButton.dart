@@ -71,7 +71,7 @@ class _DeleteButtonWidgetState extends State<DeleteButtonWidget> {
                                               // OverlayLoadingProgress.start(context);
                                              widget.click();
                                               setState(() {});
-                                              Navigator.pop(context);
+                                             // Navigator.pop(context);
                                               //Get.back();
 
                                               //getUserFamilyList();

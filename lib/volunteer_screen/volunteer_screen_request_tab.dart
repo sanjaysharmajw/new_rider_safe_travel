@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
 import 'package:get/get.dart';
+import 'package:ride_safe_travel/Utils/CustomLoader.dart';
 
 import 'package:ride_safe_travel/volunteer_screen/volunteer_accept_screen.dart';
 import 'package:ride_safe_travel/volunteer_screen/volunteer_all_screen.dart';
@@ -18,7 +19,34 @@ class VolunteerRequestListTabScreen extends StatefulWidget {
   VolunteerRequestListTabScreenState createState() => VolunteerRequestListTabScreenState();
 }
 
-class VolunteerRequestListTabScreenState extends State<VolunteerRequestListTabScreen> {
+class VolunteerRequestListTabScreenState extends State<VolunteerRequestListTabScreen>  with SingleTickerProviderStateMixin {
+
+  int? selected_index;
+  TabController? _controller;
+  int _selectedIndex = 0;
+  List<String> tabNames = [
+    'all'.tr,
+    'accepted'.tr,
+    'rejected'.tr,
+  ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // Create TabController for getting the index of current tab
+    _controller = TabController(length: tabNames.length, vsync: this);
+
+    _controller?.addListener(() {
+      setState(() {
+        _selectedIndex = _controller!.index;
+      });
+      print("Selected Index: " + _controller!.index.toString());
+    });
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +83,11 @@ class VolunteerRequestListTabScreenState extends State<VolunteerRequestListTabSc
                       children: [
                         /*-------------- Build Tabs here ------------------*/
                         TabBar(
+                            onTap: (index) {
+                              setState(() {
+                                CustomLoader.message(selected_index.toString());
+                              });
+                            },
                             labelPadding: const EdgeInsets.only(left: 25,right: 25),
                             isScrollable: true,
                             tabs: getTabs(),
@@ -76,11 +109,7 @@ class VolunteerRequestListTabScreenState extends State<VolunteerRequestListTabSc
   }
 
   List<Tab> getTabs() {
-    List<String> tabNames = [
-      'all'.tr,
-      'accepted'.tr,
-      'rejected'.tr,
-    ];
+
 
     List<Tab> tabs = [];
     for (String tabName in tabNames) {

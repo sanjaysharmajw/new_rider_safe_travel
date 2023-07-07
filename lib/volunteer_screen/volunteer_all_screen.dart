@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:location/location.dart';
 import 'package:ride_safe_travel/volunteer_screen/volunteer_request_items.dart';
 
 import '../Models/VolunteerStatusRequestBody.dart';
@@ -23,6 +24,8 @@ class VolunteerAllScreen extends StatefulWidget {
 
 class _VolunteerAllScreenState extends State<VolunteerAllScreen> {
   final volunteerRequestController=Get.put(RequestVolunteerController());
+  LocationData? locationData;
+  Location? location;
 
   @override
   void initState() {
@@ -31,7 +34,10 @@ class _VolunteerAllScreenState extends State<VolunteerAllScreen> {
   }
 
   void api()async{
-   await volunteerRequestController.requestVolunteerApi(widget.status.toString());
+    location=Location();
+    locationData=await location!.getLocation();
+   await volunteerRequestController.requestVolunteerApi(widget.status.toString(),locationData!.latitude!,locationData!.longitude!);
+   setState(() {});
   }
   void updateVolunteerStatusApi(String id,String status)async{
     VolunteerStatusRequestBody requestBody=VolunteerStatusRequestBody(

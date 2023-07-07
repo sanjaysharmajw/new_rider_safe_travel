@@ -106,7 +106,7 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
   void familyStatusApi(
       int index, String userId, String memberId, String status) async {
     await familystatusController
-        .getUserStatus(userId, memberId, status)
+        .getUserStatus(index, userId, memberId, status)
         .then((value) async {
       if (value != null) {
         if (value.status == true) {

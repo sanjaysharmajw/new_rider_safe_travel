@@ -24,12 +24,12 @@ class RequestVolunteerController extends GetxController{
   final headerController = Get.put(HeaderController());
   final locationController = Get.put(PermissionController());
 
-  Future<dynamic> requestVolunteerApi(String status) async {
+  Future<dynamic> requestVolunteerApi(String status,double lat,double lng) async {
     GetVolunteerRequestBody volunteerRequestBody=GetVolunteerRequestBody(
       userId: Preferences.getId(Preferences.id).toString(),
       status: status.toString(),
-      lat: locationController.locationData?.latitude.toString(),
-      lng: locationController.locationData?.longitude.toString(),
+      lat: lat.toString(),
+      lng: lng.toString(),
     );
     try {
       //DriverCustomLoader.showLoader("Please wait");
