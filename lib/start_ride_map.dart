@@ -317,8 +317,6 @@ class _SignUpState extends State<StartRide> {
                         icon: destinationIcon,
                       )
                     },
-
-                    // markers: Set<Marker>.of(_markers.values),
                   ),
           );
         }),
@@ -390,10 +388,10 @@ class _SignUpState extends State<StartRide> {
                                           const SizedBox(
                                             height: 30.0,
                                           ),
-                                          Row(
+                                          const Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
-                                            children: const <Widget>[
+                                            children: <Widget>[
                                               Text(
                                                 "Select a location",
                                                 style: TextStyle(
