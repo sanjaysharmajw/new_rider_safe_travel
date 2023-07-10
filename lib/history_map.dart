@@ -297,9 +297,6 @@ class _HistoryMapState extends State<HistoryMap> {
         );
       }
     }
-
-
-
     final Polyline polyline = Polyline(
         polylineId: PolylineId(id),
         consumeTapEvents: true,

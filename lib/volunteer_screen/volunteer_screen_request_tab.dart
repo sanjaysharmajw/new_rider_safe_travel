@@ -83,11 +83,11 @@ class VolunteerRequestListTabScreenState extends State<VolunteerRequestListTabSc
                       children: [
                         /*-------------- Build Tabs here ------------------*/
                         TabBar(
-                            onTap: (index) {
+                           /* onTap: (index) {
                               setState(() {
                                 CustomLoader.message(selected_index.toString());
                               });
-                            },
+                            },*/
                             labelPadding: const EdgeInsets.only(left: 25,right: 25),
                             isScrollable: true,
                             tabs: getTabs(),
