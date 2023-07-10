@@ -1,110 +1,73 @@
 import 'dart:async';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:get/get.dart';
-import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
+import 'package:ride_safe_travel/Models/get_ride_data_live.dart';
 import '../color_constant.dart';
 import 'Models/rider_history_model.dart';
 import 'MyText.dart';
-import 'controller/permision_controller.dart';
-import 'get_ride_data_models.dart';
 
 class HistoryMap extends StatefulWidget {
-  num? sourceLat,sourceLng;
-  GetRideDataModels? riderHistoryData;
+  GetRideDataLive? riderHistoryData;
   RiderHistoryData? riderData;
-   HistoryMap({Key? key,this.riderHistoryData,this.riderData,this.sourceLat,this.sourceLng}) : super(key: key);
+
+   HistoryMap({Key? key,this.riderHistoryData,this.riderData}) : super(key: key);
 
   @override
   State<HistoryMap> createState() => _HistoryMapState();
 }
 
 class _HistoryMapState extends State<HistoryMap> {
-  final Completer<GoogleMapController> _completer = Completer();
-  final permissionController = Get.put(PermissionController());
 
-  BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor endSourceIcon = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor startSourceIcon = BitmapDescriptor.defaultMarker;
-
-  BitmapDescriptor stopIcons = BitmapDescriptor.defaultMarker;
-
-  List<LatLng> polylineCoordinates = [];
-  List<LatLng> livePolylineCoordinates = [];
-  Map<PolylineId, Polyline> polyLines = <PolylineId, Polyline>{};
-  int polyLineIdCounter = 1;
-  LatLng? source;
-  LatLng? destination;
-  late Location location;
-  LocationData? currentLocation;
-  Set<Marker> markers = {};
-  List<LatLng> listLocations = [];
-
+   List<LatLng> listLocations = [];
+   final Set<Marker> _markers = {};
+  final Set<Polyline> _polyline = {};
+  final Completer<GoogleMapController> _controller = Completer();
+  CameraPosition? _kGoogle;
 
   @override
   void initState() {
     setState(() {
-      liveLocation();
-      setCustomMarkerIcon();
-      double sourceLat=double.parse(widget.sourceLat!.toString());
-      double sourceLng=double.parse(widget.sourceLng!.toString());
-      source=LatLng(sourceLat, sourceLng);
-      for(int i=0;i<widget.riderHistoryData!.data!.length; i++){
-        double lat =double.parse(widget.riderHistoryData!.data![i].lat.toString());
-        double lng =double.parse(widget.riderHistoryData!.data![i].lng.toString());
-        listLocations.add(LatLng(lat,lng));
+      for(int i=0; i<widget.riderHistoryData!.data!.length; i++){
+          double lat =double.parse(widget.riderHistoryData!.data![i].lat.toString());
+          double lng =double.parse(widget.riderHistoryData!.data![i].lng.toString());
+          double sized=widget.riderHistoryData!.data!.length/2;
+          listLocations.add(LatLng(lat,lng));
+        setState(()  {
+          _kGoogle =  CameraPosition(
+            target: LatLng(lat, lng),
+            zoom: 11,
+          );
+        });
+        _polyline.add(
+            Polyline(
+              polylineId: const PolylineId('1'),
+              points: listLocations,
+              color: Colors.black,
+              width: 2
+            )
+        );
       }
+      _markers.add(
+          Marker(
+            markerId:  MarkerId(listLocations.toString()),
+            position: listLocations.first,
+            icon: BitmapDescriptor.defaultMarker,
+          )
+      );
+      debugPrint('lastpolyline');
+      debugPrint(listLocations.last.toString());
+      _markers.add(
+          Marker(
+            markerId:  MarkerId(listLocations.toString()),
+            position: listLocations.last,
+            icon: BitmapDescriptor.defaultMarker,
+          )
+      );
     });
     super.initState();
   }
-
-  void setCustomMarkerIcon() {
-    BitmapDescriptor.fromAssetImage(
-      ImageConfiguration.empty,
-      'assets/source_pin.png',
-    ).then((icon) {
-      sourceIcon = icon;
-    });
-    BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, 'assets/source_pin.png')
-        .then((icon) {
-      endSourceIcon = icon;
-    });
-    BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, 'new_assets/stop_marker.png')
-        .then((icon) {
-      stopIcons = icon;
-    });
-
-    BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, 'new_assets/destination_marker.png')
-        .then((icon) {
-      endSourceIcon = icon;
-    });
-  }
-
-
-
-  void liveLocation() async {
-    location = Location();
-    location.enableBackgroundMode(enable: true);
-    location.changeNotificationOptions(
-        channelName: 'Service App', title: 'Service app is running');
-    location.onLocationChanged.listen((LocationData cLoc) async {
-      currentLocation = cLoc;
-     // source=LatLng(cLoc.latitude!, cLoc.longitude!);
-      sendRequest();
-      // final GoogleMapController controller = await _completer.future;
-      // controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-      //     target: LatLng(cLoc.latitude!, cLoc.longitude!), zoom: 19)));
-      setState(() {});
-
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -127,18 +90,18 @@ class _HistoryMapState extends State<HistoryMap> {
                             },
                             child: Image.asset('assets/rounded_back.png')),
                       ),
-                      Positioned(
-                        width: 55,
-                        height: 55,
-                        top: 10,
-                        right: 10,
-                        child: InkWell(
-                            onTap: () {
-
-                            },
-                            child:
-                            Image.asset('assets/go_to_current_location.png')),
-                      ),
+                      // Positioned(
+                      //   width: 55,
+                      //   height: 55,
+                      //   top: 10,
+                      //   right: 10,
+                      //   child: InkWell(
+                      //       onTap: () {
+                      //
+                      //       },
+                      //       child:
+                      //       Image.asset('assets/go_to_current_location.png')),
+                      // ),
                       // _getCustomPin(),
                     ],
                   )),
@@ -189,7 +152,6 @@ class _HistoryMapState extends State<HistoryMap> {
                   text:  widget.riderData!.driverMobileNumber.toString() == "null" ? " " : widget.riderData!.driverMobileNumber.toString(),
                   fontFamily: 'Gilroy',
                   fontSize: 14,
-
                   color: Colors.black),
             ],
           ),
@@ -203,7 +165,6 @@ class _HistoryMapState extends State<HistoryMap> {
                   text: widget.riderData!.drivingLicenceNumber.toString() == "null" ? " " : widget.riderData!.drivingLicenceNumber.toString(),
                   fontFamily: 'Gilroy',
                   fontSize: 14,
-
                   color: Colors.black),
              /* MyText(
                   text: widget.riderData!.driverEmailId.toString() == "null" ? " " : widget.riderData!.driverEmailId.toString(),
@@ -219,94 +180,22 @@ class _HistoryMapState extends State<HistoryMap> {
   }
 
   Widget _getMap() {
-    return widget.sourceLng == null
+    return widget.riderHistoryData!.data == null
         ?  Center(
         child: MyText(
             text: 'Please Wait\nMap is loading',
             fontFamily: 'Gilroy',
             fontSize: 14,
-
             color: appBlack))
         : GoogleMap(
-      initialCameraPosition: CameraPosition(
-        target: source!,
-        zoom: 10.0,
-      ),
-      markers: markers,
+      initialCameraPosition: _kGoogle!,
+      markers: _markers,
+      polylines: _polyline,
       zoomControlsEnabled: false,
       zoomGesturesEnabled: true,
-      polylines: Set<Polyline>.of(polyLines.values),
-      onMapCreated: (GoogleMapController controller) {
-        _completer.complete(controller);
-        controller.setMapStyle(permissionController.mapStyle);
+      onMapCreated: (GoogleMapController controller){
+        _controller.complete(controller);
       },
     );
   }
-  void sendRequest() {
-    polyLinesDraw();
-    addMarker();
-  }
-  Future<void> addMarker() async {
-    markers.add(Marker(
-        anchor: const Offset(0.5, 0.5),
-        markerId: const MarkerId('source'),
-        position: source!,
-        icon: sourceIcon));
-
-    markers.add(Marker(
-        anchor: const Offset(0.5, 0.5),
-        markerId: MarkerId(listLocations.last.toString()),
-        position: listLocations.last,
-        icon: endSourceIcon
-    ));
-  }
-
-  polyLinesDraw() async {
-      await Future.forEach(listLocations, (LatLng elem) async {
-        await _getRoutePolyline(
-          start: source!,
-          finish: elem,
-          color: appBlack,
-          id: 'ServicePolyline $elem',
-          width: 4,
-        );
-      });
-    setState(() {});
-  }
-
-  Future<Polyline> _getRoutePolyline(
-      {required LatLng start,
-        required LatLng finish,
-        required Color color,
-        required String id,
-        int width = 6}) async {
-    final polylinePoints = PolylinePoints();
-    final List<LatLng> polylineCoordinates = [];
-    final startPoint = PointLatLng(start.latitude, start.longitude);
-    final finishPoint = PointLatLng(finish.latitude, finish.longitude);
-    final result = await polylinePoints.getRouteBetweenCoordinates(
-      ApiUrl.googleMapGetDirection,
-      travelMode: TravelMode.driving,
-      startPoint,
-      finishPoint,
-    );
-    if (result.points.isNotEmpty) {
-      for (var point in result.points) {
-        polylineCoordinates.add(
-          LatLng(point.latitude, point.longitude),
-        );
-      }
-    }
-    final Polyline polyline = Polyline(
-        polylineId: PolylineId(id),
-        consumeTapEvents: true,
-        points: polylineCoordinates,
-        color: appBlack,
-        width: 4);
-    setState(() {
-      polyLines[PolylineId(id)] = polyline;
-    });
-    return polyline;
-  }
-
 }

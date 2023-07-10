@@ -11,8 +11,10 @@ import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:ride_safe_travel/Utils/view_image.dart';
+import 'package:ride_safe_travel/body_request/get_ride_live_request.dart';
 import 'package:ride_safe_travel/bottom_nav/EmptyScreen.dart';
 import 'package:ride_safe_travel/color_constant.dart';
+import 'package:ride_safe_travel/controller/get_ride_live_data_controller.dart';
 import 'Error.dart';
 import 'LoginModule/Api_Url.dart';
 import 'LoginModule/custom_color.dart';
@@ -123,17 +125,12 @@ class _MyRidesPageState extends State<MyRidesPage> {
   }
 
   void getRideDetailsApi(String id,int index)async{
-    final getRideDetailsController=Get.put(GetRideDetailsController());
-    GetRideRequestBody requestBody=GetRideRequestBody(rideId: id.toString());
-    await getRideDetailsController.getRideDataApi(requestBody).then((value){
+    final getRideDataLiveController=Get.put(GetRideDataLiveController());
+    GetRideLiveRequest request=GetRideLiveRequest(rideId: id.toString(),type: 1);
+    await getRideDataLiveController.getRideLiveData(request).then((value){
       if(value!=null){
         if(value.status==true){
-          if(value.data!.isNotEmpty){
-
-          }else{
-            ToastMessage.toast("Data Not Found !");
-          }
-          Get.to(HistoryMap(riderHistoryData: value,riderData: ridehistoryController.getRiderHistoryData[index],sourceLat:value.data!.first.lat,sourceLng:value.data!.first.lng));
+          Get.to(HistoryMap(riderHistoryData: value,riderData: ridehistoryController.getRiderHistoryData[index]));
         }
       }
     });

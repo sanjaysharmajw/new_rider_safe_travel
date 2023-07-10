@@ -247,7 +247,7 @@ class _SignUpState extends State<StartRide> {
         centerTitle: true,
         title: Text(
           "ongoing_journey".tr,
-          style: TextStyle(
+          style: const TextStyle(
               color: CustomColor.white, fontFamily: 'Gilroy', fontSize: 22),
         ),
         elevation: 0,
@@ -255,7 +255,7 @@ class _SignUpState extends State<StartRide> {
         leading: IconButton(
           onPressed: () {
             OverlayLoadingProgress.stop();
-            Get.offAll(CustomBottomNav());
+            Get.offAll(const CustomBottomNav());
           },
           icon: Image.asset(
             'assets/map_back.png',
