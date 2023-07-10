@@ -70,6 +70,7 @@ class ApiUrl {
   static var updateMedicalDetails= "${baseUrl}user/updateMedicalCondition";
   static var getMedicalDetails= "${baseUrl}user/getUserMedicalCondition";
   static var medicalDropDownList = "${serviceUrl}user/getmedicaldropdownlist";
+  static var rideDataLive = "https://x8f3h6lx4h.execute-api.ap-south-1.amazonaws.com/dev/api/user/getRideDataLive";
 
 
 
