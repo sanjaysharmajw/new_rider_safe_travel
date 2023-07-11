@@ -32,7 +32,7 @@ class RequestVolunteerController extends GetxController{
       lng: lng.toString(),
     );
     try {
-      //DriverCustomLoader.showLoader("Please wait");
+      CustomLoader.showLoader("Please wait");
       final response = await http.post(Uri.parse(ApiUrl.getVolunteerRequests),
         headers: headerController.headerToken,
         body: jsonEncode(volunteerRequestBody),

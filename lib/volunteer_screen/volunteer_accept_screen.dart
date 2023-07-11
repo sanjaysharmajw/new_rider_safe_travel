@@ -29,13 +29,14 @@ class _VolunteerAcceptScreenState extends State<VolunteerAcceptScreen> {
   Location? location;
   @override
   void initState() {
-    api();
     super.initState();
+    api();
   }
 
   void api()async{
     location=Location();
     locationData=await location!.getLocation();
+    volunteerRequestController.getRequestVolunteerData.clear();
     await volunteerRequestController.requestVolunteerApi(widget.status.toString(),locationData!.latitude!,locationData!.longitude!);
     setState(() {});
   }
@@ -60,12 +61,13 @@ class _VolunteerAcceptScreenState extends State<VolunteerAcceptScreen> {
     return SafeArea(child: Scaffold(
         backgroundColor: Colors.white,body: Padding(
       padding: const EdgeInsets.all(25.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Obx(() {
-              return Center(
+      child: Obx((){
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child:
+              Center(
                 child: volunteerRequestController.isLoading.value
                     ? CustomLoader.loader()
                     : volunteerRequestController.getRequestVolunteerData.isEmpty
@@ -82,12 +84,13 @@ class _VolunteerAcceptScreenState extends State<VolunteerAcceptScreen> {
                         confirmationDialog(index,"Reject","Not ready to go");
                       },);
                     }),
-              );
-            }),
-          )
+              ),
 
-        ],
-      ),
+            )
+
+          ],
+        );
+      })
     )));
   }
   void confirmationDialog(int index, String status,String confirmation){

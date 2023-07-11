@@ -21,9 +21,9 @@ class VolunteerRequestListTabScreen extends StatefulWidget {
 
 class VolunteerRequestListTabScreenState extends State<VolunteerRequestListTabScreen>  with SingleTickerProviderStateMixin {
 
-  int? selected_index;
+ // int? selected_index;
   TabController? _controller;
-  int _selectedIndex = 0;
+  int selectedIndex = 0;
   List<String> tabNames = [
     'all'.tr,
     'accepted'.tr,
@@ -39,12 +39,14 @@ class VolunteerRequestListTabScreenState extends State<VolunteerRequestListTabSc
 
     _controller?.addListener(() {
       setState(() {
-        _selectedIndex = _controller!.index;
-      });
-      print("Selected Index: " + _controller!.index.toString());
-    });
-  }
+        selectedIndex = _controller!.index;
 
+      });
+      print("Selected Index: " + selectedIndex.toString());
+    });
+
+
+  }
 
 
 
@@ -83,11 +85,13 @@ class VolunteerRequestListTabScreenState extends State<VolunteerRequestListTabSc
                       children: [
                         /*-------------- Build Tabs here ------------------*/
                         TabBar(
-                           /* onTap: (index) {
+                          controller: _controller,
+                            onTap: (index) {
                               setState(() {
-                                CustomLoader.message(selected_index.toString());
+                                selectedIndex = index;
+                                CustomLoader.message(index.toString());
                               });
-                            },*/
+                            },
                             labelPadding: const EdgeInsets.only(left: 25,right: 25),
                             isScrollable: true,
                             tabs: getTabs(),
@@ -97,6 +101,7 @@ class VolunteerRequestListTabScreenState extends State<VolunteerRequestListTabSc
                   ),
                   /*--------------- Build Tab body here -------------------*/
                   body: TabBarView(
+                    controller: _controller,
                     children: getTabContents(),
                   ),
                 ),

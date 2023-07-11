@@ -30,9 +30,9 @@ class ProfileWidgetPage extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MyText(text: title, fontFamily: 'Gilroy', color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold,),
+                    MyText(text: title, fontFamily: 'Gilroy', color: Colors.black, fontSize: 16, ),
                     const SizedBox(height: 5),
-                    MyText(text: subtitle, fontFamily: 'Gilroy', color: Colors.black54, fontSize: 12, fontWeight: FontWeight.normal,),
+                    MyText(text: subtitle, fontFamily: 'Gilroy', color: Colors.black, fontSize: 12,)
                   ],
                 ),
               ],

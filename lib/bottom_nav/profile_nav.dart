@@ -39,6 +39,7 @@ import '../new_widgets/profile_notification_with_switch.dart';
 import '../rider_profile_view.dart';
 import '../volunteer_screen/volunteer_screen_request_tab.dart';
 import '../volunteer_sos_reason_controller.dart';
+import '../volunteer_tab/volunteer_tabbar_screen.dart';
 import 'custom_bottom_navi.dart';
 import 'home_page_nav.dart';
 
@@ -368,11 +369,13 @@ await getReason.getSosReason();
                                 title: "Volunteer Requests".tr,
                                 subtitle: 'View volunteering requests'.tr,
                                 click: () {
-                                  Get.to(const VolunteerRequestListTabScreen());
+
+                                  //Get.to(const VolunteerRequestListTabScreen());
+                                  Get.to(volunteerTabBarScreen());
                                 },
                                 iconData: FeatherIcons.user),
 
-                            const Divider(color: lightText),
+
                           ],
                         )
                     ),

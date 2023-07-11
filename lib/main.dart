@@ -19,6 +19,7 @@ import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/bottom_nav/custom_bottom_navi.dart';
 import 'package:ride_safe_travel/start_ride_map.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:ride_safe_travel/volunteer_tab/volunteer_tabbar_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -49,6 +50,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 Future<void> main() async {
+
   await ScreenUtil.ensureScreenSize();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -67,6 +69,8 @@ Future<void> main() async {
     badge: true,
     sound: true,
   );
+
+
   runApp(const MyApp());
 }
 

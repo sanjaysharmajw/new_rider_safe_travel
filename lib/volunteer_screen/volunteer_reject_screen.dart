@@ -28,13 +28,14 @@ class _VolunteerRejectScreenState extends State<VolunteerRejectScreen> {
   Location? location;
   @override
   void initState() {
-    api();
     super.initState();
+    api();
   }
 
   void api()async{
     location=Location();
     locationData=await location!.getLocation();
+    volunteerRequestController.getRequestVolunteerData.clear();
     await volunteerRequestController.requestVolunteerApi(widget.status.toString(),locationData!.latitude!,locationData!.longitude!);
     setState(() {});
   }

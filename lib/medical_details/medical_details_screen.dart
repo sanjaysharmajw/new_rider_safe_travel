@@ -423,6 +423,7 @@ class _MedicalDetailsScreenState extends State<MedicalDetailsScreen> {
             }
           });
         },
+        scrollController: FixedExtentScrollController(initialItem: selectedItems),
       );
     });
   }
