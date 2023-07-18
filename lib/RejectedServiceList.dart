@@ -63,6 +63,7 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -88,7 +89,8 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
             children: [
               Expanded(
                 child: Obx(() {
-                  return requestedservicelist.isLoading.value
+                  return
+                    requestedservicelist.isLoading.value
                       ? LoaderUtils.loader()
                       : requestedservicelist.requestedList.isEmpty
                           ? Center(
@@ -97,6 +99,7 @@ class _RejectedServiceListState extends State<RejectedServiceList> {
                               ),
                             )
                           : ListView.builder(
+
                               itemCount:
                                   requestedservicelist.requestedList.length,
                               shrinkWrap: true,

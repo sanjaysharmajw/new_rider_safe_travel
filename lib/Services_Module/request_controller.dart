@@ -18,7 +18,7 @@ class ServiceRequestController extends GetxController{
 
   final commentTextField=TextEditingController().obs;
   Future<ServiceRequestModel?> sendRequest(String serviceId, String id, String serviceProviderId,
-      double lng, double lat,) async {
+      double lng, double lat, String comment) async {
     var userId=Preferences.getId(Preferences.id);
     try {
       LoaderUtils.showLoader('Please Wait...');
@@ -28,7 +28,7 @@ class ServiceRequestController extends GetxController{
           body: jsonEncode({
             "service_id":serviceId,
             "id":id,
-            "comment":commentTextField.value.text,
+            "comment":comment,
             "service_provider_id":serviceProviderId,
             "lng":lng,
             "lat":lat,
@@ -36,10 +36,10 @@ class ServiceRequestController extends GetxController{
 
           }));
       print(
-          jsonEncode({
+          "sendServiceRequest"+jsonEncode({
             "service_id":serviceId,
             "id":id,
-            "comment":commentTextField.value.text,
+            "comment":comment,
             "service_provider_id":serviceProviderId,
             "lng":lng,
             "lat":lat,

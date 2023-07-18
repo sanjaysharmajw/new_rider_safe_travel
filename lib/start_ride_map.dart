@@ -109,7 +109,7 @@ class _SignUpState extends State<StartRide> {
     setCustomMarkerIcon();
     sharePre();
     setState(() {});
-    OverlayLoadingProgress;
+   // OverlayLoadingProgress;
     //ToastMessage.toast(widget.riderId);
   }
 
@@ -142,7 +142,7 @@ class _SignUpState extends State<StartRide> {
     });
 
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration.empty, 'assets/to_map_pin.png')
+            ImageConfiguration.empty, 'assets/correct_pin.png',)
         .then((icon) {
       destinationIcon = icon;
     });
@@ -296,7 +296,7 @@ class _SignUpState extends State<StartRide> {
                       myLocationEnabled: true,
                       padding: const EdgeInsets.only(bottom: 60),
                       compassEnabled: true,
-                      mapToolbarEnabled: true,
+                      mapToolbarEnabled: true  ,
                       myLocationButtonEnabled: true,
                       polylines: {
                         Polyline(
@@ -619,7 +619,7 @@ class _SignUpState extends State<StartRide> {
                               ),
                               InkWell(
                                 onTap: () async {
-                                  Get.to(FamilyList());
+                                  Get.to(FamilyList(appBar: 'showAppBar',));
                                   // Get.to(const MapFamilyAdd());
                                 },
                                 child: Column(
@@ -1162,7 +1162,6 @@ class _SignUpState extends State<StartRide> {
                             onPressed: () {
                               OverlayLoadingProgress.start(context);
                               SOSNotification();
-                              Get.back();
                             },
                             child: Text("Yes"),
                             style: ElevatedButton.styleFrom(primary: appBlue),

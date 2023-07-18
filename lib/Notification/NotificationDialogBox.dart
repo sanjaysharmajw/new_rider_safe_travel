@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
+import 'package:ride_safe_travel/color_constant.dart';
 
 Future<bool> NotificationPopup(context, String title,String description, VoidCallback press) async {
   return await showDialog(
@@ -8,7 +9,7 @@ Future<bool> NotificationPopup(context, String title,String description, VoidCal
       builder: (BuildContext context) {
         return AlertDialog(
           content: Container(
-            height: MediaQuery.of(context).size.height/5,
+            height: 165,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -25,7 +26,7 @@ Future<bool> NotificationPopup(context, String title,String description, VoidCal
                         onPressed: press,
                         child: Text("Ok"),
                         style: ElevatedButton.styleFrom(
-                            primary: CustomColor.yellow),
+                            primary: appBlue),
                       ),
                     ),
                   ],

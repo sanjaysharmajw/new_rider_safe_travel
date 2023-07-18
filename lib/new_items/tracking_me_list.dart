@@ -314,7 +314,7 @@ class _UserFamilyListState extends State<TrackingMeList> {
                                                                                     // OverlayLoadingProgress.start(context);
                                                                                     getMembersStatus("Deleted");
                                                                                     setState(() {});
-                                                                                    Get.back();
+                                                                                   // Get.back();
                                                                                     snapshot.data!.removeAt(index);
                                                                                     //getUserFamilyList();
                                                                                   },

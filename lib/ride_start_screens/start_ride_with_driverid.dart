@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
@@ -7,6 +8,8 @@ import 'package:ride_safe_travel/controller/ride_start_with_vehicleno_controller
 import 'package:ride_safe_travel/controller/send_otp_controller.dart';
 import 'package:ride_safe_travel/ride_start_screens/my_text_fieldform.dart';
 import 'package:ride_safe_travel/ride_start_screens/start_ride_otp.dart';
+
+import '../Language/custom_text_input_formatter.dart';
 
 class StartRideWithDriverId extends StatefulWidget {
 
@@ -75,8 +78,12 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                   fontSize: 18,
                   readOnly: false,
                   onTap: () {},
+                  textCapitalization: TextCapitalization.words,
                   keyboardType: TextInputType.text,
-                  inputFormatters: null,
+                  inputFormatters: [
+                    engHindFormatter,
+                    FilteringTextInputFormatter.deny('  '),
+                  ],
                 ),
               ),
               Padding(
@@ -96,7 +103,11 @@ class _StartRideWithDriverIdState extends State<StartRideWithDriverId> {
                   readOnly: false,
                   onTap: () {},
                   keyboardType: TextInputType.number,
-                  inputFormatters: null,
+                  inputFormatters: [  FilteringTextInputFormatter.allow(
+                      RegExp("[0-9]")),
+                    FilteringTextInputFormatter.deny(RegExp(r'^0+')),
+                    LengthLimitingTextInputFormatter(10),
+                    FilteringTextInputFormatter.deny('  ')],
                 ),
               ),
               Padding(

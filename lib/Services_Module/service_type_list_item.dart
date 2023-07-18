@@ -8,6 +8,7 @@ import '../ServiceTypeModel.dart';
 import '../color_constant.dart';
 import '../new_widgets/my_new_text.dart';
 import '../new_widgets/new_my_image.dart';
+import '../selected_service/send_service_request_screen.dart';
 
 class ServiceTypeListItem extends StatelessWidget {
 
@@ -18,7 +19,8 @@ class ServiceTypeListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        Get.to(SelectedServiceLists(serviceId: serviceTypeData.id.toString(), backToDashboard: '', ));
+        Get.to(SendServiceRequestScreen(serviceId: serviceTypeData.id.toString(),));
+       // Get.to(SelectedServiceLists(serviceId: serviceTypeData.id.toString(), backToDashboard: '', ));
       },
       child: Container(
 

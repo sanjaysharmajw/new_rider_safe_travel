@@ -399,13 +399,14 @@ class _RiderMapState extends State<RiderMap> {
         controller.animateCamera(CameraUpdate.newCameraPosition(
             CameraPosition(target: LatLng(lat, lng), zoom: 19)));
         var image = await BitmapDescriptor.fromAssetImage(
-            const ImageConfiguration(), "images/top_front_car.png");
+            const ImageConfiguration(), "images/user_map_pin.png");
         multiMarkers.add(Marker(
             anchor: const Offset(0.5, 0.5),
             markerId: const MarkerId('ID'),
             position: LatLng(lat, lng),
             icon: image
         ));
+        setState(() {});
 
         // Marker marker = Marker(
         //     markerId: MarkerId('ID'), icon: image, position: LatLng(lat, lng));
@@ -420,7 +421,7 @@ class _RiderMapState extends State<RiderMap> {
       });
 
       socket.on('error', (error) {
-        print('Error: $error');
+        print('ErrorSocket: $error');
       });
     } catch (e) {
       print(e.toString());

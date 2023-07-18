@@ -415,7 +415,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: EdgeInsets.only(left: 20.sp),
+                                padding: EdgeInsets.only(left: 10),
                                 child: Icon(Icons.person_outlined,size: 20,)
                               ),
                               SizedBox(width: 5,),
@@ -482,7 +482,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           Row(
                             children: [
                               Padding(
-                                  padding: EdgeInsets.only(left: 20.sp,),
+                                  padding: EdgeInsets.only(left: 10,),
                                   child: Icon(Icons.person_outlined,size: 20,)
                               ),
                               SizedBox(width: 5,),
@@ -546,7 +546,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           Row(
                             children: [
                               Padding(
-                                  padding: EdgeInsets.only(left: 20.sp),
+                                  padding: EdgeInsets.only(left: 10),
                                   child: Icon(Icons.email_outlined,size: 20,)
                               ),
                               SizedBox(width: 5,),
@@ -618,7 +618,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           Row(
                             children: [
                               Padding(
-                                  padding: EdgeInsets.only(left: 20.sp),
+                                  padding: EdgeInsets.only(left: 10),
                                   child: Icon(Icons.calendar_month_outlined,size: 25,)
                               ),
                               SizedBox(width: 5,),
@@ -680,8 +680,8 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           Row(
                             children: [
                               Padding(
-                                  padding: EdgeInsets.only(left: 20.sp),
-                                  child: Icon(Icons.calendar_month_outlined,size: 25,)
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: Icon(Icons.bloodtype_outlined,size: 25,)
                               ),
                               SizedBox(width: 5,),
                               Container(
@@ -750,7 +750,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           Row(
                             children: [
                               Padding(
-                                  padding: EdgeInsets.only(left: 20.sp),
+                                  padding: EdgeInsets.only(left: 10),
                                   child: Icon(Icons.location_city_outlined,)
                               ),
                               SizedBox(width: 5,),
@@ -817,7 +817,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           Row(
                             children: [
                               Padding(
-                                  padding: EdgeInsets.only(left: 20.sp),
+                                  padding: EdgeInsets.only(left:10),
                                   child: Icon(Icons.location_city_outlined,)
                               ),
                               SizedBox(width: 5,),
@@ -884,7 +884,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           Row(
                             children: [
                               Padding(
-                                  padding: EdgeInsets.only(left: 20.sp),
+                                  padding: EdgeInsets.only(left: 10),
                                   child: Icon(Icons.pin_outlined)
                               ),
                               SizedBox(width: 5,),
@@ -952,7 +952,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           Row(
                             children: [
                               Padding(
-                                  padding: EdgeInsets.only(left: 20.sp,right: 10),
+                                  padding: EdgeInsets.only(left: 10,right: 10),
                                   child: Icon(Icons.person_outlined,size: 20,)
                               ),
                               SizedBox(width: 5,),
@@ -968,7 +968,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 23,right: 5),
+                                padding: const EdgeInsets.only(left: 8,right: 5),
                                 child: Row(
                                   children: [
                                     SizedBox(
@@ -1076,7 +1076,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           Row(
                             children: [
                               Padding(
-                                  padding: EdgeInsets.only(left: 20.sp),
+                                  padding: EdgeInsets.only(left: 10),
                                   child: Icon(Icons.location_on_outlined)
                               ),
                               SizedBox(width: 5,),
@@ -1447,7 +1447,7 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
                           Row(
                             children: [
                               Padding(
-                                  padding: EdgeInsets.only(left: 20.sp),
+                                  padding: EdgeInsets.only(left: 15),
                                   child: Icon(Icons.location_on_outlined)
                               ),
                               SizedBox(width: 5,),
@@ -1750,10 +1750,10 @@ class _RiderProfileEditState extends State<RiderProfileEdit> {
 
                   setState(() {
                     imageCache.clear();
-                    image = null;
+                    uploadedImage = null;
                   });
 
-                  Navigator.pop(context);
+                 Get.back();
                 },
                 child: Row(
                   children: [

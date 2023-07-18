@@ -19,14 +19,6 @@ class FamilyListController extends GetxController{
   var isLoading = true.obs;
   var getFamilyListData = <FamilyMemberDataModel>[].obs;
 
-
-  @override
-  void onInit() {
-    super.onInit();
-    familyListApi(Preferences.getId(Preferences.id));
-
-  }
-
   Future<dynamic> familyListApi(String userId) async {
     try {
       LoaderUtils.showLoader("Please wait");
@@ -45,6 +37,8 @@ class FamilyListController extends GetxController{
       final decodedBytes = utf8Decoder.convert(response.bodyBytes);
       Map<String, dynamic> responseBody = json.decode(decodedBytes);
       if (response.statusCode == 200) {
+        print("responseBody");
+        print(responseBody);
         isLoading.value = false;
         LoaderUtils.closeLoader();
         FamilyMemberModel model = FamilyMemberModel.fromJson(responseBody);

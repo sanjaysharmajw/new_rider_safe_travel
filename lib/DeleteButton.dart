@@ -72,7 +72,7 @@ class _DeleteButtonWidgetState extends State<DeleteButtonWidget> {
                                              widget.click();
                                               setState(() {});
                                              // Navigator.pop(context);
-                                              //Get.back();
+                                              Get.back();
 
                                               //getUserFamilyList();
                                             },

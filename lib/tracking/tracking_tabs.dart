@@ -39,14 +39,13 @@ class _TrackingTabPageState extends State<TrackingTabPage> {
           ),
         ),
         body: DefaultTabController(
-          length: 5,
+          length: 2,
           initialIndex: 0,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              SizedBox(height: 25,),
-
+              const SizedBox(height: 25,),
               Expanded(
                 child: Scaffold(
                   appBar: AppBar(
@@ -102,8 +101,8 @@ class _TrackingTabPageState extends State<TrackingTabPage> {
 
   List<Widget> getTabContents() {
     return  [
-      FamilyList(),
-      FamilyMemberListScreen(changeUiValue: '',),
+      FamilyList(appBar: '',),
+      FamilyMemberListScreen(),
 
     ];
   }

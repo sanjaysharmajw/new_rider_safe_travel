@@ -15,10 +15,12 @@ import 'package:ride_safe_travel/Utils/CustomLoader.dart';
 import 'package:ride_safe_travel/controller/location_controller.dart';
 
 import '../Utils/Loader.dart';
+import '../Widgets/add_custom_btn.dart';
 import '../bottom_nav/EmptyScreen.dart';
 import '../bottom_nav/custom_bottom_navi.dart';
 import '../bottom_nav/home_page_nav.dart';
 import '../color_constant.dart';
+import '../new_widgets/my_new_text.dart';
 
 class SelectedServiceLists extends StatefulWidget {
   String serviceId;
@@ -98,13 +100,18 @@ class _SelectedServiceListsState extends State<SelectedServiceLists> {
                           return  ShowSelectedServiceItem(
                             serviceListData: servicelist.servicesList[index],
                             voidCallback: () async {
-                             requestService(servicelist.servicesList[index].serviceId.toString(),
+                              String? id=servicelist.servicesList[index].id.toString();
+                              String? serviceId=servicelist.servicesList[index].serviceId.toString();
+                              String? serviceProvideId=servicelist.servicesList[index].serviceProviderId.toString();
+                              commentDialogBox(id,serviceId,serviceProvideId);
+
+                            /* requestService(servicelist.servicesList[index].serviceId.toString(),
                                   servicelist.servicesList[index].id.toString(),
                                 servicelist.servicesList[index].serviceProviderId.toString(),
                                currenctLoaction!.longitude!,
                                currenctLoaction!.latitude!,
 
-                              );
+                              );*/
                             },
                           );
                       });
@@ -115,9 +122,72 @@ class _SelectedServiceListsState extends State<SelectedServiceLists> {
 
   }
 
+  Future commentDialogBox(String id, String serviceId, String serviceProvideId){
+    TextStyle textStyle = const TextStyle(color: appBlack,fontFamily: 'Gilroy', height: 1.4, fontSize: 16);
+    final commentTextController=TextEditingController();
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content:SizedBox(
+            height: 280,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      NewMyText(textValue: 'comment'.tr, fontName: 'Gilroy', color: appBlack,
+                          fontWeight: FontWeight.w700, fontSize: 18),
+                      IconButton(
+                          padding: const EdgeInsets.only(left: 30.0),
+                          onPressed: (){
+                            Get.back();
+                          }, icon: const Icon(Icons.close_outlined)),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextField(
+                        controller: commentTextController,
+                        style: textStyle, cursorColor: appBlack,
+                        maxLines: 4, minLines: 4,
+                        decoration: InputDecoration(
+                          hintText: 'Type your massage',
+                          hintStyle: const TextStyle(color: appBlack),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: appBlack, width: 1),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: appBlack, width: 1),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      AddCustomButton(press:  (){
+                        if(commentTextController.text.toString().isNotEmpty){
+                          requestService(id,serviceId,serviceProvideId,currenctLoaction!.longitude!,currenctLoaction!.latitude!,commentTextController.text);
+                        }else{
+                          LoaderUtils.showToast('write_something_in_the_comment_box'.tr);
+                        }
+                      }, buttonText: 'submit'.tr)
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   void requestService(String serviceId, String id, String serviceProviderId,
-      double lng, double lat)async{
-    await request.sendRequest(serviceId, id, serviceProviderId, lng, lat).then((value) async {
+      double lng, double lat, String comment)async{
+    await request.sendRequest(serviceId, id, serviceProviderId, lng, lat,comment).then((value) async {
       if (value != null) {
         print("Click on request");
         LoaderUtils.closeLoader();

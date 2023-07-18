@@ -221,49 +221,46 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
                    SizedBox(
                     height: 20.h,
                   ),
-                   Padding(
-                     padding: EdgeInsets.only(left: 25,right: 20),
-                     child: Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                         children: [
+                   Row(
+                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       children: [
 
-                       SizedBox(
-                         child: Text(
-                           "didn't_receive_otp ? ".tr,
-                           textAlign: TextAlign.left,
-                           style: TextStyle(
-                             fontFamily: "Gilroy",
-                             fontWeight: FontWeight.w400,
-                             fontSize: 14.sp,
-                           ),
+                     SizedBox(
+                       child: Text(
+                         "didn't_receive_otp ? ".tr,
+                         textAlign: TextAlign.left,
+                         style: TextStyle(
+                           fontFamily: "Gilroy",
+                           fontWeight: FontWeight.w400,
+                           fontSize: 14.sp,
                          ),
                        ),
-                       Column(
-                         children: [
-                           OtpTimerButton(
-                             controller: timercontroller,
-                             onPressed: () => _requestOtp(),
-                             text:  Text(
-                               'resend_otp'.tr,
-                               style: TextStyle(
-                                   fontFamily: "Gilroy",
-                                   fontSize: 12.sp,
-                                   color: Colors.red),
-                             ),
-                             duration: 15,
-                             backgroundColor: CustomColor.white,
-                             //textColor: Colors.indigo,
-                             buttonType: ButtonType.text_button,
-                             // or ButtonType.outlined_button
-                             loadingIndicator: const CircularProgressIndicator(
-                               strokeWidth: 2,
-                               color: Colors.red,
-                             ),
+                     ),
+                     Column(
+                       children: [
+                         OtpTimerButton(
+                           controller: timercontroller,
+                           onPressed: () => _requestOtp(),
+                           text:  Text(
+                             'resend_otp'.tr,
+                             style: TextStyle(
+                                 fontFamily: "Gilroy",
+                                 fontSize: 12.sp,
+                                 color: Colors.red),
                            ),
-                         ],
-                       ),
-                     ]),
-                   ),
+                           duration: 15,
+                           backgroundColor: CustomColor.white,
+                           //textColor: Colors.indigo,
+                           buttonType: ButtonType.text_button,
+                           // or ButtonType.outlined_button
+                           loadingIndicator: const CircularProgressIndicator(
+                             strokeWidth: 2,
+                             color: Colors.red,
+                           ),
+                         ),
+                       ],
+                     ),
+                   ]),
 
 
                    SizedBox(
@@ -318,16 +315,18 @@ class _NumberVerifyScreenPageState extends State<RiderVerifyOtpPage> {
       String token = jsonDecode(response.body)['token'];
       var msg = jsonDecode(response.body)[ErrorMessage.message];
       if (status == true) {
-        OverlayLoadingProgress.stop();
+        //OverlayLoadingProgress.stop();
         //Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
         ToastMessage.toast(msg);
         print("verifyOTP..."+token.toString());
+        OverlayLoadingProgress.stop();
         Preferences.setLoginToken(Preferences.loginToken, token);
         await regUserNew(mobileNumber.toString());
       } else {
-        OverlayLoadingProgress.stop();
+        //OverlayLoadingProgress.stop();
         ToastMessage.toast(msg);
-        Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
+       // Get.snackbar("Message", msg, snackPosition: SnackPosition.BOTTOM);
+        OverlayLoadingProgress.stop();
       }
       return null;
     } else {

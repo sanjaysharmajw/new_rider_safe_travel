@@ -242,7 +242,7 @@ class _HomePageState extends State<HomePageNav> {
           actions: [
             InkWell(
               onTap: () async {
-                Get.to(const NotificationScreen());
+               // Get.to(const NotificationScreen());
                 String refresh = await Navigator.push(
                     context,
                     MaterialPageRoute(

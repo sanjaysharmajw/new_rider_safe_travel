@@ -38,7 +38,8 @@ import 'familylist_controller.dart';
 import 'new_widgets/my_new_text.dart';
 
 class FamilyList extends StatefulWidget {
-  const FamilyList({Key? key}) : super(key: key);
+  String appBar;
+   FamilyList({Key? key, this.appBar=""}) : super(key: key);
 
   @override
   State<FamilyList> createState() => _FamilyListState();
@@ -46,14 +47,25 @@ class FamilyList extends StatefulWidget {
 
 class _FamilyListState extends State<FamilyList> {
 
+
   final familyListController=Get.put(FamilyListController());
   final userstatusController = Get.put(UserStatusController());
+  bool isVisible = false;
+
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      familyListApi();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    var height = AppBar().preferredSize.height;
     return  SafeArea(child: Scaffold(
       backgroundColor: appWhiteColor,
-
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: appBlue,
           onPressed: (){
@@ -67,27 +79,54 @@ class _FamilyListState extends State<FamilyList> {
           label: Text("add_family".tr,style: TextStyle(fontFamily: 'Gilroy',fontSize: 15),),
 
       ),
-      body: Obx(() {
-        return familyListController.isLoading.value
-            ? LoaderUtils.loader()
-            : familyListController.getFamilyListData.isEmpty
-            ? Center(
-          child: EmptyScreen(text: 'family_list_not_found'.tr,),
-        ) : ListView.builder(
-          scrollDirection: Axis.vertical,
-            itemCount: familyListController.getFamilyListData.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return FamilyListItems(memberDataModel: familyListController.getFamilyListData[index],
-                deleteClick: () {
-                userStatusApi(index,familyListController.getFamilyListData[index].userId.toString(),
-                familyListController.getFamilyListData[index].memberId.toString(), 'Deleted');
-              }, blockClick: () {
-                userStatusApi(index,familyListController.getFamilyListData[index].userId.toString(),
-                    familyListController.getFamilyListData[index].memberId.toString(), 'Blocked');
-              },);
-            });
-      }),
+      body: Column(
+        children: [
+          Visibility(
+            visible: widget.appBar == 'showAppBar' ? true : false,
+            child: Container(
+              color: appBlue,
+              height: height,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children:  [
+                     InkWell(
+                       onTap: (){
+                         Get.back();
+                       },
+                         child: const Icon(Icons.arrow_back_sharp,color: appWhiteColor)),
+                     const SizedBox(width: 10),
+                     const Text("People Tracking Me",style: TextStyle(fontFamily: "Gilroy",fontSize: 22,color: Colors.white)),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Obx(() {
+            return familyListController.isLoading.value
+                ? LoaderUtils.loader()
+                : familyListController.getFamilyListData.isEmpty
+                ? Center(
+              child: EmptyScreen(text: 'family_list_not_found'.tr,),
+            ) : ListView.builder(
+              scrollDirection: Axis.vertical,
+                itemCount: familyListController.getFamilyListData.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return FamilyListItems(memberDataModel: familyListController.getFamilyListData[index],
+                    deleteClick: () {
+                    userStatusApi(index,familyListController.getFamilyListData[index].userId.toString(),
+                    familyListController.getFamilyListData[index].memberId.toString(), 'Deleted');
+                  }, blockClick: () {
+                    setState(() {
+                      userStatusApi(index,familyListController.getFamilyListData[index].userId.toString(),
+                          familyListController.getFamilyListData[index].memberId.toString(), 'Blocked');
+                    });
+                  },);
+                });
+          }),
+        ],
+      ),
 
     ));
   }
@@ -97,13 +136,19 @@ class _FamilyListState extends State<FamilyList> {
       if (value != null) {
         if (value.status == true) {
           familyListController.getFamilyListData.removeAt(index);
-          familyListController.familyListApi(Preferences.getId(Preferences.id));
+          setState(() async {
+            familyListApi();
+          });
+
           Get.back();
         } else {
           LoaderUtils.showToast(value.message.toString());
         }
       }
     });
+  }
+  void familyListApi()async{
+    await familyListController.familyListApi(Preferences.getId(Preferences.id));
   }
 }
 

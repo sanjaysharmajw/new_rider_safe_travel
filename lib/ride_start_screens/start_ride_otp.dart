@@ -7,6 +7,7 @@ import 'package:otp_timer_button/otp_timer_button.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/Models/start_ride_details.dart';
 import 'package:ride_safe_travel/MyText.dart';
+import 'package:ride_safe_travel/Utils/toast.dart';
 import 'package:ride_safe_travel/body_request/start_ride_request.dart';
 import 'package:ride_safe_travel/controller/send_otp_controller.dart';
 import 'package:ride_safe_travel/ride_start_screens/otp_pin.dart';
@@ -130,6 +131,8 @@ class _OTPScreenState extends State<StartOTPScreen> {
         if (value.status==true) {
          // LoaderUtils.message(value.message.toString());
           startRideAPi();
+        }else{
+          ToastMessage.toast("Invalid OTP");
         }
       }
     });

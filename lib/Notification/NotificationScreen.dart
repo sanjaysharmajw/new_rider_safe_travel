@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -7,10 +9,14 @@ import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/Notification/NotificationDialogBox.dart';
 import 'package:ride_safe_travel/color_constant.dart';
+import 'package:ride_safe_travel/notification-dict/notification_controller.dart';
 
 import '../Error.dart';
 import '../LoginModule/Api_Url.dart';
 import '../LoginModule/custom_color.dart';
+import '../Services_Module/requested_servicelists_item.dart';
+import '../Utils/EmptyScreen.dart';
+import '../Utils/Loader.dart';
 import '../Utils/toast.dart';
 import 'NotificationItems.dart';
 import 'NotificationModels.dart';
@@ -23,10 +29,13 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  final notificationcontroller = Get.put(notificationController());
   @override
   Widget build(BuildContext context) {
     Color status;
+
     return SafeArea(
+
         child: Scaffold(
             appBar: AppBar(
               elevation: 15,
@@ -39,7 +48,58 @@ class _NotificationScreenState extends State<NotificationScreen> {
               title:  Text('notification'.tr,
                 style: TextStyle(fontFamily: "Gilroy",fontSize: 22,color: Colors.white),),
             ),
-            body: FutureBuilder<List<NotificationData>>(
+            body: Container(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Obx(() {
+                      return notificationcontroller.isLoading.value
+                          ? LoaderUtils.loader()
+                          : notificationcontroller.getNotificationData.isEmpty
+                          ? Center(
+                        child: EmptyScreen(
+
+                        ),
+                      )
+                          : ListView.builder(
+                          itemCount:
+                          notificationcontroller.getNotificationData.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+
+                            print(
+                              notificationcontroller.getNotificationData.length,
+                            );
+                            var notification = notificationcontroller.getNotificationData[index];
+                            if (notification.type == 'ride sos alert') {
+                              status = Colors.red;
+                            } else {
+                              status = Colors.blue;
+                            }
+
+                            return NotificationItems(Title: notification.title.toString(),
+                                Des: notification.description.toString(), border: Colors.white,
+                                click: () {
+                                  NotificationPopup(
+                                      context,
+                                      notification.title.toString(),
+                                      notification.description.toString(),
+                                          () {
+                                        setState(() {
+                                          OverlayLoadingProgress.start(context);
+                                          notificationcontroller.readNotification(notification.id.toString());
+
+                                          Navigator.of(context).pop();
+                                        });
+                                      });
+                                }, date: notification.date.toString(), borderColor: status);
+                          });
+                    }),
+                  )
+                ],
+              ),
+            ),
+            /*FutureBuilder<List<NotificationData>>(
               future: getNotification(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
@@ -81,10 +141,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 }
                 return Center(child: CircularProgressIndicator());
               },
-            )));
+            )*/
+        ));
   }
 
-  Future<List<NotificationData>> getNotification() async {
+
+
+ /* Future<List<NotificationData>> getNotification() async {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
     await Preferences.setPreferences();
     String userId = Preferences.getId(Preferences.id).toString();
@@ -108,9 +171,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
     } else {
       throw Exception('Failed to load');
     }
-  }
+  }*/
 
-  Future<http.Response> readNotification(String id) async {
+  /*Future<http.Response> readNotification(String id) async {
     var loginToken = Preferences.getLoginToken(Preferences.loginToken);
 
     final response = await http.post(Uri.parse(ApiUrl.readNotification),
@@ -142,5 +205,5 @@ class _NotificationScreenState extends State<NotificationScreen> {
     } else {
       throw Exception('Failed');
     }
-  }
+  }*/
 }

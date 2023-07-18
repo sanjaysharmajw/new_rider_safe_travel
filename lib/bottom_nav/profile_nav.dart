@@ -222,7 +222,7 @@ await getReason.getSosReason();
             child: MultiSelectBottomSheet(
               items: _reasonNames.map((e) => MultiSelectItem(e, e)).toList(),
               initialValue: _selectedReasonNames,
-              selectedColor: Colors.black,
+              selectedColor: Colors.blue,
               cancelText: const Text("Cancel", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20,fontFamily: "Gilroy"),),
               confirmText: const Text("Confirm", style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, fontSize: 20,fontFamily: "Gilroy")),
               title: Flexible(child: const Text("I want to help in following situations", style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold,fontFamily: "Gilroy"),)),
@@ -342,7 +342,7 @@ await getReason.getSosReason();
                       click: () {
                         Get.to(const NotificationScreen());
                       },),
-                    ProfileText(title: 'Medical Details', subTitle: 'Check your medical details', icons: FeatherIcons.bell,
+                    ProfileText(title: 'Medical Details', subTitle: 'Check your medical details', icons: FeatherIcons.clipboard,
                       click: () {
                         Get.to(const MedicalDetailsScreen());
                       },),
@@ -359,26 +359,37 @@ await getReason.getSosReason();
                       click: () {
                         Get.to(const PromoVideoScreen());
                       },),
-                    SizedBox(height: 5,),
+
 
                     Visibility(
                         visible:  volunteerStatus!,
                         child: Column(
                           children: [
-                            ProfileWidgetPage(
-                                title: "Volunteer Requests".tr,
-                                subtitle: 'View volunteering requests'.tr,
-                                click: () {
+                            ProfileText(title: 'Volunteer Requests'.tr, subTitle: 'View volunteering requests'.tr, icons: FeatherIcons.user,
+                              click: () {
+                                Get.to(const VolunteerRequestListTabScreen());
+                              },),
+                            SizedBox(height: 10,),
+                           /* Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: ProfileWidgetPage(
+                                  title: "Volunteer Requests".tr,
+                                  subtitle: 'View volunteering requests'.tr,
+                                  click: () {
 
-                                  //Get.to(const VolunteerRequestListTabScreen());
-                                  Get.to(volunteerTabBarScreen());
-                                },
-                                iconData: FeatherIcons.user),
+                                    //Get.to(const VolunteerRequestListTabScreen());
+                                    Get.to(volunteerTabBarScreen());
+                                  },
+                                  iconData: FeatherIcons.user),
+                            ),*/
+                            //SizedBox(height: 5,),
 
 
                           ],
                         )
                     ),
+
+
                     ProfileNotification(
                         valueChanged: (values) {
                           setState(() {
@@ -418,6 +429,8 @@ await getReason.getSosReason();
                         status4: volunteerStatus!,
                         title: "volunteer".tr,
                         subTitle: "join_as_a_volunteer?".tr, imageAssets:'new_assets/family_icon.png'),*/
+                    SizedBox(height: 5,),
+
 
 
                     ProfileText(title: 'logout'.tr, subTitle: 'exit_from_your_account'.tr, icons: FeatherIcons.logOut,

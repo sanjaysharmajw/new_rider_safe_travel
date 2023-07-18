@@ -18,14 +18,6 @@ class TrackFamilyListController extends GetxController{
   var getTrackData = <FamilyListDataModel>[].obs;
 
 
-  @override
-  void onInit() {
-    super.onInit();
-    trackFamilyListApi();
-    // trackFamilyListApi(Preferences.getId(Preferences.id), Preferences.getMobileNumber(Preferences.mobileNumber));
-
-  }
-
   Future<dynamic> trackFamilyListApi() async {
     try {
       LoaderUtils.showLoader("Please wait");
@@ -37,17 +29,16 @@ class TrackFamilyListController extends GetxController{
           "user_id": Preferences.getId(Preferences.id),
         }),
       );
-      print( jsonEncode(<String, String>{
+      log( jsonEncode(<String, String>{
         "mobile_number": Preferences.getMobileNumber(Preferences.mobileNumber),
         "user_id": Preferences.getId(Preferences.id),
-      }),);
+      }));
+      log('familyresponse');
       log(response.body);
       const utf8Decoder = Utf8Decoder(allowMalformed: true);
       final decodedBytes = utf8Decoder.convert(response.bodyBytes);
       Map<String, dynamic> responseBody = json.decode(decodedBytes);
       if (response.statusCode == 200) {
-
-        debugPrint("family list api callled");
         isLoading.value = false;
         LoaderUtils.closeLoader();
         Familydatamodel model = Familydatamodel.fromJson(responseBody);

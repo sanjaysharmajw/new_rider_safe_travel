@@ -9,7 +9,9 @@ import 'package:ride_safe_travel/LoginModule/Map/RiderMap.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/Models/Familymodel.dart';
+import 'package:ride_safe_travel/Utils/CustomLoader.dart';
 import 'package:ride_safe_travel/main.dart';
+import 'package:ride_safe_travel/tracking/tracking_tabs.dart';
 
 import '../../Error.dart';
 import '../../FamilyMemberAddOtherTrack.dart';
@@ -30,8 +32,8 @@ import '../../users_status_controller.dart';
 import 'FamilyListDataModel.dart';
 
 class FamilyMemberListScreen extends StatefulWidget {
-  final String changeUiValue;
-  const FamilyMemberListScreen({Key? key, required this.changeUiValue})
+
+   FamilyMemberListScreen({Key? key})
       : super(key: key);
 
   @override
@@ -49,16 +51,14 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
 
   @override
   void initState() {
-    super.initState();
     callFamilyList();
+    super.initState();
+
   }
 
   void callFamilyList() async {
    await trackFamilyController.trackFamilyListApi();
-
   }
-
-
 
   var image;
 
@@ -73,52 +73,53 @@ class _FamilyMemberListScreenState extends State<FamilyMemberListScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         backgroundColor: Colors.white,
-
         body: Obx(() {
           return familyRideDataController.isLoading.value
               ? LoaderUtils.loader()
               : familyRideDataController.getFamilyRideListData.isEmpty
-                  ? Center(
-                      child: EmptyScreen(
-                        text: 'family_list_not_found'.tr,
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: familyRideDataController.getFamilyRideListData.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return TrackFamilyItem(
-                          familyListDataModel:
-                          familyRideDataController.getFamilyRideListData[index],
-                          deleteClick: () {
-                            familyStatusApi(index, Preferences.getId(Preferences.id),
-                                familyRideDataController.getFamilyRideListData[index].memberId.toString(), 'Deleted');
-                          },
-                        );
-                      });
-        }));
+              ? Center(
+            child: EmptyScreen(
+              text: 'family_list_not_found'.tr,
+            ),
+          )
+              : ListView.builder(
+              itemCount: familyRideDataController.getFamilyRideListData.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return TrackFamilyItem(
+                  familyListDataModel:
+                  familyRideDataController.getFamilyRideListData[index],
+                  deleteClick: () {
+                    setState(() {
+                      if(familyRideDataController.getFamilyRideListData[index].memberId!=null){
+                        familyStatusApi(index, Preferences.getId(Preferences.id),
+                            familyRideDataController.getFamilyRideListData[index].memberId.toString(), 'Deleted');
+                      }else{
+                        CustomLoader.message("Member not available");
+                      }
+                    });
 
+
+
+                  },
+                );
+              });
+        }),
+    );
   }
 
-  void familyStatusApi(
-      int index, String userId, String memberId, String status) async {
-    await familystatusController
-        .getUserStatus(index, userId, memberId, status)
+  void familyStatusApi(int index, String userId, String memberId, String status) async {
+    await familystatusController.getUserStatus(index, userId, memberId, status)
         .then((value) async {
       if (value != null) {
         if (value.status == true) {
-
-            trackFamilyController.getTrackData.removeAt(index);
-
-          callFamilyList();
-          Navigator.push(context, MaterialPageRoute(builder: (context) => CustomBottomNav()));
-            //Get.back();
-            // Get.to(CustomBottomNav());
-
-
+          setState(() {
+            familyRideDataController.getFamilyRideListData.removeAt(index);
+            callFamilyList();
+            LoaderUtils.showToast(value.message.toString());
+          });
         } else {
           LoaderUtils.showToast(value.message.toString());
         }

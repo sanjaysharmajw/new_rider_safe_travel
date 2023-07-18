@@ -116,6 +116,9 @@ class LanguageString extends Translations{
       'write_a_Comment':'Write a comment',
       'send_request':'Send Request',
       'cancel':'Cancel',
+      'service_list':'Service List',
+      'type_your_message':'Type your message',
+      'comment':'Comment',
 
       /////////////////////////////////////////////////MY RIDES/////////////////////////////////////////////////////////
 
@@ -300,6 +303,9 @@ class LanguageString extends Translations{
       'write_a_Comment':'एक टीप्पणि लिहा',
       'send_request':'विनंती पाठवा',
       'cancel':'रद्द करा',
+      'service_list':'सेवा यादी',
+      'type_your_message':'तुमचा संदेश टाइप करा',
+      'comment':'टिप्पणी',
 
       /////////////////////////////////////////////////MY RIDES/////////////////////////////////////////////////////////
 
@@ -459,6 +465,9 @@ class LanguageString extends Translations{
       'write_a_Comment':'एक टिप्पणी लिखें',
       'send_request':'अनुरोध भेजा',
       'cancel':'रद्द करना',
+  'service_list':'सेवा सूची',
+      'type_your_message':'अपना संदेश टाइप करें',
+      'comment':'टिप्पणी',
 
   /////////////////////////////////////////////////MY RIDES/////////////////////////////////////////////////////////
 

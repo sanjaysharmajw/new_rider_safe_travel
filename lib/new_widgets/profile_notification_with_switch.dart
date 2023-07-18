@@ -37,7 +37,7 @@ class ProfileNotification extends StatelessWidget {
                         children: [
                           MyText(text: title, fontFamily: 'Gilroy', color: Colors.black, fontSize: 16, ),
                           const SizedBox(height: 5),
-                          MyText(text: subTitle, fontFamily: 'Gilroy', color: Colors.black54, fontSize: 12,),
+                          MyText(text: subTitle, fontFamily: 'Gilroy', color: Colors.black, fontSize: 12,),
                         ],
                       ),
                     ],

@@ -30,8 +30,9 @@ class UserStatusController extends GetxController{
         "member_id": memberId.toString(),
         "status": status.toString()
       }),);
+      debugPrint("userStatus: "+response.body);
       Map<String, dynamic> responseBody = json.decode(response.body);
-      debugPrint("userStatus: "+responseBody.toString());
+
       if (response.statusCode == 200) {
         LoaderUtils.closeLoader();
         return MemberBlockDeleteModel.fromJson(responseBody);
