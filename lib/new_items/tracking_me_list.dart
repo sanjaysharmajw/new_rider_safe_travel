@@ -9,13 +9,21 @@ import 'package:ride_safe_travel/LoginModule/Api_Url.dart';
 import 'package:ride_safe_travel/color_constant.dart';
 import 'package:ride_safe_travel/custom_button.dart';
 import 'package:ride_safe_travel/switchbutton.dart';
+import '../DeleteButton.dart';
 import '../Error.dart';
 import '../FamilyMemberDataModel.dart';
 import '../LoginModule/custom_color.dart';
 import '../LoginModule/preferences.dart';
 import '../Models/MemberBlockDeleteModel.dart';
+import '../Utils/EmptyScreen.dart';
+import '../Utils/Loader.dart';
+import '../Utils/circular_image_widgets.dart';
+import '../family_list_item.dart';
+import '../familylist_controller.dart';
+import '../new_widgets/my_new_text.dart';
 import '../new_widgets/new_button.dart';
 import '../start_ride_map.dart';
+import '../users_status_controller.dart';
 
 class TrackingMeList extends StatefulWidget {
   final String riderId;
@@ -37,7 +45,7 @@ class TrackingMeList extends StatefulWidget {
 class _UserFamilyListState extends State<TrackingMeList> {
   var _future;
 
-  Future<List<FamilyMemberDataModel>> getUserFamilyList() async {
+  /*Future<List<FamilyMemberDataModel>> getUserFamilyList() async {
     setState(() {});
     await Preferences.setPreferences();
     String userId = Preferences.getId(Preferences.id).toString();
@@ -59,26 +67,19 @@ class _UserFamilyListState extends State<TrackingMeList> {
     } else {
       throw Exception('Failed to load');
     }
-  }
+  }*/
 
   @override
   void initState() {
     super.initState();
-    setState(() {});
-    _future = getUserFamilyList();
-
-
+    setState(() {
+      familyListApi();
+    });
   }
 
-  var image;
-  var memberId;
-  String? statusType;
-  bool isblocked = false;
-  bool unblockbuttonVisibility = false;
-  var memberStatus;
-  var memberName;
 
-  bool isSwitched = false;
+  final familyListController=Get.put(FamilyListController());
+  final userstatusController = Get.put(UserStatusController());
 
   @override
   Widget build(BuildContext context) {
@@ -107,9 +108,59 @@ class _UserFamilyListState extends State<TrackingMeList> {
               )),
 
         ),
+        floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: appBlue,
+          onPressed: (){
+            Get.to(
+                StartRide(
+                    riderId: widget.riderId.toString(),
+                    dName: widget.dName.toString() == 'null' ? "" : widget.dName.toString(),
+                    dMobile: widget.dMobile.toString() == 'null' ? "" : widget.dMobile.toString(),
+                    dPhoto: widget.dPhoto.toString() == 'null' ? "" :  widget.dPhoto.toString(),
+                    model: widget.model.toString() == 'null' ? "" : widget.model.toString(),
+                    vOwnerName: widget.vOwnerName.toString() == 'null' ? "" : widget.vOwnerName.toString(),
+                    vRegNo: widget.vRegNo.toString() == 'null' ? "" : widget.vRegNo.toString(),
+                    socketToken: widget.socketToken.toString(), driverLicense: widget.driverLicense.toString(),otpRide: widget.otpRide.toString())
+            );
+
+            Preferences.setNewRiderId(widget.riderId.toString());
+          },
+          label: Text("Start Ride"),
+        ),
 
 
-        body: Container(
+        body: Column(
+          children: [
+            SizedBox(height: 25,),
+            Expanded(
+              child: Obx(() {
+                return familyListController.isLoading.value
+                    ? LoaderUtils.loader()
+                    : familyListController.getFamilyListData.isEmpty
+                    ? Center(
+                  child: EmptyScreen(),
+                ) : ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: familyListController.getFamilyListData.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return FamilyListItems(memberDataModel: familyListController.getFamilyListData[index],
+                        deleteClick: () {
+                          userStatusApi(index,familyListController.getFamilyListData[index].userId.toString(),
+                              familyListController.getFamilyListData[index].memberId.toString(), 'Deleted');
+                        }, blockClick: () {
+                          setState(() {
+                            userStatusApi(index,familyListController.getFamilyListData[index].userId.toString(),
+                                familyListController.getFamilyListData[index].memberId.toString(), 'Blocked');
+                          });
+                        },);
+                    });
+              }),
+            ),
+          ],
+        ),
+
+      /*Container(
           child: Column(
             children: [
               Expanded(child: FutureBuilder<List<FamilyMemberDataModel>>(
@@ -141,7 +192,93 @@ class _UserFamilyListState extends State<TrackingMeList> {
                       onTap: () {
                         setState(() {});
                       },
-                      child:       Container(
+                      child:   Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8,right: 8,top: 8),
+                            child: Container(
+                              height: 155,
+                              child: Card(
+                                  elevation: 10,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  color: CustomColor.white,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 10,top: 7),
+                                            child: CircularImage(
+                                                imageLink: image,
+                                                //boxFit: BoxFit.cover,
+                                                imageWidth: 40,
+                                                imageHeight: 40, borderColor: Colors.black,),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 15,top: 7),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children:  [
+                                                NewMyText(textValue:snapshot.data![index].memberFName.toString(), fontName: 'Gilroy', color: Colors.black, fontWeight: FontWeight.w700,
+                                                    fontSize: 16),
+                                                const SizedBox(height: 5),
+                                                NewMyText(textValue: "Relation: ${snapshot.data![index].relation.toString()}", fontName: 'Gilroy', color: Colors.black, fontWeight: FontWeight.w500,
+                                                    fontSize: 14),
+                                              ],
+                                            ),
+                                          ),
+
+                                        ],
+                                      ),
+                                      const SizedBox(height: 20),
+                                      Row(
+                                        mainAxisAlignment:  MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 10),
+                                            child: NewMyText(textValue:snapshot.data![index].memberMobileNumber.toString(), fontName: 'Gilroy', color: Colors.black, fontWeight: FontWeight.w500,
+                                                fontSize: 14),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 10),
+                                            child: NewMyText(textValue: snapshot.data![index].memberEmailId.toString() == "null" ?
+                                            "Email: " :snapshot.data![index].memberEmailId.toString(), fontName: 'Gilroy', color: Colors.black, fontWeight: FontWeight.w500,
+                                                fontSize: 14),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 10),
+                                            child: ToggleSwitchButton(mstatus: snapshot.data![index].memberStatus.toString(),
+                                              memberId: snapshot.data![index].memberId.toString(),
+                                              userId:snapshot.data![index].userId.toString(),),
+                                          ),
+                                          DeleteButtonWidget(userId: snapshot.data![index].userId.toString(), memberId: snapshot.data![index].memberId.toString(),
+                                            status: snapshot.data![index].memberStatus.toString(),
+                                            click: deleteClick,
+                                            onTap: blockClick,
+                                          )
+                                        ],
+                                      ),
+
+                                    ],
+                                  )
+
+
+                              ),
+                            ),
+                          ),
+                        ],
+
+                      )
+                      /*Container(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -364,7 +501,7 @@ class _UserFamilyListState extends State<TrackingMeList> {
                                     )),
                               ],
                             ),
-                          ),
+                          ),*/
 
 
                     );
@@ -397,10 +534,30 @@ class _UserFamilyListState extends State<TrackingMeList> {
 
             ],
           ),
-        ));
+        )*/
+    );
   }
+  void userStatusApi(int index,String userId, String memberId, String status) async {
+    await userstatusController.getUserStatus(index,userId, memberId, status)
+        .then((value) async {
+      if (value != null) {
+        if (value.status == true) {
+          familyListController.getFamilyListData.removeAt(index);
+          setState(() async {
+            familyListApi();
+          });
 
-  Future<MemberBlockDeleteModel> getMembersStatus(String status) async {
+          Get.back();
+        } else {
+          LoaderUtils.showToast(value.message.toString());
+        }
+      }
+    });
+  }
+  void familyListApi()async{
+    await familyListController.familyListApi(Preferences.getId(Preferences.id));
+  }
+  /*Future<MemberBlockDeleteModel> getMembersStatus(String status) async {
     setState(() {});
 
     if (status.toLowerCase().toString() == "Deleted") {
@@ -459,6 +616,6 @@ class _UserFamilyListState extends State<TrackingMeList> {
     } else {
       throw Exception('Failed to create album.');
     }
-  }
+  }*/
 
 }

@@ -5,7 +5,7 @@ class CircularImage extends StatelessWidget {
   final double imageWidth;
   final double imageHeight;
   final Color borderColor;
-  const CircularImage({Key? key, required this.imageLink, required this.imageWidth, required this.imageHeight, required this.borderColor}) : super(key: key);
+  const CircularImage({Key? key, required this.imageLink, required this.imageWidth, required this.imageHeight, required this.borderColor, }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
