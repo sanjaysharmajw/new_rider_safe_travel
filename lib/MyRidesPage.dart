@@ -77,7 +77,29 @@ class _MyRidesPageState extends State<MyRidesPage> {
                       itemCount:
                           ridehistoryController.getRiderHistoryData.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return MyRidesHistoryItems(
+                        return MyRidesHistoryItems(riderHistoryData: ridehistoryController.getRiderHistoryData[index],
+                          clickList: () {
+                            getRideDetailsApi(ridehistoryController.getRiderHistoryData[index].id.toString(), index);
+                          }, toDestination: ridehistoryController
+                              .getRiderHistoryData[index]
+                              .toDestination
+                              .toString() ==
+                              "null"
+                              ? " "
+                              : ridehistoryController
+                              .getRiderHistoryData[index].toDestination
+                              .toString(),
+                          fromDestination: ridehistoryController
+                                .getRiderHistoryData[index]
+                                .fromDestination
+                                .toString() ==
+                                "null"
+                                ? ""
+                                : ridehistoryController
+                                .getRiderHistoryData[index]
+                                .fromDestination
+                                .toString(),);
+                          /*MyRidesHistoryItems(
                           vehicleReg: ridehistoryController
                                       .getRiderHistoryData[index]
                                       .vehicleRegistrationNumber
@@ -117,8 +139,8 @@ class _MyRidesPageState extends State<MyRidesPage> {
                                   .toString(),
                           clickList: () {
                             getRideDetailsApi(ridehistoryController.getRiderHistoryData[index].id.toString(), index);
-                          },
-                        );
+                          }, date: ridehistoryController.getRiderHistoryData[index].date,
+                        );*/
                       });
         })));
 
