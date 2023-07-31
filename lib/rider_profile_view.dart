@@ -174,7 +174,6 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                         assetsPath: profileImage,
                         progressIndicator: viewProfileController.getViewProfileData[index].profilePercentage ?? 100,
                         progressValue: viewProfileController.getViewProfileData[index].profilePercentage.toString() == "null" ? "100" :  viewProfileController.getViewProfileData[index].profilePercentage.toString(),
-
                       ),
                     ),
 
@@ -248,7 +247,6 @@ class _RiderProfileViewState extends State<RiderProfileView> {
                                 ),
                               ),
                             )),
-
                       ],
                     ),
                     Row(
