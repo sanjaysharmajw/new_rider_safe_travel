@@ -13,6 +13,9 @@ class ApiUrl {
     HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
     'Authorization': Preferences.getLoginToken(Preferences.loginToken),
   };
+  static Map<String, String> authHeader  = {
+    HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8'
+  };
 
   static var login = '${baseUrl}user/userlogin';
   static var resetPassword = '${baseUrl}user/resetPassword';

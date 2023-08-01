@@ -226,7 +226,7 @@ class MyHomePageState extends State<MyHomePage> {
   Future checkLoginStatus() async{
     await Preferences.setPreferences();
     String? userId = Preferences.getId(Preferences.id);
-    if (userId == null) {
+    if (userId == "") {
       Get.to( RiderLoginPage());
     } else {
       Get.to(const CustomBottomNav());  //MainPage //CustomBottomNav

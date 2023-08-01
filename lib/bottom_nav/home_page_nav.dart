@@ -19,6 +19,8 @@ import 'package:ride_safe_travel/MyText.dart';
 import 'package:ride_safe_travel/Utils/CustomLoader.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
 import 'package:ride_safe_travel/bottom_nav/EmptyScreen.dart';
+import 'package:ride_safe_travel/chat_module/chat_screen.dart';
+import 'package:ride_safe_travel/chat_module/models/get_token_request_body.dart';
 import 'package:ride_safe_travel/color_constant.dart';
 import 'package:ride_safe_travel/controller/check_active_ride_models.dart';
 import 'package:ride_safe_travel/controller/family_ride_controller.dart';
@@ -42,6 +44,7 @@ import '../UserDriverInformation.dart';
 import '../UserFamilyList.dart';
 import '../Utils/exit_alert_dialog.dart';
 import '../chat_bot/ChatScreen.dart';
+import '../chat_module/chat_controller/chat_token_controller.dart';
 import '../controller/checkActiveRideRequest.dart';
 import '../controller/check_active_rider.dart';
 import '../controller/end_ride_controller.dart';
@@ -80,7 +83,7 @@ class _HomePageState extends State<HomePageNav> {
   Timer? timers;
   String? sosStatus = 'Ok';
   String? reason;
-  String? userId;
+  String? userId,userName;
   String? riderOtp = "";
   String? driverPhoto, driverName, driverReg, driverModel, driverRating, token;
   String? riderIdFromStartRider;
@@ -99,6 +102,7 @@ class _HomePageState extends State<HomePageNav> {
     await getCountController.getCount();
     await Preferences.setPreferences();
     userId = Preferences.getId(Preferences.id).toString();
+    userName = Preferences.getFirstName(Preferences.firstname).toString();
     riderOtp = Preferences.getRideOtp();
     await locationPermission.permissionLocation();
     await checkActiveRide.checkActiveRideApi();
@@ -295,7 +299,7 @@ class _HomePageState extends State<HomePageNav> {
                 icon: const Icon(Icons.chat),
                 color: CustomColor.white,
                 onPressed: () {
-                  Get.to(const ChatScreen());
+                  chatTokenApi();
                 }),
           ],
         ),
@@ -700,5 +704,20 @@ class _HomePageState extends State<HomePageNav> {
         }
       });
     }
+
+  void chatTokenApi() {
+    final chatController = Get.put(ChatTokenController());
+    GetTokenRequestBody requestBody =GetTokenRequestBody(
+        userName: userName.toString(),
+        userId: userId.toString(),
+        userRole: 'Rider'
+    );
+    chatController.chatTokenApi(requestBody).then((value){
+      if(value!=null){
+        Get.to(RealtimeChatScreen(socketToken: value.token.toString()));
+      }
+    });
+  }
+
   }
 
