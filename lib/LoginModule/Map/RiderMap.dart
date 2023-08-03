@@ -135,7 +135,6 @@ class _RiderMapState extends State<RiderMap> {
         ),
       );
     }
-
     setState(() {});
 
   }

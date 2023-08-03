@@ -30,6 +30,7 @@ class Preferences {
   static const String loginToken = 'token';
   static const String language = 'Language';
   static const String volunteer = 'volunteer';
+  static const String chatToken = 'chat_token';
 
   static Future<void> setPreferences() async {
     instance = await SharedPreferences.getInstance();
@@ -41,6 +42,14 @@ class Preferences {
 
   static Future<bool> setStartLat(String value) {
     return Preferences.instance!.setString(startLat, value);
+  }
+
+  static Future<bool> setChatToken(String value) {
+    return Preferences.instance!.setString(chatToken, value);
+  }
+
+  static dynamic getChatToken() {
+    return Preferences.instance!.get(chatToken);
   }
 
   static Future<bool> setRideOtp(String value) {

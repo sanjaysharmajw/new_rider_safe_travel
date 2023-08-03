@@ -44,6 +44,7 @@ class _RealtimeChatScreenState extends State<RealtimeChatScreen> {
   @override
   void dispose() {
     _messageInputController.dispose();
+    socket.disconnect();
     super.dispose();
   }
 
