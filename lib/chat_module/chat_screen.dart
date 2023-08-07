@@ -1,21 +1,26 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pip_view/pip_view.dart';
 import 'package:ride_safe_travel/LoginModule/custom_color.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
+import 'package:ride_safe_travel/Utils/CustomLoader.dart';
+import 'package:ride_safe_travel/Utils/utils_class.dart';
 import 'package:ride_safe_travel/bottom_nav/custom_bottom_navi.dart';
 import 'package:ride_safe_travel/chat_module/chat_controller/chat_controller.dart';
 import 'package:ride_safe_travel/chat_module/chat_widgets/chat_alert.dart';
+import 'package:ride_safe_travel/chat_module/chat_widgets/chat_items.dart';
 import 'package:ride_safe_travel/chat_module/chat_widgets/chat_textfield.dart';
 import 'package:ride_safe_travel/chat_module/chat_widgets/empty_chat.dart';
 import 'package:ride_safe_travel/chat_module/models/message.dart';
 import 'package:ride_safe_travel/color_constant.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+
 class RealtimeChatScreen extends StatefulWidget {
   String? socketToken;
 
-  RealtimeChatScreen({Key? key,this.socketToken}) : super(key: key);
+  RealtimeChatScreen({Key? key, this.socketToken}) : super(key: key);
 
   @override
   State<RealtimeChatScreen> createState() => _RealtimeChatScreenState();
@@ -25,11 +30,12 @@ class _RealtimeChatScreenState extends State<RealtimeChatScreen> {
   late IO.Socket socket;
   final TextEditingController _messageInputController = TextEditingController();
   final chatController = Get.put(ChatController());
-  String username="";
+  String username = "";
 
   sendMessage() {
-    chatController.messages.add(Message(msg: _messageInputController.text.trim(),fromMe: true));
-    var msgEmit={
+    chatController.messages
+        .add(Message(msg: _messageInputController.text.trim(), fromMe: true,chatTime: MyUtils.getFormattedTimeEvent(DateTime.now().millisecondsSinceEpoch)));
+    var msgEmit = {
       "messagetext": _messageInputController.text.trim(),
     };
     socket.emit("message", msgEmit);
@@ -44,6 +50,7 @@ class _RealtimeChatScreenState extends State<RealtimeChatScreen> {
       socketConnect(widget.socketToken.toString());
     });
   }
+
   @override
   void dispose() {
     _messageInputController.dispose();
@@ -53,101 +60,78 @@ class _RealtimeChatScreenState extends State<RealtimeChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return !await chatAlertDialog(context,widget.socketToken.toString(), ()  {
-          setState(() async{
-            await Preferences.setPreferences();
-            Preferences.setChatToken("");
-            Get.to(const CustomBottomNav());
-          });
-        }, ()  {
-          setState(()async {
-            await Preferences.setPreferences();
-            Preferences.setChatToken(widget.socketToken.toString());
-            Get.to(const CustomBottomNav());
-          });
-
-        });
-      },
-      child: PIPView(
-        builder: (context, isFloating) {
-          return Scaffold(
+    return PIPView(
+      builder: (context, isFloating) {
+        return WillPopScope(
+          onWillPop: () => showChatExitPopup(context,"Do you want to continue",(){
+            PIPView.of(context)?.presentBelow(const CustomBottomNav());
+            Get.back();
+          },(){
+            Get.offAll(const CustomBottomNav());
+          }),
+          child: Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
               iconTheme: const IconThemeData(color: Colors.white),
               backgroundColor: appBlue,
               elevation: 0,
               centerTitle: false,
-              title:  Column(
+              title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   InkWell(
-                    onTap: (){
-                      PIPView.of(context)?.presentBelow(CustomBottomNav());
+                    onTap: () {
+                      getCurrentTime();
                     },
-                    child: Text(chatController.messages.isEmpty?"Chat":chatController.messages[0].userName==null?"Chat":
-                    chatController.messages[0].userName.toString(),style:
-                    const TextStyle(color: Colors.white)),
+                    child: Text(
+                        chatController.messages.isEmpty
+                            ? "Chat"
+                            : chatController.messages[0].userName == null
+                                ? "Chat"
+                                : chatController.messages[0].userName
+                                    .toString(),
+                        style: const TextStyle(color: Colors.white)),
                   ),
-                  const Text('Typing...',style:
-                  TextStyle(color: CustomColor.white,fontSize: 12)),
+                  const Text('Typing...',
+                      style: TextStyle(color: CustomColor.white, fontSize: 12)),
                 ],
               ),
             ),
             body: Column(
               children: [
                 Expanded(
-                  child:
-                  Obx(() {
-                    return chatController.messages.isEmpty?const Center(child: EmptyChat()):ListView.separated(
-                      physics: const BouncingScrollPhysics(),
-                      controller: chatController.scrollController,
-                      itemCount: chatController.messages.length,
-                      padding: const EdgeInsets.all(16),
-                      itemBuilder: (context, index) {
-                        final message = chatController.messages[index];
-                        return Wrap(
-                          alignment: message.fromMe!?WrapAlignment.end:WrapAlignment.start,
-                          children: [
-                            Container(
-                              constraints:  BoxConstraints(maxWidth: MediaQuery.of(context).size.width / 1.3),
-                              decoration:  BoxDecoration(
-                                color: message.fromMe!?appBlue:appLightBlue,
-                                borderRadius: message.fromMe!?const BorderRadius.only(topRight:Radius.circular(13),topLeft:Radius.circular(13),bottomLeft:Radius.circular(13)):
-                                const BorderRadius.only(topRight:Radius.circular(13),bottomRight:Radius.circular(13),bottomLeft:Radius.circular(13)),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(13.0),
-                                child: Column(
-                                  children: [
-                                    Text(message.msg.toString(),style:  TextStyle(fontFamily: 'Gilroy',color: message.fromMe!?Colors.white:Colors.black,fontSize: 15)),
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        );
-                      },
-                      separatorBuilder: (_, index) =>
-                      const SizedBox(
-                        height: 5,
-                      ),
-                    );
+                  child: Obx(() {
+                    return chatController.messages.isEmpty
+                        ? const Center(child: EmptyChat())
+                        : ListView.separated(
+                            physics: const BouncingScrollPhysics(),
+                            controller: chatController.scrollController,
+                            itemCount: chatController.messages.length,
+                            padding: const EdgeInsets.all(16),
+                            itemBuilder: (context, index) {
+                              final message = chatController.messages[index];
+                              return ChatItems(message: message);
+                            },
+                            separatorBuilder: (_, index) => const SizedBox(
+                              height: 5,
+                            ),
+                          );
                   }),
                 ),
-                ChatTextField(fabClick: (){
-                  setState(() {
-                    if (_messageInputController.text.trim().isNotEmpty) {
-                      sendMessage();
-                    }
-                  });
-                }, textEditingController: _messageInputController),
+                ChatTextField(
+                    fabClick: () {
+                      setState(() {
+                        if (_messageInputController.text.trim().isNotEmpty) {
+                          sendMessage();
+                        }
+                      });
+                    },
+                    textEditingController: _messageInputController),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -155,7 +139,7 @@ class _RealtimeChatScreenState extends State<RealtimeChatScreen> {
     try {
       socket = IO.io('http://65.1.73.254:3700', <String, dynamic>{
         'transports': ['websocket'],
-        'autoConnect': true,
+        'autoConnect': false,
         'extraHeaders': {
           'authorization': token.toString(),
           'Content-Type': 'application/json; charset=UTF-8'
@@ -185,5 +169,9 @@ class _RealtimeChatScreenState extends State<RealtimeChatScreen> {
       debugPrint(e.toString());
     }
   }
+  void getCurrentTime(){
+    CustomLoader.message(MyUtils.getFormattedTimeEvent(DateTime.now().millisecondsSinceEpoch));
   }
+}
+
 

@@ -1,29 +1,48 @@
+import 'dart:developer';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/bottom_nav/custom_bottom_navi.dart';
+import 'package:ride_safe_travel/color_constant.dart';
 
-chatAlertDialog(BuildContext context,String token,VoidCallback cancel,VoidCallback continueClick) {
-  Widget cancelButton = TextButton(
-    child: const Text("Cancel"),
-    onPressed:  cancel,
-  );
-  Widget continueButton = TextButton(
-    child: const Text("Continue"),
-    onPressed:  continueClick,
-  );
-  AlertDialog alert = AlertDialog(
-    title: const Text("Alert"),
-    content: const Text("Would you like to continue to chat with Agent?"),
-    actions: [
-      cancelButton,
-      continueButton,
-    ],
-  );
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
+
+Future<bool> showChatExitPopup(context, String title, VoidCallback press,VoidCallback cancelClick) async {
+  return await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            height: 90,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title),
+                const SizedBox(height: 15),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: press,
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: appBlue),
+                        child: const Text("Yes"),
+                      ),
+                    ),
+                    const SizedBox(width: 15),
+                    Expanded(
+                        child: ElevatedButton(
+                          onPressed: cancelClick,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                          ),
+                          child: const Text("No", style: TextStyle(color: Colors.black)),
+                        ))
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      });
 }

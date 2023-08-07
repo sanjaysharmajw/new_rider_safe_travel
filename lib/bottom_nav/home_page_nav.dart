@@ -730,6 +730,7 @@ class _HomePageState extends State<HomePageNav> {
       if (value != null) {
         Preferences.setChatToken(value.token.toString());
         Get.to(RealtimeChatScreen(socketToken: value.token.toString()));
+        CustomLoader.message("msg");
       }
     });
   }
