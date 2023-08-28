@@ -5,8 +5,9 @@ import 'package:ride_safe_travel/color_constant.dart';
 
 class ChatTextField extends StatelessWidget {
   final VoidCallback fabClick;
+  final ValueChanged changed;
   final TextEditingController textEditingController;
-  const ChatTextField({super.key, required this.fabClick, required this.textEditingController});
+  const ChatTextField({super.key, required this.fabClick, required this.textEditingController, required this.changed});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class ChatTextField extends StatelessWidget {
                       controller: textEditingController,
                       maxLines: 1,
                       minLines: 1,
+                      onChanged: changed,
                       keyboardType: TextInputType.multiline,
                       decoration: const InputDecoration(
                           border: InputBorder.none,

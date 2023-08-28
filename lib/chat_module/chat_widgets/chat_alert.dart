@@ -1,18 +1,12 @@
-import 'dart:developer';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:ride_safe_travel/bottom_nav/custom_bottom_navi.dart';
 import 'package:ride_safe_travel/color_constant.dart';
-
 
 Future<bool> showChatExitPopup(context, String title, VoidCallback press,VoidCallback cancelClick) async {
   return await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Container(
+          content: SizedBox(
             height: 90,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:ride_safe_travel/chat_module/models/message.dart';
-
 import '../../color_constant.dart';
 
 class ChatItems extends StatelessWidget {

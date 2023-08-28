@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,8 @@ import 'package:ride_safe_travel/chat_module/chat_widgets/chat_alert.dart';
 import 'package:ride_safe_travel/chat_module/chat_widgets/chat_items.dart';
 import 'package:ride_safe_travel/chat_module/chat_widgets/chat_textfield.dart';
 import 'package:ride_safe_travel/chat_module/chat_widgets/empty_chat.dart';
+import 'package:ride_safe_travel/chat_module/models/is_typing_model.dart';
+import 'package:ride_safe_travel/chat_module/models/me_typing_request.dart';
 import 'package:ride_safe_travel/chat_module/models/message.dart';
 import 'package:ride_safe_travel/color_constant.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -31,10 +34,13 @@ class _RealtimeChatScreenState extends State<RealtimeChatScreen> {
   final TextEditingController _messageInputController = TextEditingController();
   final chatController = Get.put(ChatController());
   String username = "";
+  String? onchangeText;
 
   sendMessage() {
-    chatController.messages
-        .add(Message(msg: _messageInputController.text.trim(), fromMe: true,chatTime: MyUtils.getFormattedTimeEvent(DateTime.now().millisecondsSinceEpoch)));
+    chatController.messages.add(Message(
+        msg: _messageInputController.text.trim(),
+        fromMe: true,
+        chatTime: MyUtils.getFormattedTimeEvent(DateTime.now().millisecondsSinceEpoch)));
     var msgEmit = {
       "messagetext": _messageInputController.text.trim(),
     };
@@ -42,14 +48,19 @@ class _RealtimeChatScreenState extends State<RealtimeChatScreen> {
     _messageInputController.clear();
     chatController.scrollAnimation();
   }
-
   @override
   void initState() {
     super.initState();
     setState(() {
+      CustomLoader.message(widget.socketToken.toString());
+      debugPrint("widget.socketToken.toString()");
+      debugPrint(widget.socketToken.toString());
       socketConnect(widget.socketToken.toString());
     });
   }
+
+
+
 
   @override
   void dispose() {
@@ -67,6 +78,7 @@ class _RealtimeChatScreenState extends State<RealtimeChatScreen> {
             PIPView.of(context)?.presentBelow(const CustomBottomNav());
             Get.back();
           },(){
+            socket.disconnect();
             Get.offAll(const CustomBottomNav());
           }),
           child: Scaffold(
@@ -92,8 +104,12 @@ class _RealtimeChatScreenState extends State<RealtimeChatScreen> {
                                     .toString(),
                         style: const TextStyle(color: Colors.white)),
                   ),
-                  const Text('Typing...',
-                      style: TextStyle(color: CustomColor.white, fontSize: 12)),
+                    Text(chatController.isTypingData.isEmpty
+                        ? "waiting"
+                        : chatController.isTypingData[0].msg == null
+                        ? "waiting"
+                        : "typing",
+                      style: const TextStyle(color: CustomColor.white, fontSize: 12)),
                 ],
               ),
             ),
@@ -126,7 +142,16 @@ class _RealtimeChatScreenState extends State<RealtimeChatScreen> {
                         }
                       });
                     },
-                    textEditingController: _messageInputController),
+                    textEditingController: _messageInputController, changed: (value) {
+                  setState(() {
+                    onchangeText=value;
+                    CustomLoader.message(value.toString());
+                    MeTypingRequest meTypingRequest = MeTypingRequest(isTyping: value==""?false:true);
+                    socket.emit("meTyping", jsonEncode(meTypingRequest));
+                    debugPrint("meTypinfRequest");
+                    debugPrint(jsonEncode(meTypingRequest));
+                  });
+                }),
               ],
             ),
           ),
@@ -136,15 +161,16 @@ class _RealtimeChatScreenState extends State<RealtimeChatScreen> {
   }
 
   Future<void> socketConnect(String token) async {
+
     try {
-      socket = IO.io('http://65.1.73.254:3700', <String, dynamic>{
-        'transports': ['websocket'],
-        'autoConnect': false,
-        'extraHeaders': {
-          'authorization': token.toString(),
-          'Content-Type': 'application/json; charset=UTF-8'
-        }
-      });
+        socket = IO.io('http://65.1.73.254:3700', <String, dynamic>{
+          'transports': ['websocket'],
+          'autoConnect': true,
+          'extraHeaders': {
+            'authorization': token.toString(),
+            'Content-Type': 'application/json; charset=UTF-8'
+          }
+        });
       socket.connect();
       socket.on('connect', (_) {
         debugPrint('Connected to the server');
@@ -155,6 +181,26 @@ class _RealtimeChatScreenState extends State<RealtimeChatScreen> {
       socket.on('event', (data) {
         debugPrint('Received event: $data');
       });
+
+      socket.on('typing', (data) {  // true,false
+        setState(() {
+          debugPrint('meTyping: $data');
+          chatController.addisTyping(IsTypingModel.fromJson(data));
+        });
+      });
+
+      socket.on('waiting', (data) {  //waiting// startNewChat
+        setState(() {
+          debugPrint('waiting: $data');
+        });
+      });
+
+      socket.on('startNewChat', (data) {
+        setState(() {
+          debugPrint('startNewChat: $data');
+        });
+      });
+
       socket.on('message', (data) {
         setState(() {
           debugPrint('Received message: $data');
@@ -172,6 +218,8 @@ class _RealtimeChatScreenState extends State<RealtimeChatScreen> {
   void getCurrentTime(){
     CustomLoader.message(MyUtils.getFormattedTimeEvent(DateTime.now().millisecondsSinceEpoch));
   }
+
+
 }
 
 

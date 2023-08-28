@@ -728,9 +728,10 @@ class _HomePageState extends State<HomePageNav> {
         userRole: 'Rider');
     chatController.chatTokenApi(requestBody).then((value) {
       if (value != null) {
-        Preferences.setChatToken(value.token.toString());
-        Get.to(RealtimeChatScreen(socketToken: value.token.toString()));
-        CustomLoader.message("msg");
+        setState(() {
+          Get.to(RealtimeChatScreen(socketToken: value.token.toString()));  //ev
+        });
+
       }
     });
   }
