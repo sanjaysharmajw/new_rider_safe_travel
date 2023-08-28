@@ -12,6 +12,7 @@ import 'package:location/location.dart';
 
 import 'package:multi_select_flutter/bottom_sheet/multi_select_bottom_sheet.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
+import 'package:ride_safe_travel/Event/EventScreen.dart';
 import 'package:ride_safe_travel/LoginModule/preferences.dart';
 import 'package:ride_safe_travel/PromoVideoScreen.dart';
 import 'package:ride_safe_travel/Utils/Loader.dart';
@@ -338,6 +339,11 @@ await getReason.getSosReason();
                        click: () {
                          buildLanguageDialog(context);
                        },),
+                    ProfileText(title: "Event", subTitle: "Check events", icons: FeatherIcons.calendar,
+                      click: () {
+                       Get.to(const EventScreen());
+                      }),
+
                     ProfileText(title: 'notification'.tr, subTitle: 'check_notification'.tr, icons: FeatherIcons.bell,
                       click: () {
                         Get.to(const NotificationScreen());

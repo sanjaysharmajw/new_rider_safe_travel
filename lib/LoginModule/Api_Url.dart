@@ -70,6 +70,9 @@ class ApiUrl {
 
   static var acceptRejectApi = "${serviceUrl}serviceProvider/acceptrejectServiceRequest";
 
+  static var eventList = "${serviceUrl}event_management/getEventList";
+  static var eventAttend = "${serviceUrl}event_management/viewNAttendEvent";
+
   static var updateMedicalDetails= "${baseUrl}user/updateMedicalCondition";
   static var getMedicalDetails= "${baseUrl}user/getUserMedicalCondition";
   static var medicalDropDownList = "${serviceUrl}user/getmedicaldropdownlist";
