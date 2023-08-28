@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:ride_safe_travel/Event/alert_dialog.dart';
 import 'package:ride_safe_travel/Event/custom_button.dart';
 import 'package:ride_safe_travel/Event/event_attend_controller.dart';
@@ -38,12 +39,29 @@ class EventListItems extends StatelessWidget {
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       textColor: Colors.black),
-                  MyText(
-                      text: eventListData.time.toString(),
-                      fontName: "Gilroy",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      textColor: Colors.black),
+                  Row(
+                    children: [
+                      MyText(
+                          text: eventListData.time.toString(),
+                          fontName: "Gilroy",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          textColor: Colors.black),
+                      const SizedBox(width: 10),
+                      Row(
+                        children: [
+                          const Icon(MdiIcons.eye),
+                          const SizedBox(width: 5),
+                          MyText(
+                              text: eventListData.views.toString(),
+                              fontName: "Gilroy",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              textColor: Colors.black),
+                        ],
+                      ),
+                    ],
+                  ),
                 ],
               ),
               const SizedBox(height: 15),
