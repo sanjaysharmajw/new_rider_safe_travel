@@ -103,8 +103,7 @@ class EventListItems extends StatelessWidget {
                             exitShowDialog(
                                 context, 'Confirmation', 'Are you interested?',
                                 () {
-                              eventAttend(Preferences.getId(Preferences.id),
-                                  eventListData.id.toString(), "");
+                                Get.back();
                             }, () {
                               eventAttend(Preferences.getId(Preferences.id),
                                   eventListData.id.toString(), "Interested");
@@ -117,7 +116,8 @@ class EventListItems extends StatelessWidget {
                   Expanded(
                       child: CustomButton(
                           press: () {
-                            Get.to(EventDetailsScreen(eventListData: eventListData));
+                            viewEventAttend(Preferences.getId(Preferences.id),
+                                eventListData.id.toString(), "");
                           }, buttonText: "View Details",height: 40))
                 ],
               )
@@ -134,8 +134,22 @@ class EventListItems extends StatelessWidget {
     await eventAttendController.eventAttendApi(req).then((value) {
       if (value != null) {
         if (value.status == true) {
-          CustomLoader.message(value.message.toString());
+          //CustomLoader.message(value.message.toString());
           Get.back();
+        } else {
+          CustomLoader.message(value.message.toString());
+        }
+      }
+    });
+  }
+  void viewEventAttend(String userId, String eventId, String status) async {
+    final eventAttendController = Get.put(EventAttendController());
+    EventAttendReq req = EventAttendReq(userId: userId, eventId: eventId, status: status);
+    await eventAttendController.eventAttendApi(req).then((value) {
+      if (value != null) {
+        if (value.status == true) {
+          //CustomLoader.message(value.message.toString());
+          Get.to(EventDetailsScreen(eventListData: eventListData));
         } else {
           CustomLoader.message(value.message.toString());
         }
